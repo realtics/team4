@@ -1,0 +1,24 @@
+[ 
+   { 
+      "charType":1,
+      "charName":"삐약이",
+      "charStat":{ 
+         "strength":1,
+         "endurance":1,
+         "agility":1,
+         "luck":1
+      },
+      "iconName":"Character_PpiYaGi"
+   },
+   { 
+      "charType":0,
+      "charName":"잠김",
+      "charStat":{ 
+         "strength":0,
+         "endurance":0,
+         "agility":0,
+         "luck":0
+      },
+      "iconName":"Icon_Group_78"
+   }
+]

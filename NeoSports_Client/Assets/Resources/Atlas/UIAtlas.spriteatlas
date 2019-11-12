@@ -1,0 +1,54 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: UIAtlas
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings: []
+    packingSettings:
+      serializedVersion: 2
+      padding: 8
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 0
+      enableTightPacking: 0
+    variantMultiplier: 1
+    packables:
+    - {fileID: 21300000, guid: 9bd8cc5da3cfa854691fe4a83358f9dd, type: 3}
+    - {fileID: -5364114642270749980, guid: a5bc11e156dd91f4a92383fbcf910233, type: 3}
+    - {fileID: 7894758045334605482, guid: a5bc11e156dd91f4a92383fbcf910233, type: 3}
+    - {fileID: -7167223357044997742, guid: 408b8aada4b88014db7a27119106e0d4, type: 3}
+    totalSpriteSurfaceArea: 391461
+    bindAsDefault: 1
+    storedHash:
+      serializedVersion: 2
+      Hash: 38c44438075d0014ae9b1022f247dfac
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: -5364114642270749980, guid: a5bc11e156dd91f4a92383fbcf910233, type: 3}
+  - {fileID: 7894758045334605482, guid: a5bc11e156dd91f4a92383fbcf910233, type: 3}
+  - {fileID: 21300000, guid: 9bd8cc5da3cfa854691fe4a83358f9dd, type: 3}
+  - {fileID: -7167223357044997742, guid: 408b8aada4b88014db7a27119106e0d4, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - Equipment_Fedora_0
+  - Equipment_Fedora_1
+  - Character_PpiYaGi
+  - Icon_Group_78
+  m_Tag: UIAtlas
+  m_IsVariant: 0

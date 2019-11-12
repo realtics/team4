@@ -1,0 +1,24 @@
+[ 
+   { 
+      "itemType":0,
+      "itemName":"흑색 중절모",
+      "itemStatus":{ 
+         "strength":0,
+         "endurance":1,
+         "agility":1,
+         "luck":0
+      },
+      "iconName":"Equipment_Fedora_0"
+   },
+   { 
+      "itemType":1,
+      "itemName":"갈색 중절모",
+      "itemStatus":{ 
+         "strength":1,
+         "endurance":0,
+         "agility":0,
+         "luck":1
+      },
+      "iconName":"Equipment_Fedora_1"
+   }
+]
