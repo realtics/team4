@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+/*각 계산하는 부분 인터넷 참고 하였습니다.*/
 public class throwBall : MonoBehaviour
 {
     // Start is called before the first frame update
@@ -23,7 +23,7 @@ public class throwBall : MonoBehaviour
     {
         _isTargetting = false;
         _startAngle = 0.0f;
-        _cannonGauage = 1.0f;
+        _cannonGauage = 0.2f;
         _ownCollider = GetComponent<Collider2D>();
         _arrowSizeSpirte = directionGauage.GetComponent<SpriteRenderer>().sprite;
         _powerSize = 0.0f;
@@ -34,6 +34,7 @@ public class throwBall : MonoBehaviour
     {
         ShotInWindow();
     }
+
     private void ShotInWindow()
     {
         if (Input.GetMouseButtonDown(0))
@@ -73,6 +74,7 @@ public class throwBall : MonoBehaviour
             Fire();
         }
     }
+
     private float DifferenceBetweenAngles(float angle1, float angle2)
     {
         float angle = angle1 - angle2;

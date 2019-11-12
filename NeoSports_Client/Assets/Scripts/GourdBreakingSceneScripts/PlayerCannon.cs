@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+/*각 계산하는 부분 인터넷 참고 하였습니다.*/
 public class PlayerCannon : MonoBehaviour
 {
     // Start is called before the first frame update
@@ -43,6 +43,7 @@ public class PlayerCannon : MonoBehaviour
             DestroyOutScreenObject();
         }
     }
+
     private void DestroyOutScreenObject()
     {
         Destroy(gameObject, 0.5f);

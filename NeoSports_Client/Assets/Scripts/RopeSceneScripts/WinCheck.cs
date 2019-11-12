@@ -6,6 +6,7 @@ public class WinCheck : MonoBehaviour
 {
     // Start is called before the first frame update
     RopePullGameManager sceneManager;
+
     void Start()
     {
         sceneManager = GameObject.FindWithTag("SceneManager").GetComponent<RopePullGameManager>();

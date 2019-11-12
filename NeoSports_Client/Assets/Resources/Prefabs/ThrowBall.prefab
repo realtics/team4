@@ -12,10 +12,10 @@ GameObject:
   - component: {fileID: 5136095947879792111}
   - component: {fileID: 6830558402294157610}
   - component: {fileID: 4283214312198127782}
-  - component: {fileID: 1524804325120175903}
+  - component: {fileID: 559172483545982288}
   m_Layer: 0
   m_Name: ThrowBall
-  m_TagString: Untagged
+  m_TagString: Ball
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -111,13 +111,13 @@ Rigidbody2D:
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: edb745a77ffea914aa347a9bf24aaf71, type: 2}
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!61 &1524804325120175903
-BoxCollider2D:
+--- !u!58 &559172483545982288
+CircleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -125,20 +125,10 @@ BoxCollider2D:
   m_GameObject: {fileID: 5136095947879792108}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: edb745a77ffea914aa347a9bf24aaf71, type: 2}
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.0038501471, y: -0.0019371212}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.34, y: 0.34}
-    newSize: {x: 0.34, y: 0.34}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
+  m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Size: {x: 0.23072073, y: 0.26368442}
-  m_EdgeRadius: 0
+  m_Radius: 0.17

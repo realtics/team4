@@ -13,6 +13,7 @@ public class TapingEffect : MonoBehaviour
       effectParticle = this.GetComponent<ParticleSystem>();
       selfTransform = this.GetComponent<Transform>();
     }
+
     void Update()
     {
         if (Input.GetMouseButtonUp(0) == true ) // mobile로 변경시 touch 이벤트 추가.
