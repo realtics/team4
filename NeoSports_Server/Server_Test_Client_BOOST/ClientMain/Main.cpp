@@ -1,102 +1,9 @@
-#include<iostream>
-#include<boost/asio.hpp>
-#include<boost/bind.hpp>
+#include "ChatClient.h"
 
 const char SERVER_IP[] = "192.168.1.119";
 const unsigned short PORT_NUM = 31400;
 
-class TCP_Client
-{
-public:
-	TCP_Client(boost::asio::io_context& io_service) :_io_service(io_service),
-		_socket(io_service), _nSeqnumber(0) {}
 
-	void Connect(boost::asio::ip::tcp::endpoint& endpoint)
-	{
-		_socket.async_connect(endpoint, boost::bind(&TCP_Client::handle_connect,
-			this,
-			boost::asio::placeholders::error));
-	};
-
-private:
-	boost::asio::io_context& _io_service;
-	boost::asio::ip::tcp::socket _socket;
-	int _nSeqnumber;
-	std::array<char, 128> _receiveBuffer;
-	std::string _writeMessage;
-
-	void PostWrite()
-	{
-		if (!(_socket.is_open()))
-		{
-			return;
-		}
-		if (_nSeqnumber > 7)
-		{
-			_socket.close();
-			return;
-		}
-		++_nSeqnumber;
-
-		char szMessage[128] = { 0, };
-		sprintf_s(szMessage, 128 - 1, "%d ", _nSeqnumber);
-
-		_writeMessage = szMessage;
-
-		boost::asio::async_write(_socket, boost::asio::buffer(_writeMessage),
-			boost::bind(&TCP_Client::handle_write, this,
-				boost::asio::placeholders::error,
-				boost::asio::placeholders::bytes_transferred)
-		);
-		PostReceive();
-	}
-
-	void PostReceive()
-	{
-		memset(&_receiveBuffer, '\0', sizeof(_receiveBuffer));
-
-		_socket.async_read_some(boost::asio::buffer(_receiveBuffer),
-			boost::bind(&TCP_Client::handle_receive, this,
-				boost::asio::placeholders::error,
-				boost::asio::placeholders::bytes_transferred)
-		);
-	}
-
-	void handle_connect(const boost::system::error_code& error)
-	{
-		if (error)
-		{
-			std::cout << "connet failed : " << error.message() << std::endl;
-		}
-		else
-		{
-			std::cout << "connected" << std::endl;
-			PostWrite();
-		}
-	}
-	void handle_receive(const boost::system::error_code& error, size_t bytesTransferred)
-	{
-		if (error)
-		{
-			if (error == boost::asio::error::eof)
-				std::cout << "서버와 연결 끊김" << std::endl;
-			else
-				std::cout << "error No : " << error.value() << " error Message : " <<
-				error.message() << std::endl;
-		}
-		else
-		{
-			const std::string strRecvMessage = _receiveBuffer.data();
-			std::cout << "받은 메시지 : " << strRecvMessage << " 받은 크기 : " <<
-				bytesTransferred << std::endl;
-			PostWrite();
-		}
-	}
-	void handle_write(const boost::system::error_code&, size_t)
-	{
-
-	}
-};
 
 int main()
 {
@@ -104,11 +11,48 @@ int main()
 	boost::asio::ip::tcp::endpoint endPoint(boost::asio::ip::address::
 		from_string(SERVER_IP), PORT_NUM);
 
-	TCP_Client client(io);
+	ChatClient client(io);
 	client.Connect(endPoint);
-	io.run();
 
-	std::cout << "네트워크 접속 종료" << std::endl;
+	boost::thread thread(boost::bind(&boost::asio::io_context::run, &io));
 
+	char sizeInputMessage[MAX_MESSAGE_LEN * 2] = { 0, };
+
+	while (std::cin.getline(sizeInputMessage, MAX_MESSAGE_LEN))
+	{
+		if (strnlen_s(sizeInputMessage, MAX_MESSAGE_LEN) == 0)
+		{
+			break;
+		}
+
+		if (client.IsConnecting() == false)
+		{
+			std::cout << "서버와 연결되지 않음" << std::endl;
+			continue;
+		}
+
+		if (client.IsLogin() == false)
+		{
+			PACKET_REQ_IN sendPacket;
+			sendPacket.Init();
+			strncpy_s(sendPacket.szName, MAX_NAME_LEN, sizeInputMessage, MAX_NAME_LEN - 1);
+			client.PostSend(false, sendPacket.packetSize, (char*)&sendPacket);
+		}
+
+		else
+		{
+			PACKET_REQ_CHAT sendPacket;
+			sendPacket.Init();
+			strncpy_s(sendPacket.szMessage, MAX_MESSAGE_LEN, sizeInputMessage, MAX_MESSAGE_LEN - 1);
+
+			client.PostSend(false, sendPacket.packetSize, (char*)&sendPacket);
+		}
+	}
+	
+	io.stop();
+	client.Close();
+	thread.join();
+
+	std::cout << "클라이언트를 종료해 주세요" << std::endl;
 	return 0;
 }
