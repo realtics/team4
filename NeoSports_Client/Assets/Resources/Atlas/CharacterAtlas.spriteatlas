@@ -1,0 +1,84 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: CharacterAtlas
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings: []
+    packingSettings:
+      serializedVersion: 2
+      padding: 4
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 0
+      enableTightPacking: 0
+    variantMultiplier: 1
+    packables:
+    - {fileID: 6749064067597077865, guid: f1ea92ed4b13788478c5446c6ade726b, type: 3}
+    - {fileID: -1747010738563550248, guid: f1ea92ed4b13788478c5446c6ade726b, type: 3}
+    - {fileID: -1081314764622880400, guid: f1ea92ed4b13788478c5446c6ade726b, type: 3}
+    - {fileID: 6579969182779545954, guid: f1ea92ed4b13788478c5446c6ade726b, type: 3}
+    - {fileID: -1798887400737095150, guid: f1ea92ed4b13788478c5446c6ade726b, type: 3}
+    - {fileID: 5893497258538279868, guid: f1ea92ed4b13788478c5446c6ade726b, type: 3}
+    - {fileID: 7212261695459854527, guid: f1ea92ed4b13788478c5446c6ade726b, type: 3}
+    - {fileID: -3504334482318837959, guid: f1ea92ed4b13788478c5446c6ade726b, type: 3}
+    - {fileID: -8745490586354181177, guid: f1ea92ed4b13788478c5446c6ade726b, type: 3}
+    - {fileID: -7705162272228107640, guid: f1ea92ed4b13788478c5446c6ade726b, type: 3}
+    - {fileID: 5469592834563461757, guid: f1ea92ed4b13788478c5446c6ade726b, type: 3}
+    - {fileID: 3305439938908961039, guid: f1ea92ed4b13788478c5446c6ade726b, type: 3}
+    - {fileID: 3096447854421725556, guid: 6936ccf76bb671542bb3aa4ecb562dc5, type: 3}
+    - {fileID: -5905936381067564468, guid: 6936ccf76bb671542bb3aa4ecb562dc5, type: 3}
+    totalSpriteSurfaceArea: 309466
+    bindAsDefault: 1
+    storedHash:
+      serializedVersion: 2
+      Hash: 00000000000000000000000000000000
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 3096447854421725556, guid: 6936ccf76bb671542bb3aa4ecb562dc5, type: 3}
+  - {fileID: -5905936381067564468, guid: 6936ccf76bb671542bb3aa4ecb562dc5, type: 3}
+  - {fileID: -1798887400737095150, guid: f1ea92ed4b13788478c5446c6ade726b, type: 3}
+  - {fileID: 5893497258538279868, guid: f1ea92ed4b13788478c5446c6ade726b, type: 3}
+  - {fileID: 7212261695459854527, guid: f1ea92ed4b13788478c5446c6ade726b, type: 3}
+  - {fileID: -3504334482318837959, guid: f1ea92ed4b13788478c5446c6ade726b, type: 3}
+  - {fileID: 6749064067597077865, guid: f1ea92ed4b13788478c5446c6ade726b, type: 3}
+  - {fileID: -1747010738563550248, guid: f1ea92ed4b13788478c5446c6ade726b, type: 3}
+  - {fileID: -1081314764622880400, guid: f1ea92ed4b13788478c5446c6ade726b, type: 3}
+  - {fileID: 6579969182779545954, guid: f1ea92ed4b13788478c5446c6ade726b, type: 3}
+  - {fileID: -8745490586354181177, guid: f1ea92ed4b13788478c5446c6ade726b, type: 3}
+  - {fileID: -7705162272228107640, guid: f1ea92ed4b13788478c5446c6ade726b, type: 3}
+  - {fileID: 3305439938908961039, guid: f1ea92ed4b13788478c5446c6ade726b, type: 3}
+  - {fileID: 5469592834563461757, guid: f1ea92ed4b13788478c5446c6ade726b, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - Turkey_Jelly_Jump_0
+  - Turkey_Jelly_Jump_1
+  - Turkey_Jelly_Idle_4
+  - Turkey_Jelly_Idle_5
+  - Turkey_Jelly_Idle_6
+  - Turkey_Jelly_Idle_7
+  - Turkey_Jelly_Idle_0
+  - Turkey_Jelly_Idle_1
+  - Turkey_Jelly_Idle_2
+  - Turkey_Jelly_Idle_3
+  - Turkey_Jelly_Idle_8
+  - Turkey_Jelly_Idle_9
+  - Turkey_Jelly_Idle_11
+  - Turkey_Jelly_Idle_10
+  m_Tag: CharacterAtlas
+  m_IsVariant: 0

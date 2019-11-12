@@ -10,6 +10,7 @@ public class ResourceManager : Singleton<ResourceManager>
 	public const string JsonDataPath = "JSons/";
 
 	public SpriteAtlas uiAtlas;
+	public SpriteAtlas gameAtals;
 
 	private void Awake()
 	{
@@ -28,9 +29,12 @@ public class ResourceManager : Singleton<ResourceManager>
 
 	public Sprite GetUISprite(string name)
 	{
-		Sprite result;
-		result = uiAtlas.GetSprite(name);
-		return result;
+		return uiAtlas.GetSprite(name);
+	}
+
+	public Sprite GetGameSprite(string name)
+	{
+		return gameAtals.GetSprite(name);
 	}
 
 }

@@ -6,8 +6,8 @@ using UnityEngine.UI;
 public class GallaryManager : Singleton<PopupManager>
 {
 
-	const string PrefButtonGallaryCharPath = "Prefabs/Prefab_Button_Gallary_Char";
-	const string PrefButtonGallaryEquipPath = "Prefabs/Prefab_Button_Gallary_Equip";
+	const string PrefButtonGallaryCharPath = "Prefabs/UI/Prefab_Button_Gallary_Char";
+	const string PrefButtonGallaryEquipPath = "Prefabs/UI/Prefab_Button_Gallary_Equip";
 
 	public enum EGallaryTab
 	{
