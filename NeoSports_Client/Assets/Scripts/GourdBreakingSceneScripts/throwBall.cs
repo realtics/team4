@@ -85,7 +85,7 @@ public class throwBall : MonoBehaviour
     {
         Vector2 direction = directionArrow.transform.rotation * new Vector2(fireSpeed, 0.0f) * _powerSize;
 
-        GameObject toInstance = Resources.Load<GameObject>("Prefabs/ThrowBall");
+        GameObject toInstance = Resources.Load<GameObject>("Prefabs/BasketPrefabs/ThrowBall");
         GameObject cannon = Instantiate(toInstance, transform.position, transform.rotation);
         cannon.GetComponent<PlayerCannon>().ShotToTarget(direction);
 
