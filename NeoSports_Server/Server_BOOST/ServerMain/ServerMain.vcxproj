@@ -18,6 +18,16 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="ChattingServer.cpp" />
+    <ClCompile Include="ServerMain.cpp" />
+    <ClCompile Include="ServerSession.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ChattingServer.h" />
+    <ClInclude Include="Protocol.h" />
+    <ClInclude Include="ServerSession.h" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <ProjectGuid>{1858E815-B11F-40ED-9EF0-14DD4C3BF278}</ProjectGuid>
@@ -148,9 +158,6 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="Main.cpp" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
