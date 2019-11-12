@@ -5,23 +5,28 @@ using UnityEngine;
 public class throwBall : MonoBehaviour
 {
     // Start is called before the first frame update
+    
+    public float fireSpeed;
+    
     public GameObject directionArrow;
     public GameObject directionGauage;
     
+
     private Collider2D _ownCollider;
     private bool _isTargetting;
     private float _startAngle;
     private float _cannonGauage;
+    private float _powerSize;
     private Sprite _arrowSizeSpirte;
 
     void Start()
     {
         _isTargetting = false;
         _startAngle = 0.0f;
-        _cannonGauage = 0.0f;
+        _cannonGauage = 1.0f;
         _ownCollider = GetComponent<Collider2D>();
         _arrowSizeSpirte = directionGauage.GetComponent<SpriteRenderer>().sprite;
-       
+        _powerSize = 0.0f;
     }
 
     // Update is called once per frame
@@ -51,7 +56,7 @@ public class throwBall : MonoBehaviour
                 directionArrow.transform.rotation = Quaternion.AngleAxis(angle * Mathf.Rad2Deg, transform.forward);
             }
 
-            Debug.Log(angle + "/" + angleDiff);
+            //Debug.Log(angle + "/" + angleDiff);
             float power = Vector2.Distance(target, transform.position);
 
             if (Mathf.Abs(power) > _cannonGauage)
@@ -59,7 +64,7 @@ public class throwBall : MonoBehaviour
                 power = _cannonGauage;
             }
             //_arrowSizeSpirte.size = power / _cannoGauage;
-
+            _powerSize = power / _cannonGauage;
         }
         else if (Input.GetMouseButtonUp(0))
         {
@@ -76,6 +81,13 @@ public class throwBall : MonoBehaviour
 
     public void Fire()
     {
-        //vector2 direction = directionArrow.transform.rotation * new Vector2()5* _cannonGauage)
+        Vector2 direction = directionArrow.transform.rotation * new Vector2(fireSpeed, 0.0f) * _powerSize;
+
+        GameObject toInstance = Resources.Load<GameObject>("Prefabs/ThrowBall");
+        GameObject cannon = Instantiate(toInstance, transform.position, transform.rotation);
+        cannon.GetComponent<PlayerCannon>().ShotToTarget(direction);
+
     }
+
+
 }
