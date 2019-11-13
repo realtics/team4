@@ -26,7 +26,7 @@ public class CalculateScore : MonoBehaviour
 
     void UpdateScore()
     {
-        _goalInArr = GetComponentsInChildren<GameObject>();
+        //_goalInArr = GetComponentsInChildren<GameObject>();
         //leftText.text = _goalInArr.GetLength();
     }
 
