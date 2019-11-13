@@ -6,7 +6,6 @@ using UnityEngine.SceneManagement;
 public class PlayManager : Singleton<PlayManager>
 {
 
-
 	private void Awake()
 	{
 		DontDestroyOnLoad(this);

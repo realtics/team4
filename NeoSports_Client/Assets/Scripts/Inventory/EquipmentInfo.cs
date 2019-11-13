@@ -21,35 +21,35 @@ public class EquipmentInfo
 		End
 	}
 
-	EType	itemType;
-	string	itemName;
-	Status	itemStat;
-	Sprite	iconSprite;
+	EType	_itemType;
+	string	_itemName;
+	Status	_itemStat;
+	Sprite	_iconSprite;
 
 	#region Property
 	public string Name {
-		get { return itemName; }
+		get { return _itemName; }
 	}
 
 	public Status Stat {
-		get { return itemStat; }
+		get { return _itemStat; }
 	}
 
 	public EType Type {
-		get { return itemType; }
+		get { return _itemType; }
 	}
 
 	public Sprite IconSprite {
-		get { return iconSprite; }
+		get { return _iconSprite; }
 	}
 	#endregion
 
 	public EquipmentInfo(JsonData data)
 	{
-		itemType = data.itemType;
-		itemName = data.itemName;
-		itemStat = data.itemStatus;
-		iconSprite = Singleton<ResourceManager>.Instance.GetUISprite(data.iconName);
+		_itemType = data.itemType;
+		_itemName = data.itemName;
+		_itemStat = data.itemStatus;
+		_iconSprite = Singleton<ResourceManager>.Instance.GetUISprite(data.iconName);
 	}
 
 }

@@ -71,35 +71,35 @@ public class CharacterInfo
 		public string	iconName;
 	}
 
-	EType	charType;
-	string	charName;
-	Status	charStat;
-	Sprite	iconSprite;
+	EType	_charType;
+	string	_charName;
+	Status	_charStat;
+	Sprite	_iconSprite;
 
 	#region Property
 	public EType Type {
-		get { return charType; }
+		get { return _charType; }
 	}
 
 	public string Name {
-		get { return charName; }
+		get { return _charName; }
 	}
 
 	public Status Stat {
-		get { return charStat; }
+		get { return _charStat; }
 	}
 
 	public Sprite IconSprite {
-		get { return iconSprite; }
+		get { return _iconSprite; }
 	}
 	#endregion
 
 	public CharacterInfo(JsonData data)
 	{
-		charType = data.charType;
-		charName = data.charName;
-		charStat = data.charStat;
-		iconSprite = Singleton<ResourceManager>.Instance.GetUISprite(data.iconName);
+		_charType = data.charType;
+		_charName = data.charName;
+		_charStat = data.charStat;
+		_iconSprite = Singleton<ResourceManager>.Instance.GetUISprite(data.iconName);
 
 	}
 
