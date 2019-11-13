@@ -1607,8 +1607,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 552237973}
   m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: -3.25, y: 3.31, z: 0}
-  m_LocalScale: {x: 5, y: 0.5, z: 1}
+  m_LocalPosition: {x: -2.2208, y: 0.8, z: 0}
+  m_LocalScale: {x: 1.6840492, y: 0.34165484, z: 1}
   m_Children: []
   m_Father: {fileID: 1845153824}
   m_RootOrder: 1
@@ -2110,13 +2110,14 @@ GameObject:
   - component: {fileID: 629633787}
   - component: {fileID: 629633789}
   - component: {fileID: 629633788}
+  - component: {fileID: 629633790}
   m_Layer: 0
   m_Name: GoalInTrigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &629633787
 Transform:
   m_ObjectHideFlags: 0
@@ -2125,8 +2126,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 629633786}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: -0.85, z: 0}
+  m_LocalScale: {x: 0.70642745, y: 0.76489514, z: 1}
   m_Children: []
   m_Father: {fileID: 1845153824}
   m_RootOrder: 3
@@ -2156,7 +2157,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.051995873, y: 3.3826213}
+  m_Offset: {x: -0.022324085, y: 3.3826213}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -2167,8 +2168,21 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 3.385597, y: 4.770213}
+  m_Size: {x: 5.903427, y: 4.770213}
   m_EdgeRadius: 0
+--- !u!114 &629633790
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 629633786}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 225fd177dcc8332478f1bcfa27c4d973, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  basket: {fileID: 1845153823}
 --- !u!1 &689421133
 GameObject:
   m_ObjectHideFlags: 0
@@ -2197,8 +2211,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 689421133}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.8, z: 0}
-  m_LocalScale: {x: 7, y: 0.5, z: 1}
+  m_LocalPosition: {x: 0, y: -0.045399904, z: 0}
+  m_LocalScale: {x: 4.7831674, y: 0.16840492, z: 1}
   m_Children: []
   m_Father: {fileID: 1845153824}
   m_RootOrder: 0
@@ -2408,7 +2422,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f84fc6c6e02c73349aa0ce18b24e610f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fireSpeed: 10
+  fireSpeed: 15
   directionArrow: {fileID: 1104905417}
 --- !u!95 &692681185
 Animator:
@@ -4060,8 +4074,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1240091961}
   m_LocalRotation: {x: -0, y: -0, z: 0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: 3.25, y: 3.3100002, z: 0}
-  m_LocalScale: {x: 5, y: 0.5, z: 1}
+  m_LocalPosition: {x: 2.2208, y: 0.8000002, z: 0}
+  m_LocalScale: {x: 1.6840492, y: 0.34165484, z: 1}
   m_Children: []
   m_Father: {fileID: 1845153824}
   m_RootOrder: 2
@@ -6511,7 +6525,7 @@ Transform:
   m_GameObject: {fileID: 1845153823}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 3.56, y: 2.8, z: 1}
-  m_LocalScale: {x: 0.55, y: 0.25, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 689421134}
   - {fileID: 552237974}
@@ -7869,6 +7883,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1978356486}
     m_Modifications:
+    - target: {fileID: 1824641926435963919, guid: 6892f24bd4d8c0e498a66e19644cfec9,
+        type: 3}
+      propertyPath: m_Name
+      value: scene_01_forground (3)
+      objectReference: {fileID: 0}
     - target: {fileID: 1824641926435963917, guid: 6892f24bd4d8c0e498a66e19644cfec9,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -7934,11 +7953,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_WasSpriteAssigned
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1824641926435963919, guid: 6892f24bd4d8c0e498a66e19644cfec9,
-        type: 3}
-      propertyPath: m_Name
-      value: scene_01_forground (3)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6892f24bd4d8c0e498a66e19644cfec9, type: 3}
