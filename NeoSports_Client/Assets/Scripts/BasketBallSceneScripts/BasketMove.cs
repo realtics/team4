@@ -12,7 +12,7 @@ public class BasketMove : MonoBehaviour
     void Start()
     {
         _direction = -1;
-        StartCoroutine("MoveBasket");
+        StartCoroutine(MoveBasket());
     }
 
     IEnumerator MoveBasket()

@@ -21,7 +21,7 @@ public class throwBall : MonoBehaviour
         _ownCollider = GetComponent<Collider2D>();
         _powerSize = 0.0f;
         _powerSizeOffset = 0.1f;
-        _arrowScaleOffset = 3.0f;
+        _arrowScaleOffset = 5.0f;
     }
 
     void Update()
@@ -36,7 +36,6 @@ public class throwBall : MonoBehaviour
             if (_ownCollider.OverlapPoint(Camera.main.ScreenToWorldPoint(Input.mousePosition)))
             {
                 directionArrow.transform.position = new Vector2(transform.position.x+0.3f, transform.position.y + 0.5f);
-                directionArrow.transform.localScale = new Vector3(3, 3, 3);
                 _isTargetting = true;
             }
         }
