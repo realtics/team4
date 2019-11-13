@@ -54,6 +54,17 @@ void  Session::ReceiveHandle(const boost::system::error_code& error, size_t byte
 		int packetData = _packetBufferMark + bytesTransferred;
 		int readData = 0;
 
+		_receiveBuffer[_receiveBuffer.size()-1] = '\0';
+
+		for (int i = 0; i < _receiveBuffer.size(); i++)
+		{
+			if (_receiveBuffer[i] == '\0')
+			{
+				break;
+			}
+			std::cout << _receiveBuffer[i];
+		}
+
 		while (packetData > 0)
 		{
 			if (packetData < sizeof(PACKET_HEADER))

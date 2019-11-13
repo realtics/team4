@@ -13,8 +13,8 @@ using Newtonsoft.Json;
 
 public class JsonExample
 {
-    public int Data1 { get; set; }
-    public String Data2 { get; set; }
+    public int Data1;
+    public String Data2;
 }
 
 public class SocketMG : MonoBehaviour
@@ -30,7 +30,12 @@ public class SocketMG : MonoBehaviour
         }
         sock.Connect(new IPEndPoint(IPAddress.Parse("192.168.1.119"), 31400));
 
-        var json = "{'Data1' : 1, 'Data2' : 'Test' }";
+        string json = "{'Data1' : 1, 'Data2' : 'Test' }";
+        
+        byte[] buf = new byte[128];
+        buf = Encoding.UTF8.GetBytes(json);
+        sock.Send(buf);
+
         var data = JsonConvert.DeserializeObject<JsonExample>(json);
 
         Debug.Log(data.Data1);
