@@ -36,7 +36,7 @@ private:
 
 	ChatServer* _serverPtr;
 
-	void handle_write(const boost::system::error_code& error, size_t bytesTransferred);
-	void handle_receive(const boost::system::error_code& error, size_t bytesTransferred);
+	void WriteHandle(const boost::system::error_code& error, size_t bytesTransferred);
+	void ReceiveHandle(const boost::system::error_code& error, size_t bytesTransferred);
 };
 

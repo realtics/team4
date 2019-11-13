@@ -27,13 +27,13 @@ void Session::Init()
 void Session::PostReceive()
 {
 	_socket.async_read_some(boost::asio::buffer(_receiveBuffer),
-		boost::bind(&Session::handle_receive, this,
+		boost::bind(&Session::ReceiveHandle, this,
 			boost::asio::placeholders::error,
 			boost::asio::placeholders::bytes_transferred)
 	);
 }
 
-void  Session::handle_receive(const boost::system::error_code& error, size_t bytes_transferred)
+void  Session::ReceiveHandle(const boost::system::error_code& error, size_t bytesTransferred)
 {
 	if (error)
 	{
@@ -50,8 +50,8 @@ void  Session::handle_receive(const boost::system::error_code& error, size_t byt
 	}
 	else
 	{
-		memcpy(&_packetBuffer[_packetBufferMark], _receiveBuffer.data(), bytes_transferred);
-		int packetData = _packetBufferMark + bytes_transferred;
+		memcpy(&_packetBuffer[_packetBufferMark], _receiveBuffer.data(), bytesTransferred);
+		int packetData = _packetBufferMark + bytesTransferred;
 		int readData = 0;
 
 		while (packetData > 0)
@@ -108,13 +108,13 @@ void Session::PostSend(const bool Immediately, const int size, char* data)
 	}
 
 	boost::asio::async_write(_socket, boost::asio::buffer(sendData, size),
-		boost::bind(&Session::handle_write, this,
+		boost::bind(&Session::WriteHandle, this,
 			boost::asio::placeholders::error,
 			boost::asio::placeholders::bytes_transferred)
 	);
 }
 
-void Session::handle_write(const boost::system::error_code& error, size_t butesTransferred)
+void Session::WriteHandle(const boost::system::error_code& error, size_t butesTransferred)
 {
 	delete[] _sendDataDeq.front();
 	_sendDataDeq.pop_front();
