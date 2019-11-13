@@ -6,30 +6,27 @@ public class throwBall : MonoBehaviour
 {
     // Start is called before the first frame update
     
-    public float fireSpeed;
-    
+    public float fireSpeed; 
     public GameObject directionArrow;
-    public GameObject directionGauage;
     
 
     private Collider2D _ownCollider;
     private bool _isTargetting;
     private float _startAngle;
-    private float _cannonGauage;
     private float _powerSize;
-    private Sprite _arrowSizeSpirte;
+    private float _arrowScaleOffset;
+    private float _powerSizeOffset;
 
     void Start()
     {
         _isTargetting = false;
         _startAngle = 0.0f;
-        _cannonGauage = 0.2f;
         _ownCollider = GetComponent<Collider2D>();
-        _arrowSizeSpirte = directionGauage.GetComponent<SpriteRenderer>().sprite;
         _powerSize = 0.0f;
+        _powerSizeOffset = 0.1f;
+        _arrowScaleOffset = 3.0f;
     }
 
-    // Update is called once per frame
     void Update()
     {
         ShotInWindow();
@@ -52,20 +49,16 @@ public class throwBall : MonoBehaviour
             Vector2 target = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             float angle = Mathf.Atan2(transform.position.y - target.y, transform.position.x - target.x);
             float angleDiff = DifferenceBetweenAngles(angle, _startAngle);
+            
             if (angle < 1.6f && angle > -0.7f)
             {
                 directionArrow.transform.rotation = Quaternion.AngleAxis(angle * Mathf.Rad2Deg, transform.forward);
             }
 
-            //Debug.Log(angle + "/" + angleDiff);
             float power = Vector2.Distance(target, transform.position);
 
-            if (Mathf.Abs(power) > _cannonGauage)
-            {
-                power = _cannonGauage;
-            }
-            //_arrowSizeSpirte.size = power / _cannoGauage;
-            _powerSize = power / _cannonGauage;
+            _powerSize = power * _powerSizeOffset ;
+            directionArrow.transform.localScale = new Vector3(_powerSize * _arrowScaleOffset, _powerSize * _arrowScaleOffset);
         }
         else if (Input.GetMouseButtonUp(0))
         {
@@ -84,6 +77,7 @@ public class throwBall : MonoBehaviour
     public void Fire()
     {
         Vector2 direction = directionArrow.transform.rotation * new Vector2(fireSpeed, 0.0f) * _powerSize;
+        _powerSize = 0.0f;
 
         GameObject toInstance = Resources.Load<GameObject>("Prefabs/BasketPrefabs/ThrowBall");
         GameObject cannon = Instantiate(toInstance, transform.position, transform.rotation);
