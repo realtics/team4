@@ -2164,9 +2164,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 692681181}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f84fc6c6e02c73349aa0ce18b24e610f, type: 3}
+  m_Script: {fileID: 11500000, guid: e0bbf2e1677b4df4b94bcd2e5da69167, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  speed: 5
 --- !u!95 &692681185
 Animator:
   serializedVersion: 3
@@ -3476,7 +3477,7 @@ Transform:
   m_GameObject: {fileID: 1104905417}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 721.3863, y: 456.85464, z: -10.917938}
-  m_LocalScale: {x: 10, y: 10, z: 10}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 4
@@ -5766,7 +5767,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   aiFireSpeed: 10
-  aiActiveFrequency: 0.2
+  aiActiveFrequency: 1.5
   directionArrow: {fileID: 1020499302}
 --- !u!95 &1767396872
 Animator:

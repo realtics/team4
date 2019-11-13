@@ -23,8 +23,7 @@ public class AIThrowBall : MonoBehaviour
         _powerSize = 0.0f;
         _powerSizeOffset = 0.1f;
         _arrowScaleOffset = 3.0f;
-        directionArrow.transform.position = transform.position;
-        directionArrow.transform.localScale = new Vector3(3,3, 3);
+        directionArrow.transform.position = new Vector2(transform.position.x - 0.5f, transform.position.y + 0.5f);
        
         StartCoroutine(UpdateAI());
     }
@@ -41,7 +40,7 @@ public class AIThrowBall : MonoBehaviour
 
     private void CalculateAIAngle()
     {
-        Vector2 target = new Vector2(Random.Range(2, 15), Random.Range(0, -20));
+        Vector2 target = new Vector2(Random.Range(2, 15), Random.Range(0, -15));
         float angle = Mathf.Atan2(transform.position.y - target.y, transform.position.x - target.x);
 
         directionArrow.transform.rotation = Quaternion.AngleAxis(angle * Mathf.Rad2Deg, transform.forward);
