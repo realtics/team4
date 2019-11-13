@@ -14,7 +14,7 @@ public class PopupManager : Singleton<PopupManager>
         public PopupCallBack callBack;
     }
 
-    PopupCallBack popupCallBack;
+    PopupCallBack _popupCallBack;
 
     public GameObject popupPanel;
     public GameObject popupGroupYesNo;
@@ -34,12 +34,12 @@ public class PopupManager : Singleton<PopupManager>
         popupGroupYesNo.SetActive(!data.okFlag);
 
         popupNotifyText.GetComponent<Text>().text = data.text;
-        popupCallBack = data.callBack;
+        _popupCallBack = data.callBack;
     }
 
     public void ClickEventPopup()
     {
-        popupCallBack();
+        _popupCallBack();
         ClosePopup();
     }
 

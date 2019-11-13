@@ -14,8 +14,8 @@ public class PanelManager : Singleton<PopupManager>
         Credit
     }
 
-    Dictionary<EPanel, GameObject> panelDic;
-    EPanel currentPanel;
+    Dictionary<EPanel, GameObject> _panelDic;
+    EPanel _currentPanel;
 
     public GameObject panelMain;
     public GameObject panelPlay;
@@ -34,18 +34,18 @@ public class PanelManager : Singleton<PopupManager>
 
     void InitPanelList()
     {
-        panelDic = new Dictionary<EPanel, GameObject>();
+        _panelDic = new Dictionary<EPanel, GameObject>();
 
-        panelDic.Add(EPanel.Main, panelMain);
-        panelDic.Add(EPanel.Play, panelPlay);
-        panelDic.Add(EPanel.Gallary, panelGallary);
-        panelDic.Add(EPanel.Option, panelOption);
-        panelDic.Add(EPanel.Credit, panelCredit);
+        _panelDic.Add(EPanel.Main, panelMain);
+        _panelDic.Add(EPanel.Play, panelPlay);
+        _panelDic.Add(EPanel.Gallary, panelGallary);
+        _panelDic.Add(EPanel.Option, panelOption);
+        _panelDic.Add(EPanel.Credit, panelCredit);
     }
 
     void EnablePanel(EPanel type)
     {
-        foreach (KeyValuePair<EPanel, GameObject> item in panelDic)
+        foreach (KeyValuePair<EPanel, GameObject> item in _panelDic)
         {
             if(item.Value == null)
             {
@@ -61,7 +61,7 @@ public class PanelManager : Singleton<PopupManager>
             }
         }
 
-        currentPanel = type;
+        _currentPanel = type;
     }
 
 
@@ -88,7 +88,7 @@ public class PanelManager : Singleton<PopupManager>
 
     public void ClickEventButtonBack()
     {
-        switch (currentPanel)
+        switch (_currentPanel)
         {
             case EPanel.Main:
                 PopupManager.PopupData data;

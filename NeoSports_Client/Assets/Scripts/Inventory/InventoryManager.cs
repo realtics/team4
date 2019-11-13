@@ -67,44 +67,44 @@ public class InventoryManager : Singleton<PopupManager>
 
 	void CreateJson()
 	{
-		CharacterInfo[] cInfos = new CharacterInfo[2];
-		CharacterInfo.JsonData[] cDatas = new CharacterInfo.JsonData[2];
-		cDatas[0].charType = CharacterInfo.EType.PpiYaGi;
-		cDatas[0].charName = "삐약이";
-		cDatas[0].charStat = new Status(1, 1, 1, 1);
-		cDatas[0].iconName = "Character_PpiYaGi";
-		cInfos[0] = new CharacterInfo(cDatas[0]);
+		CharacterInfo[] mCharacterInfos = new CharacterInfo[2];
+		CharacterInfo.JsonData[] mCharacterDatas = new CharacterInfo.JsonData[2];
+		mCharacterDatas[0].charType = CharacterInfo.EType.PpiYaGi;
+		mCharacterDatas[0].charName = "삐약이";
+		mCharacterDatas[0].charStat = new Status(1, 1, 1, 1);
+		mCharacterDatas[0].iconName = "Character_PpiYaGi";
+		mCharacterInfos[0] = new CharacterInfo(mCharacterDatas[0]);
 
-		cDatas[1].charType = CharacterInfo.EType.Unknown;
-		cDatas[1].charName = "잠김";
-		cDatas[1].charStat = new Status(0, 0, 0, 0);
-		cDatas[1].iconName = "Icon_Group_78";
-		cInfos[1] = new CharacterInfo(cDatas[1]);
+		mCharacterDatas[1].charType = CharacterInfo.EType.Unknown;
+		mCharacterDatas[1].charName = "잠김";
+		mCharacterDatas[1].charStat = new Status(0, 0, 0, 0);
+		mCharacterDatas[1].iconName = "Icon_Group_78";
+		mCharacterInfos[1] = new CharacterInfo(mCharacterDatas[1]);
 
-		EquipmentInfo[] eInfos = new EquipmentInfo[2];
-		EquipmentInfo.JsonData[] eDatas = new EquipmentInfo.JsonData[2];
-		eDatas[0].itemType = EquipmentInfo.EType.BlackFedora;
-		eDatas[0].itemName = "흑색 중절모";
-		eDatas[0].itemStatus = new Status(0, 1, 1, 0);
-		eDatas[0].iconName = "Equipment_Fedora_0";
-		eInfos[0] = new EquipmentInfo(eDatas[0]);
-		eDatas[1].itemType = EquipmentInfo.EType.BrownFedora;
-		eDatas[1].itemName = "갈색 중절모";
-		eDatas[1].itemStatus = new Status(1, 0, 0, 1);
-		eDatas[1].iconName = "Equipment_Fedora_1";
-		eInfos[1] = new EquipmentInfo(eDatas[1]);
+		EquipmentInfo[] mEquipmentInfos = new EquipmentInfo[2];
+		EquipmentInfo.JsonData[] mEquipmentDatas = new EquipmentInfo.JsonData[2];
+		mEquipmentDatas[0].itemType = EquipmentInfo.EType.BlackFedora;
+		mEquipmentDatas[0].itemName = "흑색 중절모";
+		mEquipmentDatas[0].itemStatus = new Status(0, 1, 1, 0);
+		mEquipmentDatas[0].iconName = "Equipment_Fedora_0";
+		mEquipmentInfos[0] = new EquipmentInfo(mEquipmentDatas[0]);
+		mEquipmentDatas[1].itemType = EquipmentInfo.EType.BrownFedora;
+		mEquipmentDatas[1].itemName = "갈색 중절모";
+		mEquipmentDatas[1].itemStatus = new Status(1, 0, 0, 1);
+		mEquipmentDatas[1].iconName = "Equipment_Fedora_1";
+		mEquipmentInfos[1] = new EquipmentInfo(mEquipmentDatas[1]);
 
-		string tmpStr = JsonConvert.SerializeObject(cDatas);
+		string tmpStr = JsonConvert.SerializeObject(mCharacterDatas);
 		Debug.Log(tmpStr);
 
-		tmpStr = JsonConvert.SerializeObject(eDatas);
+		tmpStr = JsonConvert.SerializeObject(mEquipmentDatas);
 		Debug.Log(tmpStr);
 
-		CharacterInfos.Add(cInfos[0].Type, cInfos[0]);
-		CharacterInfos.Add(cInfos[1].Type, cInfos[1]);
+		CharacterInfos.Add(mCharacterInfos[0].Type, mCharacterInfos[0]);
+		CharacterInfos.Add(mCharacterInfos[1].Type, mCharacterInfos[1]);
 
-		EquipmentInfos.Add(eInfos[0].Type, eInfos[0]);
-		EquipmentInfos.Add(eInfos[1].Type, eInfos[1]);
+		EquipmentInfos.Add(mEquipmentInfos[0].Type, mEquipmentInfos[0]);
+		EquipmentInfos.Add(mEquipmentInfos[1].Type, mEquipmentInfos[1]);
 	}
 
 }

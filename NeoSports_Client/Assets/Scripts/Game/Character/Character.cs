@@ -17,58 +17,38 @@ public class Character : MonoBehaviour
 		Jump
 	}
 
-	EState currentState;
-	Animator animator;
-
-	Vector3 originalPosition;
-	float jumpProgress;
+	EState		_currentState;
+	Animator	_animator;
 
 	public EState CurrentState {
-		get { return currentState; }
+		get { return _currentState; }
 	}
 
 	private void Start()
 	{
-		currentState = EState.Idle;
-		animator = transform.GetComponent<Animator>();
-	}
-
-	private void Update()
-	{
-		//UpdateAnimation();
-	}
-
-	void UpdateAnimation()
-	{
-		if(currentState == EState.Jump)
-		{
-			jumpProgress += Time.deltaTime;
-			if(jumpProgress > 2.0f)
-			{
-				EndJump();
-			}
-		}
+		_currentState = EState.Idle;
+		_animator = transform.GetComponent<Animator>();
 	}
 
 	public void StartJump()
 	{
-		if(currentState != EState.Idle)
+		if(_currentState != EState.Idle)
 		{
 			return;
 		}
-		animator.SetBool(AnimationParameter.IsJump, true);
-		animator.SetBool(AnimationParameter.JumpUp, true);
-		currentState = EState.Jump;
+		_currentState = EState.Jump;
+		_animator.SetBool(AnimationParameter.IsJump, true);
+		_animator.SetBool(AnimationParameter.JumpUp, true);
 	}
 
 	public void JumpMax()
 	{
-		animator.SetBool(AnimationParameter.JumpUp, false);
+		_animator.SetBool(AnimationParameter.JumpUp, false);
 	}
 
 	public void EndJump()
 	{
-		animator.SetBool(AnimationParameter.IsJump, false);
-		currentState = EState.Idle;
+		_animator.SetBool(AnimationParameter.IsJump, false);
+		_currentState = EState.Idle;
 	}
 }
