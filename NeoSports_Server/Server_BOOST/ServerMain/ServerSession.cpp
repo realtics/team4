@@ -64,6 +64,7 @@ void  Session::ReceiveHandle(const boost::system::error_code& error, size_t byte
 			}
 			std::cout << _receiveBuffer[i];
 		}
+		std::cout << std::endl;
 
 		while (packetData > 0)
 		{
