@@ -8,8 +8,8 @@ public class CalculateScore : MonoBehaviour
     // Start is called before the first frame update
     public Text leftText;
     public Text rightText;
-
-    private GameObject[] _goalInArr;
+    private List<Transform> _goalList = new List<Transform>();
+    
     void Start()
     {
         StartCoroutine(SecondCount());
@@ -26,8 +26,28 @@ public class CalculateScore : MonoBehaviour
 
     void UpdateScore()
     {
-        //_goalInArr = GetComponentsInChildren<GameObject>();
-        //leftText.text = _goalInArr.GetLength();
+        transform.GetComponentsInChildren<Transform>(true,_goalList);
+
+        if (_goalList.Count != 0)
+        {
+            int leftCount = 0;
+            int rightCount = 0;
+            
+            foreach (Transform ball in _goalList)
+            {
+                if (ball.CompareTag("Ball"))
+                {
+                    ++leftCount;
+                }
+                if (ball.CompareTag("AIBall"))
+                {
+                    ++rightCount;
+                }
+            }
+
+            leftText.text = leftCount.ToString();
+            rightText.text = rightCount.ToString();     
+        }
     }
 
 }
