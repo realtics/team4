@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 6703095537956056921}
   m_Layer: 0
   m_Name: AIThrowBall
-  m_TagString: AIBall
+  m_TagString: Ball
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

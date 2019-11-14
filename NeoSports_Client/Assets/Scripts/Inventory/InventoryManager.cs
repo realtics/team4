@@ -8,6 +8,9 @@ public class InventoryManager : Singleton<PopupManager>
 	const string CharacterDataName = "CharacterData";
 	const string EquipmentDataName = "EquipmentData";
 
+	public GameObject prefCharacterPpiYaGi;
+	public GameObject prefCharacterTurkeyJelly;
+
 	#region Property
 	public Dictionary<CharacterInfo.EType, CharacterInfo> CharacterInfos { get; set; }
 	public Dictionary<EquipmentInfo.EType, EquipmentInfo> EquipmentInfos { get; set; }

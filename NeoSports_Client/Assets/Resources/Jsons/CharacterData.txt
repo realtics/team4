@@ -11,6 +11,17 @@
       "iconName":"Character_PpiYaGi"
    },
    { 
+      "charType":2,
+      "charName":"터키 젤리",
+      "charStat":{ 
+         "strength":2,
+         "endurance":1,
+         "agility":1,
+         "luck":2
+      },
+      "iconName":"Character_TurkeyJelly"
+   },
+   { 
       "charType":0,
       "charName":"잠김",
       "charStat":{ 
