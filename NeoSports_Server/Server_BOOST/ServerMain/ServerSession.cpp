@@ -1,6 +1,9 @@
 #include "ServerSession.h"
 #include "ChattingServer.h"
-#include<iostream>
+#include <iostream>
+#include <boost/property_tree/ptree.hpp> 
+#include <boost/property_tree/json_parser.hpp>
+#include <boost/foreach.hpp>
 
 Session::Session(int sessionID, boost::asio::io_context& io_service, ChatServer* serverPtr)
 	:_socket(io_service),
@@ -54,17 +57,31 @@ void  Session::ReceiveHandle(const boost::system::error_code& error, size_t byte
 		int packetData = _packetBufferMark + bytesTransferred;
 		int readData = 0;
 
-		_receiveBuffer[_receiveBuffer.size()-1] = '\0';
+		////TODO : JSON파싱부분.함수화 시키기
 
-		for (int i = 0; i < _receiveBuffer.size(); i++)
-		{
-			if (_receiveBuffer[i] == '\0')
-			{
-				break;
-			}
-			std::cout << _receiveBuffer[i];
-		}
-		std::cout << std::endl;
+		std::string temp;
+		temp = _receiveBuffer.data();
+		std::cout << temp << std::endl;
+
+		boost::property_tree::ptree pt;
+		std::istringstream is(temp);
+		boost::property_tree::read_json(is, pt);
+
+		boost::property_tree::ptree& children = pt.get_child("header");
+		int headerIndex = children.get<int>("packetIndex");
+		int packetSize = children.get<int>("packetSize");
+
+		int jsonData1 = pt.get<int>("Data1");
+		std::string jsonData2 = pt.get<std::string>("Data2");
+
+		std::cout << "1댑스접근 Data1 : " << jsonData1 << std::endl;
+		std::cout << "1댑스접근 Data2 : " << jsonData2 << std::endl;
+		std::cout << "2댑스접근(header->index) : " << headerIndex << std::endl;
+		std::cout << "2댑스접근(header->packetSize) : " << packetSize << std::endl;
+
+
+
+		/////////
 
 		while (packetData > 0)
 		{
@@ -72,6 +89,7 @@ void  Session::ReceiveHandle(const boost::system::error_code& error, size_t byte
 			{
 				break;
 			}
+
 
 			PACKET_HEADER* header = (PACKET_HEADER*)&_packetBuffer[readData];
 

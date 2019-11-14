@@ -18,8 +18,15 @@ enum PACKET_INDEX
 
 struct PACKET_HEADER
 {
-	short packetIndex;
-	short packetSize;
+	int packetIndex;
+	int packetSize;
+};
+
+struct TEST_PACKET
+{
+	PACKET_HEADER header;
+	int Data1;
+	std::string Data2;
 };
 
 struct PACKET_REQ_IN : public PACKET_HEADER
