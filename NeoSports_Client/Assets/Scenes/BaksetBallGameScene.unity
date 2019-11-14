@@ -554,7 +554,6 @@ Transform:
   m_Father: {fileID: 1978356486}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-<<<<<<< HEAD
 --- !u!1 &193894875
 GameObject:
   m_ObjectHideFlags: 0
@@ -684,8 +683,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-=======
->>>>>>> d72b3bd07874d319ddb026e1e4459c8071c284dd
 --- !u!1 &224134886
 GameObject:
   m_ObjectHideFlags: 0
@@ -1572,7 +1569,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1824641925899487707}
   m_PrefabAsset: {fileID: 0}
-<<<<<<< HEAD
 --- !u!1 &543235019
 GameObject:
   m_ObjectHideFlags: 0
@@ -1702,8 +1698,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
-=======
->>>>>>> d72b3bd07874d319ddb026e1e4459c8071c284dd
 --- !u!1 &552237973
 GameObject:
   m_ObjectHideFlags: 0
@@ -4066,7 +4060,6 @@ Transform:
   m_Father: {fileID: 2063480340}
   m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-<<<<<<< HEAD
 --- !u!1 &1236174227
 GameObject:
   m_ObjectHideFlags: 0
@@ -4196,8 +4189,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
-=======
->>>>>>> d72b3bd07874d319ddb026e1e4459c8071c284dd
 --- !u!1 &1240091961
 GameObject:
   m_ObjectHideFlags: 0
@@ -6162,13 +6153,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc42027c3a34a4f47903b816d5b7a309, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-<<<<<<< HEAD
   aiFireSpeed: 5
   aiActiveFrequency: 1.2
-=======
-  aiFireSpeed: 10
-  aiActiveFrequency: 1.5
->>>>>>> d72b3bd07874d319ddb026e1e4459c8071c284dd
   directionArrow: {fileID: 1020499302}
 --- !u!95 &1767396872
 Animator:
