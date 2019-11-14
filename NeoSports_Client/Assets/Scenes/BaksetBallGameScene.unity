@@ -567,7 +567,7 @@ GameObject:
   - component: {fileID: 193894877}
   - component: {fileID: 193894876}
   m_Layer: 0
-  m_Name: LeftColider (2)
+  m_Name: RightWall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -677,7 +677,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 193894875}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.23, y: 10.09, z: 1}
+  m_LocalPosition: {x: -0.23, y: 10.07, z: 1}
   m_LocalScale: {x: 20, y: 0.3, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -1582,7 +1582,7 @@ GameObject:
   - component: {fileID: 543235021}
   - component: {fileID: 543235020}
   m_Layer: 0
-  m_Name: LeftColider (1)
+  m_Name: LeftWall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4048,7 +4048,7 @@ GameObject:
   - component: {fileID: 1236174229}
   - component: {fileID: 1236174228}
   m_Layer: 0
-  m_Name: RightColider (1)
+  m_Name: CeilingWall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6128,7 +6128,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc42027c3a34a4f47903b816d5b7a309, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  aiFireSpeed: 10
+  aiFireSpeed: 5
   aiActiveFrequency: 1.2
   directionArrow: {fileID: 1020499302}
 --- !u!95 &1767396872
@@ -6442,7 +6442,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1845153823}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.56, y: 2.8, z: 1}
+  m_LocalPosition: {x: 3.2, y: 2.8, z: 1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 689421134}
@@ -6478,7 +6478,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b52c0becfd82904f959a27bc33788e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 5
+  moveSpeed: 1
 --- !u!1 &1861669813
 GameObject:
   m_ObjectHideFlags: 0

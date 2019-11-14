@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MoveRopeWithKey : MonoBehaviour
+public class RopePullMoveRopeWithKey : MonoBehaviour
 {
     public bool IsStart { get; set; }
     private float Speed { get; set; }
@@ -50,8 +50,8 @@ public class MoveRopeWithKey : MonoBehaviour
             GetPlayersPower();
             UpdateRopePosition();
         }
-        LeftPlayer.GetComponent<InputPlayerPower>().ResetPower();
-        RightPlayer.GetComponent<InputAIPlayerPower>().ResetPower();
+        LeftPlayer.GetComponent<RopePullInputPlayerPower>().ResetPower();
+        RightPlayer.GetComponent<RopePulllAIPlayerPower>().ResetPower();
     }
 
     void CalculateRopeMove(float leftPower, float rightPower)
@@ -66,8 +66,8 @@ public class MoveRopeWithKey : MonoBehaviour
 
     void GetPlayersPower()
     {
-        float leftPower = LeftPlayer.GetComponent<InputPlayerPower>().PullPower;
-        float RightPower = RightPlayer.GetComponent<InputAIPlayerPower>().PullPower;
+        float leftPower = LeftPlayer.GetComponent<RopePullInputPlayerPower>().PullPower;
+        float RightPower = RightPlayer.GetComponent<RopePulllAIPlayerPower>().PullPower;
         CalculateRopeMove(leftPower,RightPower);
     }
 

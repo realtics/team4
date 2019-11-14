@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class BasketMove : MonoBehaviour
 {
-    // Start is called before the first frame update
     public float moveSpeed;
     private float _changeTimer;
     private float _direction;
@@ -14,13 +13,17 @@ public class BasketMove : MonoBehaviour
         _direction = -1;
         StartCoroutine(MoveBasket());
     }
+    void FixedUpdate()
+    {
+        MoveBasketAuto();
+    }
 
     IEnumerator MoveBasket()
     {
         while (true)
         {
             ChangeDiretion();
-            MoveBasketAuto();
+            //MoveBasketAuto();
             yield return new WaitForSeconds(0.1f);
         }
     }

@@ -654,6 +654,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25f549695df1b0c49bd0d210f7d56457, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sceneManager: {fileID: 1539289030}
 --- !u!61 &237786065
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -6725,7 +6726,7 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!114 &692681184
@@ -7272,6 +7273,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9cf39508161feb542a36737973011109, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sceneManager: {fileID: 1539289030}
 --- !u!61 &888178560
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -24645,7 +24647,7 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!114 &1767396871
@@ -25636,6 +25638,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9cf39508161feb542a36737973011109, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sceneManager: {fileID: 1539289030}
 --- !u!61 &2011267607
 BoxCollider2D:
   m_ObjectHideFlags: 0
