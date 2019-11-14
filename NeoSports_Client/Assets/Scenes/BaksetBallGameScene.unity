@@ -554,6 +554,7 @@ Transform:
   m_Father: {fileID: 1978356486}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+<<<<<<< HEAD
 --- !u!1 &193894875
 GameObject:
   m_ObjectHideFlags: 0
@@ -683,6 +684,8 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+=======
+>>>>>>> d72b3bd07874d319ddb026e1e4459c8071c284dd
 --- !u!1 &224134886
 GameObject:
   m_ObjectHideFlags: 0
@@ -1569,6 +1572,7 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1824641925899487707}
   m_PrefabAsset: {fileID: 0}
+<<<<<<< HEAD
 --- !u!1 &543235019
 GameObject:
   m_ObjectHideFlags: 0
@@ -1698,6 +1702,8 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
+=======
+>>>>>>> d72b3bd07874d319ddb026e1e4459c8071c284dd
 --- !u!1 &552237973
 GameObject:
   m_ObjectHideFlags: 0
@@ -2114,6 +2120,7 @@ GameObject:
   - component: {fileID: 629633787}
   - component: {fileID: 629633789}
   - component: {fileID: 629633788}
+  - component: {fileID: 629633790}
   m_Layer: 0
   m_Name: GoalInTrigger
   m_TagString: Untagged
@@ -2144,10 +2151,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 629633786}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8cad1265111469442a00938fbbfcdcd7, type: 3}
+  m_Script: {fileID: 11500000, guid: aaf58f435b7b00245873ac9ef92e601a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  goalInBallManager: {fileID: 147793375}
 --- !u!61 &629633789
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2174,6 +2180,18 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 5.903427, y: 4.770213}
   m_EdgeRadius: 0
+--- !u!114 &629633790
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 629633786}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 225fd177dcc8332478f1bcfa27c4d973, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &689421133
 GameObject:
   m_ObjectHideFlags: 0
@@ -2186,6 +2204,7 @@ GameObject:
   - component: {fileID: 689421135}
   - component: {fileID: 689421136}
   - component: {fileID: 689421137}
+  - component: {fileID: 689421138}
   m_Layer: 0
   m_Name: BottomColider
   m_TagString: Untagged
@@ -2303,6 +2322,18 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &689421138
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 689421133}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a76ab097a32ef84c88fd47b76cca815, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &692681181
 GameObject:
   m_ObjectHideFlags: 0
@@ -4035,6 +4066,7 @@ Transform:
   m_Father: {fileID: 2063480340}
   m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+<<<<<<< HEAD
 --- !u!1 &1236174227
 GameObject:
   m_ObjectHideFlags: 0
@@ -4164,6 +4196,8 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
+=======
+>>>>>>> d72b3bd07874d319ddb026e1e4459c8071c284dd
 --- !u!1 &1240091961
 GameObject:
   m_ObjectHideFlags: 0
@@ -6128,8 +6162,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc42027c3a34a4f47903b816d5b7a309, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+<<<<<<< HEAD
   aiFireSpeed: 5
   aiActiveFrequency: 1.2
+=======
+  aiFireSpeed: 10
+  aiActiveFrequency: 1.5
+>>>>>>> d72b3bd07874d319ddb026e1e4459c8071c284dd
   directionArrow: {fileID: 1020499302}
 --- !u!95 &1767396872
 Animator:

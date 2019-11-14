@@ -5,15 +5,6 @@ using UnityEngine.U2D;
 
 public struct Status
 {
-	public enum EType
-	{
-		Strength,
-		Endurance,
-		Agility,
-		Luck,
-		End
-	}
-
 	public int strength;
 	public int endurance;
 	public int agility;
@@ -27,29 +18,13 @@ public struct Status
 		this.luck = luck;
 	}
 
-	public static void Add(Status lValue, Status rValue, out Status result)
+	public static void Add(out Status result, Status lValue, Status rValue)
 	{
 		result.strength = lValue.strength + rValue.strength;
 		result.endurance = lValue.endurance + rValue.endurance;
 		result.agility = lValue.agility + rValue.agility;
 		result.luck = lValue.luck + rValue.luck;
 		return;
-	}
-
-
-	/// <summary>
-	/// Return Stat Value To Array, Using With EType(enum)
-	/// </summary>
-	/// <returns>Status Array</returns>
-	public int[] GetValueAsArray()
-	{
-		int[] value = new int[(int)EType.End];
-		value[(int)EType.Strength] = strength;
-		value[(int)EType.Endurance] = endurance;
-		value[(int)EType.Agility] = agility;
-		value[(int)EType.Luck] = luck;
-
-		return value;
 	}
 }
 
@@ -60,21 +35,22 @@ public class CharacterInfo
 	{
 		Unknown,
 		PpiYaGi,
+		TurkeyJelly,
 		End
 	}
 
 	public struct JsonData
 	{
-		public EType	charType;
-		public string	charName;
-		public Status	charStat;
-		public string	iconName;
+		public EType charType;
+		public string charName;
+		public Status charStat;
+		public string iconName;
 	}
 
-	EType	_charType;
-	string	_charName;
-	Status	_charStat;
-	Sprite	_iconSprite;
+	EType _charType;
+	string _charName;
+	Status _charStat;
+	Sprite _iconSprite;
 
 	#region Property
 	public EType Type {

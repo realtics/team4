@@ -215,7 +215,7 @@ public class JumpGameManager : Singleton<JumpGameManager>
 	bool IsKeyDownButtonJump(Ray ray)
 	{
 		RaycastHit hit;
-		if (UIJumpButton.GetComponent<BoxCollider>().Raycast(ray, out hit, 10.0F))
+		if (UIJumpButton.GetComponent<BoxCollider>().Raycast(ray, out hit, 10.0f))
 		{
 			return true;
 		}

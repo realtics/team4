@@ -23,13 +23,5 @@ public class BasketPlayerMove : MonoBehaviour
         {
             transform.Translate(new Vector3(1 * speed * Time.deltaTime, 0f, 0f));
         }
-        if (Input.GetKeyUp(KeyCode.UpArrow))
-        {
-            transform.Translate(new Vector3(0f, 1 * speed * Time.deltaTime, 0f));
-        }
-        if (Input.GetKeyUp(KeyCode.DownArrow))
-        {
-            transform.Translate(new Vector3(0f, -1 * speed * Time.deltaTime, 0f));
-        }
     }
 }
