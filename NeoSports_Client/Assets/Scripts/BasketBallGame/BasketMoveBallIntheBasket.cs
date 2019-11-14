@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MoveBallIntheBasket : MonoBehaviour
+public class BasketMoveBallIntheBasket : MonoBehaviour
 {
     // Start is called before the first frame update
     public GameObject goalInBallManager;
@@ -11,4 +11,5 @@ public class MoveBallIntheBasket : MonoBehaviour
     {
         collision.transform.SetParent(goalInBallManager.transform);
     }
+
 }

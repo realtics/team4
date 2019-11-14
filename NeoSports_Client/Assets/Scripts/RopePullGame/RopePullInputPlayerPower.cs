@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InputPlayerPower : MonoBehaviour
+public class RopePullInputPlayerPower : MonoBehaviour
 {
-    // Start is called before the first frame update
     [HideInInspector]
     public float PullPower{ get; set; }
     public float strength;

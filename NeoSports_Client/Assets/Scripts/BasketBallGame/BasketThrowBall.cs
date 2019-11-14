@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 /*각 계산하는 부분 인터넷 참고 하였습니다.*/
-public class throwBall : MonoBehaviour
+public class BasketThrowBall : MonoBehaviour
 {
     // Start is called before the first frame update
     
@@ -69,7 +69,7 @@ public class throwBall : MonoBehaviour
 
         GameObject toInstance = Resources.Load<GameObject>("Prefabs/BasketPrefabs/ThrowBall");
         GameObject cannon = Instantiate(toInstance, transform.position, transform.rotation);
-        cannon.GetComponent<PlayerCannon>().ShotToTarget(direction);
+        cannon.GetComponent<BasketPlayerCannon>().ShotToTarget(direction);
     }
 
 

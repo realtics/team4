@@ -119,7 +119,7 @@ public class GallaryManager : Singleton<PopupManager>
 		EquipmentInfo equipInfo = Singleton<InventoryManager>.Instance.CurrentEquipment;
 
 		Status result;
-		Status.Add(charInfo.Stat, equipInfo.Stat, out result);
+		Status.Add(out result, charInfo.Stat, equipInfo.Stat);
 		labelStatusStrength.GetComponent<Text>().text = UIData.GallaryExplainStatStr + result.strength.ToString();
 		labelStatusEndurance.GetComponent<Text>().text = UIData.GallaryExplainStatEnd + result.endurance.ToString();
 		labelStatusAgility.GetComponent<Text>().text = UIData.GallaryExplainStatAgi + result.agility.ToString();
@@ -132,7 +132,7 @@ public class GallaryManager : Singleton<PopupManager>
 	#region Scroll View Func
 	void MakeScrollViewCharItem()
 	{
-		foreach(var item in Singleton<InventoryManager>.Instance.CharacterInfos)
+		foreach (var item in Singleton<InventoryManager>.Instance.CharacterInfos)
 		{
 			GameObject obj;
 			obj = Instantiate(prefButtonGallaryChar, scrollViewContentChar.transform);
@@ -142,7 +142,7 @@ public class GallaryManager : Singleton<PopupManager>
 
 	void MakeScrollViewEquipItem()
 	{
-		foreach(var item in Singleton<InventoryManager>.Instance.EquipmentInfos)
+		foreach (var item in Singleton<InventoryManager>.Instance.EquipmentInfos)
 		{
 			GameObject obj;
 			obj = Instantiate(prefButtonGallaryEquip, scrollViewContentEquip.transform);

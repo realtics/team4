@@ -13,7 +13,7 @@ public class PlayManager : Singleton<PlayManager>
 
 	public void StartRopeGame()
 	{
-		UnityEngine.SceneManagement.SceneManager.LoadScene(SceneName.RopeGameSceneName);
+		SceneManager.LoadScene(SceneName.RopeGameSceneName);
 	}
 
 }

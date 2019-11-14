@@ -2,47 +2,51 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BackgroundManager : Singleton<BackgroundManager>
+namespace JumpRopeGame
 {
-	const string PrefabCloudPath = "Prefabs/JumpRopeGame/Prefab_Cloud";
-
-	const float GenerateCloudIntervalMin = 1.0f;
-	const float GenerateCloudIntervalMax = 5.0f;
-
-	float GenerateCloudCycle = 0.0f;
-	float GenerateCloudTimer = 0.0f;
-
-	GameObject prefCloud;
-
-	public GameObject BackgroundCloudGroup;
-
-	#region Engine Call
-	private void Awake()
+	public class BackgroundManager : Singleton<BackgroundManager>
 	{
-		prefCloud = Resources.Load<GameObject>(PrefabCloudPath);
-	}
+		const string PrefabCloudPath = "Prefabs/JumpRopeGame/Prefab_Cloud";
 
-	private void Start()
-	{
-		
-	}
+		const float GenerateCloudIntervalMin = 1.0f;
+		const float GenerateCloudIntervalMax = 5.0f;
 
-	private void Update()
-	{
-		GenerateCloud();
-	}
-	#endregion
+		float GenerateCloudCycle = 0.0f;
+		float GenerateCloudTimer = 0.0f;
 
-	void GenerateCloud()
-	{
-		GenerateCloudTimer += Time.deltaTime;
+		GameObject prefCloud;
 
-		if(GenerateCloudTimer > GenerateCloudCycle)
+		public GameObject BackgroundCloudGroup;
+
+		#region Engine Call
+		private void Awake()
 		{
-			GenerateCloudTimer -= GenerateCloudCycle;
-			GenerateCloudCycle = Random.Range(GenerateCloudIntervalMin, GenerateCloudIntervalMax);
-			Instantiate(prefCloud, BackgroundCloudGroup.transform);
+			prefCloud = Resources.Load<GameObject>(PrefabCloudPath);
 		}
-	}
 
+		private void Start()
+		{
+
+		}
+
+		private void Update()
+		{
+			GenerateCloud();
+		}
+		#endregion
+
+		void GenerateCloud()
+		{
+			GenerateCloudTimer += Time.deltaTime;
+
+			if (GenerateCloudTimer > GenerateCloudCycle)
+			{
+				GenerateCloudTimer -= GenerateCloudCycle;
+				GenerateCloudCycle = Random.Range(GenerateCloudIntervalMin, GenerateCloudIntervalMax);
+				Instantiate(prefCloud, BackgroundCloudGroup.transform);
+			}
+		}
+
+	}
 }
+

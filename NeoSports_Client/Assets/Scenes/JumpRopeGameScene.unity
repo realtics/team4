@@ -5111,6 +5111,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Character_Turkey_Jelly
       objectReference: {fileID: 0}
+    - target: {fileID: 203829877700944717, guid: 690c6258a777cc346acfc313445baf2c,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 203829877700944716, guid: 690c6258a777cc346acfc313445baf2c,
         type: 3}
       propertyPath: m_LocalPosition.x

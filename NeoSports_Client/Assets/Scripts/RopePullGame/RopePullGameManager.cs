@@ -13,8 +13,6 @@ enum ESceneState
 };
 public class RopePullGameManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-
     private float startTimerSecond;
     private float playTime;
 
@@ -61,7 +59,7 @@ public class RopePullGameManager : MonoBehaviour
         }
     }
 
-    public void NotifyWinner(Collider2D _winner)
+    public void NotifyWinner(Transform _winner)
     {
         SetWinnerGame();
         SetResultText();
@@ -69,7 +67,7 @@ public class RopePullGameManager : MonoBehaviour
         SetOtherPlyerResult(winner, "winner");
     }
 
-    public void NotifyLoser(Collider2D _loser)
+    public void NotifyLoser(Transform _loser)
     {
         SetWinnerGame();
         SetResultText();
@@ -82,7 +80,6 @@ public class RopePullGameManager : MonoBehaviour
         if (sceneState == ESceneState.Start)
         {
             UpdateStartTime();
-            //UpdatePlayTime();
         }
         if (sceneState == ESceneState.Play)
         {
@@ -135,7 +132,7 @@ public class RopePullGameManager : MonoBehaviour
     {
         if (playTime >= 10.0f)
         {
-            playerableObjects.GetComponent<MoveRopeWithKey>().SetFeverTime();
+            playerableObjects.GetComponent<RopePullMoveRopeWithKey>().SetFeverTime();
         }
     }
 
@@ -155,7 +152,7 @@ public class RopePullGameManager : MonoBehaviour
         InitTimerValue();
         SetRopeRestartPosition();
         UpdatePlayTime();
-        playerableObjects.GetComponent<MoveRopeWithKey>().ResetFeverTime();
+        playerableObjects.GetComponent<RopePullMoveRopeWithKey>().ResetFeverTime();
 
     }
 
@@ -172,7 +169,7 @@ public class RopePullGameManager : MonoBehaviour
 
     void SetObjectsMove(bool isMove)
     {
-        playerableObjects.GetComponent<MoveRopeWithKey>().IsStart = isMove;
+        playerableObjects.GetComponent<RopePullMoveRopeWithKey>().IsStart = isMove;
     }
 
     void SetWinnerGame()

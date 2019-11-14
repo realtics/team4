@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BaksetBallManager : MonoBehaviour
+public class BasketBallManager : MonoBehaviour
 {
     public GameObject ballManager;
     public float platTimeLimit;
