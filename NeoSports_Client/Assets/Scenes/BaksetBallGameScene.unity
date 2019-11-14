@@ -1856,7 +1856,6 @@ GameObject:
   - component: {fileID: 629633787}
   - component: {fileID: 629633789}
   - component: {fileID: 629633788}
-  - component: {fileID: 629633790}
   m_Layer: 0
   m_Name: GoalInTrigger
   m_TagString: Untagged
@@ -1887,9 +1886,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 629633786}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aaf58f435b7b00245873ac9ef92e601a, type: 3}
+  m_Script: {fileID: 11500000, guid: 8cad1265111469442a00938fbbfcdcd7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  goalInBallManager: {fileID: 147793375}
 --- !u!61 &629633789
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1916,18 +1916,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 5.903427, y: 4.770213}
   m_EdgeRadius: 0
---- !u!114 &629633790
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 629633786}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 225fd177dcc8332478f1bcfa27c4d973, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &689421133
 GameObject:
   m_ObjectHideFlags: 0
@@ -1940,7 +1928,6 @@ GameObject:
   - component: {fileID: 689421135}
   - component: {fileID: 689421136}
   - component: {fileID: 689421137}
-  - component: {fileID: 689421138}
   m_Layer: 0
   m_Name: BottomColider
   m_TagString: Untagged
@@ -2058,18 +2045,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &689421138
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 689421133}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9a76ab097a32ef84c88fd47b76cca815, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &692681181
 GameObject:
   m_ObjectHideFlags: 0
