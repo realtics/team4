@@ -4,7 +4,6 @@ using UnityEngine;
 /*각 계산하는 부분 인터넷 참고 하였습니다.*/
 public class BasketPlayerCannon : MonoBehaviour
 {
-    // Start is called before the first frame update
     private Rigidbody2D _rb2d;
     private Vector3 _prevPosition;
 
@@ -28,7 +27,7 @@ public class BasketPlayerCannon : MonoBehaviour
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0, 0, angle), 10.0f * Time.deltaTime);
             _prevPosition = transform.position;
         }
-        
+
     }
 
     public void ShotToTarget(Vector2 direction)
@@ -38,7 +37,7 @@ public class BasketPlayerCannon : MonoBehaviour
 
     private void CheckOutScreenObject()
     {
-        if(transform.position.y < -5.0f)
+        if (transform.position.y < -5.0f)
         {
             DestroyOutScreenObject();
         }

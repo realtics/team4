@@ -53,7 +53,7 @@ public class RopePullGameManager : MonoBehaviour
         while (true)
         {
             --startTimerSecond;
-            if(sceneState != ESceneState.SetWinner && sceneState != ESceneState.WaitRestart)
+            if (sceneState != ESceneState.SetWinner && sceneState != ESceneState.WaitRestart)
                 ++playTime;
             yield return new WaitForSeconds(1);
         }
@@ -97,9 +97,9 @@ public class RopePullGameManager : MonoBehaviour
         }
         if (sceneState == ESceneState.WaitRestart)
         {
-            
+
         }
-        
+
     }
 
     void UpdatePlayTime()
@@ -121,10 +121,10 @@ public class RopePullGameManager : MonoBehaviour
             startCountingTimeText.text = string.Empty;
             StartPlayGame();
         }
-        else if(startTimerSecond <= 5.0f)
+        else if (startTimerSecond <= 5.0f)
         {
             startCountingTimeText.text = startTimerSecond.ToString();
-            
+
         }
     }
 
@@ -185,7 +185,7 @@ public class RopePullGameManager : MonoBehaviour
             leftText.text = "Left Winner";
             rightText.text = "Right Loser";
         }
-        else 
+        else
         {
             leftText.text = "Left Loser";
             rightText.text = "Right Winner";
@@ -217,6 +217,6 @@ public class RopePullGameManager : MonoBehaviour
                 winner = GameObject.FindGameObjectWithTag("LeftPlayer");
             }
         }
-        
+
     }
 }

@@ -9,20 +9,20 @@ public class TapingEffect : MonoBehaviour
 
     void Start()
     {
-      _efftectParticle = GetComponent<ParticleSystem>();
-      _selftTransform = GetComponent<Transform>();
+        _efftectParticle = GetComponent<ParticleSystem>();
+        _selftTransform = GetComponent<Transform>();
     }
 
     void Update()
     {
-        if (Input.GetMouseButtonUp(0) == true ) // mobile로 변경시 touch 이벤트 추가.
+        if (Input.GetMouseButtonUp(0) == true) // mobile로 변경시 touch 이벤트 추가.
         {
             _selftTransform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
             if (_efftectParticle != null)
             {
-                _efftectParticle.Play();       
+                _efftectParticle.Play();
             }
-        }  
+        }
     }
 }

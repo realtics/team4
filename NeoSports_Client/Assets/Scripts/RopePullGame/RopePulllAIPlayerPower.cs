@@ -10,7 +10,7 @@ public class RopePulllAIPlayerPower : MonoBehaviour
     public float stength;
     public float difficultyLevel;
     public float updateAICycleTime;
-    
+
     void Start()
     {
         StartCoroutine(SecondCount());
@@ -20,11 +20,11 @@ public class RopePulllAIPlayerPower : MonoBehaviour
     {
         while (true)
         {
-            PullPower += stength * difficultyLevel; 
+            PullPower += stength * difficultyLevel;
             yield return new WaitForSeconds(updateAICycleTime);
         }
     }
-    
+
     public void ResetPower()
     {
         PullPower = 0.0f;

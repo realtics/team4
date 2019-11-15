@@ -4,12 +4,15 @@ using UnityEngine;
 
 public class BasketMoveBallIntheBasket : MonoBehaviour
 {
-    // Start is called before the first frame update
     public GameObject goalInBallManager;
 
-    private void OnTriggerStay2D(Collider2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
         collision.transform.SetParent(goalInBallManager.transform);
+    }
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        collision.transform.SetParent(null);
     }
 
 }

@@ -4,11 +4,12 @@ using UnityEngine;
 /*각 계산하는 부분 인터넷 참고 하였습니다.*/
 public class BasketThrowBall : MonoBehaviour
 {
-    // Start is called before the first frame update
-    
-    public float fireSpeed; 
+    public float fireSpeed;
     public GameObject directionArrow;
-    
+
+    const float angleMax = 1.6f;
+    const float angleMin = 0.7f;
+
     private Collider2D _ownCollider;
     private bool _isTargetting;
     private float _powerSize;
@@ -35,7 +36,7 @@ public class BasketThrowBall : MonoBehaviour
         {
             if (_ownCollider.OverlapPoint(Camera.main.ScreenToWorldPoint(Input.mousePosition)))
             {
-                directionArrow.transform.position = new Vector2(transform.position.x+0.3f, transform.position.y + 0.5f);
+                directionArrow.transform.position = new Vector2(transform.position.x + 0.3f, transform.position.y + 0.5f);
                 _isTargetting = true;
             }
         }
@@ -43,15 +44,15 @@ public class BasketThrowBall : MonoBehaviour
         {
             Vector2 target = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             float angle = Mathf.Atan2(transform.position.y - target.y, transform.position.x - target.x);
-            
-            
-            if (angle < 1.6f && angle > -0.7f)
+
+
+            if (angle < angleMax && angle > angleMin)
             {
                 directionArrow.transform.rotation = Quaternion.AngleAxis(angle * Mathf.Rad2Deg, transform.forward);
             }
 
             float power = Vector2.Distance(target, transform.position);
-            _powerSize = power * _powerSizeOffset ;
+            _powerSize = power * _powerSizeOffset;
             directionArrow.transform.localScale = new Vector3(_powerSize * _arrowScaleOffset, _powerSize * _arrowScaleOffset);
         }
         else if (Input.GetMouseButtonUp(0))
@@ -71,6 +72,5 @@ public class BasketThrowBall : MonoBehaviour
         GameObject cannon = Instantiate(toInstance, transform.position, transform.rotation);
         cannon.GetComponent<BasketPlayerCannon>().ShotToTarget(direction);
     }
-
 
 }
