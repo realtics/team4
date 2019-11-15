@@ -4680,13 +4680,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b633a7f7725cb684294493e2ca438d21, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  UITimingBarBack: {fileID: 1622541898}
-  UITimingBarSuccessZone: {fileID: 1239802458}
-  UITimingBarPointer: {fileID: 1809711970}
-  UIStartGameTimer: {fileID: 1562379516}
-  UIElapseGameTimer: {fileID: 605151737}
-  UIWinnerLabel: {fileID: 1640147731}
-  UIJumpButton: {fileID: 1841587611}
+  timingBarBackUi: {fileID: 1622541898}
+  timingBarSuccessZoneUi: {fileID: 1239802458}
+  timingBarPointerUi: {fileID: 1809711970}
+  startGameTimerUi: {fileID: 1562379516}
+  elapseGameTimerUi: {fileID: 605151737}
+  winnerLabelUi: {fileID: 2118263304}
+  jumpButtonUi: {fileID: 1841587611}
   leftPlayer: {fileID: 1278891033}
 --- !u!4 &1956426068
 Transform:
