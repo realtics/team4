@@ -12,12 +12,10 @@ public class CommonGameUIManager : Singleton<CommonGameUIManager>
 		DynamicTextUserName
 	}
 
-	const string StartGameText = "게임 시작!";
-
-	readonly Vector3 StartGameTimerInitPosition;
-	readonly Vector3 ElapseGameTimerInitPosition;
-
 	public delegate void StartGameCallBack();
+
+	const string StartGameText = "게임 시작!";
+	readonly Vector2 ElapseGameTimerInitPosition = new Vector2(0, 185);
 
 	public GameObject prefStartGameTimerLabel;
 	public GameObject prefElapseGameTimerLabel;
@@ -37,14 +35,9 @@ public class CommonGameUIManager : Singleton<CommonGameUIManager>
 	Text _elapseGameTimerText;
 
 	float _startGameTime;
+	float _elapseGameTime;
 	StartGameCallBack _startGameCallBack;
 
-	float _elapseGameTime;
-
-	void Start()
-	{
-
-	}
 
 	#region Start Game Timer
 	/// <summary>
@@ -69,7 +62,7 @@ public class CommonGameUIManager : Singleton<CommonGameUIManager>
 
 		if (_startGameTime > 1.0f)
 		{
-			_startGameTimerText.text = _startGameTime.ToString();
+			_startGameTimerText.text = ((int)_startGameTime).ToString();
 		}
 		else if (_startGameTime > 0.0f)
 		{
@@ -94,12 +87,14 @@ public class CommonGameUIManager : Singleton<CommonGameUIManager>
 		_elapseGameTimerText = _elapseGameTimerLabel.GetComponentInChildren<Text>();
 
 		_elapseGameTime = 0.0f;
+		_elapseGameTimerText.text = ((int)_elapseGameTime).ToString();
+		_elapseGameTimerLabel.GetComponent<RectTransform>().anchoredPosition = ElapseGameTimerInitPosition;
 	}
 
 	public void UpdateElapseGameTimer()
 	{
 		_elapseGameTime += Time.deltaTime;
-		_elapseGameTimerText.text = _elapseGameTime.ToString();
+		_elapseGameTimerText.text = ((int)_elapseGameTime).ToString();
 	}
 
 	public void DestroyElapseGameTimer()
