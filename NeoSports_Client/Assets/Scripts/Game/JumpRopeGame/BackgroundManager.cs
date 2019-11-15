@@ -18,22 +18,15 @@ namespace JumpRopeGame
 
 		public GameObject BackgroundCloudGroup;
 
-		#region Engine Call
 		private void Awake()
 		{
 			prefCloud = Resources.Load<GameObject>(PrefabCloudPath);
-		}
-
-		private void Start()
-		{
-
 		}
 
 		private void Update()
 		{
 			GenerateCloud();
 		}
-		#endregion
 
 		void GenerateCloud()
 		{
