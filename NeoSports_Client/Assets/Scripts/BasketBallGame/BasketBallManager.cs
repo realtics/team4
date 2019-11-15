@@ -35,5 +35,5 @@ public class BasketBallManager : MonoBehaviour
     {
         //GameState값 End. 
     }
-  
+
 }

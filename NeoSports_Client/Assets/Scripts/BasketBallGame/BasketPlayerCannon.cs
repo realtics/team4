@@ -28,7 +28,7 @@ public class BasketPlayerCannon : MonoBehaviour
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0, 0, angle), 10.0f * Time.deltaTime);
             _prevPosition = transform.position;
         }
-        
+
     }
 
     public void ShotToTarget(Vector2 direction)
@@ -38,7 +38,7 @@ public class BasketPlayerCannon : MonoBehaviour
 
     private void CheckOutScreenObject()
     {
-        if(transform.position.y < -5.0f)
+        if (transform.position.y < -5.0f)
         {
             DestroyOutScreenObject();
         }

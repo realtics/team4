@@ -43,7 +43,7 @@ public class RopePullMoveRopeWithKey : MonoBehaviour
         }
     }
 
-    void UpdateRope() 
+    void UpdateRope()
     {
         if (IsStart)
         {
@@ -56,7 +56,7 @@ public class RopePullMoveRopeWithKey : MonoBehaviour
 
     void CalculateRopeMove(float leftPower, float rightPower)
     {
-        powerSum = rightPower -leftPower;
+        powerSum = rightPower - leftPower;
     }
 
     void UpdateRopePosition()
@@ -68,7 +68,7 @@ public class RopePullMoveRopeWithKey : MonoBehaviour
     {
         float leftPower = LeftPlayer.GetComponent<RopePullInputPlayerPower>().PullPower;
         float RightPower = RightPlayer.GetComponent<RopePulllAIPlayerPower>().PullPower;
-        CalculateRopeMove(leftPower,RightPower);
+        CalculateRopeMove(leftPower, RightPower);
     }
 
     public void SetFeverTime()
