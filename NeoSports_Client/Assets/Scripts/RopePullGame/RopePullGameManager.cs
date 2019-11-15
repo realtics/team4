@@ -3,220 +3,224 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine;
 
-enum ESceneState
+namespace RopePullGame
 {
-    Start,
-    Play,
-    Stop,
-    SetWinner,
-    WaitRestart,
-};
-public class RopePullGameManager : MonoBehaviour
-{
-    private float startTimerSecond;
-    private float playTime;
-
-    private ESceneState sceneState;
-    private GameObject winner;
-    private GameObject loser;
-
-    //[SerializeField] Insepector에서 보이나 private 같은 효과
-    //protected GameObject onlyInspector;
-
-    public GameObject playerableObjects;
-    public Text playTimeText;
-    public Text startCountingTimeText;
-    public Text leftText;
-    public Text rightText;
-    public Button restartButton;
-
-    void Start()
+    public class RopePullGameManager : MonoBehaviour
     {
-        sceneState = ESceneState.Start;
-        InitTimerValue();
-        StartCoroutine(SecondCount());
-    }
-
-    void Update()
-    {
-        UpdateScene();
-    }
-
-    void InitTimerValue()
-    {
-        startTimerSecond = 6.0f;
-        playTime = -5.0f;
-    }
-
-    IEnumerator SecondCount()
-    {
-        while (true)
+        enum ESceneState
         {
-            --startTimerSecond;
-            if (sceneState != ESceneState.SetWinner && sceneState != ESceneState.WaitRestart)
-                ++playTime;
-            yield return new WaitForSeconds(1);
+            Start,
+            Play,
+            Stop,
+            SetWinner,
+            WaitRestart,
+        };
+        ESceneState sceneState;
+
+        GameObject winner;
+        GameObject loser;
+
+        float startTimerSecond;
+        float playTime;
+
+        //[SerializeField] Insepector에서 보이나 private 같은 효과
+        //protected GameObject onlyInspector;
+
+        public GameObject playerableObjects;
+        public Text playTimeText;
+        public Text startCountingTimeText;
+        public Text leftText;
+        public Text rightText;
+        public Button restartButton;
+
+        void Start()
+        {
+            sceneState = ESceneState.Start;
+            InitTimerValue();
+            StartCoroutine(SecondCount());
         }
-    }
 
-    public void NotifyWinner(Transform _winner)
-    {
-        SetWinnerGame();
-        SetResultText();
-        winner = _winner.gameObject;
-        SetOtherPlyerResult(winner, "winner");
-    }
-
-    public void NotifyLoser(Transform _loser)
-    {
-        SetWinnerGame();
-        SetResultText();
-        loser = _loser.gameObject;
-        SetOtherPlyerResult(loser, "loser");
-    }
-
-    void UpdateScene()
-    {
-        if (sceneState == ESceneState.Start)
+        void Update()
         {
-            UpdateStartTime();
+            UpdateScene();
         }
-        if (sceneState == ESceneState.Play)
+
+        void InitTimerValue()
         {
-            UpdateFever();
+            startTimerSecond = 6.0f;
+            playTime = -5.0f;
+        }
+
+        IEnumerator SecondCount()
+        {
+            while (true)
+            {
+                --startTimerSecond;
+                if (sceneState != ESceneState.SetWinner && sceneState != ESceneState.WaitRestart)
+                    ++playTime;
+                yield return new WaitForSeconds(1);
+            }
+        }
+
+        public void NotifyWinner(Transform _winner)
+        {
+            SetWinnerGame();
+            SetResultText();
+            winner = _winner.gameObject;
+            SetOtherPlyerResult(winner, "winner");
+        }
+
+        public void NotifyLoser(Transform _loser)
+        {
+            SetWinnerGame();
+            SetResultText();
+            loser = _loser.gameObject;
+            SetOtherPlyerResult(loser, "loser");
+        }
+
+        void UpdateScene()
+        {
+            if (sceneState == ESceneState.Start)
+            {
+                UpdateStartTime();
+            }
+            if (sceneState == ESceneState.Play)
+            {
+                UpdateFever();
+                UpdatePlayTime();
+            }
+            if (sceneState == ESceneState.Stop)
+            {
+
+            }
+            if (sceneState == ESceneState.SetWinner)
+            {
+                restartButton.gameObject.SetActive(true);
+                sceneState = ESceneState.WaitRestart;
+            }
+            if (sceneState == ESceneState.WaitRestart)
+            {
+
+            }
+
+        }
+
+        void UpdatePlayTime()
+        {
+            if (playTime <= 0.0f)
+            {
+                playTimeText.text = string.Empty;
+            }
+            else
+            {
+                playTimeText.text = playTime.ToString();
+            }
+        }
+
+        void UpdateStartTime()
+        {
+            if (startTimerSecond <= 0.0f)
+            {
+                startCountingTimeText.text = string.Empty;
+                StartPlayGame();
+            }
+            else if (startTimerSecond <= 5.0f)
+            {
+                startCountingTimeText.text = startTimerSecond.ToString();
+
+            }
+        }
+
+        void UpdateFever()
+        {
+            if (playTime >= 10.0f)
+            {
+                playerableObjects.GetComponent<RopePullMoveRopeWithKey>().SetFeverTime();
+            }
+        }
+
+        void StartPlayGame()
+        {
+            sceneState = ESceneState.Play;
+            SetObjectsMove(true);
+        }
+
+        public void RestartPlayGame()
+        {
+            sceneState = ESceneState.Start;
+            winner = null;
+            loser = null;
+            leftText.text = "Left";
+            rightText.text = "Right";
+            InitTimerValue();
+            SetRopeRestartPosition();
             UpdatePlayTime();
-        }
-        if (sceneState == ESceneState.Stop)
-        {
-
-        }
-        if (sceneState == ESceneState.SetWinner)
-        {
-            restartButton.gameObject.SetActive(true);
-            sceneState = ESceneState.WaitRestart;
-        }
-        if (sceneState == ESceneState.WaitRestart)
-        {
+            playerableObjects.GetComponent<RopePullMoveRopeWithKey>().ResetFeverTime();
 
         }
 
-    }
-
-    void UpdatePlayTime()
-    {
-        if (playTime <= 0.0f)
+        void SetRopeRestartPosition()
         {
-            playTimeText.text = string.Empty;
+            playerableObjects.transform.position = new Vector3(0.0f, 0.0f, 0.0f);
         }
-        else
+
+        void StopPlayGame()
         {
-            playTimeText.text = playTime.ToString();
+            sceneState = ESceneState.Stop;
+            SetObjectsMove(false);
         }
-    }
 
-    void UpdateStartTime()
-    {
-        if (startTimerSecond <= 0.0f)
+        void SetObjectsMove(bool isMove)
         {
-            startCountingTimeText.text = string.Empty;
-            StartPlayGame();
+            playerableObjects.GetComponent<RopePullMoveRopeWithKey>().IsStart = isMove;
         }
-        else if (startTimerSecond <= 5.0f)
-        {
-            startCountingTimeText.text = startTimerSecond.ToString();
 
+        void SetWinnerGame()
+        {
+            sceneState = ESceneState.SetWinner;
+            SetObjectsMove(false);
         }
-    }
 
-    void UpdateFever()
-    {
-        if (playTime >= 10.0f)
+        void SetResultText()
         {
-            playerableObjects.GetComponent<RopePullMoveRopeWithKey>().SetFeverTime();
-        }
-    }
-
-    void StartPlayGame()
-    {
-        sceneState = ESceneState.Play;
-        SetObjectsMove(true);
-    }
-
-    public void RestartPlayGame()
-    {
-        sceneState = ESceneState.Start;
-        winner = null;
-        loser = null;
-        leftText.text = "Left";
-        rightText.text = "Right";
-        InitTimerValue();
-        SetRopeRestartPosition();
-        UpdatePlayTime();
-        playerableObjects.GetComponent<RopePullMoveRopeWithKey>().ResetFeverTime();
-
-    }
-
-    void SetRopeRestartPosition()
-    {
-        playerableObjects.transform.position = new Vector3(0.0f, 0.0f, 0.0f);
-    }
-
-    void StopPlayGame()
-    {
-        sceneState = ESceneState.Stop;
-        SetObjectsMove(false);
-    }
-
-    void SetObjectsMove(bool isMove)
-    {
-        playerableObjects.GetComponent<RopePullMoveRopeWithKey>().IsStart = isMove;
-    }
-
-    void SetWinnerGame()
-    {
-        sceneState = ESceneState.SetWinner;
-        SetObjectsMove(false);
-    }
-
-    void SetResultText()
-    {
-        if (winner == gameObject.CompareTag("LeftPlayer"))
-        {
-            leftText.text = "Left Winner";
-            rightText.text = "Right Loser";
-        }
-        else
-        {
-            leftText.text = "Left Loser";
-            rightText.text = "Right Winner";
-        }
-    }
-
-    void SetOtherPlyerResult(GameObject ownObject, string result)
-    {
-
-        if (ownObject.CompareTag("LeftPlayer"))
-        {
-            if (result.CompareTo("winner") == 0 || result.CompareTo("Winner") == 0)
+            if (winner == gameObject.CompareTag("LeftPlayer"))
             {
-                loser = GameObject.FindGameObjectWithTag("RightPlayer");
+                leftText.text = "Left Winner";
+                rightText.text = "Right Loser";
             }
-            else if (result.CompareTo("loser") == 0 || result.CompareTo("Loser") == 0)
+            else
             {
-                winner = GameObject.FindGameObjectWithTag("RightPlayer");
-            }
-        }
-        else if (ownObject.CompareTag("RightPlayer"))
-        {
-            if (result.CompareTo("winner") == 0 || result.CompareTo("Winner") == 0)
-            {
-                loser = GameObject.FindGameObjectWithTag("LeftPlayer");
-            }
-            else if (result.CompareTo("loser") == 0 || result.CompareTo("Loser") == 0)
-            {
-                winner = GameObject.FindGameObjectWithTag("LeftPlayer");
+                leftText.text = "Left Loser";
+                rightText.text = "Right Winner";
             }
         }
 
+        void SetOtherPlyerResult(GameObject ownObject, string result)
+        {
+
+            if (ownObject.CompareTag("LeftPlayer"))
+            {
+                if (result.CompareTo("winner") == 0 || result.CompareTo("Winner") == 0)
+                {
+                    loser = GameObject.FindGameObjectWithTag("RightPlayer");
+                }
+                else if (result.CompareTo("loser") == 0 || result.CompareTo("Loser") == 0)
+                {
+                    winner = GameObject.FindGameObjectWithTag("RightPlayer");
+                }
+            }
+            else if (ownObject.CompareTag("RightPlayer"))
+            {
+                if (result.CompareTo("winner") == 0 || result.CompareTo("Winner") == 0)
+                {
+                    loser = GameObject.FindGameObjectWithTag("LeftPlayer");
+                }
+                else if (result.CompareTo("loser") == 0 || result.CompareTo("Loser") == 0)
+                {
+                    winner = GameObject.FindGameObjectWithTag("LeftPlayer");
+                }
+            }
+
+        }
     }
 }

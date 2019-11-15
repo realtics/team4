@@ -1,18 +1,57 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class BasketMoveBallIntheBasket : MonoBehaviour
+namespace BasketBallGame
 {
-    public GameObject goalInBallManager;
-
-    private void OnTriggerEnter2D(Collider2D collision)
+    public class BasketMoveBallIntheBasket : MonoBehaviour
     {
-        collision.transform.SetParent(goalInBallManager.transform);
-    }
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        collision.transform.SetParent(null);
-    }
+        public GameObject goalInBallManager;
+        public Text leftText;
+        public Text rightText;
 
+        int _leftBallCount;
+        int _rightBallCount;
+
+        void Start()
+        {
+            _leftBallCount = 0;
+            _rightBallCount = 0;
+            leftText.text = _leftBallCount.ToString();
+            rightText.text = _rightBallCount.ToString();
+        }
+
+        void OnTriggerEnter2D(Collider2D collision)
+        {
+            collision.transform.SetParent(goalInBallManager.transform);
+
+            if (collision.transform.CompareTag("Ball"))
+            {
+                ++_leftBallCount;
+                leftText.text = _leftBallCount.ToString();
+            }
+            if (collision.transform.CompareTag("AIBall"))
+            {
+                ++_rightBallCount;
+                rightText.text = _rightBallCount.ToString();
+            }
+        }
+
+        void OnTriggerExit2D(Collider2D collision)
+        {
+            collision.transform.SetParent(null);
+            if (collision.transform.CompareTag("Ball"))
+            {
+                --_leftBallCount;
+                leftText.text = _leftBallCount.ToString();
+            }
+            if (collision.transform.CompareTag("AIBall"))
+            {
+                --_rightBallCount;
+                rightText.text = _rightBallCount.ToString();
+            }
+        }
+
+    }
 }

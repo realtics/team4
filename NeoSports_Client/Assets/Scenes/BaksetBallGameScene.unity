@@ -150,7 +150,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ballManager: {fileID: 147793375}
-  platTimeLimit: 60
+  playTimerLimit: 0
 --- !u!4 &41083355
 Transform:
   m_ObjectHideFlags: 0
@@ -438,7 +438,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 147793376}
-  - component: {fileID: 147793377}
   m_Layer: 0
   m_Name: GoalInBallManager
   m_TagString: Untagged
@@ -460,20 +459,6 @@ Transform:
   m_Father: {fileID: 1845153824}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &147793377
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 147793375}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 72551d30514372e41a42abd017c28815, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  leftText: {fileID: 1861669815}
-  rightText: {fileID: 738094668}
 --- !u!1 &177672883
 GameObject:
   m_ObjectHideFlags: 0
@@ -2148,6 +2133,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   goalInBallManager: {fileID: 147793375}
+  leftText: {fileID: 1861669815}
+  rightText: {fileID: 738094668}
 --- !u!61 &629633789
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2481,6 +2468,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fireSpeed: 15
   directionArrow: {fileID: 1104905417}
+  prefThrowBall: {fileID: 0}
 --- !u!1 &738094666
 GameObject:
   m_ObjectHideFlags: 0
@@ -6128,8 +6116,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc42027c3a34a4f47903b816d5b7a309, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  aiFireSpeed: 5
-  aiActiveFrequency: 1.2
+  aiFireSpeed: 10
+  aiActiveFrequency: 0.5
+  prefAiThrowBall: {fileID: 2126734234637613029, guid: 533c5d8b9fcab0c48a0a71c1fc1701e8,
+    type: 3}
   directionArrow: {fileID: 1020499302}
 --- !u!95 &1767396872
 Animator:
@@ -6465,6 +6455,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 1
+  changeDirectionSecond: 5
 --- !u!1 &1861669813
 GameObject:
   m_ObjectHideFlags: 0

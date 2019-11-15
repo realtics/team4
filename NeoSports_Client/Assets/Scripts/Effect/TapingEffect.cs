@@ -2,26 +2,29 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TapingEffect : MonoBehaviour
+namespace Effect
 {
-    private ParticleSystem _efftectParticle;
-    private Transform _selftTransform;
-
-    void Start()
+    public class TapingEffect : MonoBehaviour
     {
-        _efftectParticle = GetComponent<ParticleSystem>();
-        _selftTransform = GetComponent<Transform>();
-    }
+        private ParticleSystem _efftectParticle;
+        private Transform _selftTransform;
 
-    void Update()
-    {
-        if (Input.GetMouseButtonUp(0) == true) // mobile로 변경시 touch 이벤트 추가.
+        void Start()
         {
-            _selftTransform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            _efftectParticle = GetComponent<ParticleSystem>();
+            _selftTransform = GetComponent<Transform>();
+        }
 
-            if (_efftectParticle != null)
+        void Update()
+        {
+            if (Input.GetMouseButtonUp(0) == true) // mobile로 변경시 touch 이벤트 추가.
             {
-                _efftectParticle.Play();
+                _selftTransform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+                if (_efftectParticle != null)
+                {
+                    _efftectParticle.Play();
+                }
             }
         }
     }

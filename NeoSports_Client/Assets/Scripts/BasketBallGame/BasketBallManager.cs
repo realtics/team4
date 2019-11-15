@@ -2,36 +2,39 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BasketBallManager : MonoBehaviour
+namespace BasketBallGame
 {
-    public GameObject ballManager;
-    public float playTimerLimit;
-
-    private float _playTime;
-
-    void Start()
+    public class BasketBallManager : MonoBehaviour
     {
-        StartCoroutine(SecondCount());
-    }
+        public GameObject ballManager;
+        public float playTimerLimit;
 
-    IEnumerator SecondCount()
-    {
-        while (true)
+        float _playTime;
+
+        void Start()
         {
-            _playTime += 1.0f;
-
-            if (_playTime >= playTimerLimit)
-            {
-                EndPlayGame();
-                yield break;
-            }
-            yield return new WaitForSeconds(1.0f);
+            StartCoroutine(SecondCount());
         }
-    }
 
-    void EndPlayGame()
-    {
-        //GameState값 End. 
-    }
+        IEnumerator SecondCount()
+        {
+            while (true)
+            {
+                _playTime += 1.0f;
 
+                if (_playTime >= playTimerLimit)
+                {
+                    EndPlayGame();
+                    yield break;
+                }
+                yield return new WaitForSeconds(1.0f);
+            }
+        }
+
+        void EndPlayGame()
+        {
+            //GameState값 End. 
+        }
+
+    }
 }

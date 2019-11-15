@@ -2,31 +2,34 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RopePulllAIPlayerPower : MonoBehaviour
+namespace RopePullGame
 {
-    [HideInInspector]
-    public float PullPower { get; set; }
-
-    public float stength;
-    public float difficultyLevel;
-    public float updateAICycleTime;
-
-    void Start()
+    public class RopePulllAIPlayerPower : MonoBehaviour
     {
-        StartCoroutine(SecondCount());
-    }
+        [HideInInspector]
+        public float PullPower { get; set; }
 
-    IEnumerator SecondCount()
-    {
-        while (true)
+        public float stength;
+        public float difficultyLevel;
+        public float updateAICycleTime;
+
+        void Start()
         {
-            PullPower += stength * difficultyLevel;
-            yield return new WaitForSeconds(updateAICycleTime);
+            StartCoroutine(SecondCount());
         }
-    }
 
-    public void ResetPower()
-    {
-        PullPower = 0.0f;
+        IEnumerator SecondCount()
+        {
+            while (true)
+            {
+                PullPower += stength * difficultyLevel;
+                yield return new WaitForSeconds(updateAICycleTime);
+            }
+        }
+
+        public void ResetPower()
+        {
+            PullPower = 0.0f;
+        }
     }
 }

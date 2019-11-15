@@ -2,49 +2,53 @@
 using System.Collections.Generic;
 using UnityEngine;
 /*각 계산하는 부분 인터넷 참고 하였습니다.*/
-public class BasketPlayerCannon : MonoBehaviour
+
+namespace BasketBallGame
 {
-    private Rigidbody2D _rb2d;
-    private Vector3 _prevPosition;
-
-    void OnEnable()
+    public class BasketPlayerCannon : MonoBehaviour
     {
-        _rb2d = GetComponent<Rigidbody2D>();
-        _prevPosition = transform.position;
-    }
+        Rigidbody2D _rb2d;
+        Vector3 _prevPosition;
 
-    void Update()
-    {
-        CheckOutScreenObject();
-    }
-
-    void FixedUpdate()
-    {
-        Vector3 deltaPos = transform.position - _prevPosition;
-        float angle = Mathf.Atan2(deltaPos.y, deltaPos.x) * Mathf.Rad2Deg;
-        if (0 != angle)
+        void OnEnable()
         {
-            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0, 0, angle), 10.0f * Time.deltaTime);
+            _rb2d = GetComponent<Rigidbody2D>();
             _prevPosition = transform.position;
         }
 
-    }
-
-    public void ShotToTarget(Vector2 direction)
-    {
-        _rb2d.velocity = direction;
-    }
-
-    private void CheckOutScreenObject()
-    {
-        if (transform.position.y < -5.0f)
+        void Update()
         {
-            DestroyOutScreenObject();
+            CheckOutScreenObject();
         }
-    }
 
-    private void DestroyOutScreenObject()
-    {
-        Destroy(gameObject, 0.5f);
+        void FixedUpdate()
+        {
+            Vector3 deltaPos = transform.position - _prevPosition;
+            float angle = Mathf.Atan2(deltaPos.y, deltaPos.x) * Mathf.Rad2Deg;
+            if (0 != angle)
+            {
+                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0, 0, angle), 10.0f * Time.deltaTime);
+                _prevPosition = transform.position;
+            }
+
+        }
+
+        public void ShotToTarget(Vector2 direction)
+        {
+            _rb2d.velocity = direction;
+        }
+
+        void CheckOutScreenObject()
+        {
+            if (transform.position.y < -5.0f)
+            {
+                DestroyOutScreenObject();
+            }
+        }
+
+        void DestroyOutScreenObject()
+        {
+            Destroy(gameObject, 0.5f);
+        }
     }
 }

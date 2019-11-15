@@ -2,32 +2,35 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BasketPlayerMove : MonoBehaviour
+namespace BasketBallGame
 {
-    public float speed;
-
-    void Update()
+    public class BasketPlayerMove : MonoBehaviour
     {
-        InputUpdate();
-    }
+        public float speed;
 
-    private void InputUpdate()
-    {
-        if (Input.GetKeyUp(KeyCode.LeftArrow))
+        void Update()
         {
-            transform.Translate(new Vector3(-1 * speed * Time.deltaTime, 0f, 0f));
+            InputUpdate();
         }
-        if (Input.GetKeyUp(KeyCode.RightArrow))
+
+        void InputUpdate()
         {
-            transform.Translate(new Vector3(1 * speed * Time.deltaTime, 0f, 0f));
-        }
-        if (Input.GetKeyUp(KeyCode.UpArrow))
-        {
-            transform.Translate(new Vector3(0f, 1 * speed * Time.deltaTime, 0f));
-        }
-        if (Input.GetKeyUp(KeyCode.DownArrow))
-        {
-            transform.Translate(new Vector3(0f, -1 * speed * Time.deltaTime, 0f));
+            if (Input.GetKeyUp(KeyCode.LeftArrow))
+            {
+                transform.Translate(new Vector3(-1 * speed * Time.deltaTime, 0f, 0f));
+            }
+            if (Input.GetKeyUp(KeyCode.RightArrow))
+            {
+                transform.Translate(new Vector3(1 * speed * Time.deltaTime, 0f, 0f));
+            }
+            if (Input.GetKeyUp(KeyCode.UpArrow))
+            {
+                transform.Translate(new Vector3(0f, 1 * speed * Time.deltaTime, 0f));
+            }
+            if (Input.GetKeyUp(KeyCode.DownArrow))
+            {
+                transform.Translate(new Vector3(0f, -1 * speed * Time.deltaTime, 0f));
+            }
         }
     }
 }

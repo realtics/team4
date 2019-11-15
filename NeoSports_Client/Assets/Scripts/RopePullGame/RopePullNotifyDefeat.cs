@@ -2,12 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RopePullNotifyDefeat : MonoBehaviour
+namespace RopePullGame
 {
-    public RopePullGameManager sceneManager;
-
-    void OnTriggerEnter2D(Collider2D other)
+    public class RopePullNotifyDefeat : MonoBehaviour
     {
-        sceneManager.NotifyLoser(other.transform);
+        public RopePullGameManager sceneManager;
+
+        void OnTriggerEnter2D(Collider2D other)
+        {
+            sceneManager.NotifyLoser(other.transform);
+        }
     }
 }
