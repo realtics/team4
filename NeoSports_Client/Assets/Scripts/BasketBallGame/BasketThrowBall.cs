@@ -71,8 +71,7 @@ namespace BasketBallGame
             Vector2 direction = directionArrow.transform.rotation * new Vector2(fireSpeed, 0.0f) * _powerSize;
             _powerSize = 0.0f;
 
-            GameObject toInstance = Resources.Load<GameObject>("Prefabs/BasketPrefabs/ThrowBall");
-            GameObject cannon = Instantiate(toInstance, transform.position, transform.rotation);
+            GameObject cannon = Instantiate(prefThrowBall, transform.position, transform.rotation);
             cannon.GetComponent<BasketPlayerCannon>().ShotToTarget(direction);
         }
 

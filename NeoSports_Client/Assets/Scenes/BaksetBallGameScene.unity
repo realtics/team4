@@ -2468,7 +2468,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fireSpeed: 15
   directionArrow: {fileID: 1104905417}
-  prefThrowBall: {fileID: 0}
+  prefThrowBall: {fileID: 5136095947879792108, guid: 7429cd207680cbb4abcbe0398f0282dd,
+    type: 3}
 --- !u!1 &738094666
 GameObject:
   m_ObjectHideFlags: 0
