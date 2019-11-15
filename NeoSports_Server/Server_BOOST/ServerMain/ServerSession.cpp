@@ -1,9 +1,7 @@
 #include "ServerSession.h"
 #include "ChattingServer.h"
+#include "Json.h"
 #include <iostream>
-#include <boost/property_tree/ptree.hpp> 
-#include <boost/property_tree/json_parser.hpp>
-#include <boost/foreach.hpp>
 
 Session::Session(int sessionID, boost::asio::io_context& io_service, ChatServer* serverPtr)
 	:_socket(io_service),
@@ -58,29 +56,46 @@ void  Session::ReceiveHandle(const boost::system::error_code& error, size_t byte
 		int readData = 0;
 
 		////TODO : JSON파싱부분.함수화 시키기
-
+		//역직렬화
 		std::string temp;
 		temp = _receiveBuffer.data();
 		std::cout << temp << std::endl;
 
-		boost::property_tree::ptree pt;
+		boost::property_tree::ptree ptRecv;
 		std::istringstream is(temp);
-		boost::property_tree::read_json(is, pt);
+		boost::property_tree::read_json(is, ptRecv);
 
-		boost::property_tree::ptree& children = pt.get_child("header");
+		boost::property_tree::ptree& children = ptRecv.get_child("header");
 		int headerIndex = children.get<int>("packetIndex");
 		int packetSize = children.get<int>("packetSize");
 
-		int jsonData1 = pt.get<int>("Data1");
-		std::string jsonData2 = pt.get<std::string>("Data2");
+		int jsonData1 = ptRecv.get<int>("Data1");
+		std::string jsonData2 = ptRecv.get<std::string>("Data2");
 
-		std::cout << "1댑스접근 Data1 : " << jsonData1 << std::endl;
-		std::cout << "1댑스접근 Data2 : " << jsonData2 << std::endl;
-		std::cout << "2댑스접근(header->index) : " << headerIndex << std::endl;
-		std::cout << "2댑스접근(header->packetSize) : " << packetSize << std::endl;
+		//직렬화
+		TEST_PACKET testPakcet;
+		testPakcet.header.packetIndex = 2;
+		testPakcet.header.packetSize = sizeof(TEST_PACKET);
+		testPakcet.Data1 = 1000;
+		testPakcet.Data2 = "mesaage";
 
+		//{"header":{"packetIndex":1,"packetSize":10},"Data1":2,"Data2":"Hi"}
+		std::string recvTemp;
 
+		boost::property_tree::ptree ptSend;
+		boost::property_tree::ptree ptSendHeader;
+		ptSendHeader.put<int>("packetIndex",testPakcet.header.packetIndex);
+		ptSendHeader.put<int>("packetSize",testPakcet.header.packetSize);
+		ptSend.add_child("header", ptSendHeader);
+		ptSend.put<int>("Data1", testPakcet.Data1);
+		ptSend.put<std::string>("Data2", testPakcet.Data2);
 
+		std::ostringstream os(recvTemp);
+		boost::property_tree::write_json(os, ptSend, false);
+		std::string sendStr = os.str();
+		std::cout << sendStr << std::endl;
+		PostSend(false, std::strlen(sendStr.c_str()), (char*)sendStr.c_str());
+		
 		/////////
 
 		while (packetData > 0)
@@ -93,7 +108,7 @@ void  Session::ReceiveHandle(const boost::system::error_code& error, size_t byte
 
 			PACKET_HEADER* header = (PACKET_HEADER*)&_packetBuffer[readData];
 
-			if (header->packetSize <= packetData)
+			if (header->packetSize >= packetData)
 			{
 				_serverPtr->ProcessPacket(_sessionId, &_packetBuffer[readData]);
 

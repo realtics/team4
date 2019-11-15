@@ -1,3 +1,5 @@
+//19.11.15일 작업시작
+
 #include "ChattingServer.h"
 
 const int MAX_SESSION_COUNT = 100;

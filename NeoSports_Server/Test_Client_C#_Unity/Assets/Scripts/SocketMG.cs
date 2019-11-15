@@ -63,7 +63,7 @@ public class SocketMG : MonoBehaviour
         var data = JsonConvert.DeserializeObject<TempPacket>(recvData);
         if (data.header.packetIndex == 2)
         {
-            var packetTemp = JsonConvert.DeserializeObject<JsonExample>(json);
+            var packetTemp = JsonConvert.DeserializeObject<JsonExample>(recvData);
             Debug.Log(packetTemp.Data1);
             Debug.Log(packetTemp.Data2);
         }

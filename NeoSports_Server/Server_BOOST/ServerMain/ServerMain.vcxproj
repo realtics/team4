@@ -25,6 +25,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ChattingServer.h" />
+    <ClInclude Include="Json.h" />
     <ClInclude Include="Protocol.h" />
     <ClInclude Include="ServerSession.h" />
   </ItemGroup>
