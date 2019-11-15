@@ -16,15 +16,12 @@ public class BasketAIThrowBall : MonoBehaviour
     public float aiActiveFrequency;
     public GameObject directionArrow;
 
-    private Collider2D _ownCollider;
     private float _powerSize;
     private float _arrowScaleOffset;
     private float _powerSizeOffset;
 
-
     void Start()
     {
-        _ownCollider = GetComponent<Collider2D>();
         _powerSize = 0.0f;
         _powerSizeOffset = 0.1f;
         _arrowScaleOffset = 3.0f;
@@ -72,6 +69,7 @@ public class BasketAIThrowBall : MonoBehaviour
         Vector2 direction = directionArrow.transform.rotation * new Vector2(aiFireSpeed, 0.0f) * _powerSize;
         _powerSize = 0.0f;
 
+        //Fix Me : 프리팹 동적로드 하지말고 캐싱하도록 
         GameObject toInstance = Resources.Load<GameObject>("Prefabs/BasketPrefabs/AIThrowBall");
         GameObject cannon = Instantiate(toInstance, transform.position, transform.rotation);
         cannon.GetComponent<BasketPlayerCannon>().ShotToTarget(direction);

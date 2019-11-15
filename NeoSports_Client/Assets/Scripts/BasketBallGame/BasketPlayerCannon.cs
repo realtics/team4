@@ -4,7 +4,6 @@ using UnityEngine;
 /*각 계산하는 부분 인터넷 참고 하였습니다.*/
 public class BasketPlayerCannon : MonoBehaviour
 {
-    // Start is called before the first frame update
     private Rigidbody2D _rb2d;
     private Vector3 _prevPosition;
 

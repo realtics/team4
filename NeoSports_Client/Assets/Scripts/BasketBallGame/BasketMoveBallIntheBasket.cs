@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class BasketMoveBallIntheBasket : MonoBehaviour
 {
-    // Start is called before the first frame update
     public GameObject goalInBallManager;
 
     private void OnTriggerEnter2D(Collider2D collision)

@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class BasketPlayerMove : MonoBehaviour
 {
-    // Start is called before the first frame update
-
     public float speed;
 
     void Update()

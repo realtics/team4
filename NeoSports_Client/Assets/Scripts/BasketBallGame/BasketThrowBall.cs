@@ -4,10 +4,11 @@ using UnityEngine;
 /*각 계산하는 부분 인터넷 참고 하였습니다.*/
 public class BasketThrowBall : MonoBehaviour
 {
-    // Start is called before the first frame update
-
     public float fireSpeed;
     public GameObject directionArrow;
+
+    const float angleMax = 1.6f;
+    const float angleMin = 0.7f;
 
     private Collider2D _ownCollider;
     private bool _isTargetting;
@@ -45,7 +46,7 @@ public class BasketThrowBall : MonoBehaviour
             float angle = Mathf.Atan2(transform.position.y - target.y, transform.position.x - target.x);
 
 
-            if (angle < 1.6f && angle > -0.7f)
+            if (angle < angleMax && angle > angleMin)
             {
                 directionArrow.transform.rotation = Quaternion.AngleAxis(angle * Mathf.Rad2Deg, transform.forward);
             }
@@ -71,6 +72,5 @@ public class BasketThrowBall : MonoBehaviour
         GameObject cannon = Instantiate(toInstance, transform.position, transform.rotation);
         cannon.GetComponent<BasketPlayerCannon>().ShotToTarget(direction);
     }
-
 
 }

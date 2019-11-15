@@ -5,45 +5,59 @@ using UnityEngine;
 public class BasketMove : MonoBehaviour
 {
     public float moveSpeed;
+    public float changeDirectionSecond;
+
+    enum EMoveDirection
+    {
+        Left = -1,
+        Right = 1,
+    }
+    const int ChangeDirectionNumber = -1;
+
     private float _changeTimer;
-    private float _direction;
-    //public Rigidbody2D _rigidbody2D; ToDo  : R&D better Way
+    private float _countSec;
+    private int _direction;
+
 
     void Start()
     {
-        _direction = -1;
-        StartCoroutine(MoveBasket());
+        _countSec = 0.1f;
+        _direction = (int)EMoveDirection.Left;
+
+        StartCoroutine(DecideMoveDirection());
     }
+
     void FixedUpdate()
     {
         MoveBasketAuto();
     }
 
-    IEnumerator MoveBasket()
+    IEnumerator DecideMoveDirection()
     {
         while (true)
         {
-            ChangeDiretion();
-            //MoveBasketAuto();
-            yield return new WaitForSeconds(0.1f);
+            TickChangeTimer();
+            ChangeDirection();
+            yield return new WaitForSeconds(_countSec);
         }
     }
 
     void MoveBasketAuto()
     {
-        //FixMe
         transform.Translate(new Vector3(_direction * Time.deltaTime * moveSpeed, 0.0f, 0.0f));
-        //_rigidbody2D.AddForce(new Vector2(_direction * Time.deltaTime * moveSpeed, 0.0f));
-        //ToDo: R & D better Way
     }
 
-    void ChangeDiretion()
+    void ChangeDirection()
     {
-        _changeTimer += 0.1f;
-        if (_changeTimer >= 5.0f)
+        if (_changeTimer >= changeDirectionSecond)
         {
-            _direction *= -1;
+            _direction *= ChangeDirectionNumber;
             _changeTimer = 0.0f;
         }
+    }
+
+    void TickChangeTimer()
+    {
+        _changeTimer += _countSec;
     }
 }

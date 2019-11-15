@@ -5,14 +5,12 @@ using UnityEngine;
 public class BasketBallManager : MonoBehaviour
 {
     public GameObject ballManager;
-    public float platTimeLimit;
+    public float playTimerLimit;
 
-    private GameObject[] _goalInArr;
     private float _playTime;
 
     void Start()
     {
-        //_goalInArr = ballManager.GetComponentsInChildren<GameObject>();
         StartCoroutine(SecondCount());
     }
 
@@ -22,7 +20,7 @@ public class BasketBallManager : MonoBehaviour
         {
             _playTime += 1.0f;
 
-            if (_playTime >= platTimeLimit)
+            if (_playTime >= playTimerLimit)
             {
                 EndPlayGame();
                 yield break;

@@ -5,11 +5,11 @@ using UnityEngine.UI;
 
 public class BasketCalculateScore : MonoBehaviour
 {
-    // Start is called before the first frame update
     public Text leftText;
     public Text rightText;
 
     private List<Transform> _goalList = new List<Transform>();
+
     void Start()
     {
         StartCoroutine(SecondCount());
@@ -26,6 +26,7 @@ public class BasketCalculateScore : MonoBehaviour
 
     void UpdateScore()
     {
+        //Fix Me : GetComponets 쓰지 않고 스코어 업데이트 하도록.
         GetComponentsInChildren<Transform>(true, _goalList);
 
         if (_goalList.Count != 0)
