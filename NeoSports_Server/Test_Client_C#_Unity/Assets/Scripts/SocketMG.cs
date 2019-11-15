@@ -43,7 +43,7 @@ public class SocketMG : MonoBehaviour
         sock.Connect(new IPEndPoint(IPAddress.Parse("127.0.0.1"), 31400));
 
         //TODO : 패킷을 제이슨으로 직렬화,역직렬화 시키는 함수 작성하기
-        var a = new PACKET_HEADER { packetIndex = 1, packetSize = 10 };
+        var a = new PACKET_HEADER { packetIndex = 101, packetSize = 10 };
         var p = new JsonExample { header = a, Data1 = 2, Data2 = "Hi" };
         string json;
         json = JsonConvert.SerializeObject(p); //객체를 json직렬화

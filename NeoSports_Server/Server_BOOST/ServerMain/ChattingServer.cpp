@@ -55,6 +55,9 @@ void ChatServer::ProcessPacket(const int sessionID, const char* data)
 
 	switch (header->packetIndex)
 	{
+	case 101:
+		std::cout << "”î" << std::endl;
+		break;
 	case REQ_IN:
 	{
 		PACKET_REQ_IN* packet = (PACKET_REQ_IN*)data;
@@ -83,7 +86,7 @@ void ChatServer::ProcessPacket(const int sessionID, const char* data)
 
 		for (int i = 0; i < totalSessioncount; i++)
 		{
-			if (_sessionVec[i]->Socket().is_open());
+			if (_sessionVec[i]->Socket().is_open())
 			{
 				_sessionVec[i]->PostSend(false, sendPacket.packetSize, (char*)&sendPacket);
 			}

@@ -26,7 +26,7 @@ public:
 private:
 	int _sessionId;
 	int _packetBufferMark;
-	char _packetBuffer[MAX_RECEIVE_BUFFER_LEN*2];
+	char _packetBuffer[MAX_RECEIVE_BUFFER_LEN * 2];
 
 	boost::asio::ip::tcp::socket _socket;
 	std::array<char, MAX_RECEIVE_BUFFER_LEN> _receiveBuffer;
@@ -38,5 +38,8 @@ private:
 
 	void WriteHandle(const boost::system::error_code& error, size_t bytesTransferred);
 	void ReceiveHandle(const boost::system::error_code& error, size_t bytesTransferred);
+
+	//template<typename T>
+	char* DeSerializationJson(char* jsonStr);
 };
 
