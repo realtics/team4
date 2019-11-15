@@ -3,7 +3,17 @@ guid: c3ff027349e819a4485f724e1a4a6ecd
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - prefStartGameTimerLabel: {fileID: 353811438957679088, guid: d23933f38d7a6ed42a27baeedde52cb4,
+      type: 3}
+  - prefElapseGameTimerLabel: {fileID: 8311254293252017862, guid: 3f7f1b36feaabe64f83df2446f3eb756,
+      type: 3}
+  - prefWinnerNoticeLabel: {fileID: 687595418094598760, guid: fcdfd6e491aa36d438fdf66a132ca968,
+      type: 3}
+  - prefLooserNoticeLabel: {fileID: 5699994815698666669, guid: 104367a25478bd646b673b26e07ec340,
+      type: 3}
+  - prefBackButton: {fileID: 377728081349139819, guid: 9ee04a9337a8a1e45ba2a9556252c14f,
+      type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
