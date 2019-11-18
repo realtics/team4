@@ -189,7 +189,7 @@ namespace JumpRopeGame
 				Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 				if (IsKeyDownButtonJump(ray))
 				{
-					_leftCharacter.StartJump();
+                    _leftCharacter.StartJump();
 					CheckJumpAtSuccessZone();
 				}
 
