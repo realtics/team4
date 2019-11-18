@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CommonGameUIManager : Singleton<CommonGameUIManager>
+public class CommonUIManager : Singleton<CommonUIManager>
 {
 	enum ENoticeLabelChildIndex
 	{
@@ -46,10 +46,10 @@ public class CommonGameUIManager : Singleton<CommonGameUIManager>
 	/// <param name="canvas">유니티 부모 Canvas 오브젝트</param>
 	/// <param name="time">준비 시간</param>
 	/// <param name="callBack">타이머가 끝났을때 호출되는 콜백 함수</param>
-	public void CreateStartGameTimer(Transform canvas, float time, StartGameCallBack callBack)
+	public void CreateStartGameTimer(GameObject canvas, float time, StartGameCallBack callBack)
 	{
-		_startGameTimerLabel = Instantiate(prefStartGameTimerLabel, canvas);
-		_startGameTimerText = gameObject.GetComponentInChildren<Text>();
+		_startGameTimerLabel = Instantiate(prefStartGameTimerLabel, canvas.transform);
+		_startGameTimerText = _startGameTimerLabel.GetComponentInChildren<Text>();
 		_startGameTime = time;
 		_startGameCallBack = callBack;
 
@@ -81,9 +81,9 @@ public class CommonGameUIManager : Singleton<CommonGameUIManager>
 	/// 게임 시작 후 흐른 시간을 보여주는 UI 호출
 	/// </summary>
 	/// <param name="canvas">유니티 부모 Canvas 오브젝트</param>
-	public void CreateElapseGameTimer(Transform canvas)
+	public void CreateElapseGameTimer(GameObject canvas)
 	{
-		_elapseGameTimerLabel = Instantiate(prefElapseGameTimerLabel, canvas);
+		_elapseGameTimerLabel = Instantiate(prefElapseGameTimerLabel, canvas.transform);
 		_elapseGameTimerText = _elapseGameTimerLabel.GetComponentInChildren<Text>();
 
 		_elapseGameTime = 0.0f;

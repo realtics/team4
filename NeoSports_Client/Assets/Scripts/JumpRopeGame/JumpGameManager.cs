@@ -30,12 +30,10 @@ namespace JumpRopeGame
 
 		#region public Variable
 		// UI Object
+		public GameObject rootCanvas;
 		public GameObject timingBarBackUi;
 		public GameObject timingBarSuccessZoneUi;
 		public GameObject timingBarPointerUi;
-		public GameObject startGameTimerUi;
-		public GameObject elapseGameTimerUi;
-		public GameObject winnerLabelUi;
 		public GameObject jumpButtonUi;
 
 		// Game Object
@@ -89,9 +87,6 @@ namespace JumpRopeGame
 			_timingBarSuccessZoneTransform = timingBarSuccessZoneUi.GetComponent<RectTransform>();
 			_timingBarPointerTransform = timingBarPointerUi.GetComponent<RectTransform>();
 
-			_startGameTimerText = startGameTimerUi.GetComponent<Text>();
-			_elapseGameTimerText = elapseGameTimerUi.GetComponent<Text>();
-
 			_jumpButtonCollider = jumpButtonUi.GetComponent<BoxCollider>();
 		}
 
@@ -107,9 +102,9 @@ namespace JumpRopeGame
 				case EGameState.Playing:
 					UpdateElapseGameTimer();
 
-					CheckJumpCompleteAtSuccessZone();
 					UpdateTimingBarPointerPosition();
 					UpdateTimingBarPointerDirection();
+					CheckJumpCompleteAtSuccessZone();
 
 					InputTouchScreen();
 					break;
@@ -123,31 +118,12 @@ namespace JumpRopeGame
 		#region Update Timer
 		void UpdateStartGameTimer()
 		{
-			_startGameTimer -= Time.deltaTime;
-
-			if (_startGameTimer > 1.0f)
-			{
-				_startGameTimerText.text = ((int)_startGameTimer).ToString();
-			}
-			else if (_startGameTimer > 0.0f)
-			{
-				_startGameTimerText.text = GameStartPrepareTimeStartText;
-			}
-			else
-			{
-				_gameState = EGameState.Playing;
-
-				GameObject mUIStartGameTimerParent = startGameTimerUi.transform.parent.gameObject;
-				mUIStartGameTimerParent.SetActive(false);
-				elapseGameTimerUi.SetActive(true);
-			}
+			CommonUIManager.Instance.UpdateStartGameTimer();
 		}
 
 		void UpdateElapseGameTimer()
 		{
-			_elpaseGameTimer += Time.deltaTime;
-
-			_elapseGameTimerText.text = ((int)_elpaseGameTimer).ToString();
+			CommonUIManager.Instance.UpdateElapseGameTimer();
 		}
 		#endregion
 
@@ -245,16 +221,25 @@ namespace JumpRopeGame
 		}
 		#endregion
 
+
 		public void StartGame()
 		{
 			_gameState = EGameState.Prepare;
+			CommonUIManager.Instance.CreateStartGameTimer(rootCanvas, GameStartPrepareTime, PlayPhaseCallBack);
+		}
+
+		public void PlayPhaseCallBack()
+		{
+			_gameState = EGameState.Playing;
+
+			CommonUIManager.Instance.CreateElapseGameTimer(rootCanvas);
 		}
 
 		void GameOver()
 		{
 			_gameState = EGameState.GameOver;
 
-			winnerLabelUi.transform.parent.gameObject.SetActive(true);
+			CommonUIManager.Instance.CreateWinnerNotice(rootCanvas.transform, "플레이어 캐릭터");
 		}
 
 	}

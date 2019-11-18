@@ -4,22 +4,14 @@ using UnityEngine;
 
 public class BackgroundManager : Singleton<BackgroundManager>
 {
-	const string PrefabCloudPath = "Prefabs/JumpRopeGame/Prefab_Cloud";
-
 	const float GenerateCloudIntervalMin = 1.0f;
 	const float GenerateCloudIntervalMax = 5.0f;
 
 	float GenerateCloudCycle = 0.0f;
 	float GenerateCloudTimer = 0.0f;
 
-	GameObject prefCloud;
-
+	public GameObject prefCloud;
 	public GameObject BackgroundCloudGroup;
-
-	private void Awake()
-	{
-		prefCloud = Resources.Load<GameObject>(PrefabCloudPath);
-	}
 
 	private void Update()
 	{
