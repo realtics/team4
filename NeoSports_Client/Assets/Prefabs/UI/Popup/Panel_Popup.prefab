@@ -154,7 +154,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 4856514685353556047, guid: f955ffb2ac3fc35439763445f619e3c7,
+          type: 3}
         m_MethodName: ClickEventPopup
         m_Mode: 1
         m_Arguments:
@@ -360,7 +361,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 4856514685353556047, guid: f955ffb2ac3fc35439763445f619e3c7,
+          type: 3}
         m_MethodName: ClickEventPopup
         m_Mode: 1
         m_Arguments:
@@ -652,7 +654,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1179659508631713167
 RectTransform:
   m_ObjectHideFlags: 0
@@ -904,7 +906,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 4856514685353556047, guid: f955ffb2ac3fc35439763445f619e3c7,
+          type: 3}
         m_MethodName: ClosePopup
         m_Mode: 1
         m_Arguments:

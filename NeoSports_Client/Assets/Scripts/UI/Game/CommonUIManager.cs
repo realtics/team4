@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class CommonUIManager : Singleton<CommonUIManager>
 {
@@ -15,6 +16,7 @@ public class CommonUIManager : Singleton<CommonUIManager>
 	public delegate void StartGameCallBack();
 
 	const string StartGameText = "게임 시작!";
+	const string SureToChangeMainMenuScene = "메인 메뉴로 나가시겠습니까?";
 	readonly Vector2 ElapseGameTimerInitPosition = new Vector2(0, 190);
 
 	public GameObject prefStartGameTimerLabel;
@@ -138,5 +140,19 @@ public class CommonUIManager : Singleton<CommonUIManager>
 		Destroy(_looserNoticeLabel);
 	}
 	#endregion
+
+	public void ShowExitPopup()
+	{
+		PopupManager.PopupData data;
+		data.text = SureToChangeMainMenuScene;
+		data.okFlag = false;
+		data.callBack = SceneChangeToMainMenu;
+		PopupManager.Instance.ShowPopup(data);
+	}
+
+	void SceneChangeToMainMenu()
+	{
+		SceneManager.LoadScene(SceneName.MenuSceneName);
+	}
 
 }
