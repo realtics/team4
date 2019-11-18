@@ -3,11 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GallaryManager : Singleton<PopupManager>
+public class GallaryManager : Singleton<GallaryManager>
 {
-
-	const string PrefButtonGallaryCharPath = "Prefabs/UI/Prefab_Button_Gallary_Char";
-	const string PrefButtonGallaryEquipPath = "Prefabs/UI/Prefab_Button_Gallary_Equip";
 
 	public enum EGallaryTab
 	{
@@ -26,8 +23,8 @@ public class GallaryManager : Singleton<PopupManager>
 	Dictionary<EGallaryTab, GameObject> tabDic;
 
 	// Scroll View Prefab
-	GameObject prefButtonGallaryChar;
-	GameObject prefButtonGallaryEquip;
+	public GameObject prefButtonGallaryChar;
+	public GameObject prefButtonGallaryEquip;
 
 	public GameObject panelGallary;
 
@@ -47,17 +44,12 @@ public class GallaryManager : Singleton<PopupManager>
 	public GameObject labelStatusAgility;
 	public GameObject labelStatusLuck;
 
-	private void Awake()
+	void Start()
 	{
-		DontDestroyOnLoad(this);
-
 		tabDic = new Dictionary<EGallaryTab, GameObject>();
 
 		tabDic.Add(EGallaryTab.Character, scrollViewChar);
 		tabDic.Add(EGallaryTab.Equipment, scrollViewEquip);
-
-		prefButtonGallaryChar = Resources.Load<GameObject>(PrefButtonGallaryCharPath);
-		prefButtonGallaryEquip = Resources.Load<GameObject>(PrefButtonGallaryEquipPath);
 
 		EnableTab(EGallaryTab.Character);
 	}

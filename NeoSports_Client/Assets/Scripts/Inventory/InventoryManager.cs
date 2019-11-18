@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Newtonsoft.Json;
 
-public class InventoryManager : Singleton<PopupManager>
+public class InventoryManager : Singleton<InventoryManager>
 {
 	const string CharacterDataName = "CharacterData";
 	const string EquipmentDataName = "EquipmentData";
@@ -20,6 +20,11 @@ public class InventoryManager : Singleton<PopupManager>
 
 	private void Awake()
 	{
+		if(instance != null)
+		{
+			Destroy(gameObject);
+			return;
+		}
 		DontDestroyOnLoad(this);
 
 		CharacterInfos = new Dictionary<CharacterInfo.EType, CharacterInfo>();

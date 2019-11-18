@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PanelManager : Singleton<PopupManager>
+public class PanelManager : Singleton<PanelManager>
 {
 
     public enum EPanel
@@ -23,16 +23,15 @@ public class PanelManager : Singleton<PopupManager>
     public GameObject panelOption;
     public GameObject panelCredit;
 
-    private void Awake()
-    {
-        DontDestroyOnLoad(this);
 
-        InitPanelList();
+	void Start()
+	{
+		InitPanelList();
 
-        EnablePanel(EPanel.Main);
-    }
+		EnablePanel(EPanel.Main);
+	}
 
-    void InitPanelList()
+	void InitPanelList()
     {
         _panelDic = new Dictionary<EPanel, GameObject>();
 

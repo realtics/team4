@@ -14,7 +14,7 @@ public class ResourceManager : Singleton<ResourceManager>
 
 	private void Awake()
 	{
-		DontDestroyOnLoad(this);
+		//DontDestroyOnLoad(this);
 	}
 
 	public string ReadJsonDataString(string dataPath)

@@ -6,14 +6,14 @@ using UnityEngine.SceneManagement;
 public class PlayManager : Singleton<PlayManager>
 {
 
-	private void Awake()
-	{
-		DontDestroyOnLoad(this);
-	}
-
-	public void StartRopeGame()
+	public void StartRopePullGame()
 	{
 		SceneManager.LoadScene(SceneName.RopeGameSceneName);
+	}
+
+	public void StartJumpRopeGame()
+	{
+		SceneManager.LoadScene(SceneName.JumpRopeGameSceneName);
 	}
 
 }

@@ -11,4 +11,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/RopeGameScene.unity
     guid: 74eb6bc893467db459c6bb997b22f42d
+  - enabled: 1
+    path: Assets/Scenes/JumpRopeGameScene.unity
+    guid: 5c139aada77bfa1458b1fcd0ee5200b8
+  - enabled: 1
+    path: Assets/Scenes/BaksetBallGameScene.unity
+    guid: 85ab92cd911cdb54a87fe288cce5503e
   m_configObjects: {}
