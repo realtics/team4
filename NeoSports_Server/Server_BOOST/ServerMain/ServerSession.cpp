@@ -51,38 +51,12 @@ void  Session::ReceiveHandle(const boost::system::error_code& error, size_t byte
 	}
 	else
 	{
-		////TODO : JSON파싱부분.함수화 시키기
-		//역직렬화
-		char* temp = DeSerializationJson(_receiveBuffer.data());
-		memcpy(&_packetBuffer[_packetBufferMark], temp, bytesTransferred);
-
+		std::cout << "받은 JSON : " << std::endl;
+		std::cout << _receiveBuffer.data() << std::endl;
+		DeSerializationJson(_receiveBuffer.data());
 		int packetData = _packetBufferMark + bytesTransferred;
 		int readData = 0;
-
-		//직렬화
-		/*TEST_PACKET testPakcet;
-		testPakcet.header.packetIndex = 2;
-		testPakcet.header.packetSize = sizeof(TEST_PACKET);
-		testPakcet.Data1 = 1000;
-		testPakcet.Data2 = "mesaage";
-
-		std::string recvTemp;
-
-		boost::property_tree::ptree ptSend;
-		boost::property_tree::ptree ptSendHeader;
-		ptSendHeader.put<int>("packetIndex",testPakcet.header.packetIndex);
-		ptSendHeader.put<int>("packetSize",testPakcet.header.packetSize);
-		ptSend.add_child("header", ptSendHeader);
-		ptSend.put<int>("Data1", testPakcet.Data1);
-		ptSend.put<std::string>("Data2", testPakcet.Data2);
-
-		std::ostringstream os(recvTemp);
-		boost::property_tree::write_json(os, ptSend, false);
-		std::string sendStr = os.str();
-		std::cout << sendStr << std::endl;
-		PostSend(false, std::strlen(sendStr.c_str()), (char*)sendStr.c_str());*/
-		
-		/////////
+		PACKET_HEADER* header = (PACKET_HEADER*)&_packetBuffer[readData];
 
 		while (packetData > 0)
 		{
@@ -91,9 +65,7 @@ void  Session::ReceiveHandle(const boost::system::error_code& error, size_t byte
 				break;
 			}
 
-			PACKET_HEADER* header = (PACKET_HEADER*)&_packetBuffer[readData];
-
-			if (header->packetSize >= packetData)
+			if (header->packetSize <= packetData)
 			{
 				_serverPtr->ProcessPacket(_sessionId, &_packetBuffer[readData]);
 
@@ -174,8 +146,7 @@ const char* Session::GetName()
 }
 
 
-//template<typename T>
-char* Session::DeSerializationJson(char* jsonStr)
+void Session::DeSerializationJson(char* jsonStr)
 {
 	boost::property_tree::ptree ptRecv;
 	std::istringstream is(jsonStr);
@@ -186,18 +157,48 @@ char* Session::DeSerializationJson(char* jsonStr)
 
 	switch (headerIndex)
 	{
-	case 101:
+	case 101: //TEST_PACEKT
 	{
-		TEST_PACKET* packet = new TEST_PACKET;
-		packet->header.packetIndex = 101;
-		packet->header.packetSize = children.get<int>("packetSize");
-		packet->Data1 = ptRecv.get<int>("Data1");
-		packet->Data2 = ptRecv.get<std::string>("Data2");
-
-		char* p = reinterpret_cast<char*>(&packet);
-		std::cout <<p << std::endl;
-		return (char*)&packet;
+		TEST_PACKET packet;
+		packet.header.packetIndex = headerIndex;
+		packet.header.packetSize = children.get<int>("packetSize");
+		packet.Data1 = ptRecv.get<int>("Data1");
+		packet.Data2 = ptRecv.get<std::string>("Data2");
+		memcpy(&_packetBuffer[_packetBufferMark], (char*)&packet, sizeof(packet));
 	}
 
 	}
 }
+
+std::string Session::SerializationJson(int packetIndex, const char* packet)
+{
+	switch (packetIndex)
+	{
+	case 101: //TEST_PACEKT
+	{
+		TEST_PACKET* testPacket = new TEST_PACKET;
+		memcpy(&testPacket, &packet, sizeof(TEST_PACKET));
+
+		boost::property_tree::ptree ptSend;
+		boost::property_tree::ptree ptSendHeader;
+		ptSendHeader.put<int>("packetIndex", testPacket->header.packetIndex);
+		ptSendHeader.put<int>("packetSize", sizeof(TEST_PACKET));
+		ptSend.add_child("header", ptSendHeader);
+		ptSend.put<int>("Data1", testPacket->Data1);
+		ptSend.put<std::string>("Data2", testPacket->Data2);
+
+		std::string recvTemp;
+		std::ostringstream os(recvTemp);
+		boost::property_tree::write_json(os, ptSend, false);
+		std::string sendStr = os.str();
+		std::cout << sendStr << std::endl;
+
+		return sendStr;
+	}
+	break;
+
+	default:
+		break;
+	}
+}
+

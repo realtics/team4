@@ -39,7 +39,9 @@ private:
 	void WriteHandle(const boost::system::error_code& error, size_t bytesTransferred);
 	void ReceiveHandle(const boost::system::error_code& error, size_t bytesTransferred);
 
-	//template<typename T>
-	char* DeSerializationJson(char* jsonStr);
+	void DeSerializationJson(char* jsonStr);
+
+public:
+	std::string SerializationJson(int packetIndex, const char* pakcet);
 };
 
