@@ -15,7 +15,7 @@ public class CommonUIManager : Singleton<CommonUIManager>
 	public delegate void StartGameCallBack();
 
 	const string StartGameText = "게임 시작!";
-	readonly Vector2 ElapseGameTimerInitPosition = new Vector2(0, 185);
+	readonly Vector2 ElapseGameTimerInitPosition = new Vector2(0, 190);
 
 	public GameObject prefStartGameTimerLabel;
 	public GameObject prefElapseGameTimerLabel;
