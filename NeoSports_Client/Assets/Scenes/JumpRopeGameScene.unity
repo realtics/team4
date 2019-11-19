@@ -982,6 +982,26 @@ PrefabInstance:
       propertyPath: m_Name
       value: Manager_Popup
       objectReference: {fileID: 0}
+    - target: {fileID: 4856514685353556047, guid: f955ffb2ac3fc35439763445f619e3c7,
+        type: 3}
+      propertyPath: popupPanel
+      value: 
+      objectReference: {fileID: 136536036}
+    - target: {fileID: 4856514685353556047, guid: f955ffb2ac3fc35439763445f619e3c7,
+        type: 3}
+      propertyPath: popupGroupYesNo
+      value: 
+      objectReference: {fileID: 1910044139}
+    - target: {fileID: 4856514685353556047, guid: f955ffb2ac3fc35439763445f619e3c7,
+        type: 3}
+      propertyPath: popupGroupOk
+      value: 
+      objectReference: {fileID: 1694676907}
+    - target: {fileID: 4856514685353556047, guid: f955ffb2ac3fc35439763445f619e3c7,
+        type: 3}
+      propertyPath: popupNotifyText
+      value: 
+      objectReference: {fileID: 40815862}
     - target: {fileID: 4856514685353556046, guid: f955ffb2ac3fc35439763445f619e3c7,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1037,26 +1057,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4856514685353556047, guid: f955ffb2ac3fc35439763445f619e3c7,
-        type: 3}
-      propertyPath: popupPanel
-      value: 
-      objectReference: {fileID: 136536036}
-    - target: {fileID: 4856514685353556047, guid: f955ffb2ac3fc35439763445f619e3c7,
-        type: 3}
-      propertyPath: popupGroupYesNo
-      value: 
-      objectReference: {fileID: 1910044139}
-    - target: {fileID: 4856514685353556047, guid: f955ffb2ac3fc35439763445f619e3c7,
-        type: 3}
-      propertyPath: popupGroupOk
-      value: 
-      objectReference: {fileID: 1694676907}
-    - target: {fileID: 4856514685353556047, guid: f955ffb2ac3fc35439763445f619e3c7,
-        type: 3}
-      propertyPath: popupNotifyText
-      value: 
-      objectReference: {fileID: 40815862}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f955ffb2ac3fc35439763445f619e3c7, type: 3}
 --- !u!1 &435994762
