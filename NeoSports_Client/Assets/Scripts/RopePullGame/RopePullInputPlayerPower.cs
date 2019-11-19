@@ -9,7 +9,6 @@ namespace RopePullGame
         [HideInInspector]
         public float PullPower { get; set; }
         public float strength;
-        public GameObject tapParticleSystem;
 
         void Update()
         {
