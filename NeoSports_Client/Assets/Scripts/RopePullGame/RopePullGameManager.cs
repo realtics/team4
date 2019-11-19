@@ -17,12 +17,6 @@ namespace RopePullGame
         };
         ESceneState sceneState;
 
-        GameObject winner;
-        GameObject loser;
-
-        float startTimerSecond;
-        float playTime;
-
         public GameObject playerableObjects;
         public Text playTimeText;
         public Text startCountingTimeText;
@@ -30,13 +24,20 @@ namespace RopePullGame
         public Text rightText;
         public Button restartButton;
 
-        RopePullMoveRopeWithKey _RopePullMove;
-        Character[] _Characters;
+        GameObject _winner;
+        GameObject _loser;
+
+        float startTimerSecond;
+        float playTime;
+
+        RopePullMoveRopeWithKey _ropePullMove;
+        Character[] _characters;
+        RunnigEffect[] _runnigEffects;
 
         void Start()
         {
             sceneState = ESceneState.Start;
-            
+
             InitTimerValue();
             CachingValue();
 
@@ -56,8 +57,14 @@ namespace RopePullGame
 
         void CachingValue()
         {
-            _RopePullMove = playerableObjects.GetComponent<RopePullMoveRopeWithKey>();
-            _Characters = playerableObjects.GetComponentsInChildren<Character>();
+            _ropePullMove = playerableObjects.GetComponent<RopePullMoveRopeWithKey>();
+            _characters = playerableObjects.GetComponentsInChildren<Character>();
+            _runnigEffects = playerableObjects.GetComponentsInChildren<RunnigEffect>();
+
+            foreach (RunnigEffect effect in _runnigEffects)
+            {
+                effect.EndEffect();
+            }
         }
 
         IEnumerator SecondCount()
@@ -71,18 +78,18 @@ namespace RopePullGame
             }
         }
 
-        public void NotifyWinner(Transform _winner)
+        public void NotifyWinner(Transform winner)
         {
             SetWinnerGame();
             SetResultText();
-            winner = _winner.gameObject;
+            _winner = winner.gameObject;
         }
 
-        public void NotifyLoser(Transform _loser)
+        public void NotifyLoser(Transform loser)
         {
             SetWinnerGame();
             SetResultText();
-            loser = _loser.gameObject;
+            _loser = loser.gameObject;
         }
 
         void UpdateScene()
@@ -142,27 +149,29 @@ namespace RopePullGame
         {
             if (playTime >= 10.0f)
             {
-                _RopePullMove.SetFeverTime();
+                _ropePullMove.SetFeverTime();
             }
         }
 
         void StartPlayGame()
         {
             sceneState = ESceneState.Play;
+            _winner = null;
+            _loser = null;
             SetObjectsMove(true);
         }
 
         public void RestartPlayGame()
         {
             sceneState = ESceneState.Start;
-            winner = null;
-            loser = null;
+            _winner = null;
+            _loser = null;
             leftText.text = "Left";
             rightText.text = "Right";
             InitTimerValue();
             SetRopeRestartPosition();
             UpdatePlayTime();
-            _RopePullMove.ResetFeverTime();
+            _ropePullMove.ResetFeverTime();
 
         }
 
@@ -179,24 +188,43 @@ namespace RopePullGame
 
         void SetObjectsMove(bool isMove)
         {
-            _RopePullMove.IsStart = isMove;
+            _ropePullMove.IsStart = isMove;
             SetCharactersAnimation(isMove);
+            SetRuningEffects(isMove);
         }
 
         void SetCharactersAnimation(bool isMove)
         {
             if (isMove)
             {
-                foreach (Character ch in _Characters)
+                foreach (Character ch in _characters)
                 {
                     ch.StartRun();
                 }
             }
             else
             {
-                foreach (Character ch in _Characters)
+                foreach (Character ch in _characters)
                 {
                     ch.EndRun();
+                }
+            }
+        }
+
+        void SetRuningEffects(bool isMove)
+        {
+            if (isMove)
+            {
+                foreach (RunnigEffect effect in _runnigEffects)
+                {
+                    effect.StartEffect();
+                }
+            }
+            else
+            {
+                foreach (RunnigEffect effect in _runnigEffects)
+                {
+                    effect.EndEffect();
                 }
             }
         }
@@ -209,7 +237,7 @@ namespace RopePullGame
 
         void SetResultText()
         {
-            if (winner == gameObject.CompareTag("LeftPlayer"))
+            if (_winner == gameObject.CompareTag("LeftPlayer"))
             {
                 leftText.text = "Left Winner";
                 rightText.text = "Right Loser";
