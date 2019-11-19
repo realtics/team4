@@ -23,9 +23,6 @@ namespace RopePullGame
         float startTimerSecond;
         float playTime;
 
-        //[SerializeField] Insepector에서 보이나 private 같은 효과
-        //protected GameObject onlyInspector;
-
         public GameObject playerableObjects;
         public Text playTimeText;
         public Text startCountingTimeText;
@@ -33,10 +30,16 @@ namespace RopePullGame
         public Text rightText;
         public Button restartButton;
 
+        RopePullMoveRopeWithKey _RopePullMove;
+        Character[] _Characters;
+
         void Start()
         {
             sceneState = ESceneState.Start;
+            
             InitTimerValue();
+            CachingValue();
+
             StartCoroutine(SecondCount());
         }
 
@@ -49,6 +52,12 @@ namespace RopePullGame
         {
             startTimerSecond = 6.0f;
             playTime = -5.0f;
+        }
+
+        void CachingValue()
+        {
+            _RopePullMove = playerableObjects.GetComponent<RopePullMoveRopeWithKey>();
+            _Characters = playerableObjects.GetComponentsInChildren<Character>();
         }
 
         IEnumerator SecondCount()
@@ -66,16 +75,16 @@ namespace RopePullGame
         {
             SetWinnerGame();
             SetResultText();
-            winner = _winner.gameObject;
             SetOtherPlyerResult(winner, "winner");
+            winner = _winner.gameObject;
         }
 
         public void NotifyLoser(Transform _loser)
         {
             SetWinnerGame();
             SetResultText();
-            loser = _loser.gameObject;
             SetOtherPlyerResult(loser, "loser");
+            loser = _loser.gameObject;
         }
 
         void UpdateScene()
@@ -135,7 +144,7 @@ namespace RopePullGame
         {
             if (playTime >= 10.0f)
             {
-                playerableObjects.GetComponent<RopePullMoveRopeWithKey>().SetFeverTime();
+                _RopePullMove.SetFeverTime();
             }
         }
 
@@ -155,7 +164,7 @@ namespace RopePullGame
             InitTimerValue();
             SetRopeRestartPosition();
             UpdatePlayTime();
-            playerableObjects.GetComponent<RopePullMoveRopeWithKey>().ResetFeverTime();
+            _RopePullMove.ResetFeverTime();
 
         }
 
@@ -172,7 +181,26 @@ namespace RopePullGame
 
         void SetObjectsMove(bool isMove)
         {
-            playerableObjects.GetComponent<RopePullMoveRopeWithKey>().IsStart = isMove;
+            _RopePullMove.IsStart = isMove;
+            SetCharactersAnimation(isMove);
+        }
+
+        void SetCharactersAnimation(bool isMove)
+        {
+            if (isMove)
+            {
+                foreach (Character ch in _Characters)
+                {
+                    ch.StartRun();
+                }
+            }
+            else
+            {
+                foreach (Character ch in _Characters)
+                {
+                    ch.EndRun();
+                }
+            }
         }
 
         void SetWinnerGame()

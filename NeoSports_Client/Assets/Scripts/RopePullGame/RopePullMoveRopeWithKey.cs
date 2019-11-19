@@ -20,8 +20,6 @@ namespace RopePullGame
             Speed = 0.0f;
             powerSum = 0.0f;
             feverPower = 1.0f;
-            LeftPlayer = transform.Find("LeftPlayer").gameObject;
-            RightPlayer = transform.Find("RightPlayer").gameObject;
         }
 
         void Update()
