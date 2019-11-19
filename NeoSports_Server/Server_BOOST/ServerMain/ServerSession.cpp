@@ -1,9 +1,9 @@
 #include "ServerSession.h"
-#include "ChattingServer.h"
+#include "Server.h"
 #include "Json.h"
 #include <iostream>
 
-Session::Session(int sessionID, boost::asio::io_context& io_service, ChatServer* serverPtr)
+Session::Session(int sessionID, boost::asio::io_context& io_service, Server* serverPtr)
 	:_socket(io_service),
 	_sessionId(sessionID)
 	, _serverPtr(serverPtr)

@@ -9,11 +9,11 @@
 #include "ServerSession.h"
 #include "Protocol.h"
 
-class ChatServer
+class Server
 {
 public:
-	ChatServer(boost::asio::io_context& io_service);
-	~ChatServer();
+	Server(boost::asio::io_context& io_service);
+	~Server();
 
 	void Init(const int maxSessionCount);
 	void Start();

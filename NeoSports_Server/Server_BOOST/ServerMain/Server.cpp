@@ -1,12 +1,12 @@
-#include "ChattingServer.h"
+#include "Server.h"
 
-ChatServer::ChatServer(boost::asio::io_context& io_service) : _acceptor(io_service,
+Server::Server(boost::asio::io_context& io_service) : _acceptor(io_service,
 	boost::asio::ip::tcp::endpoint(boost::asio::ip::tcp::v4(), PORT_NUMBER))
 {
 	_isAccepting = false;
 }
 
-ChatServer::~ChatServer()
+Server::~Server()
 {
 	for (size_t i = 0; i < _sessionVec.size(); i++)
 	{
@@ -19,7 +19,7 @@ ChatServer::~ChatServer()
 	}
 }
 
-void ChatServer::Init(const int maxSessionCount)
+void Server::Init(const int maxSessionCount)
 {
 	for (int i = 0; i < maxSessionCount; i++)
 	{
@@ -29,14 +29,14 @@ void ChatServer::Init(const int maxSessionCount)
 	}
 }
 
-void ChatServer::Start()
+void Server::Start()
 {
 	std::cout << "서버시작..." << std::endl;
 
 	_PostAccept();
 }
 
-void ChatServer::CloseSession(const int sessionID)
+void Server::CloseSession(const int sessionID)
 {
 	std::cout << "클라이언트 접속 종료. 세션 ID: " << sessionID << std::endl;
 
@@ -49,7 +49,7 @@ void ChatServer::CloseSession(const int sessionID)
 	}
 }
 
-void ChatServer::ProcessPacket(const int sessionID, const char* data)
+void Server::ProcessPacket(const int sessionID, const char* data)
 {
 	PACKET_HEADER* header = (PACKET_HEADER*)data;
 
@@ -103,7 +103,7 @@ void ChatServer::ProcessPacket(const int sessionID, const char* data)
 	}
 }
 
-bool ChatServer::_PostAccept()
+bool Server::_PostAccept()
 {
 	if (_sessionDeq.empty())
 	{
@@ -116,14 +116,14 @@ bool ChatServer::_PostAccept()
 
 	_sessionDeq.pop_front();
 	_acceptor.async_accept(_sessionVec[sessionId]->Socket(),
-		boost::bind(&ChatServer::_AcceptHandle, this,
+		boost::bind(&Server::_AcceptHandle, this,
 			_sessionVec[sessionId], boost::asio::placeholders::error)
 	);
 
 	return true;
 }
 
-void ChatServer::_AcceptHandle(Session* session, const boost::system::error_code& error)
+void Server::_AcceptHandle(Session* session, const boost::system::error_code& error)
 {
 	if (!error)
 	{
