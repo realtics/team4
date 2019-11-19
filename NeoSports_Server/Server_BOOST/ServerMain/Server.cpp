@@ -1,9 +1,13 @@
 #include "Server.h"
 
+
+
 Server::Server(boost::asio::io_context& io_service) : _acceptor(io_service,
 	boost::asio::ip::tcp::endpoint(boost::asio::ip::tcp::v4(), PORT_NUMBER))
 {
 	_isAccepting = false;
+
+	
 }
 
 Server::~Server()
@@ -32,7 +36,7 @@ void Server::Init(const int maxSessionCount)
 void Server::Start()
 {
 	std::cout << "서버시작..." << std::endl;
-
+	
 	_PostAccept();
 }
 

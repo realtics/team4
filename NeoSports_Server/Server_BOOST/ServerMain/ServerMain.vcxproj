@@ -19,13 +19,14 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ChattingServer.cpp" />
+    <ClCompile Include="Server.cpp" />
     <ClCompile Include="ServerMain.cpp" />
     <ClCompile Include="ServerSession.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ChattingServer.h" />
+    <ClInclude Include="Server.h" />
     <ClInclude Include="Json.h" />
+    <ClInclude Include="Lock.h" />
     <ClInclude Include="Protocol.h" />
     <ClInclude Include="ServerSession.h" />
   </ItemGroup>

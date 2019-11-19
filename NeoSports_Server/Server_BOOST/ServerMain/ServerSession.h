@@ -6,12 +6,12 @@
 
 #include "Protocol.h"
 
-class ChatServer;
+class Server;
 
 class Session
 {
 public:
-	Session(int sessionID, boost::asio::io_context& io_service, ChatServer* serverPtr);
+	Session(int sessionID, boost::asio::io_context& io_service, Server* serverPtr);
 	~Session();
 
 	int GetSessionID();
@@ -34,7 +34,7 @@ private:
 	std::deque<char*> _sendDataDeq;
 	std::string _name;
 
-	ChatServer* _serverPtr;
+	Server* _serverPtr;
 
 	void WriteHandle(const boost::system::error_code& error, size_t bytesTransferred);
 	void ReceiveHandle(const boost::system::error_code& error, size_t bytesTransferred);

@@ -9,6 +9,8 @@
 #include "ServerSession.h"
 #include "Protocol.h"
 
+
+
 class Server
 {
 public:
@@ -21,8 +23,10 @@ public:
 	void ProcessPacket(const int sessionID, const char* data);
 
 private:
+
 	int _seqNumber;
 	bool _isAccepting;
+
 	boost::asio::ip::tcp::acceptor _acceptor;
 
 	std::vector<Session*> _sessionVec;
@@ -30,5 +34,7 @@ private:
 
 	bool _PostAccept();
 	void _AcceptHandle(Session* session, const boost::system::error_code& error);
+	
+	
 };
 

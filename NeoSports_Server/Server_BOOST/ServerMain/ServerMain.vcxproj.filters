@@ -21,7 +21,7 @@
     <ClCompile Include="ServerSession.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="ChattingServer.cpp">
+    <ClCompile Include="Server.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
@@ -32,10 +32,13 @@
     <ClInclude Include="ServerSession.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="ChattingServer.h">
+    <ClInclude Include="Json.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Json.h">
+    <ClInclude Include="Lock.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Server.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
