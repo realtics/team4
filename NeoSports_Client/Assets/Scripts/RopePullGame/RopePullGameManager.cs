@@ -75,7 +75,6 @@ namespace RopePullGame
         {
             SetWinnerGame();
             SetResultText();
-            SetOtherPlyerResult(winner, "winner");
             winner = _winner.gameObject;
         }
 
@@ -83,7 +82,6 @@ namespace RopePullGame
         {
             SetWinnerGame();
             SetResultText();
-            SetOtherPlyerResult(loser, "loser");
             loser = _loser.gameObject;
         }
 
@@ -223,32 +221,5 @@ namespace RopePullGame
             }
         }
 
-        void SetOtherPlyerResult(GameObject ownObject, string result)
-        {
-
-            if (ownObject.CompareTag("LeftPlayer"))
-            {
-                if (result.CompareTo("winner") == 0 || result.CompareTo("Winner") == 0)
-                {
-                    loser = GameObject.FindGameObjectWithTag("RightPlayer");
-                }
-                else if (result.CompareTo("loser") == 0 || result.CompareTo("Loser") == 0)
-                {
-                    winner = GameObject.FindGameObjectWithTag("RightPlayer");
-                }
-            }
-            else if (ownObject.CompareTag("RightPlayer"))
-            {
-                if (result.CompareTo("winner") == 0 || result.CompareTo("Winner") == 0)
-                {
-                    loser = GameObject.FindGameObjectWithTag("LeftPlayer");
-                }
-                else if (result.CompareTo("loser") == 0 || result.CompareTo("Loser") == 0)
-                {
-                    winner = GameObject.FindGameObjectWithTag("LeftPlayer");
-                }
-            }
-
-        }
     }
 }
