@@ -85,6 +85,11 @@ public class CommonUIManager : Singleton<CommonUIManager>
 	/// <param name="canvas">유니티 부모 Canvas 오브젝트</param>
 	public void CreateElapseGameTimer(GameObject canvas)
 	{
+		if(_elapseGameTimerLabel != null)
+		{
+			Destroy(_elapseGameTimerLabel);
+		}
+
 		_elapseGameTimerLabel = Instantiate(prefElapseGameTimerLabel, canvas.transform);
 		_elapseGameTimerText = _elapseGameTimerLabel.GetComponentInChildren<Text>();
 
@@ -111,16 +116,20 @@ public class CommonUIManager : Singleton<CommonUIManager>
 	/// </summary>
 	/// <param name="canvas">유니티 부모 Canvas 오브젝트</param>
 	/// <param name="name">승리 유저 이름</param>
-	public void CreateWinnerNotice(Transform canvas, string name)
+	public void CreateWinnerNotice(GameObject canvas, string name)
 	{
-		_winnerNoticeLabel = Instantiate(prefWinnerNoticeLabel, canvas);
+		_winnerNoticeLabel = Instantiate(prefWinnerNoticeLabel, canvas.transform);
 		_winnerNoticeLabel.transform.GetChild((int)ENoticeLabelChildIndex.DynamicTextUserName).
 			GetComponent<Text>().text = name;
 	}
 
 	public void DestroyWinnerNotice()
 	{
-		Destroy(_winnerNoticeLabel);
+		if(_winnerNoticeLabel != null)
+		{
+			Destroy(_winnerNoticeLabel);
+
+		}
 	}
 
 	/// <summary>
@@ -128,16 +137,19 @@ public class CommonUIManager : Singleton<CommonUIManager>
 	/// </summary>
 	/// <param name="canvas">유니티 부모 Canvas 오브젝트</param>
 	/// <param name="name">패배 유저 이름</param>
-	public void CreateLooserNotice(Transform canvas, string name)
+	public void CreateLooserNotice(GameObject canvas, string name)
 	{
-		_looserNoticeLabel = Instantiate(prefLooserNoticeLabel, canvas);
+		_looserNoticeLabel = Instantiate(prefLooserNoticeLabel, canvas.transform);
 		_looserNoticeLabel.transform.GetChild((int)ENoticeLabelChildIndex.DynamicTextUserName).
 			GetComponent<Text>().text = name;
 	}
 
 	public void DestroyLooserNotice()
 	{
-		Destroy(_looserNoticeLabel);
+		if(_looserNoticeLabel != null)
+		{
+			Destroy(_looserNoticeLabel);
+		}
 	}
 	#endregion
 

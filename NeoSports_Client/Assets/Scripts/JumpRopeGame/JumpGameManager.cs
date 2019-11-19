@@ -228,7 +228,7 @@ namespace JumpRopeGame
 		{
 			_gameState = EGameState.GameOver;
 
-			CommonUIManager.Instance.CreateWinnerNotice(rootCanvas.transform, "플레이어 캐릭터");
+			CommonUIManager.Instance.CreateWinnerNotice(rootCanvas, "플레이어 캐릭터");
 		}
 
 	}
