@@ -2,15 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RunnigEffect : MonoBehaviour
+namespace Effect
 {
-    public void StartEffect()
+    public class RunnigEffect : MonoBehaviour
     {
-        gameObject.SetActive(true);
-    }
+        public void StartEffect()
+        {
+            gameObject.SetActive(true);
+        }
 
-    public void EndEffect()
-    {
-        gameObject.SetActive(false);
+        public void EndEffect()
+        {
+            gameObject.SetActive(false);
+        }
     }
 }

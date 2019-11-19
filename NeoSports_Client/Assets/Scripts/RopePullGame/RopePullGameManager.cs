@@ -34,7 +34,7 @@ namespace RopePullGame
 
 		RopePullMoveRopeWithKey _ropePullMove;
 		Character[] _characters;
-		RunnigEffect[] _runnigEffects;
+		Effect.RunnigEffect[] _runnigEffects;
 
 		void Start()
 		{
@@ -53,9 +53,9 @@ namespace RopePullGame
 		{
 			_ropePullMove = playerableObjects.GetComponent<RopePullMoveRopeWithKey>();
 			_characters = playerableObjects.GetComponentsInChildren<Character>();
-			_runnigEffects = playerableObjects.GetComponentsInChildren<RunnigEffect>();
+			_runnigEffects = playerableObjects.GetComponentsInChildren<Effect.RunnigEffect>();
 
-			foreach (RunnigEffect effect in _runnigEffects)
+			foreach (Effect.RunnigEffect effect in _runnigEffects)
 			{
 				effect.EndEffect();
 			}
@@ -151,14 +151,14 @@ namespace RopePullGame
 		{
 			if (isMove)
 			{
-				foreach (RunnigEffect effect in _runnigEffects)
+				foreach (Effect.RunnigEffect effect in _runnigEffects)
 				{
 					effect.StartEffect();
 				}
 			}
 			else
 			{
-				foreach (RunnigEffect effect in _runnigEffects)
+				foreach (Effect.RunnigEffect effect in _runnigEffects)
 				{
 					effect.EndEffect();
 				}
