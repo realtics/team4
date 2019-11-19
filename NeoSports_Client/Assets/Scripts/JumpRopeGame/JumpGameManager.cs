@@ -23,8 +23,6 @@ namespace JumpRopeGame
 
 		#region Constant Variable
 		const float GameStartPrepareTime = 5.0f;
-		const string GameStartPrepareTimeStartText = "GAME START!";
-
 		const float TimingBarPointerInitialSpeed = 150.0f;
 		#endregion
 
@@ -49,18 +47,11 @@ namespace JumpRopeGame
 		RectTransform _timingBarSuccessZoneTransform;
 		RectTransform _timingBarPointerTransform;
 
-		Text _startGameTimerText;
-		Text _elapseGameTimerText;
-
 		BoxCollider _jumpButtonCollider;
 
 		ETimingBarDirection _timingBarPointerDirection;
 		float _timingBarPointerSpeed;
 		bool _isJumpSuccess;
-
-		// Timer
-		float _startGameTimer;
-		float _elpaseGameTimer;
 		#endregion
 
 		private void Start()
@@ -72,9 +63,6 @@ namespace JumpRopeGame
 			_timingBarPointerDirection = ETimingBarDirection.Right;
 			_timingBarPointerSpeed = TimingBarPointerInitialSpeed;
 			_isJumpSuccess = false;
-
-			_startGameTimer = GameStartPrepareTime;
-			_elpaseGameTimer = 0.0f;
 
 			StartGame();
 		}
@@ -100,13 +88,14 @@ namespace JumpRopeGame
 					UpdateStartGameTimer();
 					break;
 				case EGameState.Playing:
-					UpdateElapseGameTimer();
+					// Input
+					InputTouchScreen();
 
+					// Update
+					UpdateElapseGameTimer();
 					UpdateTimingBarPointerPosition();
 					UpdateTimingBarPointerDirection();
 					CheckJumpCompleteAtSuccessZone();
-
-					InputTouchScreen();
 					break;
 				case EGameState.GameOver:
 					break;
