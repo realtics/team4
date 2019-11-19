@@ -9,12 +9,14 @@ public class Character : MonoBehaviour
     {
         public const string IsJump = "IsJump";
         public const string JumpUp = "JumpUp";
+        public const string IsRun = "IsRun";
     }
 
     public enum EState
     {
         Idle,
-        Jump
+        Jump,
+        Run
     }
 
     EState _currentState;
@@ -50,6 +52,18 @@ public class Character : MonoBehaviour
     public void EndJump()
     {
         _animator.SetBool(AnimationParameter.IsJump, false);
+        _currentState = EState.Idle;
+    }
+
+    public void StartRun()
+    {
+        _animator.SetBool(AnimationParameter.IsRun, true);
+        _currentState = EState.Run;
+    }
+
+    public void EndRun()
+    {
+        _animator.SetBool(AnimationParameter.IsRun, false);
         _currentState = EState.Idle;
     }
 }
