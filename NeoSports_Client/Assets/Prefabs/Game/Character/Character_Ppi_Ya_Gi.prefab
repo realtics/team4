@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 2673625610814883517}
   - component: {fileID: 2673625610814883519}
   - component: {fileID: -897739469015053393}
+  - component: {fileID: 1474926575292725394}
   m_Layer: 0
   m_Name: Character_Ppi_Ya_Gi
   m_TagString: Untagged
@@ -94,6 +95,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c440c3a73e6a23e4b8a0354424913891, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!95 &1474926575292725394
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2673625610814883514}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: e4f548a1c39f18c4f9a22a770d63d6bd, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &6297959614736041925
 GameObject:
   m_ObjectHideFlags: 0

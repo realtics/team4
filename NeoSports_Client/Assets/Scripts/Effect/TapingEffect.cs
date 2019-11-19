@@ -6,8 +6,8 @@ namespace Effect
 {
     public class TapingEffect : MonoBehaviour
     {
-        private ParticleSystem _efftectParticle;
-        private Transform _selftTransform;
+        ParticleSystem _efftectParticle;
+        Transform _selftTransform;
 
         void Start()
         {
