@@ -129,6 +129,8 @@ bool Server::_PostAccept()
 
 void Server::_AcceptHandle(Session* session, const boost::system::error_code& error)
 {
+	LockGuard acceptLockGuard(_acceptLock);
+
 	if (!error)
 	{
 		std::cout << "클라접속. SessionID : " << session->GetSessionID() << std::endl;

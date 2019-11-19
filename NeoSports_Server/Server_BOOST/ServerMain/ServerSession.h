@@ -5,6 +5,7 @@
 #include <boost/asio.hpp>
 
 #include "Protocol.h"
+#include "Lock.h"
 
 class Server;
 
@@ -24,6 +25,10 @@ public:
 	boost::asio::ip::tcp::socket& Socket() { return Session::_socket; }
 
 private:
+	Lock _sendLock;
+	Lock _recvLock;
+	Lock _closeLock;
+
 	int _sessionId;
 	int _packetBufferMark;
 	char _packetBuffer[MAX_RECEIVE_BUFFER_LEN * 2];

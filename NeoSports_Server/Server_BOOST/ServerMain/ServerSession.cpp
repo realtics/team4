@@ -30,8 +30,7 @@ void Session::PostReceive()
 	_socket.async_read_some(boost::asio::buffer(_receiveBuffer),
 		boost::bind(&Session::ReceiveHandle, this,
 			boost::asio::placeholders::error,
-			boost::asio::placeholders::bytes_transferred)
-	);
+			boost::asio::placeholders::bytes_transferred));
 }
 
 void  Session::ReceiveHandle(const boost::system::error_code& error, size_t bytesTransferred)
@@ -47,12 +46,12 @@ void  Session::ReceiveHandle(const boost::system::error_code& error, size_t byte
 			std::cout << "error No : " << error.value() << " error Message : " << error.message() <<
 				std::endl;
 		}
+		LockGuard closeLock(_closeLock);
 		_serverPtr->CloseSession(_sessionId);
 	}
 	else
 	{
-		std::cout << "¹ÞÀº JSON : " << std::endl;
-		std::cout << _receiveBuffer.data() << std::endl;
+		LockGuard recvLockGuard(_recvLock);
 		DeSerializationJson(_receiveBuffer.data());
 		int packetData = _packetBufferMark + bytesTransferred;
 		int readData = 0;
@@ -91,6 +90,8 @@ void  Session::ReceiveHandle(const boost::system::error_code& error, size_t byte
 
 void Session::PostSend(const bool Immediately, const int size, char* data)
 {
+	LockGuard sendLockGuard(_sendLock);
+
 	char* sendData = nullptr;
 	if (Immediately == false)
 	{
@@ -191,7 +192,6 @@ std::string Session::SerializationJson(int packetIndex, const char* packet)
 		std::ostringstream os(recvTemp);
 		boost::property_tree::write_json(os, ptSend, false);
 		std::string sendStr = os.str();
-		std::cout << sendStr << std::endl;
 
 		return sendStr;
 	}

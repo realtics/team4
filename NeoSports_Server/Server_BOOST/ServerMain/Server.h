@@ -8,8 +8,7 @@
 
 #include "ServerSession.h"
 #include "Protocol.h"
-
-
+#include "Lock.h"
 
 class Server
 {
@@ -23,6 +22,7 @@ public:
 	void ProcessPacket(const int sessionID, const char* data);
 
 private:
+	Lock _acceptLock;
 
 	int _seqNumber;
 	bool _isAccepting;
@@ -34,7 +34,5 @@ private:
 
 	bool _PostAccept();
 	void _AcceptHandle(Session* session, const boost::system::error_code& error);
-	
-	
 };
 
