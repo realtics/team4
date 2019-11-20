@@ -92,7 +92,7 @@ public class InventoryManager : Singleton<InventoryManager>
 
         PlayerNickName = inputName;
 		nickNameInputGroup.SetActive(false);
-        NetworkManager.Instance.NotifyNickName(PlayerNickName);
+        NetworkManager.Instance.SendNickName(PlayerNickName);
         Debug.Log("결정된 닉네임: " + PlayerNickName);
 	}
 

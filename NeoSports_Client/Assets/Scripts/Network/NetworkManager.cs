@@ -39,7 +39,7 @@ public class NetworkManager : Singleton<NetworkManager>
 
     Socket _sock = null;
 
-    void Start()
+    void Awake()
     {
         if (instance != null)
         {
@@ -47,17 +47,26 @@ public class NetworkManager : Singleton<NetworkManager>
             return;
         }
         DontDestroyOnLoad(this);
-        Connect();
-
-        if (_sock.Connected)
-        {
-            //SendToServerPacket();
-            ReciveFromSeverPacket();
-        }
     }
 
-    public void NotifyNickName(string playerNickName)
+    void Start()
     {
+        
+        //Connect();
+
+        //if (_sock.Connected)
+        //{
+        //    //SendToServerPacket();
+        //    //ReciveFromSeverPacket();
+        //}
+        //Debug.Log("NetworkManager Start Call");
+    }
+
+    public void SendNickName(string playerNickName)
+    {
+        if (!_sock.Connected)
+            Connect();
+        
         //TO DO : 서버에게 패킷으로 플레이어가 결정한 별명 보내주기 
         var headerPacket = new PACKET_HEADER { packetIndex = (int)PACKET_INDEX.REQ_IN, packetSize = 10 };
         var p = new PACKET_REQ_IN { header = headerPacket, name = playerNickName };
@@ -123,6 +132,7 @@ public class NetworkManager : Singleton<NetworkManager>
         try
         {
             //_sock.Connect(new IPEndPoint(IPAddress.Parse(LoopbackAdress), PortNumber));
+            //_sock.Connected;
             _sock.Connect(new IPEndPoint(IPAddress.Parse(IpAdress), PortNumber));        
         }
         catch (SocketException se)
