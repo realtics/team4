@@ -31,7 +31,8 @@ public class InventoryManager : Singleton<InventoryManager>
             Destroy(gameObject);
             return;
         }
-        DontDestroyOnLoad(this);
+		instance = this;
+		DontDestroyOnLoad(this);
 
         CharacterInfos = new Dictionary<CharacterInfo.EType, CharacterInfo>();
         EquipmentInfos = new Dictionary<EquipmentInfo.EType, EquipmentInfo>();

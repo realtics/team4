@@ -44,8 +44,10 @@ public class NetworkManager : Singleton<NetworkManager>
         if (instance != null)
         {
             Destroy(gameObject);
+			Debug.Log("Destroy NetworkManager");
             return;
         }
+		instance = this;
         DontDestroyOnLoad(this);
     }
 
