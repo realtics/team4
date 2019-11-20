@@ -1008,6 +1008,7 @@ MonoBehaviour:
     type: 3}
   prefCharacterTurkeyJelly: {fileID: 203829877700944717, guid: 690c6258a777cc346acfc313445baf2c,
     type: 3}
+  nickNameInputGroup: {fileID: 1301060042}
   nickNameInputField: {fileID: 1296383896}
 --- !u!1 &255799233
 GameObject:

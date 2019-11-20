@@ -13,6 +13,7 @@ public class InventoryManager : Singleton<InventoryManager>
 
     public GameObject prefCharacterPpiYaGi;
     public GameObject prefCharacterTurkeyJelly;
+	public GameObject nickNameInputGroup;
     public GameObject nickNameInputField;
 
     #region Property
@@ -90,11 +91,12 @@ public class InventoryManager : Singleton<InventoryManager>
         }
 
         PlayerNickName = inputName;
-        Debug.Log("결정된 닉네임: " + PlayerNickName);
+		nickNameInputGroup.SetActive(false);
         NetworkManager.Instance.NotifyNickName(PlayerNickName);
-    }
+        Debug.Log("결정된 닉네임: " + PlayerNickName);
+	}
 
-    bool IsUseableNickName(string name)
+	bool IsUseableNickName(string name)
     {
         if (name.Length == 0)
         {
