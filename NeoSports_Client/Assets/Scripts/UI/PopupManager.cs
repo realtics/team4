@@ -15,40 +15,40 @@ public class PopupManager : Singleton<PopupManager>
     }
 
     PopupCallBack _popupCallBack;
-	Text _popupNotifyText;
+    Text _popupNotifyText;
 
     public GameObject popupPanel;
     public GameObject popupNotifyText;
     public GameObject popupGroupYesNo;
-	public GameObject popupGroupOk;
+    public GameObject popupGroupOk;
 
-	void Start()
-	{
-		_popupNotifyText = popupNotifyText.GetComponent<Text>();
+    void Awake()
+    {
+        _popupNotifyText = popupNotifyText.GetComponent<Text>();
 
-		if (popupPanel.activeInHierarchy)
-		{
-			popupPanel.SetActive(false);
-		}
-	}
+        if (popupPanel.activeInHierarchy)
+        {
+            popupPanel.SetActive(false);
+        }
+    }
 
-	public void ShowPopup(PopupData data)
+    public void ShowPopup(PopupData data)
     {
         popupPanel.SetActive(true);
 
         popupGroupOk.SetActive(data.okFlag);
         popupGroupYesNo.SetActive(!data.okFlag);
 
-		_popupNotifyText.text = data.text;
+        _popupNotifyText.text = data.text;
         _popupCallBack = data.callBack;
 
-		popupPanel.transform.SetAsLastSibling();
+        popupPanel.transform.SetAsLastSibling();
     }
 
     public void ClickEventPopup()
     {
-		_popupCallBack?.Invoke();
-		ClosePopup();
+        _popupCallBack();
+        ClosePopup();
     }
 
     public void ClosePopup()
