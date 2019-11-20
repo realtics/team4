@@ -11,19 +11,33 @@ using System;
 
 using Newtonsoft.Json;
 
-enum PACKET_INDEX
+public enum PACKET_INDEX
 {
     REQ_IN = 1,
+};
+
+public struct PACKET_REQ_IN
+{
+    public PACKET_HEADER header;
+    public string name;
+};
+
+public enum EPacketRoomIndex
+{
+    RopePullGame,
+    RopeJumpGame,
+    BasketBallGame,
 };
 public struct PACKET_HEADER
 {
     public int packetIndex;
     public int packetSize;
-};
-public struct PACKET_REQ_IN
-{
-    public PACKET_HEADER header;
-    public string name;
+
+    public PACKET_HEADER(PACKET_INDEX index, int size)
+    {
+        packetIndex = (int)index;
+        packetSize = size;
+    }
 };
 
 public struct TempPacket
@@ -44,71 +58,67 @@ public class NetworkManager : Singleton<NetworkManager>
         if (instance != null)
         {
             Destroy(gameObject);
-			Debug.Log("Destroy NetworkManager");
             return;
         }
-		instance = this;
+        instance = this;
         DontDestroyOnLoad(this);
-    }
-
-    void Start()
-    {
-        
-        //Connect();
-
-        //if (_sock.Connected)
-        //{
-        //    //SendToServerPacket();
-        //    //ReciveFromSeverPacket();
-        //}
-        //Debug.Log("NetworkManager Start Call");
     }
 
     public void SendNickName(string playerNickName)
     {
-        if (!_sock.Connected)
+        if (_sock == null)
             Connect();
-        
         //TO DO : 서버에게 패킷으로 플레이어가 결정한 별명 보내주기 
-        var headerPacket = new PACKET_HEADER { packetIndex = (int)PACKET_INDEX.REQ_IN, packetSize = 10 };
-        var p = new PACKET_REQ_IN { header = headerPacket, name = playerNickName };
-        string json;
-        json = JsonConvert.SerializeObject(p); //객체를 json직렬화 
-        json += '\0';//서버에서 널문자까지 읽기 위해 널문자붙이기
+        PACKET_HEADER headerPacket = MakeHeaderPacket(PACKET_INDEX.REQ_IN);
+        PACKET_REQ_IN packet = new PACKET_REQ_IN { header = headerPacket, name = playerNickName };
+
+        SendToServerPacket(packet);
+    }
+
+    public void SendRequsetRoom(EPacketRoomIndex roomIndex)
+    {
+        if (_sock == null)
+            Connect();
+
+        PACKET_HEADER headerPacket = MakeHeaderPacket(PACKET_INDEX.REQ_IN);
+        PACKET_REQ_IN packet = new PACKET_REQ_IN { header = headerPacket, name = roomIndex.ToString() };
+
+        SendToServerPacket(packet);
+    }
+
+    void SendToServerPacket(object value)
+    {
+        string jsonBuffer;
+        jsonBuffer = JsonConvert.SerializeObject(value); //객체를 json직렬화 
+        jsonBuffer += '\0';//서버에서 널문자까지 읽기 위해 널문자붙이기
         byte[] bufSend = new byte[128]; //전송을 위해 바이트단위로 변환
-        bufSend = Encoding.UTF8.GetBytes(json);
+        bufSend = Encoding.UTF8.GetBytes(jsonBuffer);
         _sock.Send(bufSend);
     }
 
-    void SendToServerPacket()
+    PACKET_HEADER MakeHeaderPacket(PACKET_INDEX packetIndex)
     {
-        //TODO : 패킷을 제이슨으로 직렬화,역직렬화 시키는 함수 작성하기
-        {
-            var headerPacket = new PACKET_HEADER { packetIndex = 1, packetSize = 10 };
-            var p = new PACKET_REQ_IN { header = headerPacket, name = "aa" };
-            string json;
-            json = JsonConvert.SerializeObject(p); //객체를 json직렬화 
-            json += '\0';//서버에서 널문자까지 읽기 위해 널문자붙이기
-            byte[] bufSend = new byte[128]; //전송을 위해 바이트단위로 변환
-            bufSend = Encoding.UTF8.GetBytes(json);
-            _sock.Send(bufSend);
-        }
+        int packetSize = Marshal.SizeOf<PACKET_REQ_IN>();
+        PACKET_HEADER headerPacket;
+        headerPacket = new PACKET_HEADER(packetIndex, packetSize);
+        return headerPacket;
     }
 
+    //To Do :클라이언트 Receive 비동기처리 
     void ReciveFromSeverPacket()
     {
-        //byte[] bufRecv = new byte[128]; //수신을 위해 바이트단위로 변환
-        //int n = _sock.Receive(bufRecv);
-        //Debug.Log("recv");
-        //Debug.Log(n);
+        byte[] bufRecv = new byte[128]; //수신을 위해 바이트단위로 변환
+        int n = _sock.Receive(bufRecv);
+        Debug.Log("recv");
+        Debug.Log(n);
 
-        ////string recvData = Encoding.UTF8.GetString(bufRecv, 0, n);
-        ////int bufLen = Encoding.Default.GetBytes(bufRecv);
-        //int bufLen = bufRecv.Length;
         //string recvData = Encoding.UTF8.GetString(bufRecv, 0, n);
-        //Debug.Log(recvData);
+        //int bufLen = Encoding.Default.GetBytes(bufRecv);
+        int bufLen = bufRecv.Length;
+        string recvData = Encoding.UTF8.GetString(bufRecv, 0, n);
+        Debug.Log(recvData);
 
-        //var data = JsonConvert.DeserializeObject<TempPacket>(recvData);
+        var data = JsonConvert.DeserializeObject<TempPacket>(recvData);
         //if (data.header.packetIndex == 101) //JsonExample
         //{
         //    var packetTemp = JsonConvert.DeserializeObject<JsonExample>(recvData);
@@ -133,9 +143,8 @@ public class NetworkManager : Singleton<NetworkManager>
         }
         try
         {
-            //_sock.Connect(new IPEndPoint(IPAddress.Parse(LoopbackAdress), PortNumber));
-            //_sock.Connected;
-            _sock.Connect(new IPEndPoint(IPAddress.Parse(IpAdress), PortNumber));        
+            _sock.Connect(new IPEndPoint(IPAddress.Parse(LoopbackAdress), PortNumber));
+            //_sock.Connect(new IPEndPoint(IPAddress.Parse(IpAdress), PortNumber));        
         }
         catch (SocketException se)
         {

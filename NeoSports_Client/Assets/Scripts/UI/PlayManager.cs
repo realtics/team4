@@ -18,9 +18,9 @@ public class PlayManager : Singleton<PlayManager>
 
 	void DisableMultiPlayButton()
 	{
-		ropePullMultiButton.GetComponent<Button>().enabled = false;
-		ropeJumpMultiButton.GetComponent<Button>().enabled = false;
-		basketBallMultiButton.GetComponent<Button>().enabled = false;
+		//ropePullMultiButton.GetComponent<Button>().enabled = false;
+		//ropeJumpMultiButton.GetComponent<Button>().enabled = false;
+		//basketBallMultiButton.GetComponent<Button>().enabled = false;
 	}
 
 	#region Button Event
@@ -31,8 +31,9 @@ public class PlayManager : Singleton<PlayManager>
 
 	public void StartRopePullMultiGame()
 	{
-		SceneManager.LoadScene(SceneName.RopeGameSceneName);
-	}
+        //SceneManager.LoadScene(SceneName.RopeGameSceneName);
+        NetworkManager.Instance.SendRequsetRoom(EPacketRoomIndex.RopePullGame);
+    }
 
 	public void StartJumpRopeSingleGame()
 	{
@@ -41,8 +42,10 @@ public class PlayManager : Singleton<PlayManager>
 
 	public void StartJumpRopeMultiGame()
 	{
-		SceneManager.LoadScene(SceneName.JumpRopeGameSceneName);
-	}
+        //SceneManager.LoadScene(SceneName.JumpRopeGameSceneName);
+        NetworkManager.Instance.SendRequsetRoom(EPacketRoomIndex.RopeJumpGame);
+
+    }
 
 	public void StartBasketBallSingleGame()
 	{
@@ -51,8 +54,9 @@ public class PlayManager : Singleton<PlayManager>
 
 	public void StartBasketBallMultiGame()
 	{
-		SceneManager.LoadScene(SceneName.BasketBallGameSceneName);
-	}
+        //SceneManager.LoadScene(SceneName.BasketBallGameSceneName);
+        NetworkManager.Instance.SendRequsetRoom(EPacketRoomIndex.BasketBallGame);
+    }
 	#endregion
 
 }
