@@ -30,34 +30,73 @@ public struct TempPacket
 
 public class NetworkManager : Singleton<NetworkManager>
 {
-    private Socket sock = null;
-    // Start is called before the first frame update
+    const string IpAdress = "192.168.1.119";
+    const string LoopbackAdress = "127.0.0.1";
+    const int PortNumber = 31400;
+
+    Socket _sock = null;
+
     void Start()
     {
-        sock = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.IP);
-        if (sock == null)
+        if (instance != null)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        DontDestroyOnLoad(this);
+
+        _sock = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.IP);
+        if (_sock == null)
         {
             Debug.Log("소켓생성 실패");
+            PopupManager.PopupData a;
+            a.text = "Socket Fail";
+            a.okFlag = true;
+            a.callBack = null;
+            PopupManager.Instance.ShowPopup(a);
+            return;
         }
-        sock.Connect(new IPEndPoint(IPAddress.Parse("192.168.1.119"), 31400));
-        //sock.Connect(new IPEndPoint(IPAddress.Parse("127.0.0.1"), 31400));
+        try
+        {
+            _sock.Connect(new IPEndPoint(IPAddress.Parse(LoopbackAdress), PortNumber));
+            //_sock.Connect(new IPEndPoint(IPAddress.Parse(IpAdress), PortNumber));        
+        }
+        catch (SocketException se)
+        {
+            Debug.Log(se.Message);
+            PopupManager.PopupData a;
+            a.text = se.Message;
+            a.okFlag = true;
+            a.callBack = null;
+            PopupManager.Instance.ShowPopup(a);
+            return;
+        }
+        if (_sock.Connected)
+        {
+            SendToServerPacket();
+            ReciveFromSeverPacket();
+        }
+    }
 
+    void SendToServerPacket()
+    {
         //TODO : 패킷을 제이슨으로 직렬화,역직렬화 시키는 함수 작성하기
         {
-            var a = new PACKET_HEADER { packetIndex = 101, packetSize = 10 };
-            var p = new JsonExample { header = a, Data1 = 2, Data2 = "Hi" };
+            var packetHeader = new PACKET_HEADER { packetIndex = 101, packetSize = 10 };
+            var jsonPacket = new JsonExample { header = packetHeader, Data1 = 2, Data2 = "Hi" };
             string json;
-            json = JsonConvert.SerializeObject(p); //객체를 json직렬화
-            char temp = '\0'; //서버에서 널문자까지 읽기 위해 널문자붙이기
-            json += temp;
+            json = JsonConvert.SerializeObject(jsonPacket); //객체를 json직렬화
+            json += '\0'; //서버에서 널문자까지 읽기 위해 널문자붙이기
             byte[] bufSend = new byte[128]; //전송을 위해 바이트단위로 변환
             bufSend = Encoding.UTF8.GetBytes(json);
-            sock.Send(bufSend);
+            _sock.Send(bufSend);
         }
+    }
 
-
+    void ReciveFromSeverPacket()
+    {
         byte[] bufRecv = new byte[128]; //수신을 위해 바이트단위로 변환
-        int n = sock.Receive(bufRecv);
+        int n = _sock.Receive(bufRecv);
         Debug.Log("recv");
         Debug.Log(n);
 
@@ -74,11 +113,7 @@ public class NetworkManager : Singleton<NetworkManager>
             Debug.Log(packetTemp.Data1);
             Debug.Log(packetTemp.Data2);
         }
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
 
     }
+
 }
