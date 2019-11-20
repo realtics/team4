@@ -52,7 +52,7 @@ public class NetworkManager : Singleton<NetworkManager>
             PopupManager.PopupData a;
             a.text = "Socket Fail";
             a.okFlag = true;
-            a.callBack = null;
+            a.callBack = ExitProgram;
             PopupManager.Instance.ShowPopup(a);
             return;
         }
@@ -67,7 +67,7 @@ public class NetworkManager : Singleton<NetworkManager>
             PopupManager.PopupData a;
             a.text = se.Message;
             a.okFlag = true;
-            a.callBack = null;
+            a.callBack = ExitProgram;
             PopupManager.Instance.ShowPopup(a);
             return;
         }
@@ -116,4 +116,8 @@ public class NetworkManager : Singleton<NetworkManager>
 
     }
 
+    void ExitProgram()
+    {
+        Application.Quit();
+    }
 }
