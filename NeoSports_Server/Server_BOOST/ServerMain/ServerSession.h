@@ -29,7 +29,6 @@ private:
 	Lock _recvLock;
 	Lock _closeLock;
 
-
 	int _sessionId;
 	int _packetBufferMark;
 	char _packetBuffer[MAX_RECEIVE_BUFFER_LEN * 2];
@@ -42,12 +41,12 @@ private:
 
 	Server* _serverPtr;
 
-	void WriteHandle(const boost::system::error_code& error, size_t bytesTransferred);
-	void ReceiveHandle(const boost::system::error_code& error, size_t bytesTransferred);
+	void _WriteHandle(const boost::system::error_code& error, size_t bytesTransferred);
+	void _ReceiveHandle(const boost::system::error_code& error, size_t bytesTransferred);
 
-	void DeSerializationJson(char* jsonStr);
+	void _DeSerializationJson(char* jsonStr);
 
 public:
-	std::string SerializationJson(int packetIndex, const char* pakcet);
+	std::string _SerializationJson(int packetIndex, const char* pakcet);
 };
 

@@ -30,7 +30,6 @@ struct PACKET_HEADER
 struct PACKET_MAKE_ROOM
 {
 	PACKET_HEADER header;
-
 };
 
 //처음 클라가 들어왔을때 그 클라의 이름을 받음

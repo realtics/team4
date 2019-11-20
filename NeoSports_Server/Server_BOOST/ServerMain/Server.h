@@ -6,6 +6,7 @@
 #include <algorithm>
 #include <string>
 
+#include "RoomMG.h"
 #include "ServerSession.h"
 
 class Server
@@ -18,11 +19,11 @@ public:
 	void Start();
 	void CloseSession(const int sessionID);
 	void ProcessPacket(const int sessionID, const char* data);
+	RoomMG roomMG;
 
 private:
 	Lock _acceptLock;
 
-	RoomMG _roomMG;
 
 	int _seqNumber;
 	bool _isAccepting;

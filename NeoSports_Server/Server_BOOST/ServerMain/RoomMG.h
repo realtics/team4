@@ -24,10 +24,10 @@ class RoomMG
 {
 public:
 	RoomMG();
+	int _SearchRoom(int roomIndex);
+	int _MakeRoom(int roomIndexk, int sessionID);
 private:
 	std::vector<ROOM*> _roomVec;
 
-	int _SearchRoom(int roomIndex);
-	int _MakeRoom(int roomIndexk, int sessionID);
 };
 
