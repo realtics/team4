@@ -57,14 +57,6 @@ void Server::ProcessPacket(const int sessionID, const char* data)
 
 	switch (header->packetIndex)
 	{
-	case 101: //TEST_PACKET
-	{
-		std::string sendStr = _sessionVec[sessionID]->SerializationJson(101,data);
-		char* sendTemp = (char*)sendStr.c_str();
-		_sessionVec[sessionID]->PostSend(false, sendStr.length(), sendTemp);
-
-		break;
-	}
 	case REQ_IN:
 	{
 		PACKET_REQ_IN* packet = (PACKET_REQ_IN*)data;

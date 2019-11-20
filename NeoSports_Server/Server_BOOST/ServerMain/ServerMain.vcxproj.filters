@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Room">
+      <UniqueIdentifier>{0f298156-d1fd-45fe-a2c6-597b07dfaa3d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ServerSession.cpp">
@@ -23,6 +26,9 @@
     </ClCompile>
     <ClCompile Include="Main.cpp">
       <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="RoomMG.cpp">
+      <Filter>Room</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -40,6 +46,12 @@
     </ClInclude>
     <ClInclude Include="Server.h">
       <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="RoomMG.h">
+      <Filter>Room</Filter>
+    </ClInclude>
+    <ClInclude Include="RoomProtocol.h">
+      <Filter>Room</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

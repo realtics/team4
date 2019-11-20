@@ -1,6 +1,7 @@
 #include "ServerSession.h"
 #include "Server.h"
 #include "Json.h"
+
 #include <iostream>
 
 Session::Session(int sessionID, boost::asio::io_context& io_service, Server* serverPtr)
@@ -8,7 +9,6 @@ Session::Session(int sessionID, boost::asio::io_context& io_service, Server* ser
 	_sessionId(sessionID)
 	, _serverPtr(serverPtr)
 {
-
 }
 
 Session::~Session()
@@ -175,30 +175,27 @@ std::string Session::SerializationJson(int packetIndex, const char* packet)
 {
 	switch (packetIndex)
 	{
-	case 101: //TEST_PACEKT
-	{
-		TEST_PACKET* testPacket = new TEST_PACKET;
-		memcpy(&testPacket, &packet, sizeof(TEST_PACKET));
+		std::string sendStr;
+		//case 101: //TEST_PACEKT
+		//{
+		//	TEST_PACKET* testPacket = new TEST_PACKET;
+		//	memcpy(&testPacket, &packet, sizeof(TEST_PACKET));
 
-		boost::property_tree::ptree ptSend;
-		boost::property_tree::ptree ptSendHeader;
-		ptSendHeader.put<int>("packetIndex", testPacket->header.packetIndex);
-		ptSendHeader.put<int>("packetSize", sizeof(TEST_PACKET));
-		ptSend.add_child("header", ptSendHeader);
-		ptSend.put<int>("Data1", testPacket->Data1);
-		ptSend.put<std::string>("Data2", testPacket->Data2);
+		//	boost::property_tree::ptree ptSend;
+		//	boost::property_tree::ptree ptSendHeader;
+		//	ptSendHeader.put<int>("packetIndex", testPacket->header.packetIndex);
+		//	ptSendHeader.put<int>("packetSize", sizeof(TEST_PACKET));
+		//	ptSend.add_child("header", ptSendHeader);
+		//	ptSend.put<int>("Data1", testPacket->Data1);
+		//	ptSend.put<std::string>("Data2", testPacket->Data2);
 
-		std::string recvTemp;
-		std::ostringstream os(recvTemp);
-		boost::property_tree::write_json(os, ptSend, false);
-		std::string sendStr = os.str();
+		//	std::string recvTemp;
+		//	std::ostringstream os(recvTemp);
+		//	boost::property_tree::write_json(os, ptSend, false);
+		//	sendStr = os.str();
+		//}
 
 		return sendStr;
-	}
-	break;
-
-	default:
-		break;
 	}
 }
 

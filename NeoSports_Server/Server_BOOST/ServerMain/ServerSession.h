@@ -29,6 +29,7 @@ private:
 	Lock _recvLock;
 	Lock _closeLock;
 
+
 	int _sessionId;
 	int _packetBufferMark;
 	char _packetBuffer[MAX_RECEIVE_BUFFER_LEN * 2];

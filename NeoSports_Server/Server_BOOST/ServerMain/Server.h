@@ -7,8 +7,6 @@
 #include <string>
 
 #include "ServerSession.h"
-#include "Protocol.h"
-#include "Lock.h"
 
 class Server
 {
@@ -23,6 +21,8 @@ public:
 
 private:
 	Lock _acceptLock;
+
+	RoomMG _roomMG;
 
 	int _seqNumber;
 	bool _isAccepting;

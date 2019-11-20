@@ -1,5 +1,6 @@
 #pragma once
 #include <Windows.h>
+#include "RoomProtocol.h"
 
 const unsigned short PORT_NUMBER = 31400;
 
@@ -11,9 +12,13 @@ const int MAX_MESSAGE_LEN = 129;
 enum PACKET_INDEX
 {
 	REQ_IN = 1,
+	MULTI_ROOM, //클라에서 같이하기 눌렀을때 방을 만들거나 방이있으면 접속함
+
+	//클라와 통신하고 있지 않은 인덱스들 (채팅용)
 	RES_IN,
 	REQ_CHAT,
 	NOTICE_CHAT,
+	//
 };
 
 struct PACKET_HEADER
@@ -22,11 +27,10 @@ struct PACKET_HEADER
 	int packetSize;
 };
 
-struct TEST_PACKET
+struct PACKET_MAKE_ROOM
 {
 	PACKET_HEADER header;
-	int Data1;
-	std::string Data2;
+
 };
 
 //처음 클라가 들어왔을때 그 클라의 이름을 받음
