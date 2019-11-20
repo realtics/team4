@@ -47,8 +47,8 @@ public class PopupManager : Singleton<PopupManager>
 
     public void ClickEventPopup()
     {
-        _popupCallBack();
-        ClosePopup();
+		_popupCallBack?.Invoke();
+		ClosePopup();
     }
 
     public void ClosePopup()
