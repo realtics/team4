@@ -158,14 +158,14 @@ void Session::DeSerializationJson(char* jsonStr)
 
 	switch (headerIndex)
 	{
-	case 101: //TEST_PACEKT
+	case PACKET_INDEX::REQ_IN:
 	{
-		TEST_PACKET packet;
-		packet.header.packetIndex = headerIndex;
-		packet.header.packetSize = children.get<int>("packetSize");
-		packet.Data1 = ptRecv.get<int>("Data1");
-		packet.Data2 = ptRecv.get<std::string>("Data2");
+		PACKET_REQ_IN packet;
+		packet.packetIndex = headerIndex;
+		packet.packetSize = children.get<int>("packetSize");
+		strcpy(packet.name, ptRecv.get<std::string>("name").c_str());
 		memcpy(&_packetBuffer[_packetBufferMark], (char*)&packet, sizeof(packet));
+		break;
 	}
 
 	}

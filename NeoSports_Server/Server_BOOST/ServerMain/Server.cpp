@@ -6,13 +6,11 @@ Server::Server(boost::asio::io_context& io_service) : _acceptor(io_service,
 	boost::asio::ip::tcp::endpoint(boost::asio::ip::tcp::v4(), PORT_NUMBER))
 {
 	_isAccepting = false;
-
-	
 }
 
 Server::~Server()
 {
-	for (size_t i = 0; i < _sessionVec.size(); i++)
+	for (int i = 0; i < _sessionVec.size(); i++)
 	{
 		if (_sessionVec[i]->Socket().is_open())
 		{
@@ -70,7 +68,7 @@ void Server::ProcessPacket(const int sessionID, const char* data)
 	case REQ_IN:
 	{
 		PACKET_REQ_IN* packet = (PACKET_REQ_IN*)data;
-		_sessionVec[sessionID]->SetNanme(packet->szName);
+		_sessionVec[sessionID]->SetNanme(packet->name);
 
 		std::cout << "클라접속 Name : " << _sessionVec[sessionID]->GetName() << std::endl;
 

@@ -16,17 +16,16 @@ public struct PACKET_HEADER
     public int packetIndex;
     public int packetSize;
 }
-
-public struct JsonExample
-{
-    public PACKET_HEADER header;
-    public int Data1;
-    public String Data2;
-}
 public struct TempPacket
 {
     public PACKET_HEADER header;
 }
+
+public struct PACKET_REQ_IN
+{
+    public PACKET_HEADER header;
+    public String name;
+};
 
 public class SocketMG : MonoBehaviour
 {
@@ -44,12 +43,11 @@ public class SocketMG : MonoBehaviour
 
         //TODO : 패킷을 제이슨으로 직렬화,역직렬화 시키는 함수 작성하기
         {
-            var a = new PACKET_HEADER { packetIndex = 101, packetSize = 10 };
-            var p = new JsonExample { header = a, Data1 = 2, Data2 = "Hi" };
+            var headerPacket = new PACKET_HEADER { packetIndex = 1, packetSize = 10 };
+            var p = new PACKET_REQ_IN { header = headerPacket, name = "aa"};
             string json;
-            json = JsonConvert.SerializeObject(p); //객체를 json직렬화
-            char temp = '\0'; //서버에서 널문자까지 읽기 위해 널문자붙이기
-            json += temp;
+            json = JsonConvert.SerializeObject(p); //객체를 json직렬화 
+            json += '\0';//서버에서 널문자까지 읽기 위해 널문자붙이기
             byte[] bufSend = new byte[128]; //전송을 위해 바이트단위로 변환
             bufSend = Encoding.UTF8.GetBytes(json);
             sock.Send(bufSend);
@@ -61,19 +59,19 @@ public class SocketMG : MonoBehaviour
         Debug.Log("recv");
         Debug.Log(n);
 
+        ////string recvData = Encoding.UTF8.GetString(bufRecv, 0, n);
+        ////int bufLen = Encoding.Default.GetBytes(bufRecv);
+        //int bufLen = bufRecv.Length;
         //string recvData = Encoding.UTF8.GetString(bufRecv, 0, n);
-        //int bufLen = Encoding.Default.GetBytes(bufRecv);
-        int bufLen = bufRecv.Length;
-        string recvData = Encoding.UTF8.GetString(bufRecv, 0, n);
-        Debug.Log(recvData);
+        //Debug.Log(recvData);
 
-        var data = JsonConvert.DeserializeObject<TempPacket>(recvData);
-        if (data.header.packetIndex == 101) //JsonExample
-        {
-            var packetTemp = JsonConvert.DeserializeObject<JsonExample>(recvData);
-            Debug.Log(packetTemp.Data1);
-            Debug.Log(packetTemp.Data2);
-        }
+        //var data = JsonConvert.DeserializeObject<TempPacket>(recvData);
+        //if (data.header.packetIndex == 101) //JsonExample
+        //{
+        //    var packetTemp = JsonConvert.DeserializeObject<JsonExample>(recvData);
+        //    Debug.Log(packetTemp.Data1);
+        //    Debug.Log(packetTemp.Data2);
+        //}
     }
 
     // Update is called once per frame

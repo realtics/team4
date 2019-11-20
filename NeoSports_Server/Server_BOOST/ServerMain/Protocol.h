@@ -10,11 +10,10 @@ const int MAX_MESSAGE_LEN = 129;
 
 enum PACKET_INDEX
 {
-	REQ_IN =1,
+	REQ_IN = 1,
 	RES_IN,
 	REQ_CHAT,
 	NOTICE_CHAT,
-	TEST_ENUM = 100,
 };
 
 struct PACKET_HEADER
@@ -30,19 +29,21 @@ struct TEST_PACKET
 	std::string Data2;
 };
 
+//처음 클라가 들어왔을때 그 클라의 이름을 받음
 struct PACKET_REQ_IN : public PACKET_HEADER
 {
-	char szName[MAX_NAME_LEN];
+	char name[MAX_NAME_LEN];
 
 	void Init()
 	{
 		packetIndex = PACKET_INDEX::REQ_IN;
 		packetSize = sizeof(PACKET_REQ_IN);
-		ZeroMemory(szName, MAX_NAME_LEN);
+		ZeroMemory(name, MAX_NAME_LEN);
 	}
 };
 
-struct PACKET_RES_IN : public PACKET_HEADER
+//클라에게 접속성공인지 알려줌
+struct PACKET_RES_IN : public PACKET_HEADER 
 {
 	bool isSuccess;
 
@@ -54,6 +55,7 @@ struct PACKET_RES_IN : public PACKET_HEADER
 	}
 };
 
+//접속되있는 클라의 메시지를 받음
 struct PACKET_REQ_CHAT : public PACKET_HEADER
 {
 	char szMessage[MAX_MESSAGE_LEN];
@@ -66,7 +68,8 @@ struct PACKET_REQ_CHAT : public PACKET_HEADER
 	}
 };
 
-struct PACKET_NOTICE_CHAT : public PACKET_HEADER
+//누가 무슨 채팅을 했는지 클라들에게 뿌려줌
+struct PACKET_NOTICE_CHAT : public PACKET_HEADER 
 {
 	char szName[MAX_NAME_LEN];
 	char szMessage[MAX_MESSAGE_LEN];
