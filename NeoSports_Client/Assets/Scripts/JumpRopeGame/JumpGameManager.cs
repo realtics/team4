@@ -25,6 +25,7 @@ namespace JumpRopeGame
 		const float GameStartPrepareTime = 5.0f;
 		const float TimingBarPointerInitialSpeed = 150.0f;
 		const float MaxRopeMovePositionX = 6.9f;
+		const float MoveSpeedWeighter = 3.0f;
 		#endregion
 
 		#region public Variable
@@ -184,7 +185,7 @@ namespace JumpRopeGame
 
 		void AccelerateRopeMoveSpeed()
 		{
-			_timingBarPointerSpeed += Time.deltaTime;
+			_timingBarPointerSpeed += Time.deltaTime * MoveSpeedWeighter;
 		}
 		#endregion
 
@@ -247,7 +248,7 @@ namespace JumpRopeGame
 		{
 			_gameState = EGameState.GameOver;
 
-			CommonUIManager.Instance.CreateWinnerNotice(rootCanvas, "플레이어 캐릭터");
+			CommonUIManager.Instance.CreateLooserNotice(rootCanvas, "플레이어 캐릭터");
 		}
 
 	}
