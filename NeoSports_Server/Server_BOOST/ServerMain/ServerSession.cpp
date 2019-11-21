@@ -149,6 +149,8 @@ const char* Session::GetName()
 
 void Session::_DeSerializationJson(char* jsonStr)
 {
+	_packetBufferMark = 0;
+
 	boost::property_tree::ptree ptRecv;
 	std::istringstream is(jsonStr);
 	boost::property_tree::read_json(is, ptRecv);
@@ -164,6 +166,7 @@ void Session::_DeSerializationJson(char* jsonStr)
 		packet.packetIndex = headerIndex;
 		packet.packetSize = children.get<int>("packetSize");
 		strcpy(packet.name, ptRecv.get<std::string>("name").c_str());
+
 		memcpy(&_packetBuffer[_packetBufferMark], (char*)&packet, sizeof(packet));
 		break;
 	}
@@ -175,6 +178,7 @@ void Session::_DeSerializationJson(char* jsonStr)
 		packet.header.packetSize = children.get<int>("packetSize");
 		packet.gameIndex = ptRecv.get<int>("gameIndex");
 		packet.charIndex = ptRecv.get<int>("charIndex");
+
 		memcpy(&_packetBuffer[_packetBufferMark], (char*)&packet, sizeof(packet));
 		break;
 	}
