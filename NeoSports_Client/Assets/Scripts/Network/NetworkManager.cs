@@ -11,6 +11,16 @@ using System;
 
 using Newtonsoft.Json;
 
+public class AsyncObject
+{
+    public Byte[] buffer;
+    public Socket workingSocket;
+    public AsyncObject(Int32 bufferSize)
+    {
+        this.buffer = new Byte[bufferSize];
+    }
+}
+
 public enum PACKET_INDEX
 {
     REQ_IN = 1,
@@ -52,6 +62,7 @@ public class NetworkManager : Singleton<NetworkManager>
     const int PortNumber = 31400;
 
     Socket _sock = null;
+    AsyncCallback _receiveHandler;
 
     void Awake()
     {
@@ -144,7 +155,17 @@ public class NetworkManager : Singleton<NetworkManager>
         try
         {
             _sock.Connect(new IPEndPoint(IPAddress.Parse(LoopbackAdress), PortNumber));
-            //_sock.Connect(new IPEndPoint(IPAddress.Parse(IpAdress), PortNumber));        
+            //_sock.Connect(new IPEndPoint(IPAddress.Parse(IpAdress), PortNumber));
+
+            //Async 추가 작성 
+            {
+                _receiveHandler = new AsyncCallback(HandleDataRecive);
+                _sock.NoDelay = true; //nagle off
+                AsyncObject ao = new AsyncObject(128);
+                ao.workingSocket = _sock;
+                _sock.BeginReceive(ao.buffer, 0, ao.buffer.Length,
+                   SocketFlags.None, _receiveHandler, ao);
+            }
         }
         catch (SocketException se)
         {
@@ -156,6 +177,25 @@ public class NetworkManager : Singleton<NetworkManager>
             PopupManager.Instance.ShowPopup(a);
             return;
         }
+    }
+
+    void HandleDataRecive(IAsyncResult ar)
+    {
+        Debug.Log("AsyncReceive");
+        AsyncObject ao = (AsyncObject)ar.AsyncState;
+        Int32 recvBytes = ao.workingSocket.EndReceive(ar);
+        Debug.Log( "receiveByte size:"+recvBytes);
+
+        if (recvBytes > 0)
+        {
+            //receive처리 
+            string recvData = Encoding.UTF8.GetString(ao.buffer, 0, recvBytes);
+            
+            //To Do: Json 처리
+            //var data = JsonConvert.DeserializeObject<TempPacket>(recvData);
+        }
+        ao.workingSocket.BeginReceive(ao.buffer, 0, ao.buffer.Length
+            , SocketFlags.None, _receiveHandler, ao);
     }
 
     void ExitProgram()
