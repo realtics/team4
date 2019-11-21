@@ -13,11 +13,11 @@ using Newtonsoft.Json;
 
 public class AsyncObject
 {
-    public Byte[] buffer;
+    public byte[] buffer;
     public Socket workingSocket;
     public AsyncObject(Int32 bufferSize)
     {
-        this.buffer = new Byte[bufferSize];
+        this.buffer = new byte[bufferSize];
     }
 }
 
@@ -60,6 +60,8 @@ public class NetworkManager : Singleton<NetworkManager>
     const string IpAdress = "192.168.1.119";
     const string LoopbackAdress = "127.0.0.1";
     const int PortNumber = 31400;
+    
+    public bool isLoopBack;
 
     Socket _sock = null;
     AsyncCallback _receiveHandler;
@@ -115,30 +117,6 @@ public class NetworkManager : Singleton<NetworkManager>
         return headerPacket;
     }
 
-    //To Do :클라이언트 Receive 비동기처리 
-    void ReciveFromSeverPacket()
-    {
-        byte[] bufRecv = new byte[128]; //수신을 위해 바이트단위로 변환
-        int n = _sock.Receive(bufRecv);
-        Debug.Log("recv");
-        Debug.Log(n);
-
-        //string recvData = Encoding.UTF8.GetString(bufRecv, 0, n);
-        //int bufLen = Encoding.Default.GetBytes(bufRecv);
-        int bufLen = bufRecv.Length;
-        string recvData = Encoding.UTF8.GetString(bufRecv, 0, n);
-        Debug.Log(recvData);
-
-        var data = JsonConvert.DeserializeObject<TempPacket>(recvData);
-        //if (data.header.packetIndex == 101) //JsonExample
-        //{
-        //    var packetTemp = JsonConvert.DeserializeObject<JsonExample>(recvData);
-        //    Debug.Log(packetTemp.Data1);
-        //    Debug.Log(packetTemp.Data2);
-        //}
-
-    }
-
     void Connect()
     {
         _sock = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.IP);
@@ -154,13 +132,18 @@ public class NetworkManager : Singleton<NetworkManager>
         }
         try
         {
-            _sock.Connect(new IPEndPoint(IPAddress.Parse(LoopbackAdress), PortNumber));
-            //_sock.Connect(new IPEndPoint(IPAddress.Parse(IpAdress), PortNumber));
-
+            if (isLoopBack)
+            {
+                _sock.Connect(new IPEndPoint(IPAddress.Parse(LoopbackAdress), PortNumber));
+            }
+            else
+            {
+                _sock.Connect(new IPEndPoint(IPAddress.Parse(IpAdress), PortNumber));
+            }
             //Async 추가 작성 
             {
                 _receiveHandler = new AsyncCallback(HandleDataRecive);
-                _sock.NoDelay = true; //nagle off
+                //_sock.NoDelay = true; //nagle off
                 AsyncObject ao = new AsyncObject(128);
                 ao.workingSocket = _sock;
                 _sock.BeginReceive(ao.buffer, 0, ao.buffer.Length,
@@ -181,18 +164,20 @@ public class NetworkManager : Singleton<NetworkManager>
 
     void HandleDataRecive(IAsyncResult ar)
     {
-        Debug.Log("AsyncReceive");
         AsyncObject ao = (AsyncObject)ar.AsyncState;
         Int32 recvBytes = ao.workingSocket.EndReceive(ar);
-        Debug.Log( "receiveByte size:"+recvBytes);
 
         if (recvBytes > 0)
         {
             //receive처리 
-            string recvData = Encoding.UTF8.GetString(ao.buffer, 0, recvBytes);
-            
+            byte[] recvBuf = new byte[recvBytes];
+            Array.Copy(ao.buffer, recvBuf, recvBytes);
+
+            string recvData = Encoding.UTF8.GetString(recvBuf, 0, recvBytes);
+
             //To Do: Json 처리
-            //var data = JsonConvert.DeserializeObject<TempPacket>(recvData);
+            var data = JsonConvert.DeserializeObject<TempPacket>(recvData);
+
         }
         ao.workingSocket.BeginReceive(ao.buffer, 0, ao.buffer.Length
             , SocketFlags.None, _receiveHandler, ao);
