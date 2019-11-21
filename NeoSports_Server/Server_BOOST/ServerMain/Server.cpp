@@ -1,5 +1,5 @@
 #include "Server.h"
-
+#include "Json.h"
 
 
 Server::Server(boost::asio::io_context& io_service) : _acceptor(io_service,
@@ -85,7 +85,9 @@ void Server::ProcessPacket(const int sessionID, const char* data)
 		sendPacket.charInfo = packet->charIndex;
 		sendPacket.roomInfo = mrTemp;
 
-		_sessionVec[sessionID]->PostSend(false, sendPacket.header.packetSize, (char*)&sendPacket);
+		std::string aa = _SerializationJson(PACKET_INDEX::ROOM_INFO, (const char*)&sendPacket);
+
+		_sessionVec[sessionID]->PostSend(false, aa.length(), (char*)aa.c_str());
 	}
 	break;
 
@@ -151,5 +153,33 @@ void Server::_AcceptHandle(Session* session, const boost::system::error_code& er
 	{
 		std::cout << "error No : " << error.value() << " error Message : " << error.message()
 			<< std::endl;
+	}
+}
+
+std::string Server::_SerializationJson(int packetIndex, const char* packet)
+{
+	std::string sendStr;
+	switch (packetIndex)
+	{
+	case PACKET_INDEX::ROOM_INFO:
+	{
+		PACKET_ROOM_INFO* testPacket = new PACKET_ROOM_INFO;
+		memcpy(&testPacket, &packet, sizeof(PACKET_ROOM_INFO));
+
+		boost::property_tree::ptree ptSend;
+		boost::property_tree::ptree ptSendHeader;
+		ptSendHeader.put<int>("packetIndex", testPacket->header.packetIndex);
+		ptSendHeader.put<int>("packetSize", sizeof(PACKET_ROOM_INFO));
+		ptSend.add_child("header", ptSendHeader);
+		ptSend.put<int>("roomInfo", testPacket->roomInfo);
+		ptSend.put<int>("charInfo", testPacket->charInfo);
+
+		std::string recvTemp;
+		std::ostringstream os(recvTemp);
+		boost::property_tree::write_json(os, ptSend, false);
+		sendStr = os.str();
+		return sendStr;
+	}
+
 	}
 }

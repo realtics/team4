@@ -92,8 +92,7 @@ void Session::PostSend(const bool Immediately, const int size, char* data)
 {
 	LockGuard sendLockGuard(_sendLock);
 	char* sendData = nullptr;
-	std::string aa = _SerializationJson(PACKET_INDEX::MULTI_ROOM, data);
-	std::strcpy(sendData,aa.c_str());
+	
 	if (Immediately == false)
 	{
 		sendData = new char[size];
@@ -187,32 +186,32 @@ void Session::_DeSerializationJson(char* jsonStr)
 	}
 }
 
-std::string Session::_SerializationJson(int packetIndex, const char* packet)
-{
-	std::string sendStr;
-	switch (packetIndex)
-	{
-
-	case PACKET_INDEX::MULTI_ROOM:
-	{
-		PACKET_ROOM_INFO* testPacket = new PACKET_ROOM_INFO;
-		memcpy(&testPacket, &packet, sizeof(PACKET_ROOM_INFO));
-
-		boost::property_tree::ptree ptSend;
-		boost::property_tree::ptree ptSendHeader;
-		ptSendHeader.put<int>("packetIndex", testPacket->header.packetIndex);
-		ptSendHeader.put<int>("packetSize", sizeof(PACKET_ROOM_INFO));
-		ptSend.add_child("header", ptSendHeader);
-		ptSend.put<int>("roomInfo", testPacket->roomInfo);
-		ptSend.put<int>("charInfo", testPacket->charInfo);
-
-		std::string recvTemp;
-		std::ostringstream os(recvTemp);
-		boost::property_tree::write_json(os, ptSend, false);
-		sendStr = os.str();
-		return sendStr;
-	}
-
-	}
-}
+//std::string Session::_SerializationJson(int packetIndex, const char* packet)
+//{
+//	std::string sendStr;
+//	switch (packetIndex)
+//	{
+//
+//	case PACKET_INDEX::MULTI_ROOM:
+//	{
+//		PACKET_ROOM_INFO* testPacket = new PACKET_ROOM_INFO;
+//		memcpy(&testPacket, &packet, sizeof(PACKET_ROOM_INFO));
+//
+//		boost::property_tree::ptree ptSend;
+//		boost::property_tree::ptree ptSendHeader;
+//		ptSendHeader.put<int>("packetIndex", testPacket->header.packetIndex);
+//		ptSendHeader.put<int>("packetSize", sizeof(PACKET_ROOM_INFO));
+//		ptSend.add_child("header", ptSendHeader);
+//		ptSend.put<int>("roomInfo", testPacket->roomInfo);
+//		ptSend.put<int>("charInfo", testPacket->charInfo);
+//
+//		std::string recvTemp;
+//		std::ostringstream os(recvTemp);
+//		boost::property_tree::write_json(os, ptSend, false);
+//		sendStr = os.str();
+//		return sendStr;
+//	}
+//
+//	}
+//}
 

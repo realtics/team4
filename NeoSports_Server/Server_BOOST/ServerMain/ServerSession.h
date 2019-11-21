@@ -24,7 +24,6 @@ public:
 
 	boost::asio::ip::tcp::socket& Socket() { return Session::_socket; }
 
-
 private:
 	Lock _sendLock;
 	Lock _recvLock;
@@ -48,6 +47,6 @@ private:
 	void _DeSerializationJson(char* jsonStr);
 
 public:
-	std::string _SerializationJson(int packetIndex, const char* pakcet);
+	//std::string _SerializationJson(int packetIndex, const char* pakcet);
 };
 

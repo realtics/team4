@@ -11,9 +11,27 @@ using System;
 
 using Newtonsoft.Json;
 
+public enum ROOM_INDEX
+{
+    EMPTY_ROOM = 0,
+    ENTER_ROOM,
+
+    MAKE_ROOM,
+    ROPE_PULL,
+    ROPE_JUMP,
+    BASKET_BALL,
+};
+
+public enum CHAR_INDEX
+{
+    EMPTY_CHAR = 100,
+    CHICK,
+    JELLY,
+};
+
 public enum PACKET_INDEX
 {
-    REQ_IN = 1,
+    REQ_IN = 200,
     MULTI_ROOM, //클라에서 같이하기 눌렀을때 방을 만들거나 방이있으면 접속함
     ROOM_INFO,
 
@@ -30,16 +48,6 @@ public struct PACKET_ROOM_INFO
     public PACKET_HEADER header;
     public int roomInfo; //방을 만든건지 들어간건지의 정보
     public int charInfo; //상대 플레이어의 캐릭터 정보
-};
-public enum ROOM_INDEX
-{
-    MAKE_ROOM,
-    ENTER_ROOM,
-
-    EMPTY_ROOM = -1,
-    ROPE_PULL,
-    ROPE_JUMP,
-    BASKET_BALL,
 };
 
 public struct PACKET_HEADER
@@ -81,7 +89,7 @@ public class SocketMG : MonoBehaviour
 
         //TODO : 패킷을 제이슨으로 직렬화,역직렬화 시키는 함수 작성하기
         {
-            var headerPacket = new PACKET_HEADER { packetIndex = 2, packetSize = 10 };
+            var headerPacket = new PACKET_HEADER { packetIndex = 201, packetSize = 10 };
             var p = new PACKET_MULTI_ROOM { header = headerPacket, gameIndex = 0, charIndex = 0 };
             string json;
             json = JsonConvert.SerializeObject(p); //객체를 json직렬화 
@@ -104,11 +112,11 @@ public class SocketMG : MonoBehaviour
         Debug.Log(recvData);
 
         var data = JsonConvert.DeserializeObject<TempPacket>(recvData);
-        if (data.header.packetIndex == 3) //JsonExample
+        if (data.header.packetIndex == 202) //JsonExample
         {
             var packetTemp = JsonConvert.DeserializeObject<PACKET_ROOM_INFO>(recvData);
-            Debug.Log(packetTemp.roomInfo);
-            Debug.Log(packetTemp.charInfo);
+            Debug.Log(packetTemp.roomInfo); //방번호
+            Debug.Log(packetTemp.charInfo); //입장한 캐릭터 번호
         }
     }
 

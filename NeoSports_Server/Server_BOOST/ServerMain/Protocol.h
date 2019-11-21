@@ -1,6 +1,5 @@
 #pragma once
-#include <Windows.h>
-#include "RoomProtocol.h"
+//#include <Windows.h>
 
 const unsigned short PORT_NUMBER = 31400;
 
@@ -9,9 +8,30 @@ const int MAX_RECEIVE_BUFFER_LEN = 512;
 const int MAX_NAME_LEN = 17;
 const int MAX_MESSAGE_LEN = 129;
 
+const int MAX_ROOM_COUNT = 20;
+const int FAIL_ROOM_SERCH = -101;
+
+enum ROOM_INDEX
+{
+	EMPTY_ROOM = 0,
+	ENTER_ROOM,
+
+	MAKE_ROOM,
+	ROPE_PULL,
+	ROPE_JUMP,
+	BASKET_BALL,
+};
+
+enum CHAR_INDEX
+{
+	EMPTY_CHAR = 100,
+	CHICK,
+	JELLY,
+};
+
 enum PACKET_INDEX
 {
-	REQ_IN = 1,
+	REQ_IN = 200,
 	MULTI_ROOM, //클라에서 같이하기 눌렀을때 방을 만들거나 방이있으면 접속함
 	ROOM_INFO,
 
@@ -53,47 +73,47 @@ struct PACKET_REQ_IN : public PACKET_HEADER
 	{
 		packetIndex = PACKET_INDEX::REQ_IN;
 		packetSize = sizeof(PACKET_REQ_IN);
-		ZeroMemory(name, MAX_NAME_LEN);
+		//ZeroMemory(name, MAX_NAME_LEN);
 	}
 };
 
 //클라에게 접속성공인지 알려줌
-struct PACKET_RES_IN : public PACKET_HEADER 
-{
-	bool isSuccess;
-
-	void Init()
-	{
-		packetIndex = PACKET_INDEX::RES_IN;
-		packetSize = sizeof(PACKET_RES_IN);
-		isSuccess = false;
-	}
-};
-
-//접속되있는 클라의 메시지를 받음
-struct PACKET_REQ_CHAT : public PACKET_HEADER
-{
-	char szMessage[MAX_MESSAGE_LEN];
-
-	void Init()
-	{
-		packetIndex = PACKET_INDEX::REQ_CHAT;
-		packetSize = sizeof(PACKET_REQ_CHAT);
-		ZeroMemory(szMessage, MAX_MESSAGE_LEN);
-	}
-};
-
-//누가 무슨 채팅을 했는지 클라들에게 뿌려줌
-struct PACKET_NOTICE_CHAT : public PACKET_HEADER 
-{
-	char szName[MAX_NAME_LEN];
-	char szMessage[MAX_MESSAGE_LEN];
-
-	void Init()
-	{
-		packetIndex = PACKET_INDEX::NOTICE_CHAT;
-		packetSize = sizeof(PACKET_NOTICE_CHAT);
-		ZeroMemory(szName, MAX_NAME_LEN);
-		ZeroMemory(szMessage, MAX_MESSAGE_LEN);
-	}
-};
+//struct PACKET_RES_IN : public PACKET_HEADER
+//{
+//	bool isSuccess;
+//
+//	void Init()
+//	{
+//		packetIndex = PACKET_INDEX::RES_IN;
+//		packetSize = sizeof(PACKET_RES_IN);
+//		isSuccess = false;
+//	}
+//};
+//
+////접속되있는 클라의 메시지를 받음
+//struct PACKET_REQ_CHAT : public PACKET_HEADER
+//{
+//	char szMessage[MAX_MESSAGE_LEN];
+//
+//	void Init()
+//	{
+//		packetIndex = PACKET_INDEX::REQ_CHAT;
+//		packetSize = sizeof(PACKET_REQ_CHAT);
+//		ZeroMemory(szMessage, MAX_MESSAGE_LEN);
+//	}
+//};
+//
+////누가 무슨 채팅을 했는지 클라들에게 뿌려줌
+//struct PACKET_NOTICE_CHAT : public PACKET_HEADER
+//{
+//	char szName[MAX_NAME_LEN];
+//	char szMessage[MAX_MESSAGE_LEN];
+//
+//	void Init()
+//	{
+//		packetIndex = PACKET_INDEX::NOTICE_CHAT;
+//		packetSize = sizeof(PACKET_NOTICE_CHAT);
+//		ZeroMemory(szName, MAX_NAME_LEN);
+//		ZeroMemory(szMessage, MAX_MESSAGE_LEN);
+//	}
+//};

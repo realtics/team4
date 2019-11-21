@@ -1,8 +1,6 @@
 #pragma once
 #include <vector>
-
-#include "RoomProtocol.h"
-#include "CharProtocol.h"
+#include "Protocol.h"
 const int MAX_CHAR_IN_ROOM = 2; //한 방의 최대 게임중인 플레이어
 class ROOM
 {

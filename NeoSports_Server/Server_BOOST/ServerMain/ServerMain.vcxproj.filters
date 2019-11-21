@@ -47,16 +47,10 @@
     <ClInclude Include="RoomMG.h">
       <Filter>Room</Filter>
     </ClInclude>
-    <ClInclude Include="RoomProtocol.h">
-      <Filter>Room</Filter>
-    </ClInclude>
     <ClInclude Include="Json.h">
       <Filter>Protocol</Filter>
     </ClInclude>
     <ClInclude Include="Protocol.h">
-      <Filter>Protocol</Filter>
-    </ClInclude>
-    <ClInclude Include="CharProtocol.h">
       <Filter>Protocol</Filter>
     </ClInclude>
   </ItemGroup>

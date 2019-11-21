@@ -25,9 +25,7 @@
     <ClCompile Include="ServerSession.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="CharProtocol.h" />
     <ClInclude Include="RoomMG.h" />
-    <ClInclude Include="RoomProtocol.h" />
     <ClInclude Include="Server.h" />
     <ClInclude Include="Json.h" />
     <ClInclude Include="Lock.h" />
