@@ -2,7 +2,8 @@
 #include <vector>
 
 #include "RoomProtocol.h"
-
+#include "CharProtocol.h"
+const int MAX_CHAR_IN_ROOM = 2; //한 방의 최대 게임중인 플레이어
 class ROOM
 {
 public:
@@ -11,10 +12,17 @@ public:
 		gameIndex = ROOM_INDEX::EMPTY_ROOM;
 		superSessionID = ROOM_INDEX::EMPTY_ROOM;
 		sessionID = ROOM_INDEX::EMPTY_ROOM;
+
+		for (int i = 0; i < MAX_CHAR_IN_ROOM; i++)
+		{
+			charIndex[i] = CHAR_INDEX::EMPTY_CHAR;
+		}
+
 		isEmptyRoom = true;
 	}
 	bool isEmptyRoom;
 	int gameIndex; //객체가 무슨 게임의 방인지 구별
+	int charIndex[MAX_CHAR_IN_ROOM]; //방에 있는 플레이어 두명의 캐릭터 인덱스
 	int superSessionID; //방장 클라이언트
 	int sessionID; //접속한 클라이언트
 private:
