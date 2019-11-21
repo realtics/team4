@@ -1,7 +1,9 @@
 #pragma once
 #include <vector>
 #include "Protocol.h"
+
 const int MAX_CHAR_IN_ROOM = 2; //한 방의 최대 게임중인 플레이어
+
 class ROOM
 {
 public:
@@ -22,7 +24,7 @@ public:
 	int gameIndex; //객체가 무슨 게임의 방인지 구별
 	int charIndex[MAX_CHAR_IN_ROOM]; //방에 있는 플레이어 두명의 캐릭터 인덱스
 	int superSessionID; //방장 클라이언트
-	int sessionID; //접속한 클라이언트
+	int sessionID; //접속한 클라이언트(상대방)
 private:
 };
 
@@ -32,6 +34,8 @@ public:
 	RoomMG();
 	int _SearchRoom(int roomIndex);
 	int _MakeRoom(int gameIndexk, int sessionID);
+	int _GetRoomChar(int roomIndex, int playerIndex);
+	void _SetRoomChar(int roomIndex, int charIndex);
 private:
 	std::vector<ROOM*> _roomVec;
 

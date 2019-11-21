@@ -63,13 +63,6 @@ void Server::ProcessPacket(const int sessionID, const char* data)
 		_sessionVec[sessionID]->SetNanme(packet->name);
 
 		std::cout << "클라접속 Name : " << _sessionVec[sessionID]->GetName() << std::endl;
-
-		//클라에게 접속됬다고 알려줌
-		//PACKET_RES_IN sendPacket;
-		//sendPacket.Init();
-		//sendPacket.isSuccess = true;
-
-		//_sessionVec[sessionID]->PostSend(false, sendPacket.packetSize, (char*)&sendPacket);
 	}
 	break;
 
@@ -84,6 +77,16 @@ void Server::ProcessPacket(const int sessionID, const char* data)
 		sendPacket.header.packetSize = sizeof(PACKET_ROOM_INFO);
 		sendPacket.charInfo = packet->charIndex;
 		sendPacket.roomInfo = mrTemp;
+
+		if (mrTemp == ROOM_INDEX::MAKE_ROOM)
+		{
+			roomMG._SetRoomChar(sendPacket.charInfo);
+		}
+
+		else if (mrTemp == ROOM_INDEX::ENTER_ROOM)
+		{
+
+		}
 
 		std::string aa = _SerializationJson(PACKET_INDEX::ROOM_INFO, (const char*)&sendPacket);
 

@@ -45,8 +45,5 @@ private:
 	void _ReceiveHandle(const boost::system::error_code& error, size_t bytesTransferred);
 
 	void _DeSerializationJson(char* jsonStr);
-
-public:
-	//std::string _SerializationJson(int packetIndex, const char* pakcet);
 };
 

@@ -13,11 +13,15 @@ const int FAIL_ROOM_SERCH = -101;
 
 enum ROOM_INDEX
 {
-	EMPTY_ROOM = 0,
-	ENTER_ROOM,
+	EMPTY_ROOM = 11,
 
-	MAKE_ROOM,
-	ROPE_PULL,
+	MAKE_ROOM, //방장으로서 방에 입장
+	ENTER_ROOM,
+};
+
+enum GAME_INDEX
+{
+	ROPE_PULL = 20,
 	ROPE_JUMP,
 	BASKET_BALL,
 };

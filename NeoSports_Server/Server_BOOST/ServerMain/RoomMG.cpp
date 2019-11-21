@@ -42,7 +42,7 @@ int RoomMG::_MakeRoom(int gameIndex, int sessionID)
 	int roomNum = _SearchRoom(gameIndex);
 	if ((roomNum != FAIL_ROOM_SERCH) && _roomVec[roomNum]->isGammingRoom == false)
 	{
-		if ( _roomVec[roomNum]->superSessionID == ROOM_INDEX::EMPTY_ROOM)
+		if (_roomVec[roomNum]->superSessionID == ROOM_INDEX::EMPTY_ROOM)
 		{
 			_roomVec[roomNum]->gameIndex = gameIndex;
 			_roomVec[roomNum]->superSessionID = sessionID;
@@ -63,3 +63,21 @@ int RoomMG::_MakeRoom(int gameIndex, int sessionID)
 	}
 	return FAIL_ROOM_SERCH;
 }
+
+void RoomMG::_SetRoomChar(int roomIndex, int charIndex)
+{
+	for (int i = 0; i < MAX_CHAR_IN_ROOM; i++)
+	{
+		if (_roomVec[roomIndex]->charIndex[i] != CHAR_INDEX::EMPTY_CHAR)
+		{
+			_roomVec[roomIndex]->charIndex[i] == charIndex;
+			return;
+		}
+	}
+}
+
+int RoomMG::_GetRoomChar(int roomIndex, int playerIndex)
+{
+	return _roomVec[roomIndex]->charIndex[playerIndex];
+}
+
