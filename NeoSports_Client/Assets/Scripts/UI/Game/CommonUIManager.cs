@@ -121,6 +121,7 @@ public class CommonUIManager : Singleton<CommonUIManager>
 		_winnerNoticeLabel = Instantiate(prefWinnerNoticeLabel, canvas.transform);
 		_winnerNoticeLabel.transform.GetChild((int)ENoticeLabelChildIndex.DynamicTextUserName).
 			GetComponent<Text>().text = name;
+		PopupManager.Instance.SetAsLastSiblingPopup();
 	}
 
 	public void DestroyWinnerNotice()
@@ -142,6 +143,7 @@ public class CommonUIManager : Singleton<CommonUIManager>
 		_looserNoticeLabel = Instantiate(prefLooserNoticeLabel, canvas.transform);
 		_looserNoticeLabel.transform.GetChild((int)ENoticeLabelChildIndex.DynamicTextUserName).
 			GetComponent<Text>().text = name;
+		PopupManager.Instance.SetAsLastSiblingPopup();
 	}
 
 	public void DestroyLooserNotice()

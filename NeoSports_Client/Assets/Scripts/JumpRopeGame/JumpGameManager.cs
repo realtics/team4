@@ -24,6 +24,7 @@ namespace JumpRopeGame
 		#region Constant Variable
 		const float GameStartPrepareTime = 5.0f;
 		const float TimingBarPointerInitialSpeed = 150.0f;
+		const float MaxRopeMovePositionX = 6.9f;
 		#endregion
 
 		#region public Variable
@@ -36,6 +37,7 @@ namespace JumpRopeGame
 
 		// Game Object
 		public GameObject leftPlayer;
+		public GameObject jumpRope;
 		#endregion
 
 		#region Private Variable
@@ -94,8 +96,10 @@ namespace JumpRopeGame
 					// Update
 					UpdateElapseGameTimer();
 					UpdateTimingBarPointerPosition();
+					SyncRopePositionByTimingBar();
 					UpdateTimingBarPointerDirection();
 					CheckJumpCompleteAtSuccessZone();
+					AccelerateRopeMoveSpeed();
 					break;
 				case EGameState.GameOver:
 					break;
@@ -166,6 +170,21 @@ namespace JumpRopeGame
 					GameOver();
 				}
 			}
+		}
+
+		void SyncRopePositionByTimingBar()
+		{
+			Vector3 position = jumpRope.transform.position;
+			Vector2 mPointerPosition = _timingBarPointerTransform.anchoredPosition;
+			Rect mBackRect = _timingBarBackTransform.rect;
+
+			position.x = MaxRopeMovePositionX * mPointerPosition.x / mBackRect.xMax;
+			jumpRope.transform.position = position;
+		}
+
+		void AccelerateRopeMoveSpeed()
+		{
+			_timingBarPointerSpeed += Time.deltaTime;
 		}
 		#endregion
 

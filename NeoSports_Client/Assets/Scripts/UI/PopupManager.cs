@@ -42,8 +42,14 @@ public class PopupManager : Singleton<PopupManager>
         _popupNotifyText.text = data.text;
         _popupCallBack = data.callBack;
 
-        popupPanel.transform.SetAsLastSibling();
-    }
+		SetAsLastSiblingPopup();
+
+	}
+
+	public void SetAsLastSiblingPopup()
+	{
+		popupPanel.transform.SetAsLastSibling();
+	}
 
     public void ClickEventPopup()
     {
