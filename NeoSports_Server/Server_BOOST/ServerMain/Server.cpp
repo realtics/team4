@@ -34,7 +34,7 @@ void Server::Init(const int maxSessionCount)
 void Server::Start()
 {
 	std::cout << "서버시작..." << std::endl;
-	
+
 	_PostAccept();
 }
 
@@ -57,22 +57,39 @@ void Server::ProcessPacket(const int sessionID, const char* data)
 
 	switch (header->packetIndex)
 	{
-	case REQ_IN:
+	case PACKET_INDEX::REQ_IN:
 	{
 		PACKET_REQ_IN* packet = (PACKET_REQ_IN*)data;
 		_sessionVec[sessionID]->SetNanme(packet->name);
 
 		std::cout << "클라접속 Name : " << _sessionVec[sessionID]->GetName() << std::endl;
 
-		PACKET_RES_IN sendPacket;
-		sendPacket.Init();
-		sendPacket.isSuccess = true;
+		//클라에게 접속됬다고 알려줌
+		//PACKET_RES_IN sendPacket;
+		//sendPacket.Init();
+		//sendPacket.isSuccess = true;
 
-		_sessionVec[sessionID]->PostSend(false, sendPacket.packetSize, (char*)&sendPacket);
+		//_sessionVec[sessionID]->PostSend(false, sendPacket.packetSize, (char*)&sendPacket);
 	}
 	break;
 
-	case REQ_CHAT:
+	case PACKET_INDEX::MULTI_ROOM:
+	{
+		PACKET_MULTI_ROOM* packet = (PACKET_MULTI_ROOM*)data;
+
+		int mrTemp = roomMG._MakeRoom(packet->gameIndex, sessionID);
+
+		PACKET_ROOM_INFO sendPacket;
+		sendPacket.header.packetIndex = PACKET_INDEX::ROOM_INFO;
+		sendPacket.header.packetSize = sizeof(PACKET_ROOM_INFO);
+		sendPacket.charInfo = packet->charIndex;
+		sendPacket.roomInfo = mrTemp;
+
+		_sessionVec[sessionID]->PostSend(false, sendPacket.header.packetSize, (char*)&sendPacket);
+	}
+	break;
+
+	/*case REQ_CHAT:
 	{
 		PACKET_REQ_CHAT* packet = (PACKET_REQ_CHAT*)data;
 
@@ -91,7 +108,7 @@ void Server::ProcessPacket(const int sessionID, const char* data)
 			}
 		}
 	}
-	break;
+	break;*/
 
 	return;
 	}

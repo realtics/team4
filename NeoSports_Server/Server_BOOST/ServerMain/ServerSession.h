@@ -24,6 +24,7 @@ public:
 
 	boost::asio::ip::tcp::socket& Socket() { return Session::_socket; }
 
+
 private:
 	Lock _sendLock;
 	Lock _recvLock;

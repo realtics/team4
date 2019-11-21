@@ -16,6 +16,9 @@
     <Filter Include="Room">
       <UniqueIdentifier>{0f298156-d1fd-45fe-a2c6-597b07dfaa3d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Protocol">
+      <UniqueIdentifier>{df281bb3-0345-4837-87d9-69ef4a8ef3ef}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ServerSession.cpp">
@@ -32,13 +35,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Protocol.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="ServerSession.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Json.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="Lock.h">
@@ -52,6 +49,15 @@
     </ClInclude>
     <ClInclude Include="RoomProtocol.h">
       <Filter>Room</Filter>
+    </ClInclude>
+    <ClInclude Include="Json.h">
+      <Filter>Protocol</Filter>
+    </ClInclude>
+    <ClInclude Include="Protocol.h">
+      <Filter>Protocol</Filter>
+    </ClInclude>
+    <ClInclude Include="CharProtocol.h">
+      <Filter>Protocol</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

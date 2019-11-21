@@ -13,6 +13,7 @@ enum PACKET_INDEX
 {
 	REQ_IN = 1,
 	MULTI_ROOM, //클라에서 같이하기 눌렀을때 방을 만들거나 방이있으면 접속함
+	ROOM_INFO,
 
 	//클라와 통신하고 있지 않은 인덱스들 (채팅용)
 	RES_IN,
@@ -27,9 +28,20 @@ struct PACKET_HEADER
 	int packetSize;
 };
 
-struct PACKET_MAKE_ROOM
+//클라가 멀티게임 버튼을 눌렀을때
+struct PACKET_MULTI_ROOM
 {
 	PACKET_HEADER header;
+	int gameIndex;
+	int charIndex;
+};
+
+//멀티게임을 요청한 클라에게 보내는 패킷
+struct PACKET_ROOM_INFO
+{
+	PACKET_HEADER header;
+	int roomInfo; //방을 만든건지 들어간건지의 정보
+	int charInfo; //상대 플레이어의 캐릭터 정보
 };
 
 //처음 클라가 들어왔을때 그 클라의 이름을 받음

@@ -18,9 +18,9 @@ public:
 			charIndex[i] = CHAR_INDEX::EMPTY_CHAR;
 		}
 
-		isEmptyRoom = true;
+		isGammingRoom = false;
 	}
-	bool isEmptyRoom;
+	bool isGammingRoom;
 	int gameIndex; //객체가 무슨 게임의 방인지 구별
 	int charIndex[MAX_CHAR_IN_ROOM]; //방에 있는 플레이어 두명의 캐릭터 인덱스
 	int superSessionID; //방장 클라이언트
@@ -33,7 +33,7 @@ class RoomMG
 public:
 	RoomMG();
 	int _SearchRoom(int roomIndex);
-	int _MakeRoom(int roomIndexk, int sessionID);
+	int _MakeRoom(int gameIndexk, int sessionID);
 private:
 	std::vector<ROOM*> _roomVec;
 

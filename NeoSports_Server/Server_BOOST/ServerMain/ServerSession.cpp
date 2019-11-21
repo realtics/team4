@@ -91,8 +91,9 @@ void  Session::_ReceiveHandle(const boost::system::error_code& error, size_t byt
 void Session::PostSend(const bool Immediately, const int size, char* data)
 {
 	LockGuard sendLockGuard(_sendLock);
-
 	char* sendData = nullptr;
+	std::string aa = _SerializationJson(PACKET_INDEX::MULTI_ROOM, data);
+	std::strcpy(sendData,aa.c_str());
 	if (Immediately == false)
 	{
 		sendData = new char[size];
@@ -168,34 +169,50 @@ void Session::_DeSerializationJson(char* jsonStr)
 		break;
 	}
 
+	case PACKET_INDEX::MULTI_ROOM:
+	{
+		PACKET_MULTI_ROOM packet;
+		packet.header.packetIndex = headerIndex;
+		packet.header.packetSize = children.get<int>("packetSize");
+		packet.gameIndex = ptRecv.get<int>("gameIndex");
+		packet.charIndex = ptRecv.get<int>("charIndex");
+		memcpy(&_packetBuffer[_packetBufferMark], (char*)&packet, sizeof(packet));
+		break;
+	}
+
+	default:
+		std::cout << "해당 패킷의 HeaderIndex가 없습니다. : " << headerIndex
+			<< std::endl;
+		break;
 	}
 }
 
 std::string Session::_SerializationJson(int packetIndex, const char* packet)
 {
+	std::string sendStr;
 	switch (packetIndex)
 	{
-		std::string sendStr;
-		//case 101: //TEST_PACEKT
-		//{
-		//	TEST_PACKET* testPacket = new TEST_PACKET;
-		//	memcpy(&testPacket, &packet, sizeof(TEST_PACKET));
 
-		//	boost::property_tree::ptree ptSend;
-		//	boost::property_tree::ptree ptSendHeader;
-		//	ptSendHeader.put<int>("packetIndex", testPacket->header.packetIndex);
-		//	ptSendHeader.put<int>("packetSize", sizeof(TEST_PACKET));
-		//	ptSend.add_child("header", ptSendHeader);
-		//	ptSend.put<int>("Data1", testPacket->Data1);
-		//	ptSend.put<std::string>("Data2", testPacket->Data2);
+	case PACKET_INDEX::MULTI_ROOM:
+	{
+		PACKET_ROOM_INFO* testPacket = new PACKET_ROOM_INFO;
+		memcpy(&testPacket, &packet, sizeof(PACKET_ROOM_INFO));
 
-		//	std::string recvTemp;
-		//	std::ostringstream os(recvTemp);
-		//	boost::property_tree::write_json(os, ptSend, false);
-		//	sendStr = os.str();
-		//}
+		boost::property_tree::ptree ptSend;
+		boost::property_tree::ptree ptSendHeader;
+		ptSendHeader.put<int>("packetIndex", testPacket->header.packetIndex);
+		ptSendHeader.put<int>("packetSize", sizeof(PACKET_ROOM_INFO));
+		ptSend.add_child("header", ptSendHeader);
+		ptSend.put<int>("roomInfo", testPacket->roomInfo);
+		ptSend.put<int>("charInfo", testPacket->charInfo);
 
+		std::string recvTemp;
+		std::ostringstream os(recvTemp);
+		boost::property_tree::write_json(os, ptSend, false);
+		sendStr = os.str();
 		return sendStr;
+	}
+
 	}
 }
 
