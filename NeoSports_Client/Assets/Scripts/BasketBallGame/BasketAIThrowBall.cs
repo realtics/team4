@@ -26,19 +26,22 @@ namespace BasketBallGame
         {
             _powerSize = 0.0f;
             _powerSizeOffset = 0.1f;
-            _arrowScaleOffset = 3.0f;
-            directionArrow.transform.position = new Vector2(transform.position.x - DirectionArrowOffset, transform.position.y + DirectionArrowOffset);
+            _arrowScaleOffset = 2.0f;
+			directionArrow.transform.position = new Vector2(transform.position.x - DirectionArrowOffset, transform.position.y + DirectionArrowOffset);
 
-            StartCoroutine(UpdateAI());
-        }
+			StartCoroutine(UpdateAI());
+		}
 
-        IEnumerator UpdateAI()
-        {
-            while (true)
-            {
-                CalculateAIAngle();
-                Fire();
-                yield return new WaitForSeconds(aiActiveFrequency);
+		IEnumerator UpdateAI()
+		{
+			while (true)
+			{
+				if (BasketBallManager.Instance.GameState == BasketBallManager.EGameState.Playing)
+				{
+					CalculateAIAngle();
+					Fire();
+				}
+				yield return new WaitForSeconds(aiActiveFrequency);
             }
         }
 

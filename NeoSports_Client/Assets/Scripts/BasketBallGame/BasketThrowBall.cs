@@ -30,8 +30,11 @@ namespace BasketBallGame
 
         void Update()
         {
-            ShotInWindow();
-        }
+			if(BasketBallManager.Instance.GameState == BasketBallManager.EGameState.Playing)
+			{
+				ShotInWindow();
+			}
+		}
 
         void ShotInWindow()
         {
