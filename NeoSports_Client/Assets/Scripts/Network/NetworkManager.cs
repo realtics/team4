@@ -21,23 +21,6 @@ public class AsyncObject
     }
 }
 
-public enum PACKET_INDEX
-{
-    REQ_IN = 1,
-};
-
-public struct PACKET_REQ_IN
-{
-    public PACKET_HEADER header;
-    public string name;
-};
-
-public enum EPacketRoomIndex
-{
-    RopePullGame,
-    RopeJumpGame,
-    BasketBallGame,
-};
 public struct PACKET_HEADER
 {
     public int packetIndex;
@@ -50,9 +33,54 @@ public struct PACKET_HEADER
     }
 };
 
+public struct PACKET_REQ_IN
+{
+    public PACKET_HEADER header;
+    public string name;
+};
+
+public struct PACKET_MULTI_ROOM
+{
+    public PACKET_HEADER header;
+    public int gameIndex;
+    public int charIndex;
+};
+
+public struct PACKET_ROOM_INFO
+{
+    public PACKET_HEADER header;
+    public int roomInfo; //방을 만든건지 들어간건지의 정보
+    public int charInfo; //상대 플레이어의 캐릭터 정보
+};
+
 public struct TempPacket
 {
     public PACKET_HEADER header;
+};
+
+
+public enum PACKET_INDEX
+{
+    REQ_IN = 200,
+    MULTI_ROOM, //클라에서 같이하기 눌렀을때 방을 만들거나 방이있으면 접속함
+    ROOM_INFO,
+};
+
+public enum CHAR_INDEX
+{
+    EMPTY_CHAR = 100,
+    CHICK,
+    JELLY,
+};
+
+public enum ROOM_INDEX
+{
+    EMPTY_ROOM = 0,
+    ENTER_ROOM,
+    MAKE_ROOM,
+    ROPE_PULL,
+    ROPE_JUMP,
+    BASKET_BALL,
 };
 
 public class NetworkManager : Singleton<NetworkManager>
@@ -60,7 +88,7 @@ public class NetworkManager : Singleton<NetworkManager>
     const string IpAdress = "192.168.1.119";
     const string LoopbackAdress = "127.0.0.1";
     const int PortNumber = 31400;
-    
+
     public bool isLoopBack;
 
     Socket _sock = null;
@@ -88,13 +116,14 @@ public class NetworkManager : Singleton<NetworkManager>
         SendToServerPacket(packet);
     }
 
-    public void SendRequsetRoom(EPacketRoomIndex roomIndex)
+    public void SendRequsetRoom(ROOM_INDEX roomIndex)
     {
         if (_sock == null)
             Connect();
 
-        PACKET_HEADER headerPacket = MakeHeaderPacket(PACKET_INDEX.REQ_IN);
-        PACKET_REQ_IN packet = new PACKET_REQ_IN { header = headerPacket, name = roomIndex.ToString() };
+        PACKET_HEADER headerPacket = MakeHeaderPacket(PACKET_INDEX.MULTI_ROOM);
+        PACKET_MULTI_ROOM packet = new PACKET_MULTI_ROOM { header = headerPacket, gameIndex = (int)roomIndex,
+            charIndex = (int)CHAR_INDEX.CHICK };
 
         SendToServerPacket(packet);
     }
@@ -111,10 +140,30 @@ public class NetworkManager : Singleton<NetworkManager>
 
     PACKET_HEADER MakeHeaderPacket(PACKET_INDEX packetIndex)
     {
-        int packetSize = Marshal.SizeOf<PACKET_REQ_IN>();
-        PACKET_HEADER headerPacket;
-        headerPacket = new PACKET_HEADER(packetIndex, packetSize);
-        return headerPacket;
+        switch (packetIndex)
+        {
+            case PACKET_INDEX.REQ_IN:
+                {
+                    int packetSize = Marshal.SizeOf<PACKET_REQ_IN>();
+                    PACKET_HEADER headerPacket;
+                    headerPacket = new PACKET_HEADER(packetIndex, packetSize);
+                    return headerPacket;
+                }
+            case PACKET_INDEX.MULTI_ROOM:
+                {
+                    int packetSize = Marshal.SizeOf<PACKET_MULTI_ROOM>();
+                    PACKET_HEADER headerPacket;
+                    headerPacket = new PACKET_HEADER(packetIndex, packetSize);
+                    return headerPacket;
+                }
+            default:
+                {
+                    int packetSize = Marshal.SizeOf<PACKET_REQ_IN>();
+                    PACKET_HEADER headerPacket;
+                    headerPacket = new PACKET_HEADER(packetIndex, packetSize);
+                    return headerPacket;
+                }
+        }
     }
 
     void Connect()
