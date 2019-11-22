@@ -20,4 +20,7 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/MenuScene.unity
     guid: edd91b5608ade0f49ac4f06c2fe1777b
+  - enabled: 1
+    path: Assets/Scenes/NetworkRopeGameScene.unity
+    guid: 166f52d3069bebe42996da2d60b17a35
   m_configObjects: {}
