@@ -54,7 +54,7 @@ public class NetworkManager : Singleton<NetworkManager>
         SendToServerPacket(packet);
     }
 
-    public void SendRequsetRoom(ROOM_INDEX roomIndex)
+    public void SendRequsetRoom(GAME_INDEX roomIndex)
     {
         if (_sock == null)
             Connect();

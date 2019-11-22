@@ -32,7 +32,7 @@ public class PlayManager : Singleton<PlayManager>
 	public void StartRopePullMultiGame()
 	{
         //SceneManager.LoadScene(SceneName.RopeGameSceneName);
-        NetworkManager.Instance.SendRequsetRoom(ROOM_INDEX.ROPE_PULL);
+        NetworkManager.Instance.SendRequsetRoom(GAME_INDEX.ROPE_PULL);
     }
 
 	public void StartJumpRopeSingleGame()
@@ -43,7 +43,7 @@ public class PlayManager : Singleton<PlayManager>
 	public void StartJumpRopeMultiGame()
 	{
         //SceneManager.LoadScene(SceneName.JumpRopeGameSceneName);
-        NetworkManager.Instance.SendRequsetRoom(ROOM_INDEX.ROPE_JUMP);
+        NetworkManager.Instance.SendRequsetRoom(GAME_INDEX.ROPE_JUMP);
 
     }
 
@@ -55,7 +55,7 @@ public class PlayManager : Singleton<PlayManager>
 	public void StartBasketBallMultiGame()
 	{
         //SceneManager.LoadScene(SceneName.BasketBallGameSceneName);
-        NetworkManager.Instance.SendRequsetRoom(ROOM_INDEX.BASKET_BALL);
+        NetworkManager.Instance.SendRequsetRoom(GAME_INDEX.BASKET_BALL);
     }
 	#endregion
 

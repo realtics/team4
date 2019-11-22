@@ -37,6 +37,11 @@ public enum PACKET_INDEX
 	//
 };
 
+public struct HeaderPacket
+{
+	public PACKET_HEADER header;
+};
+
 public struct PACKET_HEADER
 {
 	public int packetIndex;
@@ -55,7 +60,7 @@ public struct PACKET_REQ_IN
 	public string name;
 };
 
-public struct PACKET_END_GAME
+struct PACKET_END_GAME
 {
 	PACKET_HEADER header;
 	int gameIndex;
