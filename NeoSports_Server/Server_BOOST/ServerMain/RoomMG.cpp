@@ -9,6 +9,7 @@ RoomMG::RoomMG()
 	for (int i = 0; i < MAX_ROOM_COUNT; i++)
 	{
 		ROOM* room = new ROOM();
+		room->Init();
 		_roomVec.push_back(room);
 	}
 }
@@ -84,4 +85,24 @@ int RoomMG::_GetRoomChar(int roomIndex, int playerIndex)
 {
 	return _roomVec[roomIndex]->charIndex[playerIndex];
 }
+
+int RoomMG::_GetRoomNum(int sessionID)
+{
+	int roomNum = 0;
+
+	for (int i=0; i<MAX_ROOM_COUNT; i++)
+	{
+		if (_roomVec[i]->superSessionID == sessionID ||
+			_roomVec[i]->sessionID == sessionID)
+		{
+			roomNum = i;
+			return roomNum;
+
+		}
+	}
+
+	std::cout << "룸정보를 찾는데 실패 했습니다" << std::endl;
+	return FAIL_ROOM_SERCH;
+}
+
 

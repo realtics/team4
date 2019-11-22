@@ -7,7 +7,7 @@ const int MAX_CHAR_IN_ROOM = 2; //한 방의 최대 게임중인 플레이어
 class ROOM
 {
 public:
-	ROOM()
+	void Init()
 	{
 		gameIndex = ROOM_INDEX::EMPTY_ROOM;
 		superSessionID = ROOM_INDEX::EMPTY_ROOM;
@@ -36,8 +36,9 @@ public:
 	int _MakeRoom(int gameIndexk, int sessionID, int charIndex);
 	int _GetRoomChar(int roomIndex, int playerIndex);
 	void _SetRoomChar(int roomIndex, int charIndex);
-private:
+	int _GetRoomNum(int sessionID);
 	std::vector<ROOM*> _roomVec;
+private:
 
 };
 

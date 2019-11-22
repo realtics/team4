@@ -84,6 +84,20 @@ void Server::ProcessPacket(const int sessionID, const char* data)
 	}
 	break;
 
+	case PACKET_INDEX::END_GAME:
+	{
+		PACKET_END_GAME* packet = (PACKET_END_GAME*)data;
+
+		int roomNum = roomMG._GetRoomNum(sessionID);
+		std::cout << roomNum << "번방 " << packet->gameIndex << "게임 종료. 승자 "
+			<< sessionID << std::endl;
+		
+		roomMG._roomVec[roomNum]->Init();
+
+		_sessionVec[sessionID]->PostReceive();
+	}
+	break;
+
 	/*case REQ_CHAT:
 	{
 		PACKET_REQ_CHAT* packet = (PACKET_REQ_CHAT*)data;
