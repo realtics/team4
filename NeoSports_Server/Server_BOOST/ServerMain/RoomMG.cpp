@@ -97,7 +97,6 @@ int RoomMG::_GetRoomNum(int sessionID)
 		{
 			roomNum = i;
 			return roomNum;
-
 		}
 	}
 
