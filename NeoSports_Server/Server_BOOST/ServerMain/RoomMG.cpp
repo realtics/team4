@@ -73,9 +73,9 @@ void RoomMG::_SetRoomChar(int roomIndex, int charIndex)
 {
 	for (int i = 0; i < MAX_CHAR_IN_ROOM; i++)
 	{
-		if (_roomVec[roomIndex]->charIndex[i] != CHAR_INDEX::EMPTY_CHAR)
+		if (_roomVec[roomIndex]->charIndex[i] == CHAR_INDEX::EMPTY_CHAR)
 		{
-			_roomVec[roomIndex]->charIndex[i] == charIndex;
+			_roomVec[roomIndex]->charIndex[i] = charIndex;
 			return;
 		}
 	}
