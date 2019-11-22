@@ -173,7 +173,7 @@ void Session::_DeSerializationJson(char* jsonStr)
 
 	case PACKET_INDEX::MULTI_ROOM:
 	{
-		PACKET_MULTI_ROOM packet;
+		PACKET_REQ_MULTI_ROOM packet;
 		packet.header.packetIndex = headerIndex;
 		packet.header.packetSize = children.get<int>("packetSize");
 		packet.gameIndex = (GAME_INDEX)ptRecv.get<int>("gameIndex");

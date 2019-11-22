@@ -68,14 +68,14 @@ void Server::ProcessPacket(const int sessionID, const char* data)
 
 	case PACKET_INDEX::MULTI_ROOM:
 	{
-		PACKET_MULTI_ROOM* packet = (PACKET_MULTI_ROOM*)data;
+		PACKET_REQ_MULTI_ROOM* packet = (PACKET_REQ_MULTI_ROOM*)data;
 
 		int mrTemp = roomMG._MakeRoom(packet->gameIndex, sessionID, packet->charIndex);
 
 		PACKET_ROOM_INFO sendPacket;
 		sendPacket.header.packetIndex = PACKET_INDEX::ROOM_INFO;
 		sendPacket.header.packetSize = sizeof(PACKET_ROOM_INFO);
-		sendPacket.charInfo = (CHAR_INDEX)packet->charIndex;
+		//sendPacket.charInfo = (CHAR_INDEX)packet->charIndex;
 		sendPacket.roomInfo = (ROOM_HOST)mrTemp; //받는 클라입장에서 자신이 방장인지 구별
 		
 		if (mrTemp == ROOM_HOST::ENTER_ROOM)
@@ -194,7 +194,7 @@ std::string Server::_SerializationJson(int packetIndex, const char* packet)
 		ptSend.add_child("header", ptSendHeader);
 
 		ptSend.put<int>("roomInfo", roomInfoPacket->roomInfo);
-		ptSend.put<int>("charInfo", roomInfoPacket->charInfo);
+		//ptSend.put<int>("charInfo", roomInfoPacket->charInfo);
 
 		std::string recvTemp;
 		std::ostringstream os(recvTemp);
