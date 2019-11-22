@@ -76,22 +76,30 @@ void Server::ProcessPacket(const int sessionID, const char* data)
 		sendPacket.header.packetIndex = PACKET_INDEX::ROOM_INFO;
 		sendPacket.header.packetSize = sizeof(PACKET_ROOM_INFO);
 		sendPacket.charInfo = packet->charIndex;
-		sendPacket.roomInfo = mrTemp;
+		sendPacket.roomInfo = mrTemp; //받는 클라입장에서 자신이 방장인지 구별
+		
+		if (mrTemp == ROOM_INDEX::ENTER_ROOM)
+		{
+			std::string aa = _SerializationJson(PACKET_INDEX::START_GAME, (const char*)&sendPacket);
+			_sessionVec[sessionID]->PostSend(false, aa.length(), (char*)aa.c_str());
+			return;
+		}
 
 		std::string aa = _SerializationJson(PACKET_INDEX::ROOM_INFO, (const char*)&sendPacket);
-
 		_sessionVec[sessionID]->PostSend(false, aa.length(), (char*)aa.c_str());
 	}
 	break;
 
-	case PACKET_INDEX::END_GAME:
+	case PACKET_INDEX::REQ_END_GAME:
 	{
-		PACKET_END_GAME* packet = (PACKET_END_GAME*)data;
+		PACKET_REQ_END_GAME* packet = (PACKET_REQ_END_GAME*)data;
 
 		int roomNum = roomMG._GetRoomNum(sessionID);
 		std::cout << roomNum << "번방 " << packet->gameIndex << "게임 종료. 승자 "
 			<< sessionID << std::endl;
 		
+		//DB추가시 게임결과 저장 추가소스 위치
+
 		roomMG._roomVec[roomNum]->Init();
 
 		_sessionVec[sessionID]->PostReceive();
@@ -170,16 +178,38 @@ std::string Server::_SerializationJson(int packetIndex, const char* packet)
 	{
 	case PACKET_INDEX::ROOM_INFO:
 	{
-		PACKET_ROOM_INFO* testPacket = new PACKET_ROOM_INFO;
-		memcpy(&testPacket, &packet, sizeof(PACKET_ROOM_INFO));
+		PACKET_ROOM_INFO* roomInfoPacket = new PACKET_ROOM_INFO;
+		memcpy(&roomInfoPacket, &packet, sizeof(PACKET_ROOM_INFO));
 
 		boost::property_tree::ptree ptSend;
 		boost::property_tree::ptree ptSendHeader;
-		ptSendHeader.put<int>("packetIndex", testPacket->header.packetIndex);
+		ptSendHeader.put<int>("packetIndex", roomInfoPacket->header.packetIndex);
 		ptSendHeader.put<int>("packetSize", sizeof(PACKET_ROOM_INFO));
 		ptSend.add_child("header", ptSendHeader);
-		ptSend.put<int>("roomInfo", testPacket->roomInfo);
-		ptSend.put<int>("charInfo", testPacket->charInfo);
+
+		ptSend.put<int>("roomInfo", roomInfoPacket->roomInfo);
+		ptSend.put<int>("charInfo", roomInfoPacket->charInfo);
+
+		std::string recvTemp;
+		std::ostringstream os(recvTemp);
+		boost::property_tree::write_json(os, ptSend, false);
+		sendStr = os.str();
+		return sendStr;
+	}
+
+	case PACKET_INDEX::START_GAME:
+	{
+		PACKET_START_GAME* startGamePacket = new PACKET_START_GAME;
+		memcpy(&startGamePacket, &packet, sizeof(PACKET_START_GAME));
+
+		boost::property_tree::ptree ptSend;
+		boost::property_tree::ptree ptSendHeader;
+		ptSendHeader.put<int>("packetIndex", startGamePacket->header.packetIndex);
+		ptSendHeader.put<int>("packetSize", sizeof(PACKET_START_GAME));
+		ptSend.add_child("header", ptSendHeader);
+
+		ptSend.put<int>("superCharID", startGamePacket->superCharID);
+		ptSend.put<int>("charID", startGamePacket->charID);
 
 		std::string recvTemp;
 		std::ostringstream os(recvTemp);

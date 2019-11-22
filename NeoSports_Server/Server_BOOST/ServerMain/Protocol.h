@@ -37,7 +37,8 @@ enum PACKET_INDEX
 {
 	REQ_IN = 200,
 	MULTI_ROOM, //클라에서 같이하기 눌렀을때 방을 만들거나 방이있으면 접속함
-	END_GAME,
+	START_GAME,
+	REQ_END_GAME,
 	ROOM_INFO,
 
 	//클라와 통신하고 있지 않은 인덱스들 (채팅용)
@@ -61,10 +62,17 @@ struct PACKET_MULTI_ROOM
 	int charIndex;
 };
 
-struct PACKET_END_GAME
+struct PACKET_REQ_END_GAME
 {
 	PACKET_HEADER header;
 	int gameIndex;
+};
+
+struct PACKET_START_GAME
+{
+	PACKET_HEADER header;
+	int superCharID; //방장의 캐릭터
+	int charID;
 };
 
 //멀티게임을 요청한 클라에게 보내는 패킷

@@ -183,6 +183,16 @@ void Session::_DeSerializationJson(char* jsonStr)
 		break;
 	}
 
+	case PACKET_INDEX::REQ_END_GAME:
+	{
+		PACKET_REQ_END_GAME packet;
+		packet.header.packetIndex = headerIndex;
+		packet.header.packetSize = children.get<int>("packetSize");
+		packet.gameIndex = ptRecv.get<int>("gameIndex");
+		memcpy(&_packetBuffer[_packetBufferMark], (char*)&packet, sizeof(packet));
+		break;
+	}
+
 	default:
 		std::cout << "해당 패킷의 HeaderIndex가 없습니다. : " << headerIndex
 			<< std::endl;
