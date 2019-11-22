@@ -19,6 +19,10 @@ namespace RopePullGame
 		// Const Variable
 		const float StartWaitGameTime = 4.0f;
 
+		// Prefab Character
+		public GameObject ppiYakCharacter;
+		public GameObject turkeyJellyCharacter;
+
 		// Public Variable
 		public GameObject rootCanvas;
 		public GameObject playerableObjects;
@@ -187,5 +191,9 @@ namespace RopePullGame
 
 		#endregion
 
+		void CreateCharacters()
+		{
+
+		}
 	}
 }
