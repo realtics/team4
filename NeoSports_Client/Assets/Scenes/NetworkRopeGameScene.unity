@@ -5574,6 +5574,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56ea4179aa94a12468836b4b132e185b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ppiYakCharacter: {fileID: 2673625610814883514, guid: fc6c8e0c201024649a39a173fdf77f6c,
+    type: 3}
+  turkeyJellyCharacter: {fileID: 203829877700944717, guid: 690c6258a777cc346acfc313445baf2c,
+    type: 3}
   rootCanvas: {fileID: 60284383}
   playerableObjects: {fileID: 1962912458}
   playTimeText: {fileID: 1685896364}

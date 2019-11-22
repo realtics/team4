@@ -18,6 +18,8 @@ namespace RopePullGame
 
 		// Const Variable
 		const float StartWaitGameTime = 4.0f;
+		const string LeftPlayerObjectName = "LeftPlayer";
+		const string RightPlayerObjectName = "RightPlayer";
 
 		// Prefab Character
 		public GameObject ppiYakCharacter;
@@ -36,6 +38,11 @@ namespace RopePullGame
 		ESceneState _sceneState;
 		float _playTime;
 
+		Transform _leftPlayer;
+		Transform _rightPlayer;
+
+		CharacterInfo _ownCharInfo;
+
 		RopePullMoveRopeWithKey _ropePullMove;
 		Character[] _characters;
 		Effect.RunnigEffect[] _runnigEffects;
@@ -45,6 +52,8 @@ namespace RopePullGame
 			_sceneState = ESceneState.Prepare;
 
 			CachingValue();
+			InitNetwork();
+			//CreateCharacters();
 			_playTime = 0.0f;
 		}
 
@@ -58,6 +67,9 @@ namespace RopePullGame
 			_ropePullMove = playerableObjects.GetComponent<RopePullMoveRopeWithKey>();
 			_characters = playerableObjects.GetComponentsInChildren<Character>();
 			_runnigEffects = playerableObjects.GetComponentsInChildren<Effect.RunnigEffect>();
+
+			_leftPlayer = playerableObjects.transform.Find(LeftPlayerObjectName);
+			_rightPlayer = playerableObjects.transform.Find(RightPlayerObjectName);
 
 			foreach (Effect.RunnigEffect effect in _runnigEffects)
 			{
@@ -188,12 +200,22 @@ namespace RopePullGame
 			_sceneState = ESceneState.SetWinner;
 			SetObjectsMove(false);
 		}
-
 		#endregion
+
+		void InitNetwork()
+		{
+
+		}
 
 		void CreateCharacters()
 		{
-
+			// 방장이면 내캐릭터 왼쪽 
+			// 참가자면 내캐릭터 오른쪽
+			_ownCharInfo = InventoryManager.Instance.CurrentCharacter;
+			Debug.Log(_ownCharInfo.Name);
+			//NetworkManager.Instance.
+			Instantiate(ppiYakCharacter, _leftPlayer);
+			Instantiate(ppiYakCharacter, _rightPlayer);
 		}
 	}
 }

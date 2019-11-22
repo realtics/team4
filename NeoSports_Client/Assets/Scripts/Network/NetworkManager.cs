@@ -53,7 +53,7 @@ public struct PACKET_ROOM_INFO
     public int charInfo; //상대 플레이어의 캐릭터 정보
 };
 
-public struct TempPacket
+public struct HeaderPacket
 {
     public PACKET_HEADER header;
 };
@@ -218,16 +218,16 @@ public class NetworkManager : Singleton<NetworkManager>
 
         if (recvBytes > 0)
         {
-            //receive처리 
-            byte[] recvBuf = new byte[recvBytes];
-            Array.Copy(ao.buffer, recvBuf, recvBytes);
+			//receive처리 
+			byte[] recvBuf = new byte[recvBytes];
+			Array.Copy(ao.buffer, recvBuf, recvBytes);
 
-            string recvData = Encoding.UTF8.GetString(recvBuf, 0, recvBytes);
+			string recvData = Encoding.UTF8.GetString(recvBuf, 0, recvBytes);
 
-            //To Do: Json 처리
-            var data = JsonConvert.DeserializeObject<TempPacket>(recvData);
-
-        }
+			//To Do: Json 처리
+			var headerData = JsonConvert.DeserializeObject<HeaderPacket>(recvData);
+			ProcessReceivePacket(headerData.header.packetIndex, recvData);
+		}
         ao.workingSocket.BeginReceive(ao.buffer, 0, ao.buffer.Length
             , SocketFlags.None, _receiveHandler, ao);
     }
@@ -237,4 +237,27 @@ public class NetworkManager : Singleton<NetworkManager>
         Debug.Log("Call Exit");
         Application.Quit();
     }
+
+	void ProcessReceivePacket(int pakcetIndex, string recvData)
+	{
+		switch (pakcetIndex)
+		{
+			case (int)PACKET_INDEX.MULTI_ROOM:
+				{
+					var packetdata = JsonConvert.DeserializeObject<PACKET_MULTI_ROOM>(recvData);
+					Debug.Log(packetdata.gameIndex);
+					break;
+				}
+			case (int)PACKET_INDEX.ROOM_INFO:
+				{
+					break;
+				}
+			case (int)PACKET_INDEX.REQ_IN:
+				{
+					break;
+				}
+			default:
+				return;
+		}
+	}
 }
