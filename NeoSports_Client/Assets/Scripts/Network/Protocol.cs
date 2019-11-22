@@ -81,6 +81,14 @@ public struct PACKET_MULTI_ROOM
 	public PACKET_HEADER header;
 	public GAME_INDEX gameIndex;
 	public CHAR_INDEX charIndex;
+
+	public PACKET_MULTI_ROOM(PACKET_HEADER packetHeader, GAME_INDEX _gameIndex, CHAR_INDEX _charIndex)
+	{
+		header = packetHeader;
+		gameIndex = _gameIndex;
+		charIndex = _charIndex;
+	}
+
 };
 
 public struct PACKET_ROOM_INFO

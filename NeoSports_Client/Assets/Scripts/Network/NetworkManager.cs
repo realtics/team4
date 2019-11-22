@@ -67,7 +67,8 @@ public class NetworkManager : Singleton<NetworkManager>
             Connect();
 
         PACKET_HEADER headerPacket = MakeHeaderPacket(PACKET_INDEX.MULTI_ROOM);
-        PACKET_MULTI_ROOM packet = new PACKET_MULTI_ROOM { header = headerPacket, gameIndex = roomIndex,
+        PACKET_MULTI_ROOM packet = new PACKET_MULTI_ROOM 
+		{ header = headerPacket, gameIndex = roomIndex,
             charIndex = (CHAR_INDEX)InventoryManager.Instance.CurrentCharacter.Type//(int)CHAR_INDEX.CHICK 
 		};
 
