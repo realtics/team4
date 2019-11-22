@@ -21,68 +21,6 @@ public class AsyncObject
     }
 }
 
-public struct PACKET_HEADER
-{
-    public int packetIndex;
-    public int packetSize;
-
-    public PACKET_HEADER(PACKET_INDEX index, int size)
-    {
-        packetIndex = (int)index;
-        packetSize = size;
-    }
-};
-
-public struct PACKET_REQ_IN
-{
-    public PACKET_HEADER header;
-    public string name;
-};
-
-public struct PACKET_MULTI_ROOM
-{
-    public PACKET_HEADER header;
-    public int gameIndex;
-    public int charIndex;
-};
-
-public struct PACKET_ROOM_INFO
-{
-    public PACKET_HEADER header;
-    public int roomInfo; //방을 만든건지 들어간건지의 정보
-    public int charInfo; //상대 플레이어의 캐릭터 정보
-};
-
-public struct HeaderPacket
-{
-    public PACKET_HEADER header;
-};
-
-
-public enum PACKET_INDEX
-{
-    REQ_IN = 200,
-    MULTI_ROOM, //클라에서 같이하기 눌렀을때 방을 만들거나 방이있으면 접속함
-    ROOM_INFO,
-};
-
-public enum CHAR_INDEX
-{
-    EMPTY_CHAR = 100,
-    CHICK,
-    JELLY,
-};
-
-public enum ROOM_INDEX
-{
-    EMPTY_ROOM = 0,
-    ENTER_ROOM,
-    MAKE_ROOM,
-    ROPE_PULL,
-    ROPE_JUMP,
-    BASKET_BALL,
-};
-
 public class NetworkManager : Singleton<NetworkManager>
 {
     const string IpAdress = "192.168.1.119";
@@ -123,7 +61,8 @@ public class NetworkManager : Singleton<NetworkManager>
 
         PACKET_HEADER headerPacket = MakeHeaderPacket(PACKET_INDEX.MULTI_ROOM);
         PACKET_MULTI_ROOM packet = new PACKET_MULTI_ROOM { header = headerPacket, gameIndex = (int)roomIndex,
-            charIndex = (int)CHAR_INDEX.CHICK };
+            charIndex = (int)InventoryManager.Instance.CurrentCharacter.Type//(int)CHAR_INDEX.CHICK 
+		};
 
         SendToServerPacket(packet);
     }
@@ -246,14 +185,21 @@ public class NetworkManager : Singleton<NetworkManager>
 				{
 					var packetdata = JsonConvert.DeserializeObject<PACKET_MULTI_ROOM>(recvData);
 					Debug.Log(packetdata.gameIndex);
+					Debug.Log(packetdata.charIndex);
 					break;
 				}
 			case (int)PACKET_INDEX.ROOM_INFO:
 				{
+					var packetdata = JsonConvert.DeserializeObject<PACKET_ROOM_INFO>(recvData);
+					Debug.Log(packetdata.roomInfo);
+					Debug.Log(packetdata.charInfo);
+					
 					break;
 				}
 			case (int)PACKET_INDEX.REQ_IN:
 				{
+					var packetdata = JsonConvert.DeserializeObject<PACKET_REQ_IN>(recvData);
+					Debug.Log(packetdata.name);
 					break;
 				}
 			default:
