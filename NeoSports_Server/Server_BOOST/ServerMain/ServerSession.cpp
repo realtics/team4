@@ -176,8 +176,8 @@ void Session::_DeSerializationJson(char* jsonStr)
 		PACKET_MULTI_ROOM packet;
 		packet.header.packetIndex = headerIndex;
 		packet.header.packetSize = children.get<int>("packetSize");
-		packet.gameIndex = ptRecv.get<int>("gameIndex");
-		packet.charIndex = ptRecv.get<int>("charIndex");
+		packet.gameIndex = (GAME_INDEX)ptRecv.get<int>("gameIndex");
+		packet.charIndex = (CHAR_INDEX)ptRecv.get<int>("charIndex");
 
 		memcpy(&_packetBuffer[_packetBufferMark], (char*)&packet, sizeof(packet));
 		break;
@@ -188,7 +188,7 @@ void Session::_DeSerializationJson(char* jsonStr)
 		PACKET_REQ_END_GAME packet;
 		packet.header.packetIndex = headerIndex;
 		packet.header.packetSize = children.get<int>("packetSize");
-		packet.gameIndex = ptRecv.get<int>("gameIndex");
+		packet.gameIndex = (GAME_INDEX)ptRecv.get<int>("gameIndex");
 		memcpy(&_packetBuffer[_packetBufferMark], (char*)&packet, sizeof(packet));
 		break;
 	}

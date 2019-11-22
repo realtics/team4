@@ -9,9 +9,9 @@ class ROOM
 public:
 	void Init()
 	{
-		gameIndex = ROOM_INDEX::EMPTY_ROOM;
-		superSessionID = ROOM_INDEX::EMPTY_ROOM;
-		sessionID = ROOM_INDEX::EMPTY_ROOM;
+		gameIndex = ROOM_HOST::EMPTY_ROOM;
+		superSessionID = ROOM_HOST::EMPTY_ROOM;
+		sessionID = ROOM_HOST::EMPTY_ROOM;
 
 		for (int i = 0; i < MAX_CHAR_IN_ROOM; i++)
 		{

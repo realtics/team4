@@ -11,7 +11,7 @@ const int MAX_MESSAGE_LEN = 129;
 const int MAX_ROOM_COUNT = 20;
 const int FAIL_ROOM_SERCH = -101;
 
-enum ROOM_INDEX
+enum ROOM_HOST
 {
 	EMPTY_ROOM = 11,
 
@@ -58,29 +58,29 @@ struct PACKET_HEADER
 struct PACKET_MULTI_ROOM
 {
 	PACKET_HEADER header;
-	int gameIndex;
-	int charIndex;
+	GAME_INDEX gameIndex;
+	CHAR_INDEX charIndex;
 };
 
 struct PACKET_REQ_END_GAME
 {
 	PACKET_HEADER header;
-	int gameIndex;
+	GAME_INDEX gameIndex;
 };
 
 struct PACKET_START_GAME
 {
 	PACKET_HEADER header;
-	int superCharID; //방장의 캐릭터
-	int charID;
+	CHAR_INDEX superCharID; //방장의 캐릭터
+	CHAR_INDEX charID;
 };
 
 //멀티게임을 요청한 클라에게 보내는 패킷
 struct PACKET_ROOM_INFO
 {
 	PACKET_HEADER header;
-	int roomInfo; //방을 만든건지 들어간건지의 정보
-	int charInfo; //상대 플레이어의 캐릭터 정보
+	ROOM_HOST roomInfo; //방을 만든건지 들어간건지의 정보
+	CHAR_INDEX charInfo; //상대 플레이어의 캐릭터 정보
 };
 
 //처음 클라가 들어왔을때 그 클라의 이름을 받음

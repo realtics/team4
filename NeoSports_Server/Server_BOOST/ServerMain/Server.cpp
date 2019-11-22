@@ -75,10 +75,10 @@ void Server::ProcessPacket(const int sessionID, const char* data)
 		PACKET_ROOM_INFO sendPacket;
 		sendPacket.header.packetIndex = PACKET_INDEX::ROOM_INFO;
 		sendPacket.header.packetSize = sizeof(PACKET_ROOM_INFO);
-		sendPacket.charInfo = packet->charIndex;
-		sendPacket.roomInfo = mrTemp; //받는 클라입장에서 자신이 방장인지 구별
+		sendPacket.charInfo = (CHAR_INDEX)packet->charIndex;
+		sendPacket.roomInfo = (ROOM_HOST)mrTemp; //받는 클라입장에서 자신이 방장인지 구별
 		
-		if (mrTemp == ROOM_INDEX::ENTER_ROOM)
+		if (mrTemp == ROOM_HOST::ENTER_ROOM)
 		{
 			std::string aa = _SerializationJson(PACKET_INDEX::START_GAME, (const char*)&sendPacket);
 			_sessionVec[sessionID]->PostSend(false, aa.length(), (char*)aa.c_str());
