@@ -34,9 +34,15 @@ public:
 	RoomMG();
 	int _SearchRoom(int roomIndex);
 	int _MakeRoom(int gameIndexk, int sessionID, int charIndex);
+
 	int _GetRoomChar(int roomIndex, int playerIndex);
 	void _SetRoomChar(int roomIndex, int charIndex);
+
 	int _GetRoomNum(int sessionID);
+
+	int _GetSuperSessonID(int roomNum);
+	int _GetSessonID(int roomNum);
+
 	std::vector<ROOM*> _roomVec;
 private:
 

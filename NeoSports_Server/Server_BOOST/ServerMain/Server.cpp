@@ -81,7 +81,13 @@ void Server::ProcessPacket(const int sessionID, const char* data)
 		if (mrTemp == ROOM_HOST::ENTER_ROOM)
 		{
 			std::string aa = _SerializationJson(PACKET_INDEX::START_GAME, (const char*)&sendPacket);
-			_sessionVec[sessionID]->PostSend(false, aa.length(), (char*)aa.c_str());
+			int roomNum = roomMG._GetRoomNum(sessionID);
+			int superSessionIdTemp = roomMG._GetSuperSessonID(roomNum);
+			int sessionIdTemp = roomMG._GetSessonID(roomNum);
+
+			_sessionVec[superSessionIdTemp]->PostSend(false, aa.length(), (char*)aa.c_str());
+			_sessionVec[sessionIdTemp]->PostSend(false, aa.length(), (char*)aa.c_str());
+
 			return;
 		}
 

@@ -105,4 +105,15 @@ int RoomMG::_GetRoomNum(int sessionID)
 	return FAIL_ROOM_SERCH;
 }
 
+int RoomMG::_GetSuperSessonID(int roomNum)
+{
+	return _roomVec[roomNum]->superSessionID;
+}
+
+int RoomMG::_GetSessonID(int roomNum)
+{
+	return _roomVec[roomNum]->sessionID;
+
+}
+
 
