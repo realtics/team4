@@ -2948,7 +2948,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8288645782cb884186e75c609517874, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLoopBack: 0
+  isLoopBack: 1
   isOwnHost: 0
   otherPlayerCharacter: 0
 --- !u!4 &931960234

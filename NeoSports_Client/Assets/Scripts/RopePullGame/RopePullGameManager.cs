@@ -53,7 +53,7 @@ namespace RopePullGame
 
 			CachingValue();
 			InitNetwork();
-			//CreateCharacters();
+			CreateCharacters();
 			_playTime = 0.0f;
 		}
 
@@ -84,7 +84,7 @@ namespace RopePullGame
 			{
 				case ESceneState.Prepare:
 					// DEBUG - Single Only!!
-					CreateCharacters();
+					
 					_sceneState = ESceneState.Start;
 					CommonUIManager.Instance.CreateStartGameTimer(rootCanvas, StartWaitGameTime, StartPlayGame);
 					break;
@@ -212,6 +212,14 @@ namespace RopePullGame
 		{
 			// 방장이면 내캐릭터 왼쪽 
 			// 참가자면 내캐릭터 오른쪽
+
+			GameObject own;
+			GameObject other;
+
+			ppiYakCharacter.GetComponent<SpriteRenderer>().sortingOrder = 15;
+			turkeyJellyCharacter.GetComponent<SpriteRenderer>().sortingOrder = 15;
+			ppiYakCharacter.SetActive(true);
+			turkeyJellyCharacter.SetActive(true);
 			_ownCharInfo = InventoryManager.Instance.CurrentCharacter;
 			bool ownHost = NetworkManager.Instance.isOwnHost;
 			if (ownHost)
@@ -219,6 +227,7 @@ namespace RopePullGame
 				if (CharacterInfo.EType.PpiYaGi == _ownCharInfo.Type)
 				{
 					Instantiate(ppiYakCharacter, _leftPlayer);
+					
 				}
 				else
 				{

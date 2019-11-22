@@ -71,7 +71,7 @@ public class NetworkManager : Singleton<NetworkManager>
 		{ header = headerPacket, gameIndex = roomIndex,
             charIndex = (CHAR_INDEX)InventoryManager.Instance.CurrentCharacter.Type//(int)CHAR_INDEX.CHICK 
 		};
-
+		
         SendToServerPacket(packet);
     }
 
@@ -233,6 +233,7 @@ public class NetworkManager : Singleton<NetworkManager>
 					var packetdata = JsonConvert.DeserializeObject<PACKET_START_GAME>(recvData);
 					Debug.Log(packetdata.superCharID);
 					Debug.Log(packetdata.charID);
+					
 					break;
 				}
 			default:
