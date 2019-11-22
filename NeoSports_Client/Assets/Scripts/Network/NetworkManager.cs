@@ -122,12 +122,24 @@ public class NetworkManager : Singleton<NetworkManager>
         {
             if (isLoopBack)
             {
-                _sock.Connect(new IPEndPoint(IPAddress.Parse(LoopbackAdress), PortNumber));
-            }
+                //_sock.Connect(new IPEndPoint(IPAddress.Parse(LoopbackAdress), PortNumber));
+				var result = _sock.BeginConnect(new IPEndPoint(IPAddress.Parse(LoopbackAdress), PortNumber),null,null);
+				bool success = result.AsyncWaitHandle.WaitOne(1000, true);
+				if (success)
+				{
+					//_sock.EndConnect(result);
+				}
+				else 
+				{
+					_sock.Close();
+					throw new SocketException(100060);
+				}
+			}
             else
             {
                 _sock.Connect(new IPEndPoint(IPAddress.Parse(IpAdress), PortNumber));
             }
+
             //Async 추가 작성 
             {
                 _receiveHandler = new AsyncCallback(HandleDataRecive);
@@ -200,6 +212,13 @@ public class NetworkManager : Singleton<NetworkManager>
 				{
 					var packetdata = JsonConvert.DeserializeObject<PACKET_REQ_IN>(recvData);
 					Debug.Log(packetdata.name);
+					break;
+				}
+			case (int)PACKET_INDEX.START_GAME:
+				{
+					var packetdata = JsonConvert.DeserializeObject<PACKET_START_GAME>(recvData);
+					Debug.Log(packetdata.superCharID);
+					Debug.Log(packetdata.charID);
 					break;
 				}
 			default:

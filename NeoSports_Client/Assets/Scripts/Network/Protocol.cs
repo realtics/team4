@@ -28,6 +28,8 @@ public enum PACKET_INDEX
 {
 	REQ_IN = 200,
 	MULTI_ROOM, //클라에서 같이하기 눌렀을때 방을 만들거나 방이있으면 접속함
+	START_GAME,
+	REQ_END_GAME,
 	ROOM_INFO,
 
 	//클라와 통신하고 있지 않은 인덱스들 (채팅용)
@@ -36,6 +38,7 @@ public enum PACKET_INDEX
 	NOTICE_CHAT,
 	//
 };
+
 
 public struct HeaderPacket
 {
@@ -60,10 +63,23 @@ public struct PACKET_REQ_IN
 	public string name;
 };
 
-struct PACKET_END_GAME
+public struct PACKET_REQ_END_GAME
 {
-	PACKET_HEADER header;
-	int gameIndex;
+	public PACKET_HEADER header;
+	public int gameIndex;
+};
+
+public struct PACKET_END_GAME
+{
+	public PACKET_HEADER header;
+	public int gameIndex;
+};
+
+public struct PACKET_START_GAME
+{
+	public PACKET_HEADER header;
+	public int superCharID; //방장의 캐릭터
+	public int charID;
 };
 
 public struct PACKET_MULTI_ROOM
