@@ -78,12 +78,19 @@ void Server::ProcessPacket(const int sessionID, const char* data)
 		//sendPacket.charInfo = (CHAR_INDEX)packet->charIndex;
 		sendPacket.roomInfo = (ROOM_HOST)mrTemp; //받는 클라입장에서 자신이 방장인지 구별
 		
-		if (mrTemp == ROOM_HOST::ENTER_ROOM)
+		if (mrTemp == ROOM_HOST::ENTER_ROOM) //들어가는 입장이면 스타트패킷생성후 전송해야함
 		{
-			std::string aa = _SerializationJson(PACKET_INDEX::START_GAME, (const char*)&sendPacket);
 			int roomNum = roomMG._GetRoomNum(sessionID);
 			int superSessionIdTemp = roomMG._GetSuperSessonID(roomNum);
 			int sessionIdTemp = roomMG._GetSessonID(roomNum);
+
+			PACKET_START_GAME startPacket;
+			startPacket.header.packetIndex = PACKET_INDEX::START_GAME;
+			startPacket.header.packetSize = sizeof(PACKET_START_GAME);
+			startPacket.superCharID = (CHAR_INDEX)roomMG._GetRoomChar(roomNum, 0);
+			startPacket.charID = (CHAR_INDEX)roomMG._GetRoomChar(roomNum, 1);
+
+			std::string aa = _SerializationJson(PACKET_INDEX::START_GAME, (const char*)&startPacket);
 
 			_sessionVec[superSessionIdTemp]->PostSend(false, aa.length(), (char*)aa.c_str());
 			_sessionVec[sessionIdTemp]->PostSend(false, aa.length(), (char*)aa.c_str());
@@ -193,7 +200,7 @@ std::string Server::_SerializationJson(int packetIndex, const char* packet)
 		ptSendHeader.put<int>("packetSize", sizeof(PACKET_ROOM_INFO));
 		ptSend.add_child("header", ptSendHeader);
 
-		ptSend.put<int>("roomInfo", roomInfoPacket->roomInfo);
+		ptSend.put<int>("roomInfo", (ROOM_HOST)roomInfoPacket->roomInfo);
 		//ptSend.put<int>("charInfo", roomInfoPacket->charInfo);
 
 		std::string recvTemp;
@@ -214,8 +221,8 @@ std::string Server::_SerializationJson(int packetIndex, const char* packet)
 		ptSendHeader.put<int>("packetSize", sizeof(PACKET_START_GAME));
 		ptSend.add_child("header", ptSendHeader);
 
-		ptSend.put<int>("superCharID", startGamePacket->superCharID);
-		ptSend.put<int>("charID", startGamePacket->charID);
+		ptSend.put<int>("superCharID", (CHAR_INDEX)startGamePacket->superCharID);
+		ptSend.put<int>("charID", (CHAR_INDEX)startGamePacket->charID);
 
 		std::string recvTemp;
 		std::ostringstream os(recvTemp);
