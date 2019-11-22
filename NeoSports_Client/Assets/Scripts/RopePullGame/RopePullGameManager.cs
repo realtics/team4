@@ -84,6 +84,7 @@ namespace RopePullGame
 			{
 				case ESceneState.Prepare:
 					// DEBUG - Single Only!!
+					CreateCharacters();
 					_sceneState = ESceneState.Start;
 					CommonUIManager.Instance.CreateStartGameTimer(rootCanvas, StartWaitGameTime, StartPlayGame);
 					break;
@@ -212,10 +213,41 @@ namespace RopePullGame
 			// 방장이면 내캐릭터 왼쪽 
 			// 참가자면 내캐릭터 오른쪽
 			_ownCharInfo = InventoryManager.Instance.CurrentCharacter;
-			Debug.Log(_ownCharInfo.Name);
-			//NetworkManager.Instance.
-			Instantiate(ppiYakCharacter, _leftPlayer);
-			Instantiate(ppiYakCharacter, _rightPlayer);
+			bool ownHost = NetworkManager.Instance.isOwnHost;
+			if (ownHost)
+			{
+				if (CharacterInfo.EType.PpiYaGi == _ownCharInfo.Type)
+				{
+					Instantiate(ppiYakCharacter, _leftPlayer);
+				}
+				else
+				{
+					Instantiate(turkeyJellyCharacter, _leftPlayer);
+				}
+
+				CHAR_INDEX charIndex = NetworkManager.Instance.otherPlayerCharacter;
+				if (charIndex == CHAR_INDEX.CHICK)
+					Instantiate(ppiYakCharacter, _rightPlayer);
+				else if (charIndex == CHAR_INDEX.JELLY)
+					Instantiate(turkeyJellyCharacter, _rightPlayer);
+			}
+			else 
+			{
+				if (CharacterInfo.EType.PpiYaGi == _ownCharInfo.Type)
+				{
+					Instantiate(ppiYakCharacter, _rightPlayer);
+				}
+				else
+				{
+					Instantiate(turkeyJellyCharacter, _rightPlayer);
+				}
+
+				CHAR_INDEX charIndex = NetworkManager.Instance.otherPlayerCharacter;
+				if (charIndex == CHAR_INDEX.CHICK)
+					Instantiate(ppiYakCharacter, _leftPlayer);
+				else if (charIndex == CHAR_INDEX.JELLY)
+					Instantiate(turkeyJellyCharacter, _leftPlayer);
+			}
 		}
 	}
 }

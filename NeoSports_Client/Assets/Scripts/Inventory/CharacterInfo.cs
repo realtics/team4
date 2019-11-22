@@ -33,7 +33,7 @@ public class CharacterInfo
 
 	public enum EType
 	{
-		Unknown,
+		Unknown = 100,
 		PpiYaGi,
 		TurkeyJelly,
 		End

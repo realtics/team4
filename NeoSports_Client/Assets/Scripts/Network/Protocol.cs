@@ -66,32 +66,26 @@ public struct PACKET_REQ_IN
 public struct PACKET_REQ_END_GAME
 {
 	public PACKET_HEADER header;
-	public int gameIndex;
-};
-
-public struct PACKET_END_GAME
-{
-	public PACKET_HEADER header;
-	public int gameIndex;
+	public GAME_INDEX gameIndex;
 };
 
 public struct PACKET_START_GAME
 {
 	public PACKET_HEADER header;
-	public int superCharID; //방장의 캐릭터
-	public int charID;
+	public CHAR_INDEX superCharID; //방장의 캐릭터
+	public CHAR_INDEX charID;
 };
 
 public struct PACKET_MULTI_ROOM
 {
 	public PACKET_HEADER header;
-	public int gameIndex;
-	public int charIndex;
+	public GAME_INDEX gameIndex;
+	public CHAR_INDEX charIndex;
 };
 
 public struct PACKET_ROOM_INFO
 {
 	public PACKET_HEADER header;
-	public int roomInfo; //방을 만든건지 들어간건지의 정보
-	public int charInfo; //상대 플레이어의 캐릭터 정보
+	public ROOM_INDEX roomInfo; //방을 만든건지 들어간건지의 정보
+	public CHAR_INDEX charInfo; //상대 플레이어의 캐릭터 정보
 };

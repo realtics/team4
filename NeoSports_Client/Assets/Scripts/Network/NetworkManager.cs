@@ -28,9 +28,14 @@ public class NetworkManager : Singleton<NetworkManager>
     const int PortNumber = 31400;
 
     public bool isLoopBack;
+	public bool isOwnHost;
+	[HideInInspector]
+	public CHAR_INDEX otherPlayerCharacter;
+	
 
-    Socket _sock = null;
+	Socket _sock = null;
     AsyncCallback _receiveHandler;
+	
 
     void Awake()
     {
@@ -39,7 +44,9 @@ public class NetworkManager : Singleton<NetworkManager>
             Destroy(gameObject);
             return;
         }
-        instance = this;
+		isOwnHost = false;
+		otherPlayerCharacter = CHAR_INDEX.EMPTY_CHAR;
+		instance = this;
         DontDestroyOnLoad(this);
     }
 
@@ -60,8 +67,8 @@ public class NetworkManager : Singleton<NetworkManager>
             Connect();
 
         PACKET_HEADER headerPacket = MakeHeaderPacket(PACKET_INDEX.MULTI_ROOM);
-        PACKET_MULTI_ROOM packet = new PACKET_MULTI_ROOM { header = headerPacket, gameIndex = (int)roomIndex,
-            charIndex = (int)InventoryManager.Instance.CurrentCharacter.Type//(int)CHAR_INDEX.CHICK 
+        PACKET_MULTI_ROOM packet = new PACKET_MULTI_ROOM { header = headerPacket, gameIndex = roomIndex,
+            charIndex = (CHAR_INDEX)InventoryManager.Instance.CurrentCharacter.Type//(int)CHAR_INDEX.CHICK 
 		};
 
         SendToServerPacket(packet);
@@ -204,8 +211,14 @@ public class NetworkManager : Singleton<NetworkManager>
 				{
 					var packetdata = JsonConvert.DeserializeObject<PACKET_ROOM_INFO>(recvData);
 					Debug.Log(packetdata.roomInfo);
-					Debug.Log(packetdata.charInfo);
-					
+
+					if (packetdata.roomInfo == ROOM_INDEX.MAKE_ROOM)
+						isOwnHost = true;
+					if (packetdata.roomInfo == ROOM_INDEX.ENTER_ROOM)
+						isOwnHost = false;
+
+					otherPlayerCharacter = packetdata.charInfo; //상대 캐릭터
+				
 					break;
 				}
 			case (int)PACKET_INDEX.REQ_IN:
