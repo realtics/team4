@@ -15,36 +15,37 @@ RoomMG::RoomMG()
 
 int RoomMG::_SearchRoom(int gameIndex)
 {
+	int i = 0;
 	for (auto iter = _roomVec.begin(); iter != _roomVec.end(); iter++)
 	{
-		int i = 0;
-
 		if ((*iter)->isGammingRoom == false && (*iter)->gameIndex == gameIndex)
 			return i;
 
 		i++;
 	}
 
+	i = 0;
 	for (auto iter = _roomVec.begin(); iter != _roomVec.end(); iter++)
 	{
-		int i = 0;
-
-		if ((*iter)->isGammingRoom == false)
+		if ((*iter)->isGammingRoom == false && (*iter)->gameIndex == ROOM_INDEX::EMPTY_ROOM
+			&& (*iter)->superSessionID == ROOM_INDEX::EMPTY_ROOM)
 			return i;
 
 		i++;
 	}
+	std::cout << "방찾기 실패" << std::endl;
 	return FAIL_ROOM_SERCH;
 }
 
-int RoomMG::_MakeRoom(int gameIndex, int sessionID)
+int RoomMG::_MakeRoom(int gameIndex, int sessionID, int charIndex)
 {
 	int roomNum = _SearchRoom(gameIndex);
-	if ((roomNum != FAIL_ROOM_SERCH) && _roomVec[roomNum]->isGammingRoom == false)
+	if ((roomNum != FAIL_ROOM_SERCH))
 	{
 		if (_roomVec[roomNum]->superSessionID == ROOM_INDEX::EMPTY_ROOM)
 		{
 			_roomVec[roomNum]->gameIndex = gameIndex;
+			_SetRoomChar(roomNum, charIndex);
 			_roomVec[roomNum]->superSessionID = sessionID;
 			std::cout << sessionID << " 클라가 "
 				<< roomNum << " 번방에 " << gameIndex << " 게임 생성. " << std::endl;
@@ -53,14 +54,17 @@ int RoomMG::_MakeRoom(int gameIndex, int sessionID)
 
 		else if (_roomVec[roomNum]->superSessionID != ROOM_INDEX::EMPTY_ROOM)
 		{
-			_roomVec[roomNum]->gameIndex = gameIndex;
+			_SetRoomChar(roomNum, charIndex);
 			_roomVec[roomNum]->sessionID = sessionID;
-			_roomVec[roomNum]->isGammingRoom = true;
 			std::cout << sessionID << " 클라가 "
 				<< roomNum << " 번방에 " << gameIndex << " 게임 참가. " << std::endl;
+			_roomVec[roomNum]->isGammingRoom = true;
+			std::cout << roomNum << "번방 " << gameIndex << "번 게임 시작" << std::endl;
 			return ROOM_INDEX::ENTER_ROOM;
 		}
+
 	}
+	std::cout << "방생성 실패" << std::endl;
 	return FAIL_ROOM_SERCH;
 }
 

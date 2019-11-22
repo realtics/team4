@@ -70,23 +70,13 @@ void Server::ProcessPacket(const int sessionID, const char* data)
 	{
 		PACKET_MULTI_ROOM* packet = (PACKET_MULTI_ROOM*)data;
 
-		int mrTemp = roomMG._MakeRoom(packet->gameIndex, sessionID);
+		int mrTemp = roomMG._MakeRoom(packet->gameIndex, sessionID, packet->charIndex);
 
 		PACKET_ROOM_INFO sendPacket;
 		sendPacket.header.packetIndex = PACKET_INDEX::ROOM_INFO;
 		sendPacket.header.packetSize = sizeof(PACKET_ROOM_INFO);
 		sendPacket.charInfo = packet->charIndex;
 		sendPacket.roomInfo = mrTemp;
-
-		if (mrTemp == ROOM_INDEX::MAKE_ROOM)
-		{
-			roomMG._SetRoomChar(sendPacket.charInfo);
-		}
-
-		else if (mrTemp == ROOM_INDEX::ENTER_ROOM)
-		{
-
-		}
 
 		std::string aa = _SerializationJson(PACKET_INDEX::ROOM_INFO, (const char*)&sendPacket);
 
