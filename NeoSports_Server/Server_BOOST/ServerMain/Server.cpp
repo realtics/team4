@@ -70,36 +70,37 @@ void Server::ProcessPacket(const int sessionID, const char* data)
 	{
 		PACKET_REQ_MULTI_ROOM* packet = (PACKET_REQ_MULTI_ROOM*)data;
 
-		int mrTemp = roomMG._MakeRoom(packet->gameIndex, sessionID, packet->charIndex);
+		int mrTemp = roomMG.MakeRoom(packet->gameIndex, sessionID, packet->charIndex);
 
 		PACKET_ROOM_INFO sendPacket;
 		sendPacket.header.packetIndex = PACKET_INDEX::ROOM_INFO;
 		sendPacket.header.packetSize = sizeof(PACKET_ROOM_INFO);
-		//sendPacket.charInfo = (CHAR_INDEX)packet->charIndex;
 		sendPacket.roomInfo = (ROOM_HOST)mrTemp; //받는 클라입장에서 자신이 방장인지 구별
 		
 		if (mrTemp == ROOM_HOST::ENTER_ROOM) //들어가는 입장이면 스타트패킷생성후 전송해야함
 		{
-			int roomNum = roomMG._GetRoomNum(sessionID);
-			int superSessionIdTemp = roomMG._GetSuperSessonID(roomNum);
-			int sessionIdTemp = roomMG._GetSessonID(roomNum);
+			int roomNum = roomMG.GetRoomNum(sessionID);
+			int superSessionIdTemp = roomMG.GetSuperSessonID(roomNum);
+			int sessionIdTemp = roomMG.GetSessonID(roomNum);
 
 			PACKET_START_GAME startPacket;
 			startPacket.header.packetIndex = PACKET_INDEX::START_GAME;
 			startPacket.header.packetSize = sizeof(PACKET_START_GAME);
-			startPacket.superCharID = (CHAR_INDEX)roomMG._GetRoomChar(roomNum, 0);
-			startPacket.charID = (CHAR_INDEX)roomMG._GetRoomChar(roomNum, 1);
+			startPacket.superCharID = (CHAR_INDEX)roomMG.GetRoomChar(roomNum, 0);
+			startPacket.charID = (CHAR_INDEX)roomMG.GetRoomChar(roomNum, 1);
 
 			std::string aa = _SerializationJson(PACKET_INDEX::START_GAME, (const char*)&startPacket);
 
 			_sessionVec[superSessionIdTemp]->PostSend(false, aa.length(), (char*)aa.c_str());
 			_sessionVec[sessionIdTemp]->PostSend(false, aa.length(), (char*)aa.c_str());
+			_sessionVec[sessionID]->PostReceive();
 
 			return;
 		}
 
 		std::string aa = _SerializationJson(PACKET_INDEX::ROOM_INFO, (const char*)&sendPacket);
 		_sessionVec[sessionID]->PostSend(false, aa.length(), (char*)aa.c_str());
+		_sessionVec[sessionID]->PostReceive();
 	}
 	break;
 
@@ -107,13 +108,37 @@ void Server::ProcessPacket(const int sessionID, const char* data)
 	{
 		PACKET_REQ_END_GAME* packet = (PACKET_REQ_END_GAME*)data;
 
-		int roomNum = roomMG._GetRoomNum(sessionID);
+		int roomNum = roomMG.GetRoomNum(sessionID);
 		std::cout << roomNum << "번방 " << packet->gameIndex << "게임 종료. 승자 "
 			<< sessionID << std::endl;
 		
 		//DB추가시 게임결과 저장 추가소스 위치
 
 		roomMG._roomVec[roomNum]->Init();
+
+		_sessionVec[sessionID]->PostReceive();
+	}
+	break;
+
+	case PACKET_INDEX::REQ_RES_ROPE_PULL_GAME:
+	{
+		PACKET_REQ_RES_ROPE_PULL_GAME* packet = (PACKET_REQ_RES_ROPE_PULL_GAME*)data;
+		int roomNum = roomMG.GetRoomNum(sessionID);
+		roomMG._roomVec[roomNum]->gameMG.SetRopePos(packet->ropePos);
+		int ropePos = roomMG._roomVec[roomNum]->gameMG.GetRopePos();
+
+		PACKET_REQ_RES_ROPE_PULL_GAME resPacket;;
+		resPacket.header.packetIndex = PACKET_INDEX::REQ_RES_ROPE_PULL_GAME;
+		resPacket.header.packetSize = sizeof(PACKET_REQ_RES_ROPE_PULL_GAME);
+		resPacket.ropePos = ropePos;
+
+		std::string aa = _SerializationJson(PACKET_INDEX::REQ_RES_ROPE_PULL_GAME, (const char*)& resPacket);
+
+		int superSessionIdTemp = roomMG.GetSuperSessonID(roomNum);
+		int sessionIdTemp = roomMG.GetSessonID(roomNum);
+
+		_sessionVec[superSessionIdTemp]->PostSend(false, aa.length(), (char*)aa.c_str());
+		_sessionVec[sessionIdTemp]->PostSend(false, aa.length(), (char*)aa.c_str());
 
 		_sessionVec[sessionID]->PostReceive();
 	}
@@ -230,6 +255,27 @@ std::string Server::_SerializationJson(int packetIndex, const char* packet)
 		sendStr = os.str();
 		return sendStr;
 	}
+	
+	case PACKET_INDEX::REQ_RES_ROPE_PULL_GAME:
+	{
+		PACKET_REQ_RES_ROPE_PULL_GAME* ropePullPacket = new PACKET_REQ_RES_ROPE_PULL_GAME;
+		memcpy(&ropePullPacket, &packet, sizeof(PACKET_REQ_RES_ROPE_PULL_GAME));
+
+		boost::property_tree::ptree ptSend;
+		boost::property_tree::ptree ptSendHeader;
+		ptSendHeader.put<int>("packetIndex", ropePullPacket->header.packetIndex);
+		ptSendHeader.put<int>("packetSize", sizeof(PACKET_START_GAME));
+		ptSend.add_child("header", ptSendHeader);
+
+		ptSend.put<int>("ropePos", (CHAR_INDEX)ropePullPacket->ropePos);
+
+		std::string recvTemp;
+		std::ostringstream os(recvTemp);
+		boost::property_tree::write_json(os, ptSend, false);
+		sendStr = os.str();
+		return sendStr;
+	}
+	break;
 
 	}
 }

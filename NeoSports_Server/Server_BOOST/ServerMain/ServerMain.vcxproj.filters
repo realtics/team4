@@ -33,6 +33,9 @@
     <ClCompile Include="RoomMG.cpp">
       <Filter>Room</Filter>
     </ClCompile>
+    <ClCompile Include="GameMG.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ServerSession.h">
@@ -52,6 +55,9 @@
     </ClInclude>
     <ClInclude Include="Protocol.h">
       <Filter>Protocol</Filter>
+    </ClInclude>
+    <ClInclude Include="GameMG.h">
+      <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

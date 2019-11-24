@@ -19,12 +19,14 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="GameMG.cpp" />
     <ClCompile Include="RoomMG.cpp" />
     <ClCompile Include="Server.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="ServerSession.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="GameMG.h" />
     <ClInclude Include="RoomMG.h" />
     <ClInclude Include="Server.h" />
     <ClInclude Include="Json.h" />

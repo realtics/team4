@@ -193,8 +193,18 @@ void Session::_DeSerializationJson(char* jsonStr)
 		break;
 	}
 
+	case PACKET_INDEX::REQ_RES_ROPE_PULL_GAME:
+	{
+		PACKET_REQ_RES_ROPE_PULL_GAME packet;
+		packet.header.packetIndex = headerIndex;
+		packet.header.packetSize = children.get<int>("packetSize");
+		packet.ropePos = ptRecv.get<int>("ropePos");
+		memcpy(&_packetBuffer[_packetBufferMark], (char*)& packet, sizeof(packet));
+		break;
+	}
+
 	default:
-		std::cout << "해당 패킷의 HeaderIndex가 없습니다. : " << headerIndex
+		std::cout << "해당 패킷의 HeaderIndex가 없습니다.(역직렬화) : " << headerIndex
 			<< std::endl;
 		break;
 	}

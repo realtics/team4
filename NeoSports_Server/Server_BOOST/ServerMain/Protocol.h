@@ -21,7 +21,8 @@ enum ROOM_HOST
 
 enum GAME_INDEX
 {
-	ROPE_PULL = 20,
+	EMPTY_GAME = 20,
+	ROPE_PULL,
 	ROPE_JUMP,
 	BASKET_BALL,
 };
@@ -36,10 +37,14 @@ enum CHAR_INDEX
 enum PACKET_INDEX
 {
 	REQ_IN = 200,
+
 	MULTI_ROOM, //클라에서 같이하기 눌렀을때 방을 만들거나 방이있으면 접속함
 	START_GAME,
 	REQ_END_GAME,
 	ROOM_INFO,
+
+	//줄다리기용 패킷
+	REQ_RES_ROPE_PULL_GAME,
 
 	//클라와 통신하고 있지 않은 인덱스들 (채팅용)
 	RES_IN,
@@ -75,12 +80,18 @@ struct PACKET_START_GAME
 	CHAR_INDEX charID;
 };
 
+//줄다리기 게임 데이터 패킷
+struct PACKET_REQ_RES_ROPE_PULL_GAME
+{
+	PACKET_HEADER header;
+	int ropePos;
+};
+
 //멀티게임을 요청한 클라에게 보내는 패킷
 struct PACKET_ROOM_INFO
 {
 	PACKET_HEADER header;
 	ROOM_HOST roomInfo; //방을 만든건지 들어간건지의 정보
-	//CHAR_INDEX charInfo; //플레이어의 캐릭터 정보
 };
 
 //처음 클라가 들어왔을때 그 클라의 이름을 받음
@@ -92,7 +103,7 @@ struct PACKET_REQ_IN : public PACKET_HEADER
 	{
 		packetIndex = PACKET_INDEX::REQ_IN;
 		packetSize = sizeof(PACKET_REQ_IN);
-		//ZeroMemory(name, MAX_NAME_LEN);
+		//memset(name,0,MAX_NAME_LEN);
 	}
 };
 

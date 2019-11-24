@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include "Protocol.h"
+#include "GameMG.h"
 
 const int MAX_CHAR_IN_ROOM = 2; //한 방의 최대 게임중인 플레이어
 
@@ -19,12 +20,15 @@ public:
 		}
 
 		isGammingRoom = false;
+		gameMG.Init();
 	}
 	bool isGammingRoom;
 	int gameIndex; //객체가 무슨 게임의 방인지 구별
 	int charIndex[MAX_CHAR_IN_ROOM]; //방에 있는 플레이어 두명의 캐릭터 인덱스
 	int superSessionID; //방장 클라이언트
 	int sessionID; //접속한 클라이언트(상대방)
+
+	GameMG gameMG;
 private:
 };
 
@@ -32,16 +36,16 @@ class RoomMG
 {
 public:
 	RoomMG();
-	int _SearchRoom(int roomIndex);
-	int _MakeRoom(int gameIndexk, int sessionID, int charIndex);
+	int SearchRoom(int roomIndex);
+	int MakeRoom(int gameIndexk, int sessionID, int charIndex);
 
-	int _GetRoomChar(int roomIndex, int playerIndex);
-	void _SetRoomChar(int roomIndex, int charIndex);
+	int GetRoomChar(int roomIndex, int playerIndex);
+	void SetRoomChar(int roomIndex, int charIndex);
 
-	int _GetRoomNum(int sessionID);
+	int GetRoomNum(int sessionID);
 
-	int _GetSuperSessonID(int roomNum);
-	int _GetSessonID(int roomNum);
+	int GetSuperSessonID(int roomNum);
+	int GetSessonID(int roomNum);
 
 	std::vector<ROOM*> _roomVec;
 private:
