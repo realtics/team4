@@ -12,7 +12,8 @@ public enum ROOM_INDEX
 
 public enum GAME_INDEX
 {
-	ROPE_PULL = 20,
+    EMPTY_GAME = 20,
+	ROPE_PULL,
 	ROPE_JUMP,
 	BASKET_BALL,
 };

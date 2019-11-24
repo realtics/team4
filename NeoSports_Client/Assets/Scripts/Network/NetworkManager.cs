@@ -28,14 +28,14 @@ public class NetworkManager : Singleton<NetworkManager>
     const int PortNumber = 31400;
 
     public bool isLoopBack;
-	public bool isOwnHost;
+    [HideInInspector]
+    public bool isOwnHost;
 	[HideInInspector]
 	public CHAR_INDEX otherPlayerCharacter;
 	
 
 	Socket _sock = null;
     AsyncCallback _receiveHandler;
-	
 
     void Awake()
     {
@@ -45,8 +45,8 @@ public class NetworkManager : Singleton<NetworkManager>
             return;
         }
 		isOwnHost = false;
-		otherPlayerCharacter = CHAR_INDEX.EMPTY_CHAR;
-		instance = this;
+        otherPlayerCharacter = CHAR_INDEX.EMPTY_CHAR;
+        instance = this;
         DontDestroyOnLoad(this);
     }
 
@@ -218,7 +218,7 @@ public class NetworkManager : Singleton<NetworkManager>
 					if (packetdata.roomInfo == ROOM_INDEX.ENTER_ROOM)
 						isOwnHost = false;
 
-					otherPlayerCharacter = packetdata.charInfo; //상대 캐릭터
+					//otherPlayerCharacter = packetdata.charInfo; //상대 캐릭터
 				
 					break;
 				}
@@ -231,8 +231,12 @@ public class NetworkManager : Singleton<NetworkManager>
 			case (int)PACKET_INDEX.START_GAME:
 				{
 					var packetdata = JsonConvert.DeserializeObject<PACKET_START_GAME>(recvData);
-					Debug.Log(packetdata.superCharID);
+                    Debug.Log("Start");
+                    Debug.Log(packetdata.superCharID);
 					Debug.Log(packetdata.charID);
+                    //To DO 이때 게임씬 매니저에서 Create Character
+                    //호출 하고 싶은데 싱글톤 접근이 맞는 설계 인지 고민.
+                    //캐싱해놓고 써야하나 11/25까지 결정후 적용.
 					
 					break;
 				}

@@ -213,9 +213,6 @@ namespace RopePullGame
 			// 방장이면 내캐릭터 왼쪽 
 			// 참가자면 내캐릭터 오른쪽
 
-			GameObject own;
-			GameObject other;
-
 			ppiYakCharacter.GetComponent<SpriteRenderer>().sortingOrder = 15;
 			turkeyJellyCharacter.GetComponent<SpriteRenderer>().sortingOrder = 15;
 			ppiYakCharacter.SetActive(true);
