@@ -6,8 +6,6 @@ using UnityEngine.U2D;
 
 public class RoadTile : ObjectTile
 {
-	
-
 	public enum EMaterial
 	{
 		Wire,
@@ -67,60 +65,107 @@ public class RoadTile : ObjectTile
 		tileType = ETileType.Road;
 		material = data.material;
 		type = data.type;
-		SetTransform(data.point);
 		name = data.point.X.ToString() + "_" + data.point.Y.ToString() + "_RoadTile";
+
+		SetPosition(data.point);
+		SetRotation(data.point);
+
 		SetSprite();
 	}
 
-	void SetTransform(Point pt)
+	void SetPosition(Point pt)
 	{
 		Vector3 position = Vector3.zero;
-		Quaternion rotation = new Quaternion();
 
 		position.x = pt.X * MapData.TileSize;
 		position.y = pt.Y * MapData.TileSize;
 
-		#region Rotation
-		if (pt.X == 0 && pt.Y == 0)
+		transform.localPosition = position;
+	}
+
+	void SetRotation(Point pt)
+	{
+		if (IsCornerTile(pt))
 		{
-			rotation.z = CornerBottomLeftRotation;
-			type = EType.Corner;
+			SetCornerRotation(pt);
 		}
-		else if (pt.X == 0 && pt.Y == MapData.MapHeight)
+		else
 		{
-			rotation.z = CornerTopLeftRotation;
-			type = EType.Corner;
+			SetEdgeRotation(pt);
 		}
-		else if (pt.X == MapData.MapWidth && pt.Y == 0)
+	}
+
+	bool IsCornerTile(Point pt)
+	{
+		if (pt.X == 0 || pt.X == MapData.MapWidth - 1)
 		{
-			rotation.z = CornerBottomRightRotation;
-			type = EType.Corner;
+			if (pt.Y == 0 || pt.Y == MapData.MapHeight - 1)
+			{
+				type = EType.Corner;
+				return true;
+			}
 		}
-		else if (pt.X == MapData.MapWidth && pt.Y == MapData.MapHeight)
+
+		return false;
+	}
+
+	void SetCornerRotation(Point pt)
+	{
+		Vector3 rotation = Vector3.zero;
+
+		if (pt.X == 0)
 		{
-			rotation.z = CornerTopRightRotation;
-			type = EType.Corner;
+			if (pt.Y == 0)
+			{
+				rotation.z = CornerBottomLeftRotation;
+			}
+			else if (pt.Y == MapData.MapHeight - 1)
+			{
+				rotation.z = CornerTopLeftRotation;
+			}
 		}
-		else if(pt.X == 0)
+		else if (pt.X == MapData.MapWidth - 1)
+		{
+			if (pt.Y == 0)
+			{
+				rotation.z = CornerBottomRightRotation;
+			}
+			else if (pt.Y == MapData.MapHeight - 1)
+			{
+				rotation.z = CornerTopRightRotation;
+			}
+		}
+
+		Quaternion q = Quaternion.identity;
+		q.eulerAngles = rotation;
+		transform.localRotation = q;
+
+	}
+
+	void SetEdgeRotation(Point pt)
+	{
+		Vector3 rotation = Vector3.zero;
+
+		if (pt.X == 0)
 		{
 			rotation.z = EdgeLeftRotation;
 		}
-		else if(pt.X == MapData.MapWidth)
+		else if (pt.X == MapData.MapWidth - 1)
 		{
 			rotation.z = EdgeRightRotation;
 		}
-		else if(pt.Y == 0)
+		else if (pt.Y == 0)
 		{
 			rotation.z = EdgeBottomRotation;
 		}
-		else if(pt.Y == MapData.MapHeight)
+		else if (pt.Y == MapData.MapHeight - 1)
 		{
 			rotation.z = EdgeTopRotation;
 		}
-		#endregion
 
-		transform.position = position;
-		transform.rotation = rotation;
+		Quaternion q = Quaternion.identity;
+		q.eulerAngles = rotation;
+		transform.localRotation = q;
 	}
 
 	void SetSprite()

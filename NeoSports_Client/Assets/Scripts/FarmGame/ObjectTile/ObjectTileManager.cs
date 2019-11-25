@@ -12,38 +12,51 @@ public class ObjectTileManager : Singleton<ObjectTileManager>
 
 	void Awake()
 	{
-		CreateLoadTile();
+		objectTileDic = new Dictionary<Point, ObjectTile>();
 	}
 
 	void Start()
 	{
-
+		InitRoadTile();
 	}
 
-	void CreateLoadTile()
+	void InitRoadTile()
 	{
+		Point pt;
+
 		for (int i = 0; i < MapData.MapWidth; i++)
 		{
-			for (int j = 0; j < MapData.MapHeight; j++)
-			{
-				Point pt = new Point(i, j);
-				CheckRoadPoint(pt);
-			}
+			pt = new Point(i, 0);
+			CreateRoadTileAtPoint(pt);
+			pt = new Point(i, MapData.MapHeight - 1);
+			CreateRoadTileAtPoint(pt);
+		}
+
+		for(int i = 0; i < MapData.MapHeight; i++)
+		{
+			pt = new Point(0, i);
+			CreateRoadTileAtPoint(pt);
+			pt = new Point(MapData.MapWidth - 1, i);
+			CreateRoadTileAtPoint(pt);
 		}
 	}
 
-	void CheckRoadPoint(Point pt)
+	void CreateRoadTileAtPoint(Point pt)
 	{
-		if (pt.X == 0 || pt.Y == 0 || pt.X == MapData.MapWidth - 1 || pt.Y == MapData.MapHeight - 1)
+		if(objectTileDic.ContainsKey(pt))
 		{
-			GameObject obj = Instantiate(prefRoadTile, objectTileGroup.transform);
-			RoadTile script = obj.GetComponent<RoadTile>();
-			RoadTile.TileData data;
-			data.point = pt;
-			data.material = RoadTile.EMaterial.Wire;
-			data.type = RoadTile.EType.Default;
-			script.SetData(data);
+			return;
 		}
+
+		GameObject obj = Instantiate(prefRoadTile, objectTileGroup.transform);
+		RoadTile script = obj.GetComponent<RoadTile>();
+		RoadTile.TileData data;
+		data.point = pt;
+		data.material = RoadTile.EMaterial.Wire;
+		data.type = RoadTile.EType.Default;
+		script.SetData(data);
+
+		objectTileDic.Add(pt, script);
 	}
 
 }
