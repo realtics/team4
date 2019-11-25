@@ -40,7 +40,7 @@ enum PACKET_INDEX
 
 	MULTI_ROOM, //클라에서 같이하기 눌렀을때 방을 만들거나 방이있으면 접속함
 	START_GAME,
-	REQ_END_GAME,
+	REQ_INIT_ROOM,
 	ROOM_INFO,
 
 	//줄다리기용 패킷
@@ -67,10 +67,11 @@ struct PACKET_REQ_MULTI_ROOM
 	CHAR_INDEX charIndex;
 };
 
-struct PACKET_REQ_END_GAME
+struct PACKET_REQ_INIT_ROOM
 {
 	PACKET_HEADER header;
 	GAME_INDEX gameIndex;
+	bool isEndGame;
 };
 
 struct PACKET_START_GAME

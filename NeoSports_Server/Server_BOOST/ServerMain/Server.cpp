@@ -76,7 +76,7 @@ void Server::ProcessPacket(const int sessionID, const char* data)
 		sendPacket.header.packetIndex = PACKET_INDEX::ROOM_INFO;
 		sendPacket.header.packetSize = sizeof(PACKET_ROOM_INFO);
 		sendPacket.roomInfo = (ROOM_HOST)mrTemp; //받는 클라입장에서 자신이 방장인지 구별
-		
+
 		if (mrTemp == ROOM_HOST::ENTER_ROOM) //들어가는 입장이면 스타트패킷생성후 전송해야함
 		{
 			int roomNum = roomMG.GetRoomNum(sessionID);
@@ -93,30 +93,31 @@ void Server::ProcessPacket(const int sessionID, const char* data)
 
 			_sessionVec[superSessionIdTemp]->PostSend(false, aa.length(), (char*)aa.c_str());
 			_sessionVec[sessionIdTemp]->PostSend(false, aa.length(), (char*)aa.c_str());
-			_sessionVec[sessionID]->PostReceive();
 
 			return;
 		}
 
 		std::string aa = _SerializationJson(PACKET_INDEX::ROOM_INFO, (const char*)&sendPacket);
 		_sessionVec[sessionID]->PostSend(false, aa.length(), (char*)aa.c_str());
-		_sessionVec[sessionID]->PostReceive();
 	}
 	break;
 
 	case PACKET_INDEX::REQ_END_GAME:
 	{
-		PACKET_REQ_END_GAME* packet = (PACKET_REQ_END_GAME*)data;
+		PACKET_REQ_INIT_ROOM* packet = (PACKET_REQ_INIT_ROOM*)data;
 
 		int roomNum = roomMG.GetRoomNum(sessionID);
-		std::cout << roomNum << "번방 " << packet->gameIndex << "게임 종료. 승자 "
-			<< sessionID << std::endl;
-		
-		//DB추가시 게임결과 저장 추가소스 위치
+
+		if (packet->isEndGame)
+		{
+			std::cout << roomNum << "번방 " << packet->gameIndex << "게임 종료. 승자 "
+				<< sessionID << std::endl;
+
+			//DB추가시 게임결과 저장 추가소스 위치
+		}
 
 		roomMG._roomVec[roomNum]->Init();
 
-		_sessionVec[sessionID]->PostReceive();
 	}
 	break;
 
@@ -132,7 +133,7 @@ void Server::ProcessPacket(const int sessionID, const char* data)
 		resPacket.header.packetSize = sizeof(PACKET_REQ_RES_ROPE_PULL_GAME);
 		resPacket.ropePos = ropePos;
 
-		std::string aa = _SerializationJson(PACKET_INDEX::REQ_RES_ROPE_PULL_GAME, (const char*)& resPacket);
+		std::string aa = _SerializationJson(PACKET_INDEX::REQ_RES_ROPE_PULL_GAME, (const char*)&resPacket);
 
 		int superSessionIdTemp = roomMG.GetSuperSessonID(roomNum);
 		int sessionIdTemp = roomMG.GetSessonID(roomNum);
@@ -140,7 +141,6 @@ void Server::ProcessPacket(const int sessionID, const char* data)
 		_sessionVec[superSessionIdTemp]->PostSend(false, aa.length(), (char*)aa.c_str());
 		_sessionVec[sessionIdTemp]->PostSend(false, aa.length(), (char*)aa.c_str());
 
-		_sessionVec[sessionID]->PostReceive();
 	}
 	break;
 
@@ -255,7 +255,7 @@ std::string Server::_SerializationJson(int packetIndex, const char* packet)
 		sendStr = os.str();
 		return sendStr;
 	}
-	
+
 	case PACKET_INDEX::REQ_RES_ROPE_PULL_GAME:
 	{
 		PACKET_REQ_RES_ROPE_PULL_GAME* ropePullPacket = new PACKET_REQ_RES_ROPE_PULL_GAME;
@@ -267,7 +267,7 @@ std::string Server::_SerializationJson(int packetIndex, const char* packet)
 		ptSendHeader.put<int>("packetSize", sizeof(PACKET_START_GAME));
 		ptSend.add_child("header", ptSendHeader);
 
-		ptSend.put<int>("ropePos", (CHAR_INDEX)ropePullPacket->ropePos);
+		ptSend.put<int>("ropePos", ropePullPacket->ropePos);
 
 		std::string recvTemp;
 		std::ostringstream os(recvTemp);
