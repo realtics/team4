@@ -79,6 +79,18 @@ public class NetworkManager : Singleton<NetworkManager>
 		SendToServerPacket(packet);
 	}
 
+    public void SendRequestExitRoom(GAME_INDEX roomIndex, bool isRoomEndGame)
+    {
+        PACKET_HEADER headerPacket = MakeHeaderPacket(PACKET_INDEX.REQ_INIT_ROOM);
+        PACKET_REQ_INIT_ROOM packet = new PACKET_REQ_INIT_ROOM
+        {
+            header = headerPacket,
+            gameIndex = roomIndex,
+            isEndGame = isRoomEndGame,
+        };
+        SendToServerPacket(packet);
+    }
+
 	void SendToServerPacket(object value)
 	{
 		string jsonBuffer;
@@ -107,6 +119,13 @@ public class NetworkManager : Singleton<NetworkManager>
 					headerPacket = new PACKET_HEADER(packetIndex, packetSize);
 					return headerPacket;
 				}
+            case PACKET_INDEX.REQ_INIT_ROOM:
+                {
+                    int packetSize = Marshal.SizeOf<PACKET_REQ_INIT_ROOM>();
+                    PACKET_HEADER headerPacket;
+                    headerPacket = new PACKET_HEADER(packetIndex, packetSize);
+                    return headerPacket;
+                }
 			default:
 				{
 					int packetSize = Marshal.SizeOf<PACKET_REQ_IN>();
