@@ -9,6 +9,8 @@ TagManager:
   - RightPlayer
   - Ball
   - AIBall
+  - FarmObstacle
+  - FarmLand
   layers:
   - Default
   - TransparentFX

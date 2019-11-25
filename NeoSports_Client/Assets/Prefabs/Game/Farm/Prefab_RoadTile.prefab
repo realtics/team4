@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: -997896889216480897}
   m_Layer: 0
   m_Name: Prefab_RoadTile
-  m_TagString: Untagged
+  m_TagString: FarmObstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

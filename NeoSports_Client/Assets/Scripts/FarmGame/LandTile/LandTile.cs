@@ -32,20 +32,31 @@ public class LandTile : MonoBehaviour
 	const string WeedSpriteName = "weed";
 	const string WeedOldSpriteName = "weed_old";
 
-	EType type;
-	int typeIndex;
+	EType _type;
+	int _typeIndex;
+	GameObject _highlight;
 
 	public SpriteAtlas farmLandTileAtlas;
 
 	#region Property
 	public EType Type {
-		get { return type; }
+		get { return _type; }
 	}
 
 	public int TypeIndex {
-		get { return typeIndex; }
+		get { return _typeIndex; }
+	}
+
+	public bool Highlight {
+		set { _highlight.SetActive(value); }
+		get { return _highlight.activeInHierarchy; }
 	}
 	#endregion
+
+	void Awake()
+	{
+		_highlight = transform.GetChild(0).gameObject;
+	}
 
 	public void SetData(TileData data)
 	{
@@ -53,8 +64,8 @@ public class LandTile : MonoBehaviour
 		position.x = data.point.X * MapData.TileSize;
 		position.y = data.point.Y * MapData.TileSize;
 
-		type = data.type;
-		typeIndex = data.typeIndex;
+		_type = data.type;
+		_typeIndex = data.typeIndex;
 
 		SetSprite();
 	}
@@ -79,8 +90,8 @@ public class LandTile : MonoBehaviour
 				break;
 		}
 
-		this.type = type;
-		typeIndex = randIndex;
+		this._type = type;
+		_typeIndex = randIndex;
 
 		SetSprite();
 	}
@@ -89,7 +100,7 @@ public class LandTile : MonoBehaviour
 	{
 		string spriteName = string.Empty;
 
-		switch (type)
+		switch (_type)
 		{
 			case EType.Badland:
 				spriteName += BadlandSpriteName;
@@ -105,7 +116,7 @@ public class LandTile : MonoBehaviour
 				break;
 		}
 
-		spriteName += "_" + typeIndex.ToString();
+		spriteName += "_" + _typeIndex.ToString();
 
 		Sprite tileSprite = farmLandTileAtlas.GetSprite(spriteName);
 		GetComponent<SpriteRenderer>().sprite = tileSprite;

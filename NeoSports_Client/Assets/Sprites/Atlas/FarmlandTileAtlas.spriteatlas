@@ -89,7 +89,8 @@ SpriteAtlas:
     - {fileID: 21300000, guid: 4bdc19cf4fe870142ac11c8a814d79b3, type: 3}
     - {fileID: 21300000, guid: 018483141e2b68d458776f3c709a8557, type: 3}
     - {fileID: 21300000, guid: e23a042d07c33514b930ddf8a7ae15e5, type: 3}
-    totalSpriteSurfaceArea: 108288
+    - {fileID: 21300000, guid: 8ba20effeccb0b14cb68a551f4bef5b2, type: 3}
+    totalSpriteSurfaceArea: 110592
     bindAsDefault: 1
     storedHash:
       serializedVersion: 2
@@ -143,6 +144,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: e23a042d07c33514b930ddf8a7ae15e5, type: 3}
   - {fileID: 21300000, guid: a60e6afd8eba6ce4f8bcfe8f51259650, type: 3}
   - {fileID: 21300000, guid: 4bdc19cf4fe870142ac11c8a814d79b3, type: 3}
+  - {fileID: 21300000, guid: 8ba20effeccb0b14cb68a551f4bef5b2, type: 3}
   m_PackedSpriteNamesToIndex:
   - weed_old_1
   - flower_2
@@ -191,5 +193,6 @@ SpriteAtlas:
   - wire_trash
   - agave_1
   - wire_default
+  - highlight
   m_Tag: FarmlandTileAtlas
   m_IsVariant: 0

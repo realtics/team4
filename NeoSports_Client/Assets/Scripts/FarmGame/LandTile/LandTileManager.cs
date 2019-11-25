@@ -12,7 +12,6 @@ public class LandTileManager : Singleton<LandTileManager>
 	Dictionary<Point, LandTile> landDic;
 	Size landSize; 
 
-
 	public Size LandSize {
 		get { return landSize; }
 	}
@@ -62,6 +61,9 @@ public class LandTileManager : Singleton<LandTileManager>
 		}
 	}
 
-
+	public LandTile GetLandTile(Point pt)
+	{
+		return landDic[pt];
+	}
 
 }
