@@ -237,8 +237,8 @@ namespace RopePullGame
 			ppiYakCharacter.SetActive(true);
 			turkeyJellyCharacter.SetActive(true);
 
-			CHAR_INDEX superCharIndex = NetworkManager.Instance.superCharIndex;
-			CHAR_INDEX CharIndex = NetworkManager.Instance.charIndex;
+			CHAR_INDEX superCharIndex = PacketQueue.Instance.superCharIndex;
+			CHAR_INDEX CharIndex = PacketQueue.Instance.charIndex;
 
 			SelectInstantCharacter(superCharIndex, _leftPlayer);
 			SelectInstantCharacter(CharIndex, _rightPlayer);

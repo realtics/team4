@@ -31,7 +31,7 @@ public class PlayManager : Singleton<PlayManager>
 
 	public void StartRopePullMultiGame()
 	{
-		SceneManager.LoadScene(SceneName.NetworkRopeGameSceneName);
+		//SceneManager.LoadScene(SceneName.NetworkRopeGameSceneName);
 		NetworkManager.Instance.SendRequsetRoom(GAME_INDEX.ROPE_PULL);
 	}
 
@@ -59,4 +59,9 @@ public class PlayManager : Singleton<PlayManager>
     }
 	#endregion
 
+	public void LoadRopeGameScene()
+	{
+		SceneManager.LoadSceneAsync(SceneName.NetworkRopeGameSceneName);
+		Debug.Log("LoadSceneCall");
+	}
 }
