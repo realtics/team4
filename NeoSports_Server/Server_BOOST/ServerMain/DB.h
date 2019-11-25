@@ -5,15 +5,18 @@
 class DB
 {
 public:
-	void querySelect();
+	DB();
+	~DB();
+
+	void SelectQuery();
+	void Insert();
+	void Update();
 
 private:
 	MYSQL		_conn;
 	MYSQL_RES* _pSqlRes;
 	MYSQL_ROW	_sqlRow;
 
-	DB();
-	~DB();
 
 	void _Init();
 };

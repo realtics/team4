@@ -1,5 +1,6 @@
 #include "DB.h"
 #include <iostream>
+
 using namespace std;
 
 DB::DB()
@@ -22,7 +23,7 @@ void DB::_Init()
 	if (mysql_real_connect(
 		&_conn, "localhost", //∑Á«¡πÈ
 		"root", "!qhdksxl0212",
-		"neosports", 3306, NULL, 0) == nullptr);
+		"neosports", 3306, NULL, 0) == nullptr)
 	{
 		std::cout << "mysql_real_connect Error" << std::endl;
 	}
@@ -34,7 +35,7 @@ void DB::_Init()
 	}
 }
 
-void DB::querySelect()
+void DB::SelectQuery()
 {
 	const char* query = "SELECT * FROM game";
 	int state = mysql_query(&_conn, query);
@@ -54,6 +55,7 @@ void DB::querySelect()
 			}
 			mysql_free_result(_pSqlRes);
 		}
+
 		else
 		{
 			int errNo = mysql_errno(&_conn);
@@ -64,4 +66,10 @@ void DB::querySelect()
 		}
 		mysql_close(&_conn);
 	}
+}
+
+void DB::Insert()
+{
+	std::string query = "INSERT INTO";
+
 }

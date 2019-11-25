@@ -7,8 +7,8 @@
 #include <string>
 
 #include "RoomMG.h"
-#include "DB.h"
 #include "ServerSession.h"
+#include "DB.h"
 
 class Server
 {
@@ -20,10 +20,11 @@ public:
 	void Start();
 	void CloseSession(const int sessionID);
 	void ProcessPacket(const int sessionID, const char* data);
+
+	DB db;
 	RoomMG roomMG;
 
 private:
-	DB db;
 
 	Lock _acceptLock;
 	Lock _ropePullLock;
