@@ -31,8 +31,10 @@ public class NetworkManager : Singleton<NetworkManager>
     [HideInInspector]
     public bool isOwnHost;
 	[HideInInspector]
-	public CHAR_INDEX otherPlayerCharacter;
-	
+	public CHAR_INDEX superCharIndex;
+	[HideInInspector]
+	public CHAR_INDEX charIndex;
+
 
 	Socket _sock = null;
     AsyncCallback _receiveHandler;
@@ -45,7 +47,6 @@ public class NetworkManager : Singleton<NetworkManager>
             return;
         }
 		isOwnHost = false;
-        otherPlayerCharacter = CHAR_INDEX.EMPTY_CHAR;
         instance = this;
         DontDestroyOnLoad(this);
     }
@@ -53,8 +54,7 @@ public class NetworkManager : Singleton<NetworkManager>
     public void SendNickName(string playerNickName)
     {
         if (_sock == null)
-            Connect();
-        //TO DO : 서버에게 패킷으로 플레이어가 결정한 별명 보내주기 
+            Connect(); 
         PACKET_HEADER headerPacket = MakeHeaderPacket(PACKET_INDEX.REQ_IN);
         PACKET_REQ_IN packet = new PACKET_REQ_IN { header = headerPacket, name = playerNickName };
 
@@ -217,8 +217,6 @@ public class NetworkManager : Singleton<NetworkManager>
 						isOwnHost = true;
 					if (packetdata.roomInfo == ROOM_INDEX.ENTER_ROOM)
 						isOwnHost = false;
-
-					//otherPlayerCharacter = packetdata.charInfo; //상대 캐릭터
 				
 					break;
 				}
@@ -231,13 +229,13 @@ public class NetworkManager : Singleton<NetworkManager>
 			case (int)PACKET_INDEX.START_GAME:
 				{
 					var packetdata = JsonConvert.DeserializeObject<PACKET_START_GAME>(recvData);
-                    Debug.Log("Start");
-                    Debug.Log(packetdata.superCharID);
-					Debug.Log(packetdata.charID);
-                    //To DO 이때 게임씬 매니저에서 Create Character
-                    //호출 하고 싶은데 싱글톤 접근이 맞는 설계 인지 고민.
-                    //캐싱해놓고 써야하나 11/25까지 결정후 적용.
-					
+
+					//씬이 바뀌기전에 StartGame 패킷이 먼저와서 싱글톤 RopeGameManager를 찾을 수 없어. 
+					//NetworkManager에서 정보를 갖고 있는 것으로 대체.
+					//RopePullGame.RopePullGameManager.Instance.CreateCharacters(packetdata.superCharID, packetdata.charID);
+					superCharIndex = packetdata.superCharID;
+					charIndex = packetdata.charID;
+
 					break;
 				}
 			default:

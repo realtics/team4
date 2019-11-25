@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace RopePullGame
 {
-	public class RopePullGameManager : Singleton<RopePullGame.RopePullGameManager>
+	public class RopePullGameManager : Singleton<RopePullGameManager>
 	{
 		enum ESceneState
 		{
@@ -84,7 +84,7 @@ namespace RopePullGame
 			{
 				case ESceneState.Prepare:
 					// DEBUG - Single Only!!
-					
+
 					_sceneState = ESceneState.Start;
 					CommonUIManager.Instance.CreateStartGameTimer(rootCanvas, StartWaitGameTime, StartPlayGame);
 					break;
@@ -208,52 +208,40 @@ namespace RopePullGame
 
 		}
 
-		void CreateCharacters()
+		void SelectInstantCharacter(CHAR_INDEX charID, Transform parent)
 		{
-			// 방장이면 내캐릭터 왼쪽 
-			// 참가자면 내캐릭터 오른쪽
+			switch (charID)
+			{
+				case (CHAR_INDEX)CharacterInfo.EType.PpiYaGi:
+					{
+						Instantiate(ppiYakCharacter, parent);
+						break;
+					}
+				case (CHAR_INDEX)CharacterInfo.EType.TurkeyJelly:
+					{
+						Instantiate(turkeyJellyCharacter, parent);
+						break;
+					}
+				default:
+					{
+						break;
+					}
+			}
 
+		}
+
+		public void CreateCharacters()
+		{
 			ppiYakCharacter.GetComponent<SpriteRenderer>().sortingOrder = 15;
 			turkeyJellyCharacter.GetComponent<SpriteRenderer>().sortingOrder = 15;
 			ppiYakCharacter.SetActive(true);
 			turkeyJellyCharacter.SetActive(true);
-			_ownCharInfo = InventoryManager.Instance.CurrentCharacter;
-			bool ownHost = NetworkManager.Instance.isOwnHost;
-			if (ownHost)
-			{
-				if (CharacterInfo.EType.PpiYaGi == _ownCharInfo.Type)
-				{
-					Instantiate(ppiYakCharacter, _leftPlayer);
-					
-				}
-				else
-				{
-					Instantiate(turkeyJellyCharacter, _leftPlayer);
-				}
 
-				CHAR_INDEX charIndex = NetworkManager.Instance.otherPlayerCharacter;
-				if (charIndex == CHAR_INDEX.CHICK)
-					Instantiate(ppiYakCharacter, _rightPlayer);
-				else if (charIndex == CHAR_INDEX.JELLY)
-					Instantiate(turkeyJellyCharacter, _rightPlayer);
-			}
-			else 
-			{
-				if (CharacterInfo.EType.PpiYaGi == _ownCharInfo.Type)
-				{
-					Instantiate(ppiYakCharacter, _rightPlayer);
-				}
-				else
-				{
-					Instantiate(turkeyJellyCharacter, _rightPlayer);
-				}
+			CHAR_INDEX superCharIndex = NetworkManager.Instance.superCharIndex;
+			CHAR_INDEX CharIndex = NetworkManager.Instance.charIndex;
 
-				CHAR_INDEX charIndex = NetworkManager.Instance.otherPlayerCharacter;
-				if (charIndex == CHAR_INDEX.CHICK)
-					Instantiate(ppiYakCharacter, _leftPlayer);
-				else if (charIndex == CHAR_INDEX.JELLY)
-					Instantiate(turkeyJellyCharacter, _leftPlayer);
-			}
+			SelectInstantCharacter(superCharIndex, _leftPlayer);
+			SelectInstantCharacter(CharIndex, _rightPlayer);
 		}
 	}
 }

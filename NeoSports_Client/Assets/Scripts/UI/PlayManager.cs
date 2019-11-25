@@ -31,8 +31,8 @@ public class PlayManager : Singleton<PlayManager>
 
 	public void StartRopePullMultiGame()
 	{
-        NetworkManager.Instance.SendRequsetRoom(GAME_INDEX.ROPE_PULL);
 		SceneManager.LoadScene(SceneName.NetworkRopeGameSceneName);
+		NetworkManager.Instance.SendRequsetRoom(GAME_INDEX.ROPE_PULL);
 	}
 
 	public void StartJumpRopeSingleGame()
