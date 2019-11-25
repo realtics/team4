@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace RopePullGame
 {
-	public class RopePullGameManager : MonoBehaviour
+	public class RopePullGameManager : Singleton<RopePullGame.RopePullGameManager>
 	{
 		enum ESceneState
 		{
