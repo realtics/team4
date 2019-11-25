@@ -149,7 +149,17 @@ public class NetworkManager : Singleton<NetworkManager>
 			}
 			else
 			{
-				_sock.Connect(new IPEndPoint(IPAddress.Parse(IpAdress), PortNumber));
+				var result = _sock.BeginConnect(new IPEndPoint(IPAddress.Parse(IpAdress), PortNumber), null, null);
+				bool success = result.AsyncWaitHandle.WaitOne(1000, true);
+				if (success)
+				{
+					//_sock.EndConnect(result);
+				}
+				else
+				{
+					_sock.Close();
+					throw new SocketException(100060);
+				}
 			}
 
 			//Async 추가 작성 
