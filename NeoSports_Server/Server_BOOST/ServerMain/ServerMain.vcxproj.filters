@@ -19,6 +19,9 @@
     <Filter Include="Protocol">
       <UniqueIdentifier>{df281bb3-0345-4837-87d9-69ef4a8ef3ef}</UniqueIdentifier>
     </Filter>
+    <Filter Include="DB">
+      <UniqueIdentifier>{56dc2b53-0aed-43f3-bf5b-e7554233dc6c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ServerSession.cpp">
@@ -34,7 +37,10 @@
       <Filter>Room</Filter>
     </ClCompile>
     <ClCompile Include="GameMG.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>Room</Filter>
+    </ClCompile>
+    <ClCompile Include="DB.cpp">
+      <Filter>DB</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -57,7 +63,10 @@
       <Filter>Protocol</Filter>
     </ClInclude>
     <ClInclude Include="GameMG.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>Room</Filter>
+    </ClInclude>
+    <ClInclude Include="DB.h">
+      <Filter>DB</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

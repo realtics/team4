@@ -6,6 +6,7 @@ Server::Server(boost::asio::io_context& io_service) : _acceptor(io_service,
 	boost::asio::ip::tcp::endpoint(boost::asio::ip::tcp::v4(), PORT_NUMBER))
 {
 	_isAccepting = false;
+	//db.querySelect();
 }
 
 Server::~Server()
@@ -102,7 +103,7 @@ void Server::ProcessPacket(const int sessionID, const char* data)
 	}
 	break;
 
-	case PACKET_INDEX::REQ_END_GAME:
+	case PACKET_INDEX::REQ_INIT_ROOM:
 	{
 		PACKET_REQ_INIT_ROOM* packet = (PACKET_REQ_INIT_ROOM*)data;
 
@@ -117,12 +118,13 @@ void Server::ProcessPacket(const int sessionID, const char* data)
 		}
 
 		roomMG._roomVec[roomNum]->Init();
-
 	}
 	break;
 
 	case PACKET_INDEX::REQ_RES_ROPE_PULL_GAME:
 	{
+		LockGuard ropeLockGuard(_ropePullLock);
+
 		PACKET_REQ_RES_ROPE_PULL_GAME* packet = (PACKET_REQ_RES_ROPE_PULL_GAME*)data;
 		int roomNum = roomMG.GetRoomNum(sessionID);
 		roomMG._roomVec[roomNum]->gameMG.SetRopePos(packet->ropePos);
@@ -140,7 +142,6 @@ void Server::ProcessPacket(const int sessionID, const char* data)
 
 		_sessionVec[superSessionIdTemp]->PostSend(false, aa.length(), (char*)aa.c_str());
 		_sessionVec[sessionIdTemp]->PostSend(false, aa.length(), (char*)aa.c_str());
-
 	}
 	break;
 
@@ -202,6 +203,7 @@ void Server::_AcceptHandle(Session* session, const boost::system::error_code& er
 
 		_PostAccept();
 	}
+
 	else
 	{
 		std::cout << "error No : " << error.value() << " error Message : " << error.message()
@@ -212,6 +214,7 @@ void Server::_AcceptHandle(Session* session, const boost::system::error_code& er
 std::string Server::_SerializationJson(int packetIndex, const char* packet)
 {
 	std::string sendStr;
+
 	switch (packetIndex)
 	{
 	case PACKET_INDEX::ROOM_INFO:

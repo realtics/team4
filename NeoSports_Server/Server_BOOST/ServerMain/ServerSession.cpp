@@ -183,9 +183,9 @@ void Session::_DeSerializationJson(char* jsonStr)
 		break;
 	}
 
-	case PACKET_INDEX::REQ_END_GAME:
+	case PACKET_INDEX::REQ_INIT_ROOM:
 	{
-		PACKET_REQ_END_GAME packet;
+		PACKET_REQ_INIT_ROOM packet;
 		packet.header.packetIndex = headerIndex;
 		packet.header.packetSize = children.get<int>("packetSize");
 		packet.gameIndex = (GAME_INDEX)ptRecv.get<int>("gameIndex");

@@ -7,6 +7,7 @@
 #include <string>
 
 #include "RoomMG.h"
+#include "DB.h"
 #include "ServerSession.h"
 
 class Server
@@ -22,7 +23,10 @@ public:
 	RoomMG roomMG;
 
 private:
+	DB db;
+
 	Lock _acceptLock;
+	Lock _ropePullLock;
 
 	int _seqNumber;
 	bool _isAccepting;
