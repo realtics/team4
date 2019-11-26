@@ -52,6 +52,7 @@ namespace JumpRopeGame
 
 		BoxCollider _jumpButtonCollider;
 
+		Camera _mainCam;
 		ETimingBarDirection _timingBarPointerDirection;
 		float _timingBarPointerSpeed;
 		bool _isJumpSuccess;
@@ -66,6 +67,7 @@ namespace JumpRopeGame
 			_timingBarPointerDirection = ETimingBarDirection.Right;
 			_timingBarPointerSpeed = TimingBarPointerInitialSpeed;
 			_isJumpSuccess = false;
+			_mainCam = Camera.main;
 
 			StartGame();
 		}
@@ -195,7 +197,7 @@ namespace JumpRopeGame
 		{
 			if (Input.GetMouseButtonDown(0))
 			{
-				Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+				Ray ray = _mainCam.ScreenPointToRay(Input.mousePosition);
 				if (IsKeyDownButtonJump(ray))
 				{
                     _leftCharacter.StartJump();

@@ -8,18 +8,20 @@ namespace Effect
     {
         ParticleSystem _efftectParticle;
         Transform _selftTransform;
+		Camera _mainCam;
 
         void Start()
         {
             _efftectParticle = GetComponent<ParticleSystem>();
             _selftTransform = GetComponent<Transform>();
-        }
+			_mainCam = Camera.main;
+		}
 
         void Update()
         {
             if (Input.GetMouseButtonUp(0) == true) // mobile로 변경시 touch 이벤트 추가.
             {
-                _selftTransform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                _selftTransform.position = _mainCam.ScreenToWorldPoint(Input.mousePosition);
 
                 if (_efftectParticle != null)
                 {

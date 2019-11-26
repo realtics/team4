@@ -18,6 +18,7 @@ namespace BasketBallGame
         float _powerSize;
         float _arrowScaleOffset;
         float _powerSizeOffset;
+		Camera _mainCam;
 
         void Start()
         {
@@ -26,7 +27,9 @@ namespace BasketBallGame
             _powerSize = 0.0f;
             _powerSizeOffset = 0.1f;
             _arrowScaleOffset = 5.0f;
-        }
+			_mainCam = Camera.main;
+
+		}
 
         void Update()
         {
@@ -40,7 +43,7 @@ namespace BasketBallGame
         {
             if (Input.GetMouseButtonDown(0))
             {
-                if (_ownCollider.OverlapPoint(Camera.main.ScreenToWorldPoint(Input.mousePosition)))
+                if (_ownCollider.OverlapPoint(_mainCam.ScreenToWorldPoint(Input.mousePosition)))
                 {
                     directionArrow.transform.position = new Vector2(transform.position.x + 0.3f, transform.position.y + 0.5f);
                     _isTargetting = true;
@@ -48,7 +51,7 @@ namespace BasketBallGame
             }
             else if (Input.GetMouseButton(0) && _isTargetting)
             {
-                Vector2 target = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                Vector2 target = _mainCam.ScreenToWorldPoint(Input.mousePosition);
                 float angle = Mathf.Atan2(transform.position.y - target.y, transform.position.x - target.x);
 
 
