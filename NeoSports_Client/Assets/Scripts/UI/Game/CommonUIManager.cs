@@ -166,9 +166,11 @@ public class CommonUIManager : Singleton<CommonUIManager>
 
 	void SceneChangeToMainMenu()
 	{
-        //To DO : 멀티모드, currentScene 추가
-        //멀티가 아니면 SendRquest 호출 x
-        NetworkManager.Instance.SendRequestExitRoom(GAME_INDEX.ROPE_PULL,false);
+		if(SceneManager.GetActiveScene().name == SceneName.NetworkRopeGameSceneName)
+			NetworkManager.Instance.SendRequestExitRoom(GAME_INDEX.ROPE_PULL, false);
+		else if (SceneManager.GetActiveScene().name == SceneName.NetworkBasketBallSceneName)
+			NetworkManager.Instance.SendRequestExitRoom(GAME_INDEX.BASKET_BALL, false);
+
 		SceneManager.LoadScene(SceneName.MenuSceneName);
 	}
 

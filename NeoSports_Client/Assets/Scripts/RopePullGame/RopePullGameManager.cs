@@ -53,7 +53,10 @@ namespace RopePullGame
 
 			CachingValue();
 			InitNetwork();
-			CreateCharacters();
+			if (!IsSingleGame())
+			{
+				CreateMultiCharacters();
+			}
 			_playTime = 0.0f;
 		}
 
@@ -230,7 +233,7 @@ namespace RopePullGame
 
 		}
 
-		public void CreateCharacters()
+		public void CreateMultiCharacters()
 		{
 			ppiYakCharacter.GetComponent<SpriteRenderer>().sortingOrder = 15;
 			turkeyJellyCharacter.GetComponent<SpriteRenderer>().sortingOrder = 15;
@@ -242,6 +245,11 @@ namespace RopePullGame
 
 			SelectInstantCharacter(superCharIndex, _leftPlayer);
 			SelectInstantCharacter(CharIndex, _rightPlayer);
+		}
+
+		bool IsSingleGame()
+		{
+			return NetworkManager.Instance.IsSinglePlay();
 		}
 	}
 }

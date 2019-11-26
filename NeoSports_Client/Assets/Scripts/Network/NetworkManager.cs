@@ -28,6 +28,7 @@ public class NetworkManager : Singleton<NetworkManager>
 	const string IpAdress = "192.168.1.119";
 	const string LoopbackAdress = "127.0.0.1";
 	const int PortNumber = 31400;
+	const int TimeOutCode = 100060;
 
 	public bool isLoopBack;
 	[HideInInspector]
@@ -36,7 +37,6 @@ public class NetworkManager : Singleton<NetworkManager>
 	public CHAR_INDEX superCharIndex;
 	[HideInInspector]
 	public CHAR_INDEX charIndex;
-
 
 	Socket _sock = null;
 	AsyncCallback _receiveHandler;
@@ -61,6 +61,15 @@ public class NetworkManager : Singleton<NetworkManager>
 		PACKET_REQ_IN packet = new PACKET_REQ_IN { header = headerPacket, name = playerNickName };
 
 		SendToServerPacket(packet);
+	}
+
+	public bool IsSinglePlay()
+	{
+		if (SceneManager.GetActiveScene().name == SceneName.NetworkBasketBallSceneName)
+			return false;
+		else if (SceneManager.GetActiveScene().name == SceneName.NetworkRopeGameSceneName)
+			return false;
+		return true;
 	}
 
 	public void SendRequsetRoom(GAME_INDEX roomIndex)
@@ -163,7 +172,7 @@ public class NetworkManager : Singleton<NetworkManager>
 				else
 				{
 					_sock.Close();
-					throw new SocketException(100060);
+					throw new SocketException(TimeOutCode);
 				}
 			}
 			else
@@ -177,7 +186,7 @@ public class NetworkManager : Singleton<NetworkManager>
 				else
 				{
 					_sock.Close();
-					throw new SocketException(100060);
+					throw new SocketException(TimeOutCode);
 				}
 			}
 
@@ -196,6 +205,8 @@ public class NetworkManager : Singleton<NetworkManager>
 			Debug.Log(se.Message);
 			PopupManager.PopupData a;
 			a.text = se.Message;
+			if (se.ErrorCode == TimeOutCode)
+				a.text = "TimeOut";
 			a.okFlag = true;
 			a.callBack = ExitProgram;
 			PopupManager.Instance.ShowPopup(a);
