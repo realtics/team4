@@ -1,6 +1,7 @@
 #pragma once
 
 #include<mysql.h>
+#include "Protocol.h"
 
 class DB
 {
@@ -10,7 +11,7 @@ public:
 
 	void SelectQuery();
 	void Insert();
-	void Update();
+	void Update(int sessionID, GAME_INDEX gameIndex, int addScore);
 
 private:
 	MYSQL		_conn;

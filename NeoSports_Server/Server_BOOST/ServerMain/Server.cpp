@@ -7,6 +7,8 @@ Server::Server(boost::asio::io_context& io_service) : _acceptor(io_service,
 {
 	_isAccepting = false;
 	db.SelectQuery();
+	db.Update(-1, GAME_INDEX::ROPE_PULL, 1);
+	db.SelectQuery();
 }
 
 Server::~Server()
@@ -128,7 +130,7 @@ void Server::ProcessPacket(const int sessionID, const char* data)
 		PACKET_REQ_RES_ROPE_PULL_GAME* packet = (PACKET_REQ_RES_ROPE_PULL_GAME*)data;
 		int roomNum = roomMG.GetRoomNum(sessionID);
 		roomMG._roomVec[roomNum]->gameMG.SetRopePos(packet->ropePos);
-		int ropePos = roomMG._roomVec[roomNum]->gameMG.GetRopePos();
+		float ropePos = roomMG._roomVec[roomNum]->gameMG.GetRopePos();
 
 		PACKET_REQ_RES_ROPE_PULL_GAME resPacket;;
 		resPacket.header.packetIndex = PACKET_INDEX::REQ_RES_ROPE_PULL_GAME;
@@ -270,7 +272,7 @@ std::string Server::_SerializationJson(int packetIndex, const char* packet)
 		ptSendHeader.put<int>("packetSize", sizeof(PACKET_START_GAME));
 		ptSend.add_child("header", ptSendHeader);
 
-		ptSend.put<int>("ropePos", ropePullPacket->ropePos);
+		ptSend.put<float>("ropePos", ropePullPacket->ropePos);
 
 		std::string recvTemp;
 		std::ostringstream os(recvTemp);

@@ -85,7 +85,7 @@ struct PACKET_START_GAME
 struct PACKET_REQ_RES_ROPE_PULL_GAME
 {
 	PACKET_HEADER header;
-	int ropePos;
+	float ropePos;
 };
 
 //멀티게임을 요청한 클라에게 보내는 패킷

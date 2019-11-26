@@ -1,6 +1,6 @@
 #include "DB.h"
 #include <iostream>
-
+#include <boost/lexical_cast.hpp>
 using namespace std;
 
 DB::DB()
@@ -73,3 +73,40 @@ void DB::Insert()
 	std::string query = "INSERT INTO";
 
 }
+
+void DB::Update(int sessionID, GAME_INDEX gameIndex, int addScore)
+{
+	switch (gameIndex)
+	{
+	case EMPTY_GAME:
+		break;
+
+	case ROPE_PULL:
+	{
+		std::string query = "SELECT winRecord FROM game WHERE clientNum = '";
+		std::string temp = boost::lexical_cast<std::string>(sessionID);
+		query += temp;
+		query += "'";
+		std::cout << query << std::endl;
+
+		int curScored = mysql_query(&_conn, query.c_str());
+		std::cout << curScored << std::endl;
+
+		std::string updateQuery = "UPDATE game SET winRecord = '";
+		updateQuery += (curScored + addScore);
+		updateQuery += "' WHERE clientNum = '";
+		updateQuery += temp;
+		updateQuery += "'";
+		std::cout << updateQuery << std::endl;
+
+		break;
+	}
+	case ROPE_JUMP:
+		break;
+	case BASKET_BALL:
+		break;
+	default:
+		break;
+	}
+}
+
