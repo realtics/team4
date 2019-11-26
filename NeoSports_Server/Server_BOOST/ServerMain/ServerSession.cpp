@@ -51,7 +51,7 @@ void  Session::_ReceiveHandle(const boost::system::error_code& error, size_t byt
 	}
 	else
 	{
-		LockGuard recvLockGuard(_recvLock);
+		//LockGuard recvLockGuard(_recvLock);
 		_DeSerializationJson(_receiveBuffer.data());
 		int packetData = _packetBufferMark + bytesTransferred;
 		int readData = 0;
@@ -189,6 +189,7 @@ void Session::_DeSerializationJson(char* jsonStr)
 		packet.header.packetIndex = headerIndex;
 		packet.header.packetSize = children.get<int>("packetSize");
 		packet.gameIndex = (GAME_INDEX)ptRecv.get<int>("gameIndex");
+		packet.isEndGame = ptRecv.get<bool>("isEndGame");
 		memcpy(&_packetBuffer[_packetBufferMark], (char*)&packet, sizeof(packet));
 		break;
 	}

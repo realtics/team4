@@ -110,8 +110,10 @@ void Server::ProcessPacket(const int sessionID, const char* data)
 		PACKET_REQ_INIT_ROOM* packet = (PACKET_REQ_INIT_ROOM*)data;
 
 		int roomNum = roomMG.GetRoomNum(sessionID);
+		if (roomNum == FAIL_ROOM_SERCH)
+			break;
 
-		if (!(packet->isEndGame))
+		if (packet->isEndGame)
 		{
 			std::cout << roomNum << "번방 " << packet->gameIndex << "게임 종료. 승자 "
 				<< sessionID << std::endl;
@@ -126,15 +128,18 @@ void Server::ProcessPacket(const int sessionID, const char* data)
 	case PACKET_INDEX::REQ_RES_ROPE_PULL_GAME:
 	{
 		LockGuard ropeLockGuard(_ropePullLock);
-
-		PACKET_REQ_RES_ROPE_PULL_GAME* packet = (PACKET_REQ_RES_ROPE_PULL_GAME*)data;
 		int roomNum = roomMG.GetRoomNum(sessionID);
-		if (roomNum == FAIL_ROOM_SERCH)
+
+		//클라에서 x버튼이나 게임중 메뉴의 yes,no버튼 클릭할때도
+		//게임로직 패킷이 보내져서 예외처리 해주는중
+		if (roomNum == FAIL_ROOM_SERCH ||
+			roomMG._roomVec[roomNum]->superSessionID == GAME_INDEX::EMPTY_GAME )
 		{
-			std::cout << "초기화가 완료된 방입니다." << std::endl;
+			std::cout << "(이미 초기화된 방)." << std::endl;
 			break;
 		}
 
+		PACKET_REQ_RES_ROPE_PULL_GAME* packet = (PACKET_REQ_RES_ROPE_PULL_GAME*)data;
 		roomMG._roomVec[roomNum]->gameMG.SetRopePos(packet->ropePos);
 		float ropePos = roomMG._roomVec[roomNum]->gameMG.GetRopePos();
 

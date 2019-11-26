@@ -10,7 +10,7 @@ DB::DB()
 
 DB::~DB()
 {
-
+	mysql_close(&_conn);
 }
 
 void DB::_Init()
@@ -30,7 +30,7 @@ void DB::_Init()
 
 	if (mysql_select_db(&_conn, "neosports"))
 	{
-		cout << "mysql_select_db Error : " << mysql_errno(&_conn) 
+		cout << "mysql_select_db Error : " << mysql_errno(&_conn)
 			<< " : " << mysql_error(&_conn) << endl;
 	}
 }
@@ -64,18 +64,19 @@ void DB::SelectQuery()
 				cout << "Error" << endl;
 			}
 		}
-		mysql_close(&_conn);
+
 	}
 }
 
 void DB::Insert()
 {
 	std::string query = "INSERT INTO";
-
 }
 
 void DB::Update(int sessionID, GAME_INDEX gameIndex, int addScore)
 {
+	int numCol = mysql_num_fields(_pSqlRes); //필드수 출력
+	
 	switch (gameIndex)
 	{
 	case EMPTY_GAME:
@@ -83,21 +84,15 @@ void DB::Update(int sessionID, GAME_INDEX gameIndex, int addScore)
 
 	case ROPE_PULL:
 	{
-		std::string query = "SELECT winRecord FROM game WHERE clientNum = '";
-		std::string temp = boost::lexical_cast<std::string>(sessionID);
-		query += temp;
-		query += "'";
-		std::cout << query << std::endl;
-
-		int curScored = mysql_query(&_conn, query.c_str());
-		std::cout << curScored << std::endl;
-
-		std::string updateQuery = "UPDATE game SET winRecord = '";
-		updateQuery += (curScored + addScore);
-		updateQuery += "' WHERE clientNum = '";
-		updateQuery += temp;
-		updateQuery += "'";
-		std::cout << updateQuery << std::endl;
+		while ((_sqlRow = mysql_fetch_row(_pSqlRes)) != nullptr)
+		{
+			for (int i = 0; i < numCol; i++)
+			{
+				cout << _sqlRow[i] << " ";
+				cout << "update in ";
+				cout << endl;
+			}
+		}
 
 		break;
 	}

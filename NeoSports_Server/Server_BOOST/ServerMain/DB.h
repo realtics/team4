@@ -18,7 +18,6 @@ private:
 	MYSQL_RES* _pSqlRes;
 	MYSQL_ROW	_sqlRow;
 
-
 	void _Init();
 };
 
