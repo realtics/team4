@@ -28,7 +28,7 @@ public enum CHAR_INDEX
 public enum PACKET_INDEX
 {
     REQ_IN = 200,
-    MULTI_ROOM, //클라에서 같이하기 눌렀을때 방을 만들거나 방이있으면 접속함
+    REQ_MULTI_ROOM, //클라에서 같이하기 눌렀을때 방을 만들거나 방이있으면 접속함
     START_GAME,
     REQ_INIT_ROOM,
     ROOM_INFO,
@@ -63,6 +63,20 @@ public struct PACKET_REQ_RES_ROPE_PULL_GAME
 	public float ropePos;
 };
 
+public struct PACKET_REQ_MULTI_ROOM
+{
+	public PACKET_HEADER header;
+	public GAME_INDEX gameIndex;
+	public CHAR_INDEX charIndex;
+
+	public PACKET_REQ_MULTI_ROOM(PACKET_HEADER packetHeader, GAME_INDEX _gameIndex, CHAR_INDEX _charIndex)
+	{
+		header = packetHeader;
+		gameIndex = _gameIndex;
+		charIndex = _charIndex;
+	}
+
+};
 #endregion
 
 public struct HeaderPacket
@@ -87,21 +101,6 @@ public struct PACKET_START_GAME
     public PACKET_HEADER header;
     public CHAR_INDEX superCharID; //방장의 캐릭터
     public CHAR_INDEX charID;
-};
-
-public struct PACKET_MULTI_ROOM
-{
-    public PACKET_HEADER header;
-    public GAME_INDEX gameIndex;
-    public CHAR_INDEX charIndex;
-
-    public PACKET_MULTI_ROOM(PACKET_HEADER packetHeader, GAME_INDEX _gameIndex, CHAR_INDEX _charIndex)
-    {
-        header = packetHeader;
-        gameIndex = _gameIndex;
-        charIndex = _charIndex;
-    }
-
 };
 
 public struct PACKET_ROOM_INFO

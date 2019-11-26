@@ -78,8 +78,8 @@ public class NetworkManager : Singleton<NetworkManager>
 		if (_sock == null)
 			Connect();
 
-		PACKET_HEADER headerPacket = MakeHeaderPacket(PACKET_INDEX.MULTI_ROOM);
-		PACKET_MULTI_ROOM packet = new PACKET_MULTI_ROOM
+		PACKET_HEADER headerPacket = MakeHeaderPacket(PACKET_INDEX.REQ_MULTI_ROOM);
+		PACKET_REQ_MULTI_ROOM packet = new PACKET_REQ_MULTI_ROOM
 		{
 			header = headerPacket,
 			gameIndex = roomIndex,
@@ -133,9 +133,9 @@ public class NetworkManager : Singleton<NetworkManager>
 					headerPacket = new PACKET_HEADER(packetIndex, packetSize);
 					return headerPacket;
 				}
-			case PACKET_INDEX.MULTI_ROOM:
+			case PACKET_INDEX.REQ_MULTI_ROOM:
 				{
-					int packetSize = Marshal.SizeOf<PACKET_MULTI_ROOM>();
+					int packetSize = Marshal.SizeOf<PACKET_REQ_MULTI_ROOM>();
 					PACKET_HEADER headerPacket;
 					headerPacket = new PACKET_HEADER(packetIndex, packetSize);
 					return headerPacket;

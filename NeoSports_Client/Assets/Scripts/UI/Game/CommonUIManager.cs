@@ -166,12 +166,13 @@ public class CommonUIManager : Singleton<CommonUIManager>
 
 	void SceneChangeToMainMenu()
 	{
-		if(SceneManager.GetActiveScene().name == SceneName.NetworkRopeGameSceneName)
+		SceneManager.LoadScene(SceneName.MenuSceneName);
+
+		if (SceneManager.GetActiveScene().name == SceneName.NetworkRopeGameSceneName)
 			NetworkManager.Instance.SendRequestExitRoom(GAME_INDEX.ROPE_PULL, false);
 		else if (SceneManager.GetActiveScene().name == SceneName.NetworkBasketBallSceneName)
 			NetworkManager.Instance.SendRequestExitRoom(GAME_INDEX.BASKET_BALL, false);
 
-		SceneManager.LoadScene(SceneName.MenuSceneName);
 	}
 
 }
