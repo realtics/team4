@@ -1,0 +1,32 @@
+[ 
+   { 
+      "type":0,
+      "name":"연못",
+      "price":300,
+      "sprite":"pond_0"
+   },
+   { 
+      "type":1,
+      "name":"늪",
+      "price":200,
+      "sprite":"pond_1"
+   },
+   { 
+      "type":2,
+      "name":"돌 1",
+      "price":100,
+      "sprite":"rock_0"
+   },
+   { 
+      "type":3,
+      "name":"돌 2",
+      "price":110,
+      "sprite":"rock_1"
+   },
+   { 
+      "type":4,
+      "name":"돌 3",
+      "price":120,
+      "sprite":"rock_2"
+   }
+]
