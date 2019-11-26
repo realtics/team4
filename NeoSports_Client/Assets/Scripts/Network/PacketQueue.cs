@@ -64,7 +64,12 @@ public class PacketQueue : Singleton<PacketQueue>
 					Debug.Log(packetdata.roomInfo);
 					if (packetdata.roomInfo == ROOM_INDEX.MAKE_ROOM)
 					{
-						superCharIndex = (CHAR_INDEX)InventoryManager.instance.CurrentCharacter.Type; 
+						superCharIndex = (CHAR_INDEX)InventoryManager.instance.CurrentCharacter.Type;
+						NetworkManager.Instance.isOwnHost = true;
+					}
+					else
+					{
+						NetworkManager.Instance.isOwnHost = false;
 					}
 					SceneManager.LoadScene(SceneName.NetworkRopeGameSceneName);
 					
