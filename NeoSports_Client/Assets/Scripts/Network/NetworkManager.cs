@@ -205,7 +205,7 @@ public class NetworkManager : Singleton<NetworkManager>
 			//Async 추가 작성 
 			{
 				_receiveHandler = new AsyncCallback(HandleDataRecive);
-				//_sock.NoDelay = true; //nagle off
+				_sock.NoDelay = true; //nagle off
 				AsyncObject ao = new AsyncObject(128);
 				ao.workingSocket = _sock;
 				_sock.BeginReceive(ao.buffer, 0, ao.buffer.Length,

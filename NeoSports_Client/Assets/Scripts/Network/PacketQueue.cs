@@ -58,12 +58,13 @@ public class PacketQueue : Singleton<PacketQueue>
 					{
 						superCharIndex = (CHAR_INDEX)InventoryManager.instance.CurrentCharacter.Type;
 						NetworkManager.Instance.isOwnHost = true;
+						SceneManager.LoadScene(SceneName.WaitGameSceneName);
 					}
 					else
 					{
 						NetworkManager.Instance.isOwnHost = false;
 					}
-					SceneManager.LoadScene(SceneName.NetworkRopeGameSceneName);
+					
 					
 					break;
 				}
