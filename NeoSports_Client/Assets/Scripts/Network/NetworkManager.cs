@@ -97,8 +97,6 @@ public class NetworkManager : Singleton<NetworkManager>
 			header = headerPacket,
 			ropePos = pullPower,
 		};
-		Debug.Log("power" + pullPower);
-
 		SendToServerPacket(packet);
 	}
 
@@ -220,7 +218,7 @@ public class NetworkManager : Singleton<NetworkManager>
 			PopupManager.PopupData a;
 			a.text = se.Message;
 			if (se.ErrorCode == TimeOutCode)
-				a.text = "TimeOut";
+				a.text = "Server is not running";
 			a.okFlag = true;
 			a.callBack = ExitProgram;
 			PopupManager.Instance.ShowPopup(a);

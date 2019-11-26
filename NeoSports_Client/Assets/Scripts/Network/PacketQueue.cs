@@ -51,17 +51,9 @@ public class PacketQueue : Singleton<PacketQueue>
 	{
 		switch (pakcetIndex)
 		{
-			case (int)PACKET_INDEX.MULTI_ROOM:
-				{
-					var packetdata = JsonConvert.DeserializeObject<PACKET_MULTI_ROOM>(recvData);
-					Debug.Log(packetdata.gameIndex);
-					Debug.Log(packetdata.charIndex);
-					break;
-				}
 			case (int)PACKET_INDEX.ROOM_INFO:
 				{
 					var packetdata = JsonConvert.DeserializeObject<PACKET_ROOM_INFO>(recvData);
-					Debug.Log(packetdata.roomInfo);
 					if (packetdata.roomInfo == ROOM_INDEX.MAKE_ROOM)
 					{
 						superCharIndex = (CHAR_INDEX)InventoryManager.instance.CurrentCharacter.Type;
@@ -78,7 +70,6 @@ public class PacketQueue : Singleton<PacketQueue>
 			case (int)PACKET_INDEX.REQ_IN:
 				{
 					var packetdata = JsonConvert.DeserializeObject<PACKET_REQ_IN>(recvData);
-					Debug.Log(packetdata.name);
 					break;
 				}
 			case (int)PACKET_INDEX.START_GAME:
@@ -96,8 +87,6 @@ public class PacketQueue : Singleton<PacketQueue>
 				{
 					var packetdata = JsonConvert.DeserializeObject<PACKET_REQ_RES_ROPE_PULL_GAME>(recvData);
 					RopePullGame.RopePullMoveRopeWithKey.Instance.UpdateNetworkRopePostion(packetdata.ropePos);
-					Debug.Log(packetdata.ropePos);
-
 					break;
 				}
 			default:
