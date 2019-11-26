@@ -33,8 +33,11 @@ public enum PACKET_INDEX
     REQ_INIT_ROOM,
     ROOM_INFO,
 
-    //클라와 통신하고 있지 않은 인덱스들 (채팅용)
-    RES_IN,
+	//줄다리기용 패킷
+	REQ_RES_ROPE_PULL_GAME,
+
+	//클라와 통신하고 있지 않은 인덱스들 (채팅용)
+	RES_IN,
     REQ_CHAT,
     NOTICE_CHAT,
     //
@@ -52,6 +55,14 @@ public struct PACKET_REQ_INIT_ROOM
     public GAME_INDEX gameIndex;
     public bool isEndGame;
 };
+
+//줄다리기 게임 데이터 패킷
+public struct PACKET_REQ_RES_ROPE_PULL_GAME
+{
+	public PACKET_HEADER header;
+	public float ropePos;
+};
+
 #endregion
 
 public struct HeaderPacket

@@ -10,7 +10,13 @@ namespace RopePullGame
         public float PullPower { get; set; }
         public float strength;
 
-        void Update()
+		bool _isSinglePlay;
+		void Start()
+		{
+			_isSinglePlay = NetworkManager.Instance.IsSinglePlay();
+		}
+
+		void Update()
         {
             UpdateInput();
         }
@@ -19,7 +25,14 @@ namespace RopePullGame
         {
             if (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonUp(0))
             {
-                PullPower += strength;
+				if (_isSinglePlay)
+				{
+					PullPower += strength;
+				}
+				else
+				{
+					NetworkManager.Instance.SendRequestRopePull(PullPower);
+				}
             }
         }
 

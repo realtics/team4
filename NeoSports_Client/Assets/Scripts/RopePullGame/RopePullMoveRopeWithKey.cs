@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace RopePullGame
 {
-    public class RopePullMoveRopeWithKey : MonoBehaviour
+    public class RopePullMoveRopeWithKey : Singleton<RopePullMoveRopeWithKey>
     {
         public bool IsStart { get; set; }
         float Speed { get; set; }
@@ -14,12 +14,15 @@ namespace RopePullGame
         public GameObject LeftPlayer;
         public GameObject RightPlayer;
 
+		bool isSinglePlay;
+
         void Start()
         {
             IsStart = false;
             Speed = 0.0f;
             powerSum = 0.0f;
             feverPower = 1.0f;
+			isSinglePlay = NetworkManager.instance.IsSinglePlay();
         }
 
         void Update()
@@ -48,7 +51,10 @@ namespace RopePullGame
             if (IsStart)
             {
                 GetPlayersPower();
-                UpdateRopePosition();
+				if (isSinglePlay)
+				{
+					UpdateRopePosition();
+				}
             }
             LeftPlayer.GetComponent<RopePullInputPlayerPower>().ResetPower();
             RightPlayer.GetComponent<RopePulllAIPlayerPower>().ResetPower();
@@ -63,6 +69,11 @@ namespace RopePullGame
         {
             transform.Translate(new Vector3(feverPower * powerSum * Time.deltaTime, 0f, 0f));
         }
+
+		public void UpdateNetworkRopePostion(float pullPower)
+		{
+			transform.Translate(new Vector3(pullPower * Time.deltaTime, 0f, 0f));
+		}
 
         void GetPlayersPower()
         {

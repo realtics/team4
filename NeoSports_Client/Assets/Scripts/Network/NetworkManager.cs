@@ -72,7 +72,7 @@ public class NetworkManager : Singleton<NetworkManager>
 		return true;
 	}
 
-	public void SendRequsetRoom(GAME_INDEX roomIndex)
+	public void SendRequestRoom(GAME_INDEX roomIndex)
 	{
 		if (_sock == null)
 			Connect();
@@ -83,6 +83,18 @@ public class NetworkManager : Singleton<NetworkManager>
 			header = headerPacket,
 			gameIndex = roomIndex,
 			charIndex = (CHAR_INDEX)InventoryManager.Instance.CurrentCharacter.Type//(int)CHAR_INDEX.CHICK 
+		};
+
+		SendToServerPacket(packet);
+	}
+
+	public void SendRequestRopePull(float pullPower)
+	{
+		PACKET_HEADER headerPacket = MakeHeaderPacket(PACKET_INDEX.REQ_RES_ROPE_PULL_GAME);
+		PACKET_REQ_RES_ROPE_PULL_GAME packet = new PACKET_REQ_RES_ROPE_PULL_GAME
+		{
+			header = headerPacket,
+			ropePos = pullPower,
 		};
 
 		SendToServerPacket(packet);
