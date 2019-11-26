@@ -97,6 +97,7 @@ public class NetworkManager : Singleton<NetworkManager>
 			header = headerPacket,
 			ropePos = pullPower,
 		};
+		Debug.Log("power" + pullPower);
 
 		SendToServerPacket(packet);
 	}

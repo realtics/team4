@@ -6,14 +6,16 @@ namespace RopePullGame
 {
     public class RopePullInputPlayerPower : MonoBehaviour
     {
-        [HideInInspector]
-        public float PullPower { get; set; }
+		public float PullPower;
         public float strength;
+
+		private bool _isOwnHost;
 
 		bool _isSinglePlay;
 		void Start()
 		{
 			_isSinglePlay = NetworkManager.Instance.IsSinglePlay();
+			_isOwnHost = NetworkManager.Instance.isOwnHost;
 		}
 
 		void Update()
@@ -31,7 +33,10 @@ namespace RopePullGame
 				}
 				else
 				{
-					NetworkManager.Instance.SendRequestRopePull(PullPower);
+					if(_isOwnHost)
+						NetworkManager.Instance.SendRequestRopePull(strength * -1);
+					else
+						NetworkManager.Instance.SendRequestRopePull(strength);
 				}
             }
         }

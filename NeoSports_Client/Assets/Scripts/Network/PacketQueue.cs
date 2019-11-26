@@ -91,7 +91,8 @@ public class PacketQueue : Singleton<PacketQueue>
 				{
 					var packetdata = JsonConvert.DeserializeObject<PACKET_REQ_RES_ROPE_PULL_GAME>(recvData);
 					RopePullGame.RopePullMoveRopeWithKey.Instance.UpdateNetworkRopePostion(packetdata.ropePos);
-					
+					Debug.Log(packetdata.ropePos);
+
 					break;
 				}
 			default:

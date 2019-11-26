@@ -2410,6 +2410,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2920d094068b5b4580a2250e621692f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PullPower: 10
   strength: 10
 --- !u!61 &692681186
 BoxCollider2D:
