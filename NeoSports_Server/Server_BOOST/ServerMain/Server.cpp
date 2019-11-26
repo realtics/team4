@@ -69,7 +69,7 @@ void Server::ProcessPacket(const int sessionID, const char* data)
 	}
 	break;
 
-	case PACKET_INDEX::MULTI_ROOM:
+	case PACKET_INDEX::REQ_MULTI_ROOM:
 	{
 		PACKET_REQ_MULTI_ROOM* packet = (PACKET_REQ_MULTI_ROOM*)data;
 
@@ -111,7 +111,7 @@ void Server::ProcessPacket(const int sessionID, const char* data)
 
 		int roomNum = roomMG.GetRoomNum(sessionID);
 
-		if (packet->isEndGame)
+		if (!(packet->isEndGame))
 		{
 			std::cout << roomNum << "번방 " << packet->gameIndex << "게임 종료. 승자 "
 				<< sessionID << std::endl;
@@ -129,6 +129,12 @@ void Server::ProcessPacket(const int sessionID, const char* data)
 
 		PACKET_REQ_RES_ROPE_PULL_GAME* packet = (PACKET_REQ_RES_ROPE_PULL_GAME*)data;
 		int roomNum = roomMG.GetRoomNum(sessionID);
+		if (roomNum == FAIL_ROOM_SERCH)
+		{
+			std::cout << "초기화가 완료된 방입니다." << std::endl;
+			break;
+		}
+
 		roomMG._roomVec[roomNum]->gameMG.SetRopePos(packet->ropePos);
 		float ropePos = roomMG._roomVec[roomNum]->gameMG.GetRopePos();
 

@@ -7,7 +7,7 @@ class GameMG
 private:
 	GAME_INDEX _curGame;
 
-	int _ropePos;
+	float _ropePos;
 
 public:
 	GameMG();
@@ -17,6 +17,6 @@ public:
 
 	void Init();
 
-	void SetRopePos(int ropePos);
+	void SetRopePos(float ropePos);
 	int GetRopePos();
 };

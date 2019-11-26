@@ -23,9 +23,9 @@ void GameMG::Init()
 	_ropePos = 0;
 }
 
-void GameMG::SetRopePos(int ropePos)
+void GameMG::SetRopePos(float ropePos)
 {
-	_ropePos = ropePos;
+	_ropePos += ropePos;
 }
 
 int GameMG::GetRopePos()

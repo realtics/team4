@@ -171,7 +171,7 @@ void Session::_DeSerializationJson(char* jsonStr)
 		break;
 	}
 
-	case PACKET_INDEX::MULTI_ROOM:
+	case PACKET_INDEX::REQ_MULTI_ROOM:
 	{
 		PACKET_REQ_MULTI_ROOM packet;
 		packet.header.packetIndex = headerIndex;
@@ -198,7 +198,7 @@ void Session::_DeSerializationJson(char* jsonStr)
 		PACKET_REQ_RES_ROPE_PULL_GAME packet;
 		packet.header.packetIndex = headerIndex;
 		packet.header.packetSize = children.get<int>("packetSize");
-		packet.ropePos = ptRecv.get<int>("ropePos");
+		packet.ropePos = ptRecv.get<float>("ropePos");
 		memcpy(&_packetBuffer[_packetBufferMark], (char*)& packet, sizeof(packet));
 		break;
 	}

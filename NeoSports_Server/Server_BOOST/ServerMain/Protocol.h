@@ -38,7 +38,7 @@ enum PACKET_INDEX
 {
 	REQ_IN = 200,
 
-	MULTI_ROOM, //클라에서 같이하기 눌렀을때 방을 만들거나 방이있으면 접속함
+	REQ_MULTI_ROOM, //클라에서 같이하기 눌렀을때 방을 만들거나 방이있으면 접속함
 	START_GAME,
 	REQ_INIT_ROOM,
 	ROOM_INFO,
