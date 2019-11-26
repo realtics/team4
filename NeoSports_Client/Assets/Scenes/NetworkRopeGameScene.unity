@@ -2411,7 +2411,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PullPower: 10
-  strength: 0.2
+  strength: 2
 --- !u!61 &692681186
 BoxCollider2D:
   m_ObjectHideFlags: 0
