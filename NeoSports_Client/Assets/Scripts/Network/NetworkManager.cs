@@ -48,8 +48,9 @@ public class NetworkManager : Singleton<NetworkManager>
 			Destroy(gameObject);
 			return;
 		}
-		isOwnHost = false;
+		
 		instance = this;
+		isOwnHost = false;
 		DontDestroyOnLoad(this);
 	}
 
