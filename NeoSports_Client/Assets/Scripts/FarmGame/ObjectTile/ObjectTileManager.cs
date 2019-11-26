@@ -6,6 +6,7 @@ using System.Drawing;
 public class ObjectTileManager : Singleton<ObjectTileManager>
 {
 	public GameObject prefRoadTile;
+	public GameObject prefProductTile;
 	public GameObject objectTileGroup;
 
 	Dictionary<Point, ObjectTile> objectTileDic;
@@ -20,6 +21,7 @@ public class ObjectTileManager : Singleton<ObjectTileManager>
 		InitRoadTile();
 	}
 
+	#region Road Tile
 	void InitRoadTile()
 	{
 		Point pt;
@@ -58,5 +60,28 @@ public class ObjectTileManager : Singleton<ObjectTileManager>
 
 		objectTileDic.Add(pt, script);
 	}
+	#endregion
+
+	#region Product Tile
+
+	public void PlantProduct(Point pt, EProduct type)
+	{
+		GameObject tileObj = Instantiate(prefProductTile, objectTileGroup.transform);
+		ProductTile script = tileObj.GetComponent<ProductTile>();
+		script.PlantProduct(pt, type);
+
+		objectTileDic.Add(pt, script);
+	}
+
+	public void LoadProduct(ProductTile.LoadData data)
+	{
+		GameObject tileObj = Instantiate(prefProductTile, objectTileGroup.transform);
+		ProductTile script = tileObj.GetComponent<ProductTile>();
+		script.LoadDataProduct(data);
+
+		objectTileDic.Add(data.point, script);
+	}
+
+	#endregion
 
 }
