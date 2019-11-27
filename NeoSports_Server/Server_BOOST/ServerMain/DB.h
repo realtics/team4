@@ -1,6 +1,7 @@
 #pragma once
 
-#include<mysql.h>
+#include <mysql.h>
+#include <iostream>
 #include "Lock.h"
 #include "Protocol.h"
 
@@ -11,9 +12,9 @@ public:
 	~DB();
 
 	void SelectQuery();
-	void Insert(int sessionID);
-	void Delete(int sessionID);
-	void Update(int sessionID, GAME_INDEX gameIndex, int addScore);
+	void Insert(std::string name);
+	void Delete(std::string name);
+	void Update(std::string name, GAME_INDEX gameIndex, int addScore);
 
 private:
 	Lock _upDateLock;
