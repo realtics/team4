@@ -10,18 +10,33 @@ public class WaitSceneManager : Singleton<WaitSceneManager>
 	//public
 	public float characterSpeed;
 
-	GameObject _Character;
+	GameObject _character;
+	SpriteRenderer _charRender;
 	Camera _mainCam;
 	Vector2 _targetPos;
 
 	void Awake()
 	{
-		_Character = null;
+		_character = null;
 		_mainCam = Camera.main;
 		if (InventoryManager.Instance != null)
 			SelectInstantCharacter(InventoryManager.Instance.CurrentCharacter.Type);
 		else
 			SelectInstantCharacter(CharacterInfo.EType.PpiYaGi);
+
+		_charRender = _character.GetComponentInChildren<SpriteRenderer>();
+	}
+
+	void Update()
+	{
+		if (Input.GetMouseButtonUp(0) == true) // mobile로 변경시 touch 이벤트 추가.
+		{
+			DecideTargetPos();
+		}
+		if ((Vector2)_character.transform.position != _targetPos)
+		{
+			_character.transform.position = Vector2.MoveTowards(_character.transform.position, _targetPos, characterSpeed * Time.deltaTime);
+		}
 	}
 
 	void SelectInstantCharacter(CharacterInfo.EType charType)
@@ -30,14 +45,14 @@ public class WaitSceneManager : Singleton<WaitSceneManager>
 		{
 			case CharacterInfo.EType.PpiYaGi:
 				{
-					_Character = new GameObject();
-					Instantiate(ppiYakCharacter, _Character.transform);
+					_character = new GameObject();
+					Instantiate(ppiYakCharacter, _character.transform);
 					break;
 				}
 			case CharacterInfo.EType.TurkeyJelly:
 				{
-					_Character = new GameObject();
-					_Character = Instantiate(turkeyJellyCharacter, _Character.transform);
+					_character = new GameObject();
+					_character = Instantiate(turkeyJellyCharacter, _character.transform);
 					break;
 				}
 			default:
@@ -48,21 +63,16 @@ public class WaitSceneManager : Singleton<WaitSceneManager>
 
 	}
 
-	void Update()
-	{
-		if (Input.GetMouseButtonUp(0) == true) // mobile로 변경시 touch 이벤트 추가.
-		{
-			DecideTargetPos();
-		}
-		if ((Vector2)_Character.transform.position != _targetPos)
-		{
-			_Character.transform.position = Vector2.MoveTowards(_Character.transform.position, _targetPos, characterSpeed * Time.deltaTime);
-		}
-	}
-
 	void DecideTargetPos()
 	{
-		_targetPos =  (Vector2)_mainCam.ScreenToWorldPoint(Input.mousePosition);
+		_targetPos = (Vector2)_mainCam.ScreenToWorldPoint(Input.mousePosition);
+
+		#region DecideDirection
+		if (_character.transform.position.x < _targetPos.x)
+			_charRender.flipX = false;
+		else
+			_charRender.flipX = true;
+		#endregion
 	}
 
 }
