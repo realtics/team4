@@ -80,8 +80,8 @@ struct PACKET_START_GAME
 	CHAR_INDEX superCharID; //방장의 캐릭터
 	CHAR_INDEX charID;
 
-	std::string superName;
-	std::string name;
+	char superName[12];
+	char name[12];
 };
 
 //줄다리기 게임 데이터 패킷

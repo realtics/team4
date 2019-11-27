@@ -89,8 +89,8 @@ void Server::ProcessPacket(const int sessionID, const char* data)
 			startPacket.header.packetSize = sizeof(PACKET_START_GAME);
 			startPacket.superCharID = (CHAR_INDEX)roomMG.GetRoomChar(roomNum, 0);
 			startPacket.charID = (CHAR_INDEX)roomMG.GetRoomChar(roomNum, 1);
-			startPacket.superName = _sessionVec[superSessionIdTemp]->GetName();
-			startPacket.name = _sessionVec[sessionIdTemp]->GetName();
+			strcpy(startPacket.superName, _sessionVec[superSessionIdTemp]->GetName());
+			strcpy(startPacket.name, _sessionVec[sessionIdTemp]->GetName());
 
 			std::string aa = _SerializationJson(PACKET_INDEX::START_GAME, (const char*)&startPacket);
 
@@ -132,7 +132,7 @@ void Server::ProcessPacket(const int sessionID, const char* data)
 		//클라에서 x버튼이나 게임중 메뉴의 yes,no버튼 클릭할때도
 		//게임로직 패킷이 보내져서 예외처리 해주는중
 		if (roomNum == FAIL_ROOM_SERCH ||
-			roomMG.roomVec[roomNum]->superSessionID == GAME_INDEX::EMPTY_GAME )
+			roomMG.roomVec[roomNum]->superSessionID == GAME_INDEX::EMPTY_GAME)
 		{
 			std::cout << "(이미 초기화된 방)." << std::endl;
 			break;
@@ -227,6 +227,7 @@ std::string Server::_SerializationJson(int packetIndex, const char* packet)
 {
 	std::string sendStr;
 
+
 	switch (packetIndex)
 	{
 	case PACKET_INDEX::ROOM_INFO:
@@ -263,8 +264,8 @@ std::string Server::_SerializationJson(int packetIndex, const char* packet)
 		ptSend.put<int>("superCharID", (CHAR_INDEX)startGamePacket->superCharID);
 		ptSend.put<int>("charID", (CHAR_INDEX)startGamePacket->charID);
 
-		ptSend.put<std::string>("superName", startGamePacket->superName);
-		ptSend.put<std::string>("name", startGamePacket->name);
+		ptSend.put<char*>("superName", startGamePacket->superName);
+		ptSend.put<char*>("name", startGamePacket->name);
 
 		std::string recvTemp;
 		std::ostringstream os(recvTemp);
@@ -293,6 +294,7 @@ std::string Server::_SerializationJson(int packetIndex, const char* packet)
 		return sendStr;
 	}
 	break;
+
 
 	}
 }
