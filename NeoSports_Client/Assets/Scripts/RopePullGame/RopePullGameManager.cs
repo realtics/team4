@@ -190,7 +190,22 @@ namespace RopePullGame
 		public void NotifyWinner(Transform winner)
 		{
 			SetWinnerGame();
-			CommonUIManager.Instance.CreateWinnerNotice(rootCanvas, "승 캐릭터 이름");
+
+			if (winner.gameObject.CompareTag("LeftPlayer"))
+			{
+				if (NetworkManager.Instance.isOwnHost)
+				{
+					NetworkManager.Instance.SendRequestExitRoom(GAME_INDEX.ROPE_PULL, true);
+				}
+			}
+			else
+			{
+				if (!NetworkManager.Instance.isOwnHost)
+				{
+					NetworkManager.Instance.SendRequestExitRoom(GAME_INDEX.ROPE_PULL, true);
+				}
+			}
+			CommonUIManager.Instance.CreateWinnerNotice(rootCanvas,InventoryManager.Instance.PlayerNickName);
 		}
 
 		public void NotifyLoser(Transform loser)
