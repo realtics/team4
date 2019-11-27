@@ -86,7 +86,8 @@ void DB::Insert(int sessionID)
 
 void DB::Update(int sessionID, GAME_INDEX gameIndex, int addScore)
 {
-	//TODO : 업데이트 락가드
+	LockGuard upDateLockGuard(_upDateLock);
+
 	if (mysql_query(&_conn, "SELECT * FROM game") != 0)
 	{
 		std::cout << "DB Update mysql_query error" << std::endl;
