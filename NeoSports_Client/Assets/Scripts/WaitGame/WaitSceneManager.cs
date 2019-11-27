@@ -52,7 +52,7 @@ public class WaitSceneManager : Singleton<WaitSceneManager>
 			case CharacterInfo.EType.TurkeyJelly:
 				{
 					_character = new GameObject();
-					_character = Instantiate(turkeyJellyCharacter, _character.transform);
+					Instantiate(turkeyJellyCharacter, _character.transform);
 					break;
 				}
 			default:
