@@ -6,7 +6,6 @@ Server::Server(boost::asio::io_context& io_service) : _acceptor(io_service,
 	boost::asio::ip::tcp::endpoint(boost::asio::ip::tcp::v4(), PORT_NUMBER))
 {
 	_isAccepting = false;
-	//db.Delete("NULL");
 }
 
 Server::~Server()
@@ -90,6 +89,8 @@ void Server::ProcessPacket(const int sessionID, const char* data)
 			startPacket.header.packetSize = sizeof(PACKET_START_GAME);
 			startPacket.superCharID = (CHAR_INDEX)roomMG.GetRoomChar(roomNum, 0);
 			startPacket.charID = (CHAR_INDEX)roomMG.GetRoomChar(roomNum, 1);
+			startPacket.superName = _sessionVec[superSessionIdTemp]->GetName();
+			startPacket.name = _sessionVec[sessionIdTemp]->GetName();
 
 			std::string aa = _SerializationJson(PACKET_INDEX::START_GAME, (const char*)&startPacket);
 
@@ -116,12 +117,10 @@ void Server::ProcessPacket(const int sessionID, const char* data)
 		{
 			std::cout << roomNum << "번방 " << packet->gameIndex << "게임 종료. 승자 "
 				<< sessionID << std::endl;
-
-			//DB추가시 게임결과 저장 추가소스 위치
 			db.Update(_sessionVec[sessionID]->GetName(), packet->gameIndex, 1);
 		}
 
-		roomMG._roomVec[roomNum]->Init();
+		roomMG.roomVec[roomNum]->Init();
 	}
 	break;
 
@@ -133,15 +132,15 @@ void Server::ProcessPacket(const int sessionID, const char* data)
 		//클라에서 x버튼이나 게임중 메뉴의 yes,no버튼 클릭할때도
 		//게임로직 패킷이 보내져서 예외처리 해주는중
 		if (roomNum == FAIL_ROOM_SERCH ||
-			roomMG._roomVec[roomNum]->superSessionID == GAME_INDEX::EMPTY_GAME )
+			roomMG.roomVec[roomNum]->superSessionID == GAME_INDEX::EMPTY_GAME )
 		{
 			std::cout << "(이미 초기화된 방)." << std::endl;
 			break;
 		}
 
 		PACKET_REQ_RES_ROPE_PULL_GAME* packet = (PACKET_REQ_RES_ROPE_PULL_GAME*)data;
-		roomMG._roomVec[roomNum]->gameMG.SetRopePos(packet->ropePos);
-		float ropePos = roomMG._roomVec[roomNum]->gameMG.GetRopePos();
+		roomMG.roomVec[roomNum]->gameMG.SetRopePos(packet->ropePos);
+		float ropePos = roomMG.roomVec[roomNum]->gameMG.GetRopePos();
 
 		PACKET_REQ_RES_ROPE_PULL_GAME resPacket;;
 		resPacket.header.packetIndex = PACKET_INDEX::REQ_RES_ROPE_PULL_GAME;
@@ -242,7 +241,6 @@ std::string Server::_SerializationJson(int packetIndex, const char* packet)
 		ptSend.add_child("header", ptSendHeader);
 
 		ptSend.put<int>("roomInfo", (ROOM_HOST)roomInfoPacket->roomInfo);
-		//ptSend.put<int>("charInfo", roomInfoPacket->charInfo);
 
 		std::string recvTemp;
 		std::ostringstream os(recvTemp);
@@ -264,6 +262,9 @@ std::string Server::_SerializationJson(int packetIndex, const char* packet)
 
 		ptSend.put<int>("superCharID", (CHAR_INDEX)startGamePacket->superCharID);
 		ptSend.put<int>("charID", (CHAR_INDEX)startGamePacket->charID);
+
+		ptSend.put<std::string>("superName", startGamePacket->superName);
+		ptSend.put<std::string>("name", startGamePacket->name);
 
 		std::string recvTemp;
 		std::ostringstream os(recvTemp);

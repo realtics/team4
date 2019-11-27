@@ -4,20 +4,20 @@
 
 RoomMG::RoomMG()
 {
-	_roomVec.reserve(MAX_ROOM_COUNT);
+	roomVec.reserve(MAX_ROOM_COUNT);
 
 	for (int i = 0; i < MAX_ROOM_COUNT; i++)
 	{
 		ROOM* room = new ROOM();
 		room->Init();
-		_roomVec.push_back(room);
+		roomVec.push_back(room);
 	}
 }
 
 int RoomMG::SearchRoom(int gameIndex)
 {
 	int i = 0;
-	for (auto iter = _roomVec.begin(); iter != _roomVec.end(); iter++)
+	for (auto iter = roomVec.begin(); iter != roomVec.end(); iter++)
 	{
 		if ((*iter)->isGammingRoom == false && (*iter)->gameIndex == gameIndex)
 			return i;
@@ -26,7 +26,7 @@ int RoomMG::SearchRoom(int gameIndex)
 	}
 
 	i = 0;
-	for (auto iter = _roomVec.begin(); iter != _roomVec.end(); iter++)
+	for (auto iter = roomVec.begin(); iter != roomVec.end(); iter++)
 	{
 		if ((*iter)->isGammingRoom == false && (*iter)->gameIndex == ROOM_HOST::EMPTY_ROOM
 			&& (*iter)->superSessionID == ROOM_HOST::EMPTY_ROOM)
@@ -43,23 +43,23 @@ int RoomMG::MakeRoom(int gameIndex, int sessionID, int charIndex)
 	int roomNum = SearchRoom(gameIndex);
 	if ((roomNum != FAIL_ROOM_SERCH))
 	{
-		if (_roomVec[roomNum]->superSessionID == ROOM_HOST::EMPTY_ROOM)
+		if (roomVec[roomNum]->superSessionID == ROOM_HOST::EMPTY_ROOM)
 		{
-			_roomVec[roomNum]->gameIndex = gameIndex;
+			roomVec[roomNum]->gameIndex = gameIndex;
 			SetRoomChar(roomNum, charIndex);
-			_roomVec[roomNum]->superSessionID = sessionID;
+			roomVec[roomNum]->superSessionID = sessionID;
 			std::cout << sessionID << " 클라가 "
 				<< roomNum << " 번방에 " << gameIndex << " 게임 생성. " << std::endl;
 			return ROOM_HOST::MAKE_ROOM;
 		}
 
-		else if (_roomVec[roomNum]->superSessionID != ROOM_HOST::EMPTY_ROOM)
+		else if (roomVec[roomNum]->superSessionID != ROOM_HOST::EMPTY_ROOM)
 		{
 			SetRoomChar(roomNum, charIndex);
-			_roomVec[roomNum]->sessionID = sessionID;
+			roomVec[roomNum]->sessionID = sessionID;
 			std::cout << sessionID << " 클라가 "
 				<< roomNum << " 번방에 " << gameIndex << " 게임 참가. " << std::endl;
-			_roomVec[roomNum]->isGammingRoom = true;
+			roomVec[roomNum]->isGammingRoom = true;
 			std::cout << roomNum << "번방 " << gameIndex << "번 게임 시작" << std::endl;
 			return ROOM_HOST::ENTER_ROOM;
 		}
@@ -73,9 +73,9 @@ void RoomMG::SetRoomChar(int roomIndex, int charIndex)
 {
 	for (int i = 0; i < MAX_CHAR_IN_ROOM; i++)
 	{
-		if (_roomVec[roomIndex]->charIndex[i] == CHAR_INDEX::EMPTY_CHAR)
+		if (roomVec[roomIndex]->charIndex[i] == CHAR_INDEX::EMPTY_CHAR)
 		{
-			_roomVec[roomIndex]->charIndex[i] = charIndex;
+			roomVec[roomIndex]->charIndex[i] = charIndex;
 			return;
 		}
 	}
@@ -83,7 +83,7 @@ void RoomMG::SetRoomChar(int roomIndex, int charIndex)
 
 int RoomMG::GetRoomChar(int roomIndex, int playerIndex)
 {
-	return _roomVec[roomIndex]->charIndex[playerIndex];
+	return roomVec[roomIndex]->charIndex[playerIndex];
 }
 
 int RoomMG::GetRoomNum(int sessionID)
@@ -92,8 +92,8 @@ int RoomMG::GetRoomNum(int sessionID)
 
 	for (int i=0; i<MAX_ROOM_COUNT; i++)
 	{
-		if (_roomVec[i]->superSessionID == sessionID ||
-			_roomVec[i]->sessionID == sessionID)
+		if (roomVec[i]->superSessionID == sessionID ||
+			roomVec[i]->sessionID == sessionID)
 		{
 			roomNum = i;
 			return roomNum;
@@ -106,12 +106,12 @@ int RoomMG::GetRoomNum(int sessionID)
 
 int RoomMG::GetSuperSessonID(int roomNum)
 {
-	return _roomVec[roomNum]->superSessionID;
+	return roomVec[roomNum]->superSessionID;
 }
 
 int RoomMG::GetSessonID(int roomNum)
 {
-	return _roomVec[roomNum]->sessionID;
+	return roomVec[roomNum]->sessionID;
 
 }
 

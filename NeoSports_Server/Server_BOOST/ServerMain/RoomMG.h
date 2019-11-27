@@ -47,7 +47,7 @@ public:
 	int GetSuperSessonID(int roomNum);
 	int GetSessonID(int roomNum);
 
-	std::vector<ROOM*> _roomVec;
+	std::vector<ROOM*> roomVec;
 private:
 
 };

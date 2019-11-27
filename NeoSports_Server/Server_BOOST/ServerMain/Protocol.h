@@ -1,5 +1,5 @@
 #pragma once
-//#include <Windows.h>
+#include <iostream>
 
 const unsigned short PORT_NUMBER = 31400;
 
@@ -79,6 +79,9 @@ struct PACKET_START_GAME
 	PACKET_HEADER header;
 	CHAR_INDEX superCharID; //방장의 캐릭터
 	CHAR_INDEX charID;
+
+	std::string superName;
+	std::string name;
 };
 
 //줄다리기 게임 데이터 패킷

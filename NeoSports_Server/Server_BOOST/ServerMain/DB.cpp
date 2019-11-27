@@ -124,6 +124,7 @@ void DB::Update(std::string name, GAME_INDEX gameIndex, int addScore)
 				std::string aa = "UPDATE game SET winRecord = '";
 				aa += boost::lexical_cast<std::string>(temp);
 				std::string tempStr = "' WHERE name LIKE '";
+				aa += tempStr;
 				aa += name;
 				aa += "'";
 
