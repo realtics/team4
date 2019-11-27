@@ -6,7 +6,7 @@ Server::Server(boost::asio::io_context& io_service) : _acceptor(io_service,
 	boost::asio::ip::tcp::endpoint(boost::asio::ip::tcp::v4(), PORT_NUMBER))
 {
 	_isAccepting = false;
-	//db.Update(-1, GAME_INDEX::ROPE_PULL, 10);
+	//db.Delete(1);
 }
 
 Server::~Server()

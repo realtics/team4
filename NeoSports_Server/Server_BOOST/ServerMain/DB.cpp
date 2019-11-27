@@ -84,6 +84,20 @@ void DB::Insert(int sessionID)
 	std::cout << "ClientNum DB INSERT" << std::endl;
 }
 
+void DB::Delete(int sessionID)
+{
+	std::string query = "DELETE FROM game WHERE clientNum =";
+	std::string temp = boost::lexical_cast<std::string> (sessionID);
+	query += temp;
+	if (mysql_query(&_conn, query.c_str()) != 0)
+	{
+		std::cout << "DELETE error" << std::endl;
+		return;
+	}
+	std::cout << "DELETE DB ROW" << std::endl;
+}
+
+
 void DB::Update(int sessionID, GAME_INDEX gameIndex, int addScore)
 {
 	LockGuard upDateLockGuard(_upDateLock);

@@ -12,6 +12,7 @@ public:
 
 	void SelectQuery();
 	void Insert(int sessionID);
+	void Delete(int sessionID);
 	void Update(int sessionID, GAME_INDEX gameIndex, int addScore);
 
 private:
