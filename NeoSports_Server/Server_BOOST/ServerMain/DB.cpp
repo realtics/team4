@@ -69,13 +69,11 @@ void DB::SelectQuery()
 	//}
 }
 
-void DB::Insert(int sessionID)
+void DB::Insert(std::string name)
 {
-	std::string query = "INSERT INTO game(clientNum) values('";
-	std::string temp = boost::lexical_cast<std::string> (sessionID);
-	query += temp;
-	temp = "')";
-	query += temp;
+	std::string query = "INSERT INTO game(name) values('";
+	query += name;
+	query += "')";
 	if (mysql_query(&_conn, query.c_str()) != 0)
 	{
 		std::cout << "clientNumÀÌ ÀÌ¹Ì ÀÖ´Ù.(NotNull)" << std::endl;
@@ -84,11 +82,10 @@ void DB::Insert(int sessionID)
 	std::cout << "ClientNum DB INSERT" << std::endl;
 }
 
-void DB::Delete(int sessionID)
+void DB::Delete(std::string name)
 {
-	std::string query = "DELETE FROM game WHERE clientNum =";
-	std::string temp = boost::lexical_cast<std::string> (sessionID);
-	query += temp;
+	std::string query = "DELETE FROM game WHERE name =";
+	query += name;
 	if (mysql_query(&_conn, query.c_str()) != 0)
 	{
 		std::cout << "DELETE error" << std::endl;
@@ -98,7 +95,7 @@ void DB::Delete(int sessionID)
 }
 
 
-void DB::Update(int sessionID, GAME_INDEX gameIndex, int addScore)
+void DB::Update(std::string name, GAME_INDEX gameIndex, int addScore)
 {
 	LockGuard upDateLockGuard(_upDateLock);
 
@@ -119,19 +116,16 @@ void DB::Update(int sessionID, GAME_INDEX gameIndex, int addScore)
 	{
 		while ((_sqlRow = mysql_fetch_row(_pSqlRes)) != nullptr)
 		{
-			//_sqlRowÀÎµ¦½º 0 = sessonID, 2 = winRecord
-			if (boost::lexical_cast<int>(_sqlRow[0]) == sessionID)
+			//_sqlRowÀÎµ¦½º 0 = DBÀÇ Ä®·³(name), 2 = DBÀÇ Ä®·³(winRecord)
+			if (_sqlRow[0] == name)
 			{
 				int temp = boost::lexical_cast<int>(_sqlRow[2]);
-				temp+= addScore;
+				temp += addScore;
 				std::string aa = "UPDATE game SET winRecord = '";
 				aa += boost::lexical_cast<std::string>(temp);
-				std::string tempStr = "' WHERE clientNum LIKE '";
-				aa += tempStr;
-				tempStr = boost::lexical_cast<std::string>(sessionID);
-				aa += tempStr;
-				tempStr = "'";
-				aa += tempStr;
+				std::string tempStr = "' WHERE name LIKE '";
+				aa += name;
+				aa += "'";
 
 				if (mysql_query(&_conn, aa.c_str()) != 0)
 				{
