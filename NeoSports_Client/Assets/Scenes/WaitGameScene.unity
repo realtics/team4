@@ -417,6 +417,7 @@ MonoBehaviour:
     type: 3}
   turkeyJellyCharacter: {fileID: 203829877700944717, guid: 690c6258a777cc346acfc313445baf2c,
     type: 3}
+  characterSpeed: 5
 --- !u!4 &159492509
 Transform:
   m_ObjectHideFlags: 0
