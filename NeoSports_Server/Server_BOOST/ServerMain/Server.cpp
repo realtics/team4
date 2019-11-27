@@ -163,7 +163,7 @@ void Server::ProcessPacket(const int sessionID, const char* data)
 		PACKET_REQ_RANK* packet = (PACKET_REQ_RANK*)data;
 		RANK rank[5];
 
-		db.Rank(packet->gameIndex, rank);
+		db.Rank(packet->gameIndex, rank); //배열 포인터를 전달하고싶다
 		PACKET_RES_RANK resRankPacket;
 		resRankPacket.header.packetIndex = PACKET_INDEX::RES_RANK;
 		resRankPacket.header.packetSize = sizeof(PACKET_RES_RANK);
