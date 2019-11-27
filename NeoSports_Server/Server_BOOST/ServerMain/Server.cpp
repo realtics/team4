@@ -6,9 +6,7 @@ Server::Server(boost::asio::io_context& io_service) : _acceptor(io_service,
 	boost::asio::ip::tcp::endpoint(boost::asio::ip::tcp::v4(), PORT_NUMBER))
 {
 	_isAccepting = false;
-	db.SelectQuery();
-	db.Update(-1, GAME_INDEX::ROPE_PULL, 1);
-	db.SelectQuery();
+	//db.Update(-1, GAME_INDEX::ROPE_PULL, 10);
 }
 
 Server::~Server()
@@ -66,6 +64,7 @@ void Server::ProcessPacket(const int sessionID, const char* data)
 		_sessionVec[sessionID]->SetNanme(packet->name);
 
 		std::cout << "클라접속 Name : " << _sessionVec[sessionID]->GetName() << std::endl;
+		db.Insert(sessionID);
 	}
 	break;
 
@@ -119,6 +118,7 @@ void Server::ProcessPacket(const int sessionID, const char* data)
 				<< sessionID << std::endl;
 
 			//DB추가시 게임결과 저장 추가소스 위치
+			db.Update(sessionID, packet->gameIndex, 1);
 		}
 
 		roomMG._roomVec[roomNum]->Init();

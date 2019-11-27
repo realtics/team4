@@ -10,7 +10,7 @@ public:
 	~DB();
 
 	void SelectQuery();
-	void Insert();
+	void Insert(int sessionID);
 	void Update(int sessionID, GAME_INDEX gameIndex, int addScore);
 
 private:

@@ -1,6 +1,7 @@
 #include "DB.h"
 #include <iostream>
 #include <boost/lexical_cast.hpp>
+
 using namespace std;
 
 DB::DB()
@@ -37,46 +38,63 @@ void DB::_Init()
 
 void DB::SelectQuery()
 {
-	const char* query = "SELECT * FROM game";
-	int state = mysql_query(&_conn, query);
-	if (state == 0)
-	{
-		_pSqlRes = mysql_store_result(&_conn);
-		if (_pSqlRes != nullptr)//SELECT가 아닌 나머지는 NULL
-		{
-			int numCol = mysql_num_fields(_pSqlRes); //필드수 출력
-			while ((_sqlRow = mysql_fetch_row(_pSqlRes)) != nullptr)
-			{
-				for (int i = 0; i < numCol; i++)
-				{
-					cout << _sqlRow[i] << " ";
-					cout << endl;
-				}
-			}
-			mysql_free_result(_pSqlRes);
-		}
+	//TDOD : 랭킹 조회할떄 사용
+	//const char* query = "SELECT * FROM game";
+	//int state = mysql_query(&_conn, query);
+	//if (state == 0)
+	//{
+	//	_pSqlRes = mysql_store_result(&_conn);
+	//	if (_pSqlRes != nullptr)//SELECT가 아닌 나머지는 NULL
+	//	{
+	//		int numCol = mysql_num_fields(_pSqlRes); //필드수 출력
+	//		while ((_sqlRow = mysql_fetch_row(_pSqlRes)) != nullptr)
+	//		{
+	//			for (int i = 0; i < numCol; i++)
+	//			{
+	//				cout << _sqlRow[i] << " ";
+	//				cout << endl;
+	//			}
+	//		}
+	//		mysql_free_result(_pSqlRes);
+	//	}
 
-		else
-		{
-			int errNo = mysql_errno(&_conn);
-			if (errNo != 0)
-			{
-				cout << "Error" << endl;
-			}
-		}
-
-	}
+	//	else
+	//	{
+	//		int errNo = mysql_errno(&_conn);
+	//		if (errNo != 0)
+	//		{
+	//			cout << "Error" << endl;
+	//		}
+	//	}
+	//}
 }
 
-void DB::Insert()
+void DB::Insert(int sessionID)
 {
-	std::string query = "INSERT INTO";
+	std::string query = "INSERT INTO game(clientNum) values('";
+	std::string temp = boost::lexical_cast<std::string> (sessionID);
+	query += temp;
+	temp = "')";
+	query += temp;
+	if (mysql_query(&_conn, query.c_str()) != 0)
+	{
+		std::cout << "clientNum이 이미 있다.(NotNull)" << std::endl;
+		return;
+	}
+	std::cout << "ClientNum DB INSERT" << std::endl;
 }
 
 void DB::Update(int sessionID, GAME_INDEX gameIndex, int addScore)
 {
+	//TODO : 업데이트 락가드
+	if (mysql_query(&_conn, "SELECT * FROM game") != 0)
+	{
+		std::cout << "DB Update mysql_query error" << std::endl;
+		return;
+	}
+	_pSqlRes = mysql_store_result(&_conn);
 	int numCol = mysql_num_fields(_pSqlRes); //필드수 출력
-	
+
 	switch (gameIndex)
 	{
 	case EMPTY_GAME:
@@ -86,11 +104,25 @@ void DB::Update(int sessionID, GAME_INDEX gameIndex, int addScore)
 	{
 		while ((_sqlRow = mysql_fetch_row(_pSqlRes)) != nullptr)
 		{
-			for (int i = 0; i < numCol; i++)
+			//_sqlRow인덱스 0 = sessonID, 2 = winRecord
+			if (boost::lexical_cast<int>(_sqlRow[0]) == sessionID)
 			{
-				cout << _sqlRow[i] << " ";
-				cout << "update in ";
-				cout << endl;
+				int temp = boost::lexical_cast<int>(_sqlRow[2]);
+				temp+= addScore;
+				std::string aa = "UPDATE game SET winRecord = '";
+				aa += boost::lexical_cast<std::string>(temp);
+				std::string tempStr = "' WHERE clientNum LIKE '";
+				aa += tempStr;
+				tempStr = boost::lexical_cast<std::string>(sessionID);
+				aa += tempStr;
+				tempStr = "'";
+				aa += tempStr;
+
+				if (mysql_query(&_conn, aa.c_str()) != 0)
+				{
+					std::cout << "Update mysql_query error" << std::endl;
+					return;
+				}
 			}
 		}
 
