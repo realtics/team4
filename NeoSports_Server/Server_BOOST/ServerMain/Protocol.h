@@ -46,6 +46,10 @@ enum PACKET_INDEX
 	//줄다리기용 패킷
 	REQ_RES_ROPE_PULL_GAME,
 
+	//게임랭킹
+	REQ_RANK,
+	RES_RANK,
+
 	//클라와 통신하고 있지 않은 인덱스들 (채팅용)
 	RES_IN,
 	REQ_CHAT,
@@ -53,10 +57,28 @@ enum PACKET_INDEX
 	//
 };
 
+struct RANK
+{
+	char name[12];
+	int winRecord;
+};
+
 struct PACKET_HEADER
 {
 	int packetIndex;
 	int packetSize;
+};
+
+struct PACKET_REQ_RANK
+{
+	PACKET_HEADER header;
+	GAME_INDEX gameIndex;
+};
+
+struct PACKET_RES_RANK
+{
+	PACKET_HEADER header;
+	RANK rank[5];
 };
 
 //클라가 멀티게임 버튼을 눌렀을때

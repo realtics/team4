@@ -1,6 +1,7 @@
 #include "Server.h"
 #include "Json.h"
 
+#define MAX_RANK_COUNT 5
 
 Server::Server(boost::asio::io_context& io_service) : _acceptor(io_service,
 	boost::asio::ip::tcp::endpoint(boost::asio::ip::tcp::v4(), PORT_NUMBER))
@@ -126,7 +127,7 @@ void Server::ProcessPacket(const int sessionID, const char* data)
 
 	case PACKET_INDEX::REQ_RES_ROPE_PULL_GAME:
 	{
-		LockGuard ropeLockGuard(_ropePullLock);
+		//LockGuard ropeLockGuard(_ropePullLock);
 		int roomNum = roomMG.GetRoomNum(sessionID);
 
 		//클라에서 x버튼이나 게임중 메뉴의 yes,no버튼 클릭할때도
@@ -154,6 +155,25 @@ void Server::ProcessPacket(const int sessionID, const char* data)
 
 		_sessionVec[superSessionIdTemp]->PostSend(false, aa.length(), (char*)aa.c_str());
 		_sessionVec[sessionIdTemp]->PostSend(false, aa.length(), (char*)aa.c_str());
+	}
+	break;
+
+	case PACKET_INDEX::REQ_RANK:
+	{
+		PACKET_REQ_RANK* packet = (PACKET_REQ_RANK*)data;
+		RANK rank[5];
+
+		db.Rank(packet->gameIndex, rank);
+		PACKET_RES_RANK resRankPacket;
+		resRankPacket.header.packetIndex = PACKET_INDEX::RES_RANK;
+		resRankPacket.header.packetSize = sizeof(PACKET_RES_RANK);
+		for (int i = 0; i < MAX_RANK_COUNT; i++)
+		{
+			strcpy(resRankPacket.rank[i].name, rank[i].name);
+			resRankPacket.rank[i].winRecord = rank[i].winRecord;
+		}
+		std::string aa = _SerializationJson(PACKET_INDEX::RES_RANK, (const char*)&resRankPacket);
+		_sessionVec[sessionID]->PostSend(false, aa.length(), (char*)aa.c_str());
 	}
 	break;
 
@@ -295,6 +315,23 @@ std::string Server::_SerializationJson(int packetIndex, const char* packet)
 	}
 	break;
 
+	case PACKET_INDEX::RES_RANK:
+	{
+		PACKET_RES_RANK* resRankPacket = new PACKET_RES_RANK;
+		boost::property_tree::ptree ptSend;
+		boost::property_tree::ptree ptSendHeader;
+		ptSendHeader.put<int>("packetIndex", resRankPacket->header.packetIndex);
+		ptSendHeader.put<int>("packetSize", sizeof(PACKET_RES_RANK));
+
+		//RANK 구조체배열 안의 멤버들을 제이슨으로 옮겨야함
+
+		std::string recvTemp;
+		std::ostringstream os(recvTemp);
+		boost::property_tree::write_json(os, ptSend, false);
+		sendStr = os.str();
+		return sendStr;
+	}
+	break;
 
 	}
 }

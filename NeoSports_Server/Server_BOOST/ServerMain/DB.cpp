@@ -135,7 +135,6 @@ void DB::Update(std::string name, GAME_INDEX gameIndex, int addScore)
 				}
 			}
 		}
-
 		break;
 	}
 	case ROPE_JUMP:
@@ -147,3 +146,54 @@ void DB::Update(std::string name, GAME_INDEX gameIndex, int addScore)
 	}
 }
 
+void DB::Rank(GAME_INDEX gameIndex, RANK rank[])
+{
+	std::string rankStr;
+
+	switch (gameIndex)
+	{
+	case EMPTY_GAME:
+		break;
+	case ROPE_PULL:
+		rankStr = orderByRank("game", gameIndex, "winRecord");
+
+		if (mysql_query(&_conn, "SELECT * FROM game") != 0)
+		{
+			std::cout << "orderByRank mysql_query error" << std::endl;
+			return;
+		}
+
+		_pSqlRes = mysql_store_result(&_conn);
+		int numCol = mysql_num_fields(_pSqlRes); //필드수 출력
+
+		while ((_sqlRow = mysql_fetch_row(_pSqlRes)) != nullptr)
+		{
+			for (int i = 0; i < numCol; i++)
+			{
+				strcpy(rank[i].name, _sqlRow[0]);
+				rank[i].winRecord = (int)_sqlRow[1];
+			}
+		}
+
+		break;
+	case ROPE_JUMP:
+		break;
+	case BASKET_BALL:
+		break;
+	default:
+		break;
+	}
+}
+
+std::string DB::orderByRank(std::string tableName, GAME_INDEX gameIndex, std::string column)
+{
+	std::string orderByStr = "SELECT name, winRecord FROM ";
+	orderByStr += tableName;
+	orderByStr += " WHERE gameIndex = ";
+	orderByStr += boost::lexical_cast<std::string>(gameIndex);
+	orderByStr += " ORDER BY ";
+	orderByStr += (column + " DESC");
+	orderByStr += "LIMIT 5";
+
+	return orderByStr;
+}
