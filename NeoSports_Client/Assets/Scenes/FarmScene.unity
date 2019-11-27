@@ -408,7 +408,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 211282446}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1513105896}
+        m_MethodName: EventOpenDecorationPanelButton
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &211282446
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -553,7 +564,7 @@ RectTransform:
   m_Children:
   - {fileID: 1080718358}
   m_Father: {fileID: 1198741606}
-  m_RootOrder: 2
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -602,7 +613,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 264280015}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1513105896}
+        m_MethodName: EventLandTileFuncButton
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &264280015
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -829,7 +851,7 @@ RectTransform:
   m_Children:
   - {fileID: 1258211165}
   m_Father: {fileID: 1198741606}
-  m_RootOrder: 0
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -878,7 +900,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 318632277}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1513105896}
+        m_MethodName: EventObjectTileFuncButton
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &318632277
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1133,7 +1166,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &437732398
 GameObject:
@@ -1250,7 +1283,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &589444129
 GameObject:
@@ -2064,7 +2097,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 858561385}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1513105896}
+        m_MethodName: EventOpenPlantPanelButton
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &858561385
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3051,7 +3095,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1150694611}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1, y: 1, z: -2}
+  m_LocalPosition: {x: 0.96, y: 0.96, z: -2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1363964964}
@@ -3234,6 +3278,16 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 377728081349139821, guid: 9ee04a9337a8a1e45ba2a9556252c14f,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1513105896}
+    - target: {fileID: 377728081349139821, guid: 9ee04a9337a8a1e45ba2a9556252c14f,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: EventBackButton
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9ee04a9337a8a1e45ba2a9556252c14f, type: 3}
 --- !u!224 &1186315426 stripped
@@ -3269,10 +3323,10 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 318632275}
-  - {fileID: 1521968103}
   - {fileID: 264280013}
   - {fileID: 1403118616}
+  - {fileID: 318632275}
+  - {fileID: 1521968103}
   m_Father: {fileID: 214599550}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3715,7 +3769,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1403118616
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3730,7 +3784,7 @@ RectTransform:
   - {fileID: 1233127206}
   - {fileID: 1035057335}
   m_Father: {fileID: 1198741606}
-  m_RootOrder: 3
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -3890,6 +3944,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc8774d631c5b3f41a73f6ddf7d0aabc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  prefProductButton: {fileID: 7760269187375875455, guid: 30f3e05eb4e1e724ba03ad4d42149edc,
+    type: 3}
+  prefDecorationButton: {fileID: 821930817289036343, guid: 75f06a909d214ef429db56fbe77325ba,
+    type: 3}
+  plantingPanel: {fileID: 607003782}
+  decorationPanel: {fileID: 437732398}
+  landTileFuncGroup: {fileID: 1403118615}
+  objectTileFuncGroup: {fileID: 1521968102}
   farmerObject: {fileID: 1150694611}
 --- !u!4 &1513105897
 Transform:
@@ -3903,7 +3965,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1521968102
 GameObject:
@@ -3920,7 +3982,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1521968103
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3936,7 +3998,7 @@ RectTransform:
   - {fileID: 211282444}
   - {fileID: 1888648939}
   m_Father: {fileID: 1198741606}
-  m_RootOrder: 1
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}

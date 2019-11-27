@@ -16,7 +16,7 @@ public class Farmer : MonoBehaviour
 	const float MoveSpeed = 3.0f;
 	const string FarmObstacleTag = "FarmObstacle";
 
-	Vector2	_targetPosition;
+	Vector3	_targetPosition;
 	State	_currentState;
 
 	Camera _mainCamera;
@@ -62,18 +62,19 @@ public class Farmer : MonoBehaviour
 	{
 		LeaveTile();
 		_targetPosition = landTile.transform.position;
+		_targetPosition.z = transform.localPosition.z;
 		_currentLandTile = landTile;
 		_currentState = State.Move;
 	}
 
 	void MoveToTargetPosition()
 	{
-		transform.position = Vector2.MoveTowards(transform.position, _targetPosition, MoveSpeed * Time.deltaTime);
+		transform.position = Vector3.MoveTowards(transform.position, _targetPosition, MoveSpeed * Time.deltaTime);
 	}
 
 	void CheckStopMove()
 	{
-		Vector2 currentPosition = transform.position;
+		Vector3 currentPosition = transform.position;
 
 		if(currentPosition == _targetPosition)
 		{

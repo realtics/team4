@@ -1,22 +1,23 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class FarmUIManager : MonoBehaviour
 {
 
-	public enum Category
+	public enum ECategory
 	{
-		Reclaim,
-		HoeField,
-		Planting,
-		Decoration,
-		Cleaning,
-		Eliminate
+		Default,
+		Plant,
+		Decoration
 	}
 
 	const float DoubleTouchDuration = 0.5f;
 
+	ECategory _currentCategory;
+
+	// Input
 	int _clickCount;
 	float _touchDuration;
 	Touch _touch;
@@ -24,26 +25,38 @@ public class FarmUIManager : MonoBehaviour
 	Camera _mainCamera;
 	Farmer _farmer;
 
+	public GameObject prefProductButton;
+	public GameObject prefDecorationButton;
+
+	public GameObject plantingPanel;
+	public GameObject decorationPanel;
+
+	public GameObject landTileFuncGroup;
+	public GameObject objectTileFuncGroup;
+
 	public GameObject farmerObject;
 
 	void Awake()
 	{
+		_currentCategory = ECategory.Default;
+		_clickCount = 0;
+		_touchDuration = 0.0f;
+		_touch = new Touch();
+
 		_mainCamera = Camera.main;
 		_farmer = farmerObject.GetComponent<Farmer>();
 	}
 
-	void Start()
-	{
-		
-	}
-
 	void Update()
 	{
-		InputClick();
-		//InputTouch();
+		if (_currentCategory == ECategory.Default)
+		{
+			InputClick();
+			//InputTouch();
+		}
 	}
 
-	#region Double Click
+	#region Mouse Logic
 	void InputClick()
 	{
 		if (Input.GetMouseButtonDown(0))
@@ -60,17 +73,10 @@ public class FarmUIManager : MonoBehaviour
 			Ray ray = _mainCamera.ScreenPointToRay(Input.mousePosition);
 			RaycastHit hit;
 
-			print("ray.origin: " + ray.origin);
-			Debug.Log("Double Click!");
-			Debug.DrawLine(ray.origin, ray.origin + ray.direction, Color.blue, 1.0f);
-
-
-			if(Physics.Raycast(ray, out hit, Mathf.Infinity))
+			if (Physics.Raycast(ray, out hit, Mathf.Infinity))
 			{
-				Debug.Log("Hit");
 				DoubleClickProcess(hit.transform);
 			}
-
 			_clickCount = 0;
 		}
 		else
@@ -89,7 +95,7 @@ public class FarmUIManager : MonoBehaviour
 	}
 	#endregion
 
-	#region Touch Event
+	#region Touch Logic
 	void InputTouch()
 	{
 		if (Input.touchCount > 0)
@@ -125,16 +131,84 @@ public class FarmUIManager : MonoBehaviour
 
 	void DoubleClickProcess(Transform hitObject)
 	{
-		if(hitObject.tag == ObjectTag.FarmLand)
+		if (hitObject.tag == ObjectTag.FarmLand)
 		{
 			LandTile landTile = hitObject.GetComponent<LandTile>();
 			_farmer.SetTargetPosition(landTile);
 		}
 	}
 
-	public void ShowCategory(Category category)
+	void ResetDoubleClick()
 	{
+		_clickCount = 0;
+		_touchDuration = 0.0f;
+	}
 
+	public void EventBackButton()
+	{
+		switch (_currentCategory)
+		{
+			case ECategory.Default:
+				ShowExitToMainMenuPopup();
+				break;
+			case ECategory.Plant:
+				_currentCategory = ECategory.Default;
+				plantingPanel.SetActive(false);
+				break;
+			case ECategory.Decoration:
+				_currentCategory = ECategory.Default;
+				decorationPanel.SetActive(false);
+				break;
+		}
+	}
+
+	public void EventLandTileFuncButton()
+	{
+		bool active = landTileFuncGroup.activeInHierarchy;
+		objectTileFuncGroup.SetActive(false);
+		landTileFuncGroup.SetActive(!active);
+
+		ResetDoubleClick();
+	}
+
+	public void EventObjectTileFuncButton()
+	{
+		bool active = objectTileFuncGroup.activeInHierarchy;
+		landTileFuncGroup.SetActive(false);
+		objectTileFuncGroup.SetActive(!active);
+
+		ResetDoubleClick();
+	}
+
+	public void EventOpenPlantPanelButton()
+	{
+		_currentCategory = ECategory.Plant;
+
+		objectTileFuncGroup.SetActive(false);
+		plantingPanel.SetActive(true);
+	}
+
+	public void EventOpenDecorationPanelButton()
+	{
+		_currentCategory = ECategory.Decoration;
+
+		objectTileFuncGroup.SetActive(false);
+		decorationPanel.SetActive(true);
+	}
+
+	void ShowExitToMainMenuPopup()
+	{
+		PopupManager.PopupData data;
+		data.text = "메인 메뉴로 나가시겠습니까?";
+		data.okFlag = false;
+		data.callBack = ChangeSceneToMainMenu;
+		PopupManager.Instance.ShowPopup(data);
+	}
+
+	void ChangeSceneToMainMenu()
+	{
+		Debug.Log("Change To Main Menu Scene");
+		//SceneManager.LoadScene(SceneName.MenuSceneName);
 	}
 
 }
