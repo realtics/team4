@@ -155,42 +155,26 @@ void DB::Rank(GAME_INDEX gameIndex, RANK rank[])
 {
 	std::string rankStr;
 
-	switch (gameIndex)
+	rankStr = orderByRank("game", gameIndex, "winRecord");
+
+	if (mysql_query(&_conn, rankStr.c_str()) != 0)
 	{
-	case EMPTY_GAME:
-		break;
-	case ROPE_PULL:
-	{
-		rankStr = orderByRank("game", gameIndex, "winRecord");
-
-		if (mysql_query(&_conn, rankStr.c_str()) != 0)
-		{
-			std::cout << "orderByRank mysql_query error" << std::endl;
-			return;
-		}
-
-		_pSqlRes = mysql_store_result(&_conn);
-		int numCol = mysql_num_fields(_pSqlRes); //필드수 출력
-
-		int rowNum = 0;
-		while ((_sqlRow = mysql_fetch_row(_pSqlRes)) != nullptr)
-		{
-			for (int i = 0; i < numCol; i++)
-			{
-				strcpy(rank[rowNum].name, _sqlRow[0]);
-				rank[rowNum].winRecord = boost::lexical_cast<int>(_sqlRow[1]);
-			}
-			rowNum++;
-		}
-
-		break;
+		std::cout << "orderByRank mysql_query error" << std::endl;
+		return;
 	}
-	case ROPE_JUMP:
-		break;
-	case BASKET_BALL:
-		break;
-	default:
-		break;
+
+	_pSqlRes = mysql_store_result(&_conn);
+	int numCol = mysql_num_fields(_pSqlRes); //필드수 출력
+
+	int rowNum = 0;
+	while ((_sqlRow = mysql_fetch_row(_pSqlRes)) != nullptr)
+	{
+		for (int i = 0; i < numCol; i++)
+		{
+			strcpy(rank[rowNum].name, _sqlRow[0]);
+			rank[rowNum].winRecord = boost::lexical_cast<int>(_sqlRow[1]);
+		}
+		rowNum++;
 	}
 }
 
