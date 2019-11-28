@@ -37,6 +37,7 @@ void  Session::_ReceiveHandle(const boost::system::error_code& error, size_t byt
 {
 	if (error)
 	{
+		LockGuard closeLock(_closeLock);
 		if (error == boost::asio::error::eof)
 		{
 			std::cout << "Å¬¶ó¿Í ¿¬°á ²÷±è" << std::endl;
@@ -46,7 +47,6 @@ void  Session::_ReceiveHandle(const boost::system::error_code& error, size_t byt
 			std::cout << "error No : " << error.value() << " error Message : " << error.message() <<
 				std::endl;
 		}
-		LockGuard closeLock(_closeLock);
 		_serverPtr->CloseSession(_sessionId);
 	}
 	else
@@ -201,6 +201,17 @@ void Session::_DeSerializationJson(char* jsonStr)
 		packet.header.packetSize = children.get<int>("packetSize");
 		packet.ropePos = ptRecv.get<float>("ropePos");
 		memcpy(&_packetBuffer[_packetBufferMark], (char*)& packet, sizeof(packet));
+		break;
+	}
+
+	case PACKET_INDEX::REQ_RANK:
+	{
+		PACKET_REQ_RANK packet;
+		packet.header.packetIndex = headerIndex;
+		packet.header.packetSize = children.get<int>("packetSize");
+		packet.gameIndex = (GAME_INDEX)ptRecv.get<int>("gameIndex");
+
+		memcpy(&_packetBuffer[_packetBufferMark], (char*)&packet, sizeof(packet));
 		break;
 	}
 

@@ -63,6 +63,8 @@ public class PacketQueue : Singleton<PacketQueue>
 						superCharIndex = (CHAR_INDEX)InventoryManager.instance.CurrentCharacter.Type;
 						NetworkManager.Instance.isOwnHost = true;
 						SceneManager.LoadScene(SceneName.WaitGameSceneName);
+						//To DO: 현재는 임시시스템. 
+						NetworkManager.Instance.SendRequsetRank(GAME_INDEX.BASKET_BALL);
 					}
 					else
 					{
@@ -94,6 +96,17 @@ public class PacketQueue : Singleton<PacketQueue>
 				{
 					var packetdata = JsonConvert.DeserializeObject<PACKET_REQ_RES_ROPE_PULL_GAME>(recvData);
 					RopePullGame.RopePullMoveRopeWithKey.Instance.UpdateNetworkRopePostion(packetdata.ropePos);
+					break;
+				}
+			case (int)PACKET_INDEX.RES_RANK:
+				{
+					var packetdata = JsonConvert.DeserializeObject<PACKET_RES_RANK>(recvData);
+					foreach (var rankdata in packetdata.rank)
+					{
+						Debug.Log("이름" + rankdata.name);
+						Debug.Log("이름" + rankdata.winRecord);
+						//a.winRecord;
+					}
 					break;
 				}
 			default:

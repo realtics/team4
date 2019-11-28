@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class WaitSceneManager : Singleton<WaitSceneManager>
 {
@@ -9,6 +10,7 @@ public class WaitSceneManager : Singleton<WaitSceneManager>
 	public GameObject turkeyJellyCharacter;
 	//public
 	public float characterSpeed;
+	public Text nameText;
 
 	GameObject _character;
 	SpriteRenderer _charRender;
@@ -20,7 +22,10 @@ public class WaitSceneManager : Singleton<WaitSceneManager>
 		_character = null;
 		_mainCam = Camera.main;
 		if (InventoryManager.Instance != null)
+		{
 			SelectInstantCharacter(InventoryManager.Instance.CurrentCharacter.Type);
+			nameText.text = InventoryManager.Instance.PlayerNickName;
+		}
 		else
 			SelectInstantCharacter(CharacterInfo.EType.PpiYaGi);
 

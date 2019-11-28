@@ -73,15 +73,18 @@ void DB::SelectQuery()
 
 void DB::Insert(std::string name)
 {
-	std::string query = "INSERT INTO game(name) values('";
-	query += name;
-	query += "')";
-	if (mysql_query(&_conn, query.c_str()) != 0)
+	if (name != "")
 	{
-		std::cout << "clientNum이 이미 있다.(NotNull)" << std::endl;
-		return;
+		std::string query = "INSERT INTO game(name) values('";
+		query += name;
+		query += "')";
+		if (mysql_query(&_conn, query.c_str()) != 0)
+		{
+			std::cout << "clientNum이 이미 있다.(NotNull)" << std::endl;
+			return;
+		}
+		std::cout << "ClientNum DB INSERT" << std::endl;
 	}
-	std::cout << "ClientNum DB INSERT" << std::endl;
 }
 
 void DB::Delete(std::string name)
@@ -158,7 +161,6 @@ void DB::Rank(GAME_INDEX gameIndex, RANK rank[])
 		break;
 	case ROPE_PULL:
 	{
-
 		rankStr = orderByRank("game", gameIndex, "winRecord");
 
 		if (mysql_query(&_conn, rankStr.c_str()) != 0)
@@ -170,13 +172,15 @@ void DB::Rank(GAME_INDEX gameIndex, RANK rank[])
 		_pSqlRes = mysql_store_result(&_conn);
 		int numCol = mysql_num_fields(_pSqlRes); //필드수 출력
 
+		int rowNum = 0;
 		while ((_sqlRow = mysql_fetch_row(_pSqlRes)) != nullptr)
 		{
 			for (int i = 0; i < numCol; i++)
 			{
-				strcpy(rank[i].name, _sqlRow[0]);
-				rank[i].winRecord = (int)_sqlRow[1];
+				strcpy(rank[rowNum].name, _sqlRow[0]);
+				rank[rowNum].winRecord = boost::lexical_cast<int>(_sqlRow[1]);
 			}
+			rowNum++;
 		}
 
 		break;
@@ -198,7 +202,7 @@ std::string DB::orderByRank(std::string tableName, GAME_INDEX gameIndex, std::st
 	orderByStr += boost::lexical_cast<std::string>(gameIndex);
 	orderByStr += " ORDER BY ";
 	orderByStr += (column + " DESC");
-	orderByStr += "LIMIT ";
+	orderByStr += " LIMIT ";
 	orderByStr += boost::lexical_cast<std::string>(MAX_RANK_COUNT);
 
 	return orderByStr;

@@ -100,6 +100,17 @@ public class NetworkManager : Singleton<NetworkManager>
 		SendToServerPacket(packet);
 	}
 
+	public void SendRequsetRank(GAME_INDEX currentGameIndex)
+	{
+		PACKET_HEADER headerPacket = MakeHeaderPacket(PACKET_INDEX.REQ_RANK);
+		PACKET_REQ_RANK packet = new PACKET_REQ_RANK
+		{
+			header = headerPacket,
+			gameIndex = currentGameIndex,
+		};
+		SendToServerPacket(packet);
+	}
+
     public void SendRequestExitRoom(GAME_INDEX roomIndex, bool isRoomEndGame)
     {
         PACKET_HEADER headerPacket = MakeHeaderPacket(PACKET_INDEX.REQ_INIT_ROOM);
