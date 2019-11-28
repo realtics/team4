@@ -84,7 +84,6 @@ public class Farmer : MonoBehaviour
 
 		if (currentPosition == _targetPosition)
 		{
-			Debug.Log("Target Position Located!");
 			_currentState = State.Idle;
 			EnterTile();
 			return;
