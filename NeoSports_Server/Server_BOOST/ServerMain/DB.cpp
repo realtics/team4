@@ -155,6 +155,8 @@ void DB::Rank(GAME_INDEX gameIndex, RANK rank[])
 	case EMPTY_GAME:
 		break;
 	case ROPE_PULL:
+	{
+
 		rankStr = orderByRank("game", gameIndex, "winRecord");
 
 		if (mysql_query(&_conn, rankStr.c_str()) != 0)
@@ -176,6 +178,7 @@ void DB::Rank(GAME_INDEX gameIndex, RANK rank[])
 		}
 
 		break;
+	}
 	case ROPE_JUMP:
 		break;
 	case BASKET_BALL:

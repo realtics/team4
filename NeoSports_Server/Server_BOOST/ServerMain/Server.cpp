@@ -322,8 +322,18 @@ std::string Server::_SerializationJson(int packetIndex, const char* packet)
 		boost::property_tree::ptree ptSendHeader;
 		ptSendHeader.put<int>("packetIndex", resRankPacket->header.packetIndex);
 		ptSendHeader.put<int>("packetSize", sizeof(PACKET_RES_RANK));
+		ptSend.add_child("header", ptSendHeader);
 
 		//RANK 구조체배열 안의 멤버들을 제이슨으로 옮겨야함
+		boost::property_tree::ptree ptSendRankArr;
+		boost::property_tree::ptree arr[MAX_RANK_COUNT];
+		for (int i = 0; i < MAX_RANK_COUNT; i++)
+		{
+			arr[i].put("name", resRankPacket->rank[i].name);
+			arr[i].put("winRecord", resRankPacket->rank[i].winRecord);
+			ptSendRankArr.push_back(std::make_pair("", arr[i]));
+		}
+		ptSend.add_child("rank", ptSendRankArr);
 
 		std::string recvTemp;
 		std::ostringstream os(recvTemp);
