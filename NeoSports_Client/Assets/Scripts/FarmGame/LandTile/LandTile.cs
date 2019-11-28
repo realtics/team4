@@ -35,6 +35,7 @@ public class LandTile : MonoBehaviour
 	EType _type;
 	int _typeIndex;
 	GameObject _highlight;
+	Point point;
 
 	public SpriteAtlas farmLandTileAtlas;
 
@@ -48,21 +49,24 @@ public class LandTile : MonoBehaviour
 	}
 
 	public bool Highlight {
-		set { _highlight.SetActive(value); }
+		set { _highlight.SetActive( value ); }
 		get { return _highlight.activeInHierarchy; }
+	}
+
+	public Point MapPoint {
+		get { return point; }
 	}
 	#endregion
 
-	void Awake()
-	{
-		_highlight = transform.GetChild(0).gameObject;
+	void Awake() {
+		_highlight = transform.GetChild( 0 ).gameObject;
 	}
 
-	public void SetData(TileData data)
-	{
+	public void SetData(TileData data) {
 		Vector3 position = Vector3.zero;
 		position.x = data.point.X * MapData.TileSize;
 		position.y = data.point.Y * MapData.TileSize;
+		point = data.point;
 
 		_type = data.type;
 		_typeIndex = data.typeIndex;
@@ -70,23 +74,21 @@ public class LandTile : MonoBehaviour
 		SetSprite();
 	}
 
-	public void ChangeType(EType type)
-	{
+	public void ChangeType(EType type) {
 		int randIndex = 0;
 
-		switch (type)
-		{
+		switch (type) {
 			case EType.Badland:
-				randIndex = Random.Range(0, BadlandTypeCount);
+				randIndex = Random.Range( 0, BadlandTypeCount );
 				break;
 			case EType.Grass:
-				randIndex = Random.Range(0, GrassTypeCount);
+				randIndex = Random.Range( 0, GrassTypeCount );
 				break;
 			case EType.Weed:
-				randIndex = Random.Range(0, WeedTypeCount);
+				randIndex = Random.Range( 0, WeedTypeCount );
 				break;
 			case EType.WeedOld:
-				randIndex = Random.Range(0, WeedOldTypeCount);
+				randIndex = Random.Range( 0, WeedOldTypeCount );
 				break;
 		}
 
@@ -96,12 +98,10 @@ public class LandTile : MonoBehaviour
 		SetSprite();
 	}
 
-	void SetSprite()
-	{
+	void SetSprite() {
 		string spriteName = string.Empty;
 
-		switch (_type)
-		{
+		switch (_type) {
 			case EType.Badland:
 				spriteName += BadlandSpriteName;
 				break;
@@ -118,7 +118,7 @@ public class LandTile : MonoBehaviour
 
 		spriteName += "_" + _typeIndex.ToString();
 
-		Sprite tileSprite = farmLandTileAtlas.GetSprite(spriteName);
+		Sprite tileSprite = farmLandTileAtlas.GetSprite( spriteName );
 		GetComponent<SpriteRenderer>().sprite = tileSprite;
 	}
 

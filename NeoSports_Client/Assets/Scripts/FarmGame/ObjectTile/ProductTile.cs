@@ -43,6 +43,7 @@ public class ProductTile : ObjectTile
 	public void PlantProduct(Point pt, EProduct type)
 	{
 		productData = MapData.Instance.ProductDatas[type];
+		point = pt;
 
 		TimeSpan grownTime = new TimeSpan(productData.grownHour, productData.grownMin, 0);
 		_plantingTime = DateTime.Now;
@@ -58,11 +59,12 @@ public class ProductTile : ObjectTile
 	public void LoadDataProduct(LoadData data)
 	{
 		productData = MapData.Instance.ProductDatas[data.productType];
+		point = data.point;
 
 		_plantingTime = data.plantingTime;
 		_harvestTime = data.harvestTime;
 
-		if(_harvestTime < DateTime.Now)
+		if (_harvestTime < DateTime.Now)
 		{
 			_canHarvest = true;
 		}
@@ -115,15 +117,20 @@ public class ProductTile : ObjectTile
 
 	IEnumerator CheckCanHarvest()
 	{
-		if (_harvestTime < DateTime.Now)
+		while (true)
 		{
-			_canHarvest = true;
-			SetSprite();
-			yield break;
-		}
-		else
-		{
-			yield return new WaitForSeconds(10.0f);
+			if (_harvestTime < DateTime.Now)
+			{
+				_canHarvest = true;
+				SetSprite();
+				Debug.Log("Harvest Time!");
+				yield break;
+			}
+			else
+			{
+				Debug.Log(DateTime.Now - _harvestTime);
+				yield return new WaitForSeconds(10.0f);
+			}
 		}
 	}
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
 using UnityEngine;
 using Newtonsoft.Json;
 
@@ -35,6 +36,8 @@ public class MapData : Singleton<MapData>
 	public Dictionary<EProduct, ProductData> ProductDatas {
 		get { return productDatas; }
 	}
+
+	public Point CurrentFarmerPoint { get; set; }
 	#endregion
 
 	void Awake()
@@ -57,7 +60,7 @@ public class MapData : Singleton<MapData>
 		string dataStr = LoadDataFromJson(DecorationDataPath);
 		DecorationData[] dataArr = JsonConvert.DeserializeObject<DecorationData[]>(dataStr);
 
-		foreach(DecorationData child in dataArr)
+		foreach (DecorationData child in dataArr)
 		{
 			decorationDatas.Add(child.type, child);
 		}

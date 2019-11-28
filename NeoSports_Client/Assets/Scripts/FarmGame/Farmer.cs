@@ -16,8 +16,8 @@ public class Farmer : MonoBehaviour
 	const float MoveSpeed = 3.0f;
 	const string FarmObstacleTag = "FarmObstacle";
 
-	Vector3	_targetPosition;
-	State	_currentState;
+	Vector3 _targetPosition;
+	State _currentState;
 
 	Camera _mainCamera;
 	LandTile _currentLandTile;
@@ -27,6 +27,12 @@ public class Farmer : MonoBehaviour
 		_mainCamera = Camera.main;
 
 		_currentState = State.Idle;
+	}
+
+	void Start()
+	{
+		Point startPoint = new Point(2, 2);
+		MapData.Instance.CurrentFarmerPoint = startPoint;
 	}
 
 	void Update()
@@ -76,7 +82,7 @@ public class Farmer : MonoBehaviour
 	{
 		Vector3 currentPosition = transform.position;
 
-		if(currentPosition == _targetPosition)
+		if (currentPosition == _targetPosition)
 		{
 			Debug.Log("Target Position Located!");
 			_currentState = State.Idle;
@@ -98,11 +104,12 @@ public class Farmer : MonoBehaviour
 	void EnterTile()
 	{
 		_currentLandTile.Highlight = true;
+		MapData.Instance.CurrentFarmerPoint = _currentLandTile.MapPoint;
 	}
 
 	void LeaveTile()
 	{
-		if(_currentLandTile != null)
+		if (_currentLandTile != null)
 		{
 			_currentLandTile.Highlight = false;
 		}

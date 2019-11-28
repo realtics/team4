@@ -34,7 +34,7 @@ public class ObjectTileManager : Singleton<ObjectTileManager>
 			CreateRoadTileAtPoint(pt);
 		}
 
-		for(int i = 0; i < MapData.MapHeight; i++)
+		for (int i = 0; i < MapData.MapHeight; i++)
 		{
 			pt = new Point(0, i);
 			CreateRoadTileAtPoint(pt);
@@ -45,7 +45,7 @@ public class ObjectTileManager : Singleton<ObjectTileManager>
 
 	void CreateRoadTileAtPoint(Point pt)
 	{
-		if(objectTileDic.ContainsKey(pt))
+		if (objectTileDic.ContainsKey(pt))
 		{
 			return;
 		}
@@ -62,10 +62,22 @@ public class ObjectTileManager : Singleton<ObjectTileManager>
 	}
 	#endregion
 
-	#region Product Tile
 
+	#region Product Tile
 	public void PlantProduct(Point pt, EProduct type)
 	{
+		FarmUIManager.Instance.ClosePanel(FarmUIManager.ECategory.Plant);
+
+		if (objectTileDic.ContainsKey(pt))
+		{
+			PopupManager.PopupData pData;
+			pData.text = "한 타일에 하나의 물체만 놓을 수 있습니다.";
+			pData.okFlag = true;
+			pData.callBack = null;
+			PopupManager.Instance.ShowPopup(pData);
+			return;
+		}
+
 		GameObject tileObj = Instantiate(prefProductTile, objectTileGroup.transform);
 		ProductTile script = tileObj.GetComponent<ProductTile>();
 		script.PlantProduct(pt, type);
@@ -81,7 +93,6 @@ public class ObjectTileManager : Singleton<ObjectTileManager>
 
 		objectTileDic.Add(data.point, script);
 	}
-
 	#endregion
 
 }

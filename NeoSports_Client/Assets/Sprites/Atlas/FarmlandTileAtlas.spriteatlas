@@ -94,7 +94,7 @@ SpriteAtlas:
     bindAsDefault: 1
     storedHash:
       serializedVersion: 2
-      Hash: 7948134dd51b7e21bb244bc50224982b
+      Hash: 58007db0d09c5fa5376bf6fa7cc2cfdb
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
   - {fileID: 21300000, guid: 0e0ae630b4cd43f46a828cb0a603d719, type: 3}
@@ -155,7 +155,7 @@ SpriteAtlas:
   - sweet_potato_0
   - rock_1
   - weed_old_0
-  - clover_1
+  - sprout_0
   - aloe_1
   - berry_1
   - wire_lamp

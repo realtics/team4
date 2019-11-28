@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class FarmUIManager : MonoBehaviour
+public class FarmUIManager : Singleton<FarmUIManager>
 {
 
 	public enum ECategory
@@ -34,6 +34,9 @@ public class FarmUIManager : MonoBehaviour
 	public GameObject landTileFuncGroup;
 	public GameObject objectTileFuncGroup;
 
+	public GameObject productScrollViewContent;
+	public GameObject decorationScrollViewContent;
+
 	public GameObject farmerObject;
 
 	void Awake()
@@ -45,6 +48,8 @@ public class FarmUIManager : MonoBehaviour
 
 		_mainCamera = Camera.main;
 		_farmer = farmerObject.GetComponent<Farmer>();
+
+		CreatePlantScrollViewItem();
 	}
 
 	void Update()
@@ -144,6 +149,7 @@ public class FarmUIManager : MonoBehaviour
 		_touchDuration = 0.0f;
 	}
 
+	#region Button Event
 	public void EventBackButton()
 	{
 		switch (_currentCategory)
@@ -152,12 +158,12 @@ public class FarmUIManager : MonoBehaviour
 				ShowExitToMainMenuPopup();
 				break;
 			case ECategory.Plant:
-				_currentCategory = ECategory.Default;
-				plantingPanel.SetActive(false);
+				ClosePanel(_currentCategory);
 				break;
 			case ECategory.Decoration:
-				_currentCategory = ECategory.Default;
-				decorationPanel.SetActive(false);
+				ClosePanel(_currentCategory);
+				break;
+			default:
 				break;
 		}
 	}
@@ -209,6 +215,35 @@ public class FarmUIManager : MonoBehaviour
 	{
 		Debug.Log("Change To Main Menu Scene");
 		//SceneManager.LoadScene(SceneName.MenuSceneName);
+	}
+	#endregion
+
+	public void ClosePanel(ECategory category)
+	{
+		switch (category)
+		{
+			case ECategory.Plant:
+				_currentCategory = ECategory.Default;
+				plantingPanel.SetActive(false);
+				break;
+			case ECategory.Decoration:
+				_currentCategory = ECategory.Default;
+				decorationPanel.SetActive(false);
+				break;
+			default:
+				break;
+		}
+	}
+
+	void CreatePlantScrollViewItem()
+	{
+		var productDatas = MapData.Instance.ProductDatas;
+
+		foreach (var item in productDatas)
+		{
+			GameObject obj = Instantiate(prefProductButton, productScrollViewContent.transform);
+			obj.GetComponent<ProductButton>().SetData(item.Value);
+		}
 	}
 
 }

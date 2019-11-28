@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
 using UnityEngine;
 
 public class ObjectTile : MonoBehaviour
@@ -15,5 +16,10 @@ public class ObjectTile : MonoBehaviour
 
 	protected ETileType tileType;
 
-	
+	protected Point point;
+
+	public Point MapPoint {
+		get { return point; }
+	}
+
 }

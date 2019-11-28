@@ -390,6 +390,7 @@ GameObject:
   - component: {fileID: 965325697978628973}
   - component: {fileID: 6258339230333640615}
   - component: {fileID: 1305364529468661282}
+  - component: {fileID: 3022667923456643638}
   m_Layer: 5
   m_Name: Prefab_Button_Prouduct
   m_TagString: Untagged
@@ -521,6 +522,25 @@ MonoBehaviour:
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
+--- !u!114 &3022667923456643638
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7760269187375875455}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a6283e6935c9e64a85737742a44fcac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  farmLandTileAtlas: {fileID: 4343727234628468602, guid: 6086b02561324754081f1eb22b583f7a,
+    type: 2}
+  imageLessGrown: {fileID: 2247660945910198110}
+  imageFullGrown: {fileID: 8554051886028184401}
+  labelName: {fileID: 605883193400068558}
+  labelGrownTime: {fileID: 4197994789448303284}
+  labelRequireGold: {fileID: 5220837002010670757}
 --- !u!1 &8554051886028184401
 GameObject:
   m_ObjectHideFlags: 0

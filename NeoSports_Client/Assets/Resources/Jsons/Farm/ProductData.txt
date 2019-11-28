@@ -5,7 +5,7 @@
       "price":140,
       "grownHour":2,
       "grownMin":20,
-      "lessGrownSprite":"none",
+      "lessGrownSprite":"sprout_0",
       "fullGrownSprite":"agave_0"
    },
    { 
@@ -14,15 +14,15 @@
       "price":130,
       "grownHour":2,
       "grownMin":10,
-      "lessGrownSprite":"none",
+      "lessGrownSprite":"sprout_0",
       "fullGrownSprite":"aloe_0"
    },
    { 
       "type":2,
       "name":"오렌지",
       "price":180,
-      "grownHour":3,
-      "grownMin":0,
+      "grownHour":0,
+      "grownMin":1,
       "lessGrownSprite":"berry_tree_0",
       "fullGrownSprite":"berry_0"
    },
@@ -59,7 +59,7 @@
       "price":10,
       "grownHour":0,
       "grownMin":10,
-      "lessGrownSprite":"none",
+      "lessGrownSprite":"sprout_0",
       "fullGrownSprite":"clover_0"
    },
    { 
@@ -68,7 +68,7 @@
       "price":20,
       "grownHour":0,
       "grownMin":20,
-      "lessGrownSprite":"none",
+      "lessGrownSprite":"sprout_0",
       "fullGrownSprite":"flower_1"
    },
    { 
@@ -77,7 +77,7 @@
       "price":30,
       "grownHour":0,
       "grownMin":30,
-      "lessGrownSprite":"none",
+      "lessGrownSprite":"sprout_0",
       "fullGrownSprite":"flower_0"
    },
    { 
@@ -86,7 +86,7 @@
       "price":45,
       "grownHour":0,
       "grownMin":45,
-      "lessGrownSprite":"none",
+      "lessGrownSprite":"sprout_0",
       "fullGrownSprite":"flower_2"
    },
    { 
@@ -95,7 +95,7 @@
       "price":60,
       "grownHour":1,
       "grownMin":0,
-      "lessGrownSprite":"none",
+      "lessGrownSprite":"sprout_0",
       "fullGrownSprite":"potato_0"
    },
    { 
@@ -104,7 +104,7 @@
       "price":120,
       "grownHour":2,
       "grownMin":0,
-      "lessGrownSprite":"none",
+      "lessGrownSprite":"sprout_0",
       "fullGrownSprite":"strawberry_0"
    },
    { 
@@ -113,7 +113,7 @@
       "price":90,
       "grownHour":1,
       "grownMin":30,
-      "lessGrownSprite":"none",
+      "lessGrownSprite":"sprout_0",
       "fullGrownSprite":"sweet_potato_0"
    }
 ]
