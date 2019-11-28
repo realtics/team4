@@ -11,6 +11,7 @@ public class WaitSceneManager : Singleton<WaitSceneManager>
 	//public
 	public float characterSpeed;
 	public Text nameText;
+	public Text rankingText;
 
 	GameObject _character;
 	SpriteRenderer _charRender;
@@ -78,6 +79,11 @@ public class WaitSceneManager : Singleton<WaitSceneManager>
 		else
 			_charRender.flipX = true;
 		#endregion
+	}
+
+	public void AddName(string name)
+	{
+		rankingText.text += name;
 	}
 
 }

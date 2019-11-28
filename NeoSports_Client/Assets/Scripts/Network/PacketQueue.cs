@@ -106,9 +106,10 @@ public class PacketQueue : Singleton<PacketQueue>
 					Debug.Log("RANK");
 					foreach (var rankdata in packetdata.rank)
 					{
-						Debug.Log("이름" + rankdata.name);
-						Debug.Log("이름" + rankdata.winRecord);
-						//a.winRecord;
+						WaitSceneManager.Instance.AddName(rankdata.name);
+						WaitSceneManager.Instance.AddName("\t");
+						WaitSceneManager.Instance.AddName(rankdata.winRecord.ToString());
+						WaitSceneManager.Instance.AddName("\n");
 					}
 					break;
 				}
