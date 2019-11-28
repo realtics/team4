@@ -158,6 +158,13 @@ public class NetworkManager : Singleton<NetworkManager>
                     headerPacket = new PACKET_HEADER(packetIndex, packetSize);
                     return headerPacket;
                 }
+			case PACKET_INDEX.REQ_RANK:
+				{
+					int packetSize = Marshal.SizeOf<PACKET_REQ_RANK>();
+					PACKET_HEADER headerPacket;
+					headerPacket = new PACKET_HEADER(packetIndex, packetSize);
+					return headerPacket;
+				}
 			default:
 				{
 					int packetSize = Marshal.SizeOf<PACKET_REQ_IN>();
