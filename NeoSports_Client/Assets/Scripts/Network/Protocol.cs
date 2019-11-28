@@ -28,6 +28,7 @@ public enum CHAR_INDEX
 public enum PACKET_INDEX
 {
     REQ_IN = 200,
+
     REQ_MULTI_ROOM, //클라에서 같이하기 눌렀을때 방을 만들거나 방이있으면 접속함
     START_GAME,
     REQ_INIT_ROOM,
@@ -35,6 +36,10 @@ public enum PACKET_INDEX
 
 	//줄다리기용 패킷
 	REQ_RES_ROPE_PULL_GAME,
+
+	//게임랭킹
+	REQ_RANK,
+	RES_RANK,
 
 	//클라와 통신하고 있지 않은 인덱스들 (채팅용)
 	RES_IN,
@@ -77,7 +82,23 @@ public struct PACKET_REQ_MULTI_ROOM
 	}
 
 };
+public struct PACKET_REQ_RANK
+{
+	public PACKET_HEADER header;
+	public GAME_INDEX gameIndex;
+};
 #endregion
+public struct RANK
+{
+	public char[] name;
+	public int winRecord;
+};
+
+struct PACKET_RES_RANK
+{
+	PACKET_HEADER header;
+	RANK[] rank;
+};
 
 public struct HeaderPacket
 {
