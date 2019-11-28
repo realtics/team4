@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Runtime.InteropServices;
 
 public enum ROOM_INDEX
 {
@@ -88,16 +89,20 @@ public struct PACKET_REQ_RANK
 	public GAME_INDEX gameIndex;
 };
 #endregion
+
 public struct RANK
 {
-	public char[] name;
+	public string name;
 	public int winRecord;
 };
 
-struct PACKET_RES_RANK
+[StructLayout(LayoutKind.Sequential, Pack = 1)]
+public struct PACKET_RES_RANK
 {
-	PACKET_HEADER header;
-	RANK[] rank;
+	public PACKET_HEADER header;
+
+	[MarshalAs(UnmanagedType.ByValArray, SizeConst = 5)]
+	public RANK[] rank;
 };
 
 public struct HeaderPacket
@@ -123,8 +128,8 @@ public struct PACKET_START_GAME
     public CHAR_INDEX superCharID; //방장의 캐릭터
     public CHAR_INDEX charID;
 
-	public char[] superName;
-	public char[] name;
+	public string superName;
+	public string name;
 };
 
 public struct PACKET_ROOM_INFO
