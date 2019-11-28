@@ -13,6 +13,7 @@ using System;
 
 using Newtonsoft.Json;
 
+
 public class AsyncObject
 {
 	public byte[] buffer;
@@ -29,6 +30,7 @@ public class NetworkManager : Singleton<NetworkManager>
 	const string LoopbackAdress = "127.0.0.1";
 	const int PortNumber = 31400;
 	const int TimeOutCode = 100060;
+	const int bufferSize = 512;
 
 	public bool isLoopBack;
 	[HideInInspector]
@@ -128,7 +130,7 @@ public class NetworkManager : Singleton<NetworkManager>
 		string jsonBuffer;
 		jsonBuffer = JsonConvert.SerializeObject(value); //객체를 json직렬화 
 		jsonBuffer += '\0';//서버에서 널문자까지 읽기 위해 널문자붙이기
-		byte[] bufSend = new byte[128]; //전송을 위해 바이트단위로 변환
+		byte[] bufSend = new byte[bufferSize]; //전송을 위해 바이트단위로 변환
 		bufSend = Encoding.UTF8.GetBytes(jsonBuffer);
 		_sock.Send(bufSend);
 	}
@@ -224,7 +226,7 @@ public class NetworkManager : Singleton<NetworkManager>
 			{
 				_receiveHandler = new AsyncCallback(HandleDataRecive);
 				_sock.NoDelay = true; //nagle off
-				AsyncObject ao = new AsyncObject(128);
+				AsyncObject ao = new AsyncObject(bufferSize);
 				ao.workingSocket = _sock;
 				_sock.BeginReceive(ao.buffer, 0, ao.buffer.Length,
 				   SocketFlags.None, _receiveHandler, ao);
