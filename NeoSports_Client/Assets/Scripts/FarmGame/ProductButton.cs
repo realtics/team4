@@ -27,7 +27,7 @@ public class ProductButton : MonoBehaviour
 		labelName.GetComponent<Text>().text = data.name;
 
 		int grownTime = (data.grownHour * 60) + data.grownMin;
-		labelGrownTime.GetComponent<Text>().text = grownTime.ToString();
+		labelGrownTime.GetComponent<Text>().text = grownTime.ToString() + "분";
 		labelRequireGold.GetComponent<Text>().text = data.price.ToString();
 
 		AddButtonEvent();
