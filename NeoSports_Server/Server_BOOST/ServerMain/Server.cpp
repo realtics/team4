@@ -160,7 +160,7 @@ void Server::ProcessPacket(const int sessionID, const char* data)
 	case PACKET_INDEX::REQ_RANK:
 	{
 		PACKET_REQ_RANK* packet = (PACKET_REQ_RANK*)data;
-		RANK rank[5];
+		RANK rank[MAX_RANK_COUNT];
 
 		db.Rank(packet->gameIndex, rank); //배열 포인터를 전달하고싶다
 		PACKET_RES_RANK resRankPacket;
@@ -168,8 +168,8 @@ void Server::ProcessPacket(const int sessionID, const char* data)
 		resRankPacket.header.packetSize = sizeof(PACKET_RES_RANK);
 		for (int i = 0; i < MAX_RANK_COUNT; i++)
 		{
-			strcpy(resRankPacket.rank[i].name, rank[i].name);
-			resRankPacket.rank[i].winRecord = rank[i].winRecord;
+				strcpy(resRankPacket.rank[i].name, rank[i].name);
+				resRankPacket.rank[i].winRecord = rank[i].winRecord;
 		}
 		std::string aa = _SerializationJson(PACKET_INDEX::RES_RANK, (const char*)&resRankPacket);
 		_sessionVec[sessionID]->PostSend(false, aa.length(), (char*)aa.c_str());
@@ -317,13 +317,14 @@ std::string Server::_SerializationJson(int packetIndex, const char* packet)
 	case PACKET_INDEX::RES_RANK:
 	{
 		PACKET_RES_RANK* resRankPacket = new PACKET_RES_RANK;
+		memcpy(&resRankPacket, &packet, sizeof(PACKET_RES_RANK));
 		boost::property_tree::ptree ptSend;
+
 		boost::property_tree::ptree ptSendHeader;
 		ptSendHeader.put<int>("packetIndex", resRankPacket->header.packetIndex);
 		ptSendHeader.put<int>("packetSize", sizeof(PACKET_RES_RANK));
 		ptSend.add_child("header", ptSendHeader);
 
-		//RANK 구조체배열 안의 멤버들을 제이슨으로 옮겨야함
 		boost::property_tree::ptree ptSendRankArr;
 		boost::property_tree::ptree arr[MAX_RANK_COUNT];
 		for (int i = 0; i < MAX_RANK_COUNT; i++)

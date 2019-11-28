@@ -10,6 +10,7 @@ using System.Text;
 using System;
 
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 public enum ROOM_INDEX
 {
@@ -78,6 +79,23 @@ public struct PACKET_MULTI_ROOM
     public int charIndex;
 };
 
+public struct RANK
+{
+    public string name;
+    public int winRecord;
+};
+
+public struct PACKET_RES_RANK
+{
+    public PACKET_HEADER header;
+    public List<RANK> rank;
+};
+public struct PACKET_REQ_RANK
+{
+    public PACKET_HEADER header;
+    public GAME_INDEX gameIndex;
+};
+
 public class SocketMG : MonoBehaviour
 {
     private Socket sock = null;
@@ -92,8 +110,8 @@ public class SocketMG : MonoBehaviour
         sock.Connect(new IPEndPoint(IPAddress.Parse("127.0.0.1"), 31400));
 
         {
-            var headerPacket = new PACKET_HEADER { packetIndex = 201, packetSize = 10 };
-            var p = new PACKET_MULTI_ROOM { header = headerPacket, gameIndex = 20, charIndex = 0 };
+            var headerPacket = new PACKET_HEADER { packetIndex = 206, packetSize = 10 };
+            var p = new PACKET_MULTI_ROOM { header = headerPacket, gameIndex = 21};
             string json;
             json = JsonConvert.SerializeObject(p); //객체를 json직렬화 
             json += '\0';//서버에서 널문자까지 읽기 위해 널문자붙이기
@@ -103,21 +121,27 @@ public class SocketMG : MonoBehaviour
         }
 
 
-        byte[] bufRecv = new byte[128]; //수신을 위해 바이트단위로 변환
+        byte[] bufRecv = new byte[300]; //수신을 위해 바이트단위로 변환
         int n = sock.Receive(bufRecv);
-        Debug.Log("recv");
-        Debug.Log(n);
 
         int bufLen = bufRecv.Length;
+
         string recvData = Encoding.UTF8.GetString(bufRecv, 0, n);
         Debug.Log(recvData);
 
         var data = JsonConvert.DeserializeObject<TempPacket>(recvData);
-        if (data.header.packetIndex == 202) //JsonExample
+        if (data.header.packetIndex == 207) //JsonExample
         {
-            var packetTemp = JsonConvert.DeserializeObject<PACKET_ROOM_INFO>(recvData);
-            Debug.Log(packetTemp.roomInfo); //방번호
-            Debug.Log(packetTemp.charInfo); //입장한 캐릭터 번호
+            JObject jobj = JObject.Parse(recvData);
+            PACKET_RES_RANK packetTemp;
+            packetTemp = JsonConvert.DeserializeObject<PACKET_RES_RANK>(recvData);
+            Debug.Log(recvData);
+
+            for (int i = 0; i < 5; i++)
+            {
+                Debug.Log(packetTemp.rank[i].name);
+                Debug.Log(packetTemp.rank[i].winRecord);
+            }
         }
     }
 
