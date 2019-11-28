@@ -122,6 +122,9 @@ public struct PACKET_START_GAME
     public PACKET_HEADER header;
     public CHAR_INDEX superCharID; //방장의 캐릭터
     public CHAR_INDEX charID;
+
+	public char[] superName;
+	public char[] name;
 };
 
 public struct PACKET_ROOM_INFO

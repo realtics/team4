@@ -24,6 +24,10 @@ public class PacketQueue : Singleton<PacketQueue>
 	public CHAR_INDEX superCharIndex;
 	[HideInInspector]
 	public CHAR_INDEX charIndex;
+	[HideInInspector]
+	public string superName;
+	[HideInInspector]
+	public string guestName;
 
 	void Awake()
 	{
@@ -79,7 +83,9 @@ public class PacketQueue : Singleton<PacketQueue>
 
 					superCharIndex = packetdata.superCharID;
 					charIndex = packetdata.charID;
-
+					superName = packetdata.superName.ToString();
+					guestName = packetdata.name.ToString();
+					
 					SceneManager.LoadScene(SceneName.NetworkRopeGameSceneName);
 
 					break;

@@ -270,6 +270,9 @@ namespace RopePullGame
 
 			SelectInstantCharacter(superCharIndex, _leftPlayer);
 			SelectInstantCharacter(CharIndex, _rightPlayer);
+
+			leftText.text = PacketQueue.Instance.superName;
+			rightText.text = PacketQueue.Instance.guestName;
 		}
 
 		bool IsSingleGame()
