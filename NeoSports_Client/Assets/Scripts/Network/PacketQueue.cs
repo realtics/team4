@@ -101,15 +101,13 @@ public class PacketQueue : Singleton<PacketQueue>
 				}
 			case (int)PACKET_INDEX.RES_RANK:
 				{
-					Debug.Log("PrevRANK");
 					var packetdata = JsonConvert.DeserializeObject<PACKET_RES_RANK>(recvData);
-					Debug.Log("RANK");
 					foreach (var rankdata in packetdata.rank)
 					{
-						WaitSceneManager.Instance.AddName(rankdata.name);
-						WaitSceneManager.Instance.AddName("\t");
-						WaitSceneManager.Instance.AddName(rankdata.winRecord.ToString());
-						WaitSceneManager.Instance.AddName("\n");
+						WaitSceneManager.Instance.AddRankingName(rankdata.name);
+						WaitSceneManager.Instance.AddRankingName("\t");
+						WaitSceneManager.Instance.AddRankingName(rankdata.winRecord.ToString());
+						WaitSceneManager.Instance.AddRankingName("\n");
 					}
 					break;
 				}

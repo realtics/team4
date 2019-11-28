@@ -81,7 +81,7 @@ public class WaitSceneManager : Singleton<WaitSceneManager>
 		#endregion
 	}
 
-	public void AddName(string name)
+	public void AddRankingName(string name)
 	{
 		rankingText.text += name;
 	}
