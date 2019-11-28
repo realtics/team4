@@ -13,7 +13,7 @@ const int FAIL_ROOM_SERCH = -101;
 
 const int MAX_RANK_COUNT = 5;
 
-
+	
 enum ROOM_HOST
 {
 	EMPTY_ROOM = 11,
