@@ -40,35 +40,7 @@ void DB::_Init()
 
 void DB::SelectQuery()
 {
-	//TDOD : 랭킹 조회할떄 사용
-	//const char* query = "SELECT * FROM game";
-	//int state = mysql_query(&_conn, query);
-	//if (state == 0)
-	//{
-	//	_pSqlRes = mysql_store_result(&_conn);
-	//	if (_pSqlRes != nullptr)//SELECT가 아닌 나머지는 NULL
-	//	{
-	//		int numCol = mysql_num_fields(_pSqlRes); //필드수 출력
-	//		while ((_sqlRow = mysql_fetch_row(_pSqlRes)) != nullptr)
-	//		{
-	//			for (int i = 0; i < numCol; i++)
-	//			{
-	//				cout << _sqlRow[i] << " ";
-	//				cout << endl;
-	//			}
-	//		}
-	//		mysql_free_result(_pSqlRes);
-	//	}
-
-	//	else
-	//	{
-	//		int errNo = mysql_errno(&_conn);
-	//		if (errNo != 0)
-	//		{
-	//			cout << "Error" << endl;
-	//		}
-	//	}
-	//}
+	
 }
 
 void DB::Insert(std::string name)
