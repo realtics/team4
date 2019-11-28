@@ -1,4 +1,6 @@
 #include "DB.h"
+#include "Protocol.h"
+
 #include <iostream>
 #include <boost/lexical_cast.hpp>
 
@@ -196,7 +198,8 @@ std::string DB::orderByRank(std::string tableName, GAME_INDEX gameIndex, std::st
 	orderByStr += boost::lexical_cast<std::string>(gameIndex);
 	orderByStr += " ORDER BY ";
 	orderByStr += (column + " DESC");
-	orderByStr += "LIMIT 5";
+	orderByStr += "LIMIT ";
+	orderByStr += boost::lexical_cast<std::string>(MAX_RANK_COUNT);
 
 	return orderByStr;
 }

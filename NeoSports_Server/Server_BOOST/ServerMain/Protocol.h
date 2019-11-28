@@ -11,6 +11,9 @@ const int MAX_MESSAGE_LEN = 129;
 const int MAX_ROOM_COUNT = 20;
 const int FAIL_ROOM_SERCH = -101;
 
+const int MAX_RANK_COUNT = 5;
+
+
 enum ROOM_HOST
 {
 	EMPTY_ROOM = 11,
@@ -78,7 +81,7 @@ struct PACKET_REQ_RANK
 struct PACKET_RES_RANK
 {
 	PACKET_HEADER header;
-	RANK rank[5];
+	RANK rank[MAX_RANK_COUNT];
 };
 
 //클라가 멀티게임 버튼을 눌렀을때

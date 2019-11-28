@@ -1,7 +1,6 @@
 #include "Server.h"
 #include "Json.h"
 
-#define MAX_RANK_COUNT 5
 
 Server::Server(boost::asio::io_context& io_service) : _acceptor(io_service,
 	boost::asio::ip::tcp::endpoint(boost::asio::ip::tcp::v4(), PORT_NUMBER))
