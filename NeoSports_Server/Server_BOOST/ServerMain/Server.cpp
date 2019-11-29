@@ -33,14 +33,14 @@ void Server::Init(const int maxSessionCount)
 
 void Server::Start()
 {
-	std::cout << "서버시작..." << std::endl;
+	std::cout << "Server Start..." << std::endl;
 
 	_PostAccept();
 }
 
 void Server::CloseSession(const int sessionID)
 {
-	std::cout << "클라이언트 접속 종료. 세션 ID: " << sessionID << std::endl;
+	std::cout << "Client out. Session ID: " << sessionID << std::endl;
 
 	_sessionVec[sessionID]->Socket().close();
 	_sessionDeq.push_back(sessionID);
@@ -62,7 +62,7 @@ void Server::ProcessPacket(const int sessionID, const char* data)
 		PACKET_REQ_IN* packet = (PACKET_REQ_IN*)data;
 		_sessionVec[sessionID]->SetNanme(packet->name);
 
-		std::cout << "클라접속 Name : " << _sessionVec[sessionID]->GetName() << std::endl;
+		std::cout << "Client accept. Name : " << _sessionVec[sessionID]->GetName() << std::endl;
 		db.Insert(_sessionVec[sessionID]->GetName());
 	}
 	break;
@@ -115,7 +115,7 @@ void Server::ProcessPacket(const int sessionID, const char* data)
 
 		if (packet->isEndGame)
 		{
-			std::cout << roomNum << "번방 " << packet->gameIndex << "게임 종료. 승자 "
+			std::cout << roomNum << "Room " << packet->gameIndex << "Game Over. Winner : "
 				<< sessionID << std::endl;
 			db.Update(_sessionVec[sessionID]->GetName(), packet->gameIndex, 1);
 		}
@@ -134,7 +134,7 @@ void Server::ProcessPacket(const int sessionID, const char* data)
 		if (roomNum == FAIL_ROOM_SERCH ||
 			roomMG.roomVec[roomNum]->superSessionID == GAME_INDEX::EMPTY_GAME)
 		{
-			std::cout << "(이미 초기화된 방)." << std::endl;
+			std::cout << "(already Init)." << std::endl;
 			break;
 		}
 
@@ -227,7 +227,7 @@ void Server::_AcceptHandle(Session* session, const boost::system::error_code& er
 
 	if (!error)
 	{
-		std::cout << "클라접속. SessionID : " << session->GetSessionID() << std::endl;
+		std::cout << "Entered Client. SessionID : " << session->GetSessionID() << std::endl;
 
 		session->Init();
 		session->PostReceive();
