@@ -44,7 +44,6 @@ public class InventoryManager : Singleton<InventoryManager>
         CurrentEquipment = EquipmentInfos[EquipmentInfo.EType.BlackFedora];
         Singleton<GallaryManager>.Instance.SetPreview();
 		//CreateJson();
-		Debug.Log("Inventoru ");
 		PlayerNickName = "플레이어";
     }
 

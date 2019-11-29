@@ -218,11 +218,11 @@ public class NetworkManager : Singleton<NetworkManager>
 			{
 				var result = _sock.BeginConnect(new IPEndPoint(IPAddress.Parse(IpAdress), PortNumber), null, null);
 
-				Debug.Log("IpAdress로 접속 시도 ");
+				
 				bool success = result.AsyncWaitHandle.WaitOne(1000, true);
 				if (success)
 				{
-					Debug.Log("IpAdress로 접속 성공 ");
+					
 					//_sock.EndConnect(result);
 				}
 				else
