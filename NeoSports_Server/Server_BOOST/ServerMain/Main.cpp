@@ -27,7 +27,7 @@ int main()
 	}
 	tg.join_all();
 
-	std::cout << "네트워크 종료" << std::endl;
+	std::cout << "End Network" << std::endl;
 
 	return 0;
 }
