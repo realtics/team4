@@ -43,9 +43,9 @@ public class InventoryManager : Singleton<InventoryManager>
         CurrentCharacter = CharacterInfos[CharacterInfo.EType.PpiYaGi];
         CurrentEquipment = EquipmentInfos[EquipmentInfo.EType.BlackFedora];
         Singleton<GallaryManager>.Instance.SetPreview();
-        //CreateJson();
-
-        PlayerNickName = "플레이어";
+		//CreateJson();
+		Debug.Log("Inventoru ");
+		PlayerNickName = "플레이어";
     }
 
     #region Read Infos From Json

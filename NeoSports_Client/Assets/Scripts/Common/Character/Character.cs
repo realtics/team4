@@ -32,8 +32,8 @@ public class Character : MonoBehaviour
         _currentState = EState.Idle;
         _animator = transform.GetComponent<Animator>();
     }
-
-    public void StartJump()
+	#region CharacterRender
+	public void StartJump()
     {
         if (_currentState != EState.Idle)
         {
@@ -66,4 +66,5 @@ public class Character : MonoBehaviour
         _animator.SetBool(AnimationParameter.IsRun, false);
         _currentState = EState.Idle;
     }
+	#endregion
 }

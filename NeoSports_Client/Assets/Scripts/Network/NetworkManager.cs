@@ -26,14 +26,17 @@ public class AsyncObject
 
 public class NetworkManager : Singleton<NetworkManager>
 {
-	const string IpAdress = "192.168.1.119";
+	const string AzureIPAdress = "52.141.2.84";
+	string IpAdress = "192.168.1.119";
 	const string LoopbackAdress = "127.0.0.1";
 	const int PortNumber = 31400;
 	const int TimeOutCode = 100060;
 	const int bufferSize = 512;
 
-	public bool isLoopBack;
-	[HideInInspector]
+	public bool isLoopBackServer;
+	public bool isAzureServer;
+	
+	[HideInInspector] 
 	public bool isOwnHost;
 	[HideInInspector]
 	public CHAR_INDEX superCharIndex;
@@ -53,6 +56,10 @@ public class NetworkManager : Singleton<NetworkManager>
 		
 		instance = this;
 		isOwnHost = false;
+		if (isAzureServer)
+		{
+			IpAdress = AzureIPAdress;
+		}
 		DontDestroyOnLoad(this);
 	}
 
@@ -192,7 +199,7 @@ public class NetworkManager : Singleton<NetworkManager>
 		}
 		try
 		{
-			if (isLoopBack)
+			if (isLoopBackServer)
 			{
 				//_sock.Connect(new IPEndPoint(IPAddress.Parse(LoopbackAdress), PortNumber));
 				var result = _sock.BeginConnect(new IPEndPoint(IPAddress.Parse(LoopbackAdress), PortNumber), null, null);
@@ -210,9 +217,12 @@ public class NetworkManager : Singleton<NetworkManager>
 			else
 			{
 				var result = _sock.BeginConnect(new IPEndPoint(IPAddress.Parse(IpAdress), PortNumber), null, null);
+
+				Debug.Log("IpAdress로 접속 시도 ");
 				bool success = result.AsyncWaitHandle.WaitOne(1000, true);
 				if (success)
 				{
+					Debug.Log("IpAdress로 접속 성공 ");
 					//_sock.EndConnect(result);
 				}
 				else
