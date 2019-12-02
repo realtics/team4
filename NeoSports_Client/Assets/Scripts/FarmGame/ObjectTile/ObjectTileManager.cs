@@ -14,10 +14,6 @@ public class ObjectTileManager : Singleton<ObjectTileManager>
 	void Awake()
 	{
 		objectTileDic = new Dictionary<Point, ObjectTile>();
-	}
-
-	void Start()
-	{
 		InitRoadTile();
 	}
 
@@ -64,7 +60,7 @@ public class ObjectTileManager : Singleton<ObjectTileManager>
 
 
 	#region Product Tile
-	public void PlantProduct(Point pt, EProduct type)
+	public void PlantProduct(Point pt, int type)
 	{
 		FarmUIManager.Instance.ClosePanel(FarmUIManager.ECategory.Plant);
 

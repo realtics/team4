@@ -2445,6 +2445,26 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4856514685353556047, guid: f955ffb2ac3fc35439763445f619e3c7,
+        type: 3}
+      propertyPath: popupPanel
+      value: 
+      objectReference: {fileID: 1648466098}
+    - target: {fileID: 4856514685353556047, guid: f955ffb2ac3fc35439763445f619e3c7,
+        type: 3}
+      propertyPath: popupNotifyText
+      value: 
+      objectReference: {fileID: 1648466097}
+    - target: {fileID: 4856514685353556047, guid: f955ffb2ac3fc35439763445f619e3c7,
+        type: 3}
+      propertyPath: popupGroupYesNo
+      value: 
+      objectReference: {fileID: 1648466096}
+    - target: {fileID: 4856514685353556047, guid: f955ffb2ac3fc35439763445f619e3c7,
+        type: 3}
+      propertyPath: popupGroupOk
+      value: 
+      objectReference: {fileID: 1648466094}
     - target: {fileID: 4856514685353556048, guid: f955ffb2ac3fc35439763445f619e3c7,
         type: 3}
       propertyPath: m_Name
@@ -2505,26 +2525,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4856514685353556047, guid: f955ffb2ac3fc35439763445f619e3c7,
-        type: 3}
-      propertyPath: popupPanel
-      value: 
-      objectReference: {fileID: 1648466098}
-    - target: {fileID: 4856514685353556047, guid: f955ffb2ac3fc35439763445f619e3c7,
-        type: 3}
-      propertyPath: popupNotifyText
-      value: 
-      objectReference: {fileID: 1648466097}
-    - target: {fileID: 4856514685353556047, guid: f955ffb2ac3fc35439763445f619e3c7,
-        type: 3}
-      propertyPath: popupGroupYesNo
-      value: 
-      objectReference: {fileID: 1648466096}
-    - target: {fileID: 4856514685353556047, guid: f955ffb2ac3fc35439763445f619e3c7,
-        type: 3}
-      propertyPath: popupGroupOk
-      value: 
-      objectReference: {fileID: 1648466094}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f955ffb2ac3fc35439763445f619e3c7, type: 3}
 --- !u!114 &1127811203 stripped
@@ -2631,7 +2631,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 7
+  m_Constraints: 4
 --- !u!1001 &1186315425
 PrefabInstance:
   m_ObjectHideFlags: 0

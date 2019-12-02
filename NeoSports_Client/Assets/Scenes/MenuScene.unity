@@ -2962,7 +2962,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 931960232}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.0599914, y: -9.688083, z: -2.4495478}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -5606,7 +5606,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1595182278}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -3.0599914, y: -9.688083, z: -2.4495478}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -5663,7 +5663,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 200, y: 200}
+  m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1613704220
 MonoBehaviour:
@@ -5683,7 +5683,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 9bd8cc5da3cfa854691fe4a83358f9dd, type: 3}
+  m_Sprite: {fileID: 21300000, guid: b220f3d311fd19740ace7b83cd06cce0, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -6784,16 +6784,6 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: ClickEventPopup
       objectReference: {fileID: 0}
-    - target: {fileID: 1179659509574792243, guid: 476141d3c44bc8a4b8e43a8b499b721e,
-        type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 1289275824}
-    - target: {fileID: 1179659509574792243, guid: 476141d3c44bc8a4b8e43a8b499b721e,
-        type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: ClosePopup
-      objectReference: {fileID: 0}
     - target: {fileID: 1179659508126846312, guid: 476141d3c44bc8a4b8e43a8b499b721e,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -6803,6 +6793,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: ClickEventPopup
+      objectReference: {fileID: 0}
+    - target: {fileID: 1179659509574792243, guid: 476141d3c44bc8a4b8e43a8b499b721e,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1289275824}
+    - target: {fileID: 1179659509574792243, guid: 476141d3c44bc8a4b8e43a8b499b721e,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ClosePopup
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 476141d3c44bc8a4b8e43a8b499b721e, type: 3}
@@ -6938,11 +6938,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 4856514685353556048, guid: f955ffb2ac3fc35439763445f619e3c7,
-        type: 3}
-      propertyPath: m_Name
-      value: Manager_Popup
-      objectReference: {fileID: 0}
     - target: {fileID: 4856514685353556047, guid: f955ffb2ac3fc35439763445f619e3c7,
         type: 3}
       propertyPath: popupPanel
@@ -6963,6 +6958,11 @@ PrefabInstance:
       propertyPath: popupNotifyText
       value: 
       objectReference: {fileID: 477906253}
+    - target: {fileID: 4856514685353556048, guid: f955ffb2ac3fc35439763445f619e3c7,
+        type: 3}
+      propertyPath: m_Name
+      value: Manager_Popup
+      objectReference: {fileID: 0}
     - target: {fileID: 4856514685353556046, guid: f955ffb2ac3fc35439763445f619e3c7,
         type: 3}
       propertyPath: m_LocalPosition.x

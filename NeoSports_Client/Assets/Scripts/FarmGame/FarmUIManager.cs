@@ -246,4 +246,15 @@ public class FarmUIManager : Singleton<FarmUIManager>
 		}
 	}
 
+	void CreateDecorationScrollViewItem()
+	{
+		var decorationDatas = MapData.Instance.DecorationDatas;
+
+		foreach(var item in decorationDatas)
+		{
+			GameObject obj = Instantiate(prefDecorationButton, decorationScrollViewContent.transform);
+			obj.GetComponent<DecorationData>();
+		}
+	}
+
 }
