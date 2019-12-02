@@ -5,7 +5,7 @@ using UnityEngine;
 namespace BasketBallGame
 {
     public class BasketAIThrowBall : MonoBehaviour
-    {
+	{
         const float AIShootRangeMinX = 2.0f;
         const float AIShootRangeMaxX = 15.0f;
         const float AIShootRangeMinY = -15.0f;
@@ -17,18 +17,22 @@ namespace BasketBallGame
         public float aiActiveFrequency;
         public GameObject prefAiThrowBall;
         public GameObject directionArrow;
+		public BasketBall baksetballPrefab;
 
-        float _powerSize;
+		float _powerSize;
         float _arrowScaleOffset;
         float _powerSizeOffset;
 
-        void Start()
+		PoolFactory _ballFactory;
+
+		void Start()
         {
             _powerSize = 0.0f;
             _powerSizeOffset = 0.1f;
             _arrowScaleOffset = 2.0f;
 			directionArrow.transform.position = new Vector2(transform.position.x - DirectionArrowOffset, transform.position.y + DirectionArrowOffset);
 
+			_ballFactory = new PoolFactory(baksetballPrefab);
 			StartCoroutine(UpdateAI());
 		}
 
@@ -76,9 +80,13 @@ namespace BasketBallGame
             _powerSize = 0.0f;
 
 			//To DO : Instatniate 말고 pool화. 
-            GameObject cannon = Instantiate(prefAiThrowBall, transform.position, transform.rotation);
-            cannon.GetComponent<BasketBall>().ShotToTarget(direction);
-        }
+            //GameObject cannon = Instantiate(prefAiThrowBall, transform.position, transform.rotation);
+            //cannon.GetComponent<BasketBall>().ShotToTarget(direction);
+
+			BasketBall ball = _ballFactory.Get() as BasketBall;
+			ball.transform.position = transform.position;
+			ball.ShotToTarget(direction);
+		}
 
     }
 }

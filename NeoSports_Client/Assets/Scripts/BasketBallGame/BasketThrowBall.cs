@@ -4,7 +4,7 @@ using UnityEngine;
 /*각 계산하는 부분 인터넷 참고 하였습니다.*/
 namespace BasketBallGame
 {
-    public class BasketThrowBall : RecycleObject 
+    public class BasketThrowBall : MonoBehaviour 
     {
         const float angleMax = 1.6f;
         const float angleMin = -0.7f;
@@ -12,6 +12,7 @@ namespace BasketBallGame
         public float fireSpeed;
         public GameObject directionArrow;
         public GameObject prefThrowBall;
+		public BasketBall baksetballPrefab;
 
         Collider2D _ownCollider;
         bool _isTargetting;
@@ -19,8 +20,9 @@ namespace BasketBallGame
         float _arrowScaleOffset;
         float _powerSizeOffset;
 		Camera _mainCam;
+		PoolFactory _ballFactory;
 
-        void Start()
+		void Start()
         {
             _isTargetting = false;
             _ownCollider = GetComponent<Collider2D>();
@@ -28,6 +30,7 @@ namespace BasketBallGame
             _powerSizeOffset = 0.1f;
             _arrowScaleOffset = 5.0f;
 			_mainCam = Camera.main;
+			_ballFactory = new PoolFactory(baksetballPrefab);
 
 		}
 
@@ -77,9 +80,13 @@ namespace BasketBallGame
             Vector2 direction = directionArrow.transform.rotation * new Vector2(fireSpeed, 0.0f) * _powerSize;
             _powerSize = 0.0f;
 
-            GameObject cannon = Instantiate(prefThrowBall, transform.position, transform.rotation);
-            cannon.GetComponent<BasketBall>().ShotToTarget(direction);
-        }
+			//To DO : Instatniate 말고 pool화. 
+			//GameObject cannon = Instantiate(prefThrowBall, transform.position, transform.rotation);
+			//         cannon.GetComponent<BasketBall>().ShotToTarget(direction);
+			BasketBall ball = _ballFactory.Get() as BasketBall;
+			ball.transform.position = transform.position;
+			ball.ShotToTarget(direction);
+		}
 
     }
 }

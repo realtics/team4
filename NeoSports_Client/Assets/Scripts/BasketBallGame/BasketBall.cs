@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace BasketBallGame
 {
-    public class BasketBall : MonoBehaviour
+    public class BasketBall : RecycleObject
     {
         Rigidbody2D _rb2d;
         Vector3 _prevPosition;
@@ -18,7 +18,7 @@ namespace BasketBallGame
 
         void Update()
         {
-            CheckOutScreenObject();
+            //CheckOutScreenObject();
         }
 
         void FixedUpdate()
