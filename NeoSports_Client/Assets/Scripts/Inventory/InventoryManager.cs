@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using JsonFx.Json;
+using Newtonsoft.Json;
 
 public class InventoryManager : Singleton<InventoryManager>
 {
@@ -57,7 +57,8 @@ public class InventoryManager : Singleton<InventoryManager>
 
 		string dataPath = ResourceManager.JsonDataPath + CharacterDataName;
 		string dataStr = ResourceManager.Instance.ReadJsonDataString(dataPath);
-		datas = JsonReader.Deserialize<CharacterInfo.JsonData[]>(dataStr);
+		//datas = JsonReader.Deserialize<CharacterInfo.JsonData[]>(dataStr);
+		datas = JsonConvert.DeserializeObject<CharacterInfo.JsonData[]>(dataStr);
 
 		foreach (var child in datas)
 		{
@@ -73,7 +74,7 @@ public class InventoryManager : Singleton<InventoryManager>
 		string dataPath = ResourceManager.JsonDataPath + EquipmentDataName;
 		string data = ResourceManager.Instance.ReadJsonDataString(dataPath);
 
-		datas = JsonReader.Deserialize<EquipmentInfo.JsonData[]>(data);
+		datas = JsonConvert.DeserializeObject<EquipmentInfo.JsonData[]>(data);
 
 		foreach (var child in datas)
 		{
