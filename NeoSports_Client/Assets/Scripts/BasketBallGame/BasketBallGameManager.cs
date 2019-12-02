@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 namespace BasketBallGame
 {
-	public class BasketBallManager : Singleton<BasketBallManager>
+	public class BasketBallGameManager : Singleton<BasketBallGameManager>
 	{
 
 		public enum EGameState

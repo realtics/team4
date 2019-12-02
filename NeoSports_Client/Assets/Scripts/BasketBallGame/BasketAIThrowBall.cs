@@ -36,7 +36,7 @@ namespace BasketBallGame
 		{
 			while (true)
 			{
-				if (BasketBallManager.Instance.GameState == BasketBallManager.EGameState.Playing)
+				if (BasketBallGameManager.Instance.GameState == BasketBallGameManager.EGameState.Playing)
 				{
 					CalculateAIAngle();
 					Fire();
@@ -75,8 +75,9 @@ namespace BasketBallGame
             Vector2 direction = directionArrow.transform.rotation * new Vector2(aiFireSpeed, 0.0f) * _powerSize;
             _powerSize = 0.0f;
 
+			//To DO : Instatniate 말고 pool화. 
             GameObject cannon = Instantiate(prefAiThrowBall, transform.position, transform.rotation);
-            cannon.GetComponent<BasketPlayerCannon>().ShotToTarget(direction);
+            cannon.GetComponent<BasketBall>().ShotToTarget(direction);
         }
 
     }

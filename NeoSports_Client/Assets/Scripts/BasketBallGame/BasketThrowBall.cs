@@ -4,7 +4,7 @@ using UnityEngine;
 /*각 계산하는 부분 인터넷 참고 하였습니다.*/
 namespace BasketBallGame
 {
-    public class BasketThrowBall : MonoBehaviour
+    public class BasketThrowBall : RecycleObject 
     {
         const float angleMax = 1.6f;
         const float angleMin = -0.7f;
@@ -33,7 +33,7 @@ namespace BasketBallGame
 
         void Update()
         {
-			if(BasketBallManager.Instance.GameState == BasketBallManager.EGameState.Playing)
+			if(BasketBallGameManager.Instance.GameState == BasketBallGameManager.EGameState.Playing)
 			{
 				ShotInWindow();
 			}
@@ -78,7 +78,7 @@ namespace BasketBallGame
             _powerSize = 0.0f;
 
             GameObject cannon = Instantiate(prefThrowBall, transform.position, transform.rotation);
-            cannon.GetComponent<BasketPlayerCannon>().ShotToTarget(direction);
+            cannon.GetComponent<BasketBall>().ShotToTarget(direction);
         }
 
     }

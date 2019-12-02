@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace BasketBallGame
 {
-    public class BasketPlayerCannon : MonoBehaviour
+    public class BasketBall : MonoBehaviour
     {
         Rigidbody2D _rb2d;
         Vector3 _prevPosition;
