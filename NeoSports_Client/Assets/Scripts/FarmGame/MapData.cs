@@ -5,16 +5,6 @@ using System.Drawing;
 using UnityEngine;
 using JsonFx.Json;
 
-public struct DecorationData
-{
-	public EDecoration type;
-	public string name;
-	public int price;
-	public string sprite;
-}
-
-
-
 public class MapData : Singleton<MapData>
 {
 	const string DecorationDataPath = "Jsons/Farm/DecorationData";
@@ -25,15 +15,15 @@ public class MapData : Singleton<MapData>
 
 	public const float TileSize = 0.48f;
 
-	Dictionary<EDecoration, DecorationData> decorationDatas;
-	Dictionary<EProduct, ProductData> productDatas;
+	Dictionary<int, DecorationData> decorationDatas;
+	Dictionary<int, ProductData> productDatas;
 
 	#region Property
-	public Dictionary<EDecoration, DecorationData> DecorationDatas {
+	public Dictionary<int, DecorationData> DecorationDatas {
 		get { return decorationDatas; }
 	}
 
-	public Dictionary<EProduct, ProductData> ProductDatas {
+	public Dictionary<int, ProductData> ProductDatas {
 		get { return productDatas; }
 	}
 
@@ -42,8 +32,8 @@ public class MapData : Singleton<MapData>
 
 	void Awake()
 	{
-		decorationDatas = new Dictionary<EDecoration, DecorationData>();
-		productDatas = new Dictionary<EProduct, ProductData>();
+		decorationDatas = new Dictionary<int, DecorationData>();
+		productDatas = new Dictionary<int, ProductData>();
 
 		ReadDecorationData();
 		ReadProductData();

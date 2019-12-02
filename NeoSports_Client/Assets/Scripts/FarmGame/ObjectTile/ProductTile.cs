@@ -5,9 +5,9 @@ using System.Drawing;
 using UnityEngine;
 using UnityEngine.U2D;
 
-public struct ProductData
+public class ProductData
 {
-	public EProduct type;
+	public int type;
 	public string name;
 	public int price;
 	public int grownHour;
@@ -24,10 +24,10 @@ public class ProductTile : ObjectTile
 		FullGrownSprite
 	}
 
-	public struct LoadData
+	public class LoadData
 	{
 		public Point point;
-		public EProduct productType;
+		public int productType;
 		public DateTime plantingTime;
 		public DateTime harvestTime;
 	}
@@ -40,7 +40,7 @@ public class ProductTile : ObjectTile
 
 	public SpriteAtlas farmLandTileAtlas;
 
-	public void PlantProduct(Point pt, EProduct type)
+	public void PlantProduct(Point pt, int type)
 	{
 		productData = MapData.Instance.ProductDatas[type];
 		point = pt;

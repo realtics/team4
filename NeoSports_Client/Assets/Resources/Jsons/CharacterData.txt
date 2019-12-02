@@ -8,7 +8,7 @@
          "agility":1,
          "luck":1
       },
-      "iconName":"Character_PpiYaGi"
+      "iconName":"Ppi_Ya_Gi_Icon"
    },
    { 
       "charType":2,
@@ -19,7 +19,7 @@
          "agility":1,
          "luck":2
       },
-      "iconName":"Character_TurkeyJelly"
+      "iconName":"Turkey_Jelly_Idle_0"
    },
    { 
       "charType":0,
