@@ -2723,7 +2723,6 @@ GameObject:
   - component: {fileID: 692681183}
   - component: {fileID: 692681185}
   - component: {fileID: 692681186}
-  - component: {fileID: 692681184}
   - component: {fileID: 692681187}
   - component: {fileID: 692681188}
   m_Layer: 0
@@ -2796,19 +2795,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &692681184
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 692681181}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e0bbf2e1677b4df4b94bcd2e5da69167, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 5
 --- !u!95 &692681185
 Animator:
   serializedVersion: 3
@@ -2891,6 +2877,38 @@ MonoBehaviour:
   directionArrow: {fileID: 1104905417}
   prefThrowBall: {fileID: 5136095947879792108, guid: 7429cd207680cbb4abcbe0398f0282dd,
     type: 3}
+  baksetballPrefab: {fileID: 5265682357180277926, guid: 5651e0ddcdee50b498109febecc4b182,
+    type: 3}
+--- !u!1 &726922150
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 726922151}
+  m_Layer: 0
+  m_Name: BasketBallPool
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &726922151
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 726922150}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 241.75333, y: 367.34497, z: -126.20051}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 13
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &738094666
 GameObject:
   m_ObjectHideFlags: 0
@@ -6543,6 +6561,8 @@ MonoBehaviour:
   prefAiThrowBall: {fileID: 2126734234637613029, guid: 533c5d8b9fcab0c48a0a71c1fc1701e8,
     type: 3}
   directionArrow: {fileID: 1020499302}
+  baksetballPrefab: {fileID: 5265682357180277926, guid: 5651e0ddcdee50b498109febecc4b182,
+    type: 3}
 --- !u!95 &1767396872
 Animator:
   serializedVersion: 3

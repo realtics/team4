@@ -88,11 +88,11 @@ public class NetworkManager : Singleton<NetworkManager>
 
 		PACKET_HEADER headerPacket = MakeHeaderPacket(PACKET_INDEX.REQ_MULTI_ROOM);
 		PACKET_REQ_MULTI_ROOM packet = new PACKET_REQ_MULTI_ROOM
-		{
-			header = headerPacket,
-			gameIndex = roomIndex,
-			charIndex = (CHAR_INDEX)InventoryManager.Instance.CurrentCharacter.Type//(int)CHAR_INDEX.CHICK 
-		};
+		(
+			headerPacket,
+			roomIndex,
+			(CHAR_INDEX)InventoryManager.Instance.CurrentCharacter.Type//(int)CHAR_INDEX.CHICK 
+		);
 
 		SendToServerPacket(packet);
 	}
@@ -114,7 +114,7 @@ public class NetworkManager : Singleton<NetworkManager>
 		PACKET_REQ_RANK packet = new PACKET_REQ_RANK
 		{
 			header = headerPacket,
-			gameIndex = currentGameIndex,
+			gameIndex = (int)currentGameIndex,
 		};
 		SendToServerPacket(packet);
 	}
@@ -125,7 +125,7 @@ public class NetworkManager : Singleton<NetworkManager>
         PACKET_REQ_INIT_ROOM packet = new PACKET_REQ_INIT_ROOM
         {
             header = headerPacket,
-            gameIndex = roomIndex,
+            gameIndex = (int)roomIndex,
             isEndGame = isRoomEndGame,
         };
         SendToServerPacket(packet);

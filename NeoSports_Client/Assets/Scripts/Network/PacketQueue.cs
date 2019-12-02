@@ -95,7 +95,7 @@ public class PacketQueue : Singleton<PacketQueue>
 			}
 			case (int)PACKET_INDEX.REQ_RES_ROPE_PULL_GAME:
 			{
-				var packetdata = JsonReader.Deserialize<PACKET_REQ_RES_ROPE_PULL_GAME>(recvData);
+				var packetdata = JsonUtility.FromJson<PACKET_REQ_RES_ROPE_PULL_GAME>(recvData);
 				RopePullGame.RopePullMoveRopeWithKey.Instance.UpdateNetworkRopePostion(packetdata.ropePos);
 				break;
 			}
