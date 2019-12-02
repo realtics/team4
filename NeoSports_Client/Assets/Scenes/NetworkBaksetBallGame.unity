@@ -212,7 +212,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 800, y: 600}
@@ -1219,16 +1219,6 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: ClickEventPopup
       objectReference: {fileID: 0}
-    - target: {fileID: 1179659509574792243, guid: 476141d3c44bc8a4b8e43a8b499b721e,
-        type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 558232836}
-    - target: {fileID: 1179659509574792243, guid: 476141d3c44bc8a4b8e43a8b499b721e,
-        type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: ClosePopup
-      objectReference: {fileID: 0}
     - target: {fileID: 1179659508126846312, guid: 476141d3c44bc8a4b8e43a8b499b721e,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -1238,6 +1228,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: ClickEventPopup
+      objectReference: {fileID: 0}
+    - target: {fileID: 1179659509574792243, guid: 476141d3c44bc8a4b8e43a8b499b721e,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 558232836}
+    - target: {fileID: 1179659509574792243, guid: 476141d3c44bc8a4b8e43a8b499b721e,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ClosePopup
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 476141d3c44bc8a4b8e43a8b499b721e, type: 3}
@@ -3278,6 +3278,7 @@ MonoBehaviour:
   directionArrow: {fileID: 1104905417}
   prefThrowBall: {fileID: 5136095947879792108, guid: 7429cd207680cbb4abcbe0398f0282dd,
     type: 3}
+  baksetballPrefab: {fileID: 0}
 --- !u!1 &738094666
 GameObject:
   m_ObjectHideFlags: 0
@@ -7341,6 +7342,7 @@ MonoBehaviour:
   prefAiThrowBall: {fileID: 2126734234637613029, guid: 533c5d8b9fcab0c48a0a71c1fc1701e8,
     type: 3}
   directionArrow: {fileID: 1020499302}
+  baksetballPrefab: {fileID: 0}
 --- !u!95 &1767396872
 Animator:
   serializedVersion: 3
