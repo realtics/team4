@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using Newtonsoft.Json;
 using UnityEngine.SceneManagement;
 using UnityEngine;
 
@@ -19,7 +18,7 @@ public struct NetworkQueueData
 public class PacketQueue : Singleton<PacketQueue>
 {
 	public Queue<NetworkQueueData> networkQueue = new Queue<NetworkQueueData>();
-	
+
 	[HideInInspector]
 	public CHAR_INDEX superCharIndex;
 	[HideInInspector]
@@ -56,61 +55,61 @@ public class PacketQueue : Singleton<PacketQueue>
 		switch (pakcetIndex)
 		{
 			case (int)PACKET_INDEX.ROOM_INFO:
+			{
+				var packetdata = JsonUtility.FromJson<PACKET_ROOM_INFO>(recvData);
+				if (packetdata.roomInfo == ROOM_INDEX.MAKE_ROOM)
 				{
-					var packetdata = JsonConvert.DeserializeObject<PACKET_ROOM_INFO>(recvData);
-					if (packetdata.roomInfo == ROOM_INDEX.MAKE_ROOM)
-					{
-						superCharIndex = (CHAR_INDEX)InventoryManager.instance.CurrentCharacter.Type;
-						NetworkManager.Instance.isOwnHost = true;
-						//To DO: 현재는 임시시스템. 
-						NetworkManager.Instance.SendRequsetRank(GAME_INDEX.ROPE_PULL);
-						SceneManager.LoadScene(SceneName.WaitGameSceneName);
-						
-					}
-					else
-					{
-						NetworkManager.Instance.isOwnHost = false;
-					}
-					
-					
-					break;
+					superCharIndex = (CHAR_INDEX)InventoryManager.instance.CurrentCharacter.Type;
+					NetworkManager.Instance.isOwnHost = true;
+					//To DO: 현재는 임시시스템. 
+					NetworkManager.Instance.SendRequsetRank(GAME_INDEX.ROPE_PULL);
+					SceneManager.LoadScene(SceneName.WaitGameSceneName);
+
 				}
+				else
+				{
+					NetworkManager.Instance.isOwnHost = false;
+				}
+
+
+				break;
+			}
 			case (int)PACKET_INDEX.REQ_IN:
-				{
-					var packetdata = JsonConvert.DeserializeObject<PACKET_REQ_IN>(recvData);
-					break;
-				}
+			{
+				var packetdata = JsonUtility.FromJson<PACKET_REQ_IN>(recvData);
+				break;
+			}
 			case (int)PACKET_INDEX.START_GAME:
-				{			
-					var packetdata = JsonConvert.DeserializeObject<PACKET_START_GAME>(recvData);
+			{
+				var packetdata = JsonUtility.FromJson<PACKET_START_GAME>(recvData);
 
-					superCharIndex = packetdata.superCharID;
-					charIndex = packetdata.charID;
-					
-					superName = packetdata.superName.ToString();
-					guestName = packetdata.name.ToString();
-					SceneManager.LoadScene(SceneName.NetworkRopeGameSceneName);
+				superCharIndex = packetdata.superCharID;
+				charIndex = packetdata.charID;
 
-					break;
-				}
+				superName = packetdata.superName.ToString();
+				guestName = packetdata.name.ToString();
+				SceneManager.LoadScene(SceneName.NetworkRopeGameSceneName);
+
+				break;
+			}
 			case (int)PACKET_INDEX.REQ_RES_ROPE_PULL_GAME:
-				{
-					var packetdata = JsonConvert.DeserializeObject<PACKET_REQ_RES_ROPE_PULL_GAME>(recvData);
-					RopePullGame.RopePullMoveRopeWithKey.Instance.UpdateNetworkRopePostion(packetdata.ropePos);
-					break;
-				}
+			{
+				var packetdata = JsonUtility.FromJson<PACKET_REQ_RES_ROPE_PULL_GAME>(recvData);
+				RopePullGame.RopePullMoveRopeWithKey.Instance.UpdateNetworkRopePostion(packetdata.ropePos);
+				break;
+			}
 			case (int)PACKET_INDEX.RES_RANK:
+			{
+				var packetdata = JsonUtility.FromJson<PACKET_RES_RANK>(recvData);
+				foreach (var rankdata in packetdata.rank)
 				{
-					var packetdata = JsonConvert.DeserializeObject<PACKET_RES_RANK>(recvData);
-					foreach (var rankdata in packetdata.rank)
-					{
-						WaitSceneManager.Instance.AddRankingName(rankdata.name);
-						WaitSceneManager.Instance.AddRankingName("\t");
-						WaitSceneManager.Instance.AddRankingName(rankdata.winRecord.ToString());
-						WaitSceneManager.Instance.AddRankingName("\n");
-					}
-					break;
+					WaitSceneManager.Instance.AddRankingName(rankdata.name);
+					WaitSceneManager.Instance.AddRankingName("\t");
+					WaitSceneManager.Instance.AddRankingName(rankdata.winRecord.ToString());
+					WaitSceneManager.Instance.AddRankingName("\n");
 				}
+				break;
+			}
 			default:
 				return;
 		}

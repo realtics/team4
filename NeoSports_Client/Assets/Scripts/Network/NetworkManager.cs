@@ -11,8 +11,6 @@ using System.Net.Sockets;
 using System.Text;
 using System;
 
-using Newtonsoft.Json;
-
 
 public class AsyncObject
 {
@@ -135,7 +133,8 @@ public class NetworkManager : Singleton<NetworkManager>
 	void SendToServerPacket(object value)
 	{
 		string jsonBuffer;
-		jsonBuffer = JsonConvert.SerializeObject(value); //객체를 json직렬화 
+
+		jsonBuffer = JsonUtility.ToJson(value); //객체를 json직렬화 
 		jsonBuffer += '\0';//서버에서 널문자까지 읽기 위해 널문자붙이기
 		byte[] bufSend = new byte[bufferSize]; //전송을 위해 바이트단위로 변환
 		bufSend = Encoding.UTF8.GetBytes(jsonBuffer);
@@ -270,7 +269,7 @@ public class NetworkManager : Singleton<NetworkManager>
 			string recvData = Encoding.UTF8.GetString(recvBuf, 0, recvBytes);
 
 			
-			var headerData = JsonConvert.DeserializeObject<HeaderPacket>(recvData);
+			var headerData = JsonUtility.FromJson<HeaderPacket>(recvData);
 			
 			//recevie 처리를 큐잉으로 대체. 
 			PacketQueue.Instance.networkQueue.Enqueue(new NetworkQueueData( headerData.header.packetIndex,recvData));
