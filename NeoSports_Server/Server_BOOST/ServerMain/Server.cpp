@@ -40,7 +40,7 @@ void Server::Start()
 
 void Server::CloseSession(const int sessionID)
 {
-	std::cout << "Client out. Session ID: " << sessionID << std::endl;
+	std::cout << "Server : Client out. Session ID : " << sessionID << std::endl;
 
 	_sessionVec[sessionID]->Socket().close();
 	_sessionDeq.push_back(sessionID);
@@ -62,7 +62,7 @@ void Server::ProcessPacket(const int sessionID, const char* data)
 		PACKET_REQ_IN* packet = (PACKET_REQ_IN*)data;
 		_sessionVec[sessionID]->SetNanme(packet->name);
 
-		std::cout << "Client accept. Name : " << _sessionVec[sessionID]->GetName() << std::endl;
+		std::cout << "Server : Client accept. Name : " << _sessionVec[sessionID]->GetName() << std::endl;
 		db.Insert(_sessionVec[sessionID]->GetName());
 	}
 	break;
@@ -115,7 +115,7 @@ void Server::ProcessPacket(const int sessionID, const char* data)
 
 		if (packet->isEndGame)
 		{
-			std::cout << roomNum << "Room " << packet->gameIndex << "Game Over. Winner : "
+			std::cout << roomNum << "Room " << packet->gameIndex << "End Game. Winner : "
 				<< sessionID << std::endl;
 			db.Update(_sessionVec[sessionID]->GetName(), packet->gameIndex, 1);
 		}
@@ -227,7 +227,7 @@ void Server::_AcceptHandle(Session* session, const boost::system::error_code& er
 
 	if (!error)
 	{
-		std::cout << "Entered Client. SessionID : " << session->GetSessionID() << std::endl;
+		std::cout << "Server : Accept : Entered Client. SessionID : " << session->GetSessionID() << std::endl;
 
 		session->Init();
 		session->PostReceive();

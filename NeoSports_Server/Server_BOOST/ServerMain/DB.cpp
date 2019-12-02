@@ -28,12 +28,12 @@ void DB::_Init()
 		"root", "!qhdksxl0212",
 		"neosports", 3306, NULL, 0) == nullptr)
 	{
-		std::cout << "mysql_real_connect Error" << std::endl;
+		std::cout << "DB : mysql_real_connect Error" << std::endl;
 	}
 
 	if (mysql_select_db(&_conn, "neosports"))
 	{
-		cout << "mysql_select_db Error : " << mysql_errno(&_conn)
+		cout << "DB : mysql_select_db Error : " << mysql_errno(&_conn)
 			<< " : " << mysql_error(&_conn) << endl;
 	}
 }
@@ -52,10 +52,10 @@ void DB::Insert(std::string name)
 		query += "')";
 		if (mysql_query(&_conn, query.c_str()) != 0)
 		{
-			std::cout << "clientNum이 이미 있다.(NotNull)" << std::endl;
+			std::cout << "DB : clientName is already exists.(NotNull)" << std::endl;
 			return;
 		}
-		std::cout << "ClientNum DB INSERT" << std::endl;
+		std::cout << "DB : INSERT ClientName" << std::endl;
 	}
 }
 
@@ -65,10 +65,10 @@ void DB::Delete(std::string name)
 	query += name;
 	if (mysql_query(&_conn, query.c_str()) != 0)
 	{
-		std::cout << "DELETE error" << std::endl;
+		std::cout << "DB : DELETE error" << std::endl;
 		return;
 	}
-	std::cout << "DELETE DB ROW" << std::endl;
+	std::cout << "DB : DELETE ROW" << std::endl;
 }
 
 
@@ -78,7 +78,7 @@ void DB::Update(std::string name, GAME_INDEX gameIndex, int addScore)
 
 	if (mysql_query(&_conn, "SELECT * FROM game") != 0)
 	{
-		std::cout << "DB Update mysql_query error" << std::endl;
+		std::cout << "DB : Update mysql_query error" << std::endl;
 		return;
 	}
 	_pSqlRes = mysql_store_result(&_conn);
@@ -107,7 +107,7 @@ void DB::Update(std::string name, GAME_INDEX gameIndex, int addScore)
 
 				if (mysql_query(&_conn, aa.c_str()) != 0)
 				{
-					std::cout << "Update mysql_query error" << std::endl;
+					std::cout << "DB : Update mysql_query error" << std::endl;
 					return;
 				}
 			}
@@ -131,7 +131,7 @@ void DB::Rank(GAME_INDEX gameIndex, RANK rank[])
 
 	if (mysql_query(&_conn, rankStr.c_str()) != 0)
 	{
-		std::cout << "orderByRank mysql_query error" << std::endl;
+		std::cout << "DB : OrderByRank mysql_query error" << std::endl;
 		return;
 	}
 

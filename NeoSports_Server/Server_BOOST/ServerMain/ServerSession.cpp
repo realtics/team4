@@ -40,11 +40,11 @@ void  Session::_ReceiveHandle(const boost::system::error_code& error, size_t byt
 		LockGuard closeLock(_closeLock);
 		if (error == boost::asio::error::eof)
 		{
-			std::cout << "클라와 연결 끊김" << std::endl;
+			std::cout << "Session : Client Out" << std::endl;
 		}
 		else
 		{
-			std::cout << "error No : " << error.value() << " error Message : " << error.message() <<
+			std::cout << "Session : error No : " << error.value() << " error Message : " << error.message() <<
 				std::endl;
 		}
 		_serverPtr->CloseSession(_sessionId);
@@ -216,7 +216,7 @@ void Session::_DeSerializationJson(char* jsonStr)
 	}
 
 	default:
-		std::cout << "해당 패킷의 HeaderIndex가 없습니다.(역직렬화) : " << headerIndex
+		std::cout << "Session : _DeSerializationJson() : Packet HeaderIndex is not. : " << headerIndex
 			<< std::endl;
 		break;
 	}

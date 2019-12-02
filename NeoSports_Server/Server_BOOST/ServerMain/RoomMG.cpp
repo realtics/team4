@@ -34,7 +34,7 @@ int RoomMG::SearchRoom(int gameIndex)
 
 		i++;
 	}
-	std::cout << "Fail Room Search" << std::endl;
+	std::cout << "Room : SearchRoom : Fail Room Search" << std::endl;
 	return FAIL_ROOM_SERCH;
 }
 
@@ -48,8 +48,8 @@ int RoomMG::MakeRoom(int gameIndex, int sessionID, int charIndex)
 			roomVec[roomNum]->gameIndex = gameIndex;
 			SetRoomChar(roomNum, charIndex);
 			roomVec[roomNum]->superSessionID = sessionID;
-			std::cout << sessionID << " Client "
-				<< roomNum << " Room " << gameIndex << " Make Game. " << std::endl;
+			std::cout << "Room : " <<  sessionID << " Client "
+				<< roomNum << " RoomNum " << gameIndex << " Make Game. " << std::endl;
 			return ROOM_HOST::MAKE_ROOM;
 		}
 
@@ -60,12 +60,12 @@ int RoomMG::MakeRoom(int gameIndex, int sessionID, int charIndex)
 			std::cout << sessionID << " Client "
 				<< roomNum << " Room " << gameIndex << " Enter Game. " << std::endl;
 			roomVec[roomNum]->isGammingRoom = true;
-			std::cout << roomNum << "Room " << gameIndex << "Room Game Start" << std::endl;
+			std::cout << roomNum << " RoomNum " << gameIndex << " Game Start" << std::endl;
 			return ROOM_HOST::ENTER_ROOM;
 		}
 
 	}
-	std::cout << "Fail Make Room" << std::endl;
+	std::cout << "Room : MakeRoom : Fail Make Room" << std::endl;
 	return FAIL_ROOM_SERCH;
 }
 
@@ -100,7 +100,7 @@ int RoomMG::GetRoomNum(int sessionID)
 		}
 	}
 
-	std::cout << "Fail Search Room" << std::endl;
+	std::cout << "Room : GetRoomNum : Fail Search Room" << std::endl;
 	return FAIL_ROOM_SERCH;
 }
 
