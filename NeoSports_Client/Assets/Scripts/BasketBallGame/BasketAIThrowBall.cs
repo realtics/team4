@@ -43,7 +43,7 @@ namespace BasketBallGame
 				if (BasketBallGameManager.Instance.GameState == BasketBallGameManager.EGameState.Playing)
 				{
 					CalculateAIAngle();
-					Fire();
+					ShootBall();
 				}
 				yield return new WaitForSeconds(aiActiveFrequency);
             }
@@ -74,19 +74,21 @@ namespace BasketBallGame
             return target;
         }
 
-        public void Fire()
+        public void ShootBall()
         {
             Vector2 direction = directionArrow.transform.rotation * new Vector2(aiFireSpeed, 0.0f) * _powerSize;
             _powerSize = 0.0f;
 
-			//To DO : Instatniate 말고 pool화. 
-            //GameObject cannon = Instantiate(prefAiThrowBall, transform.position, transform.rotation);
-            //cannon.GetComponent<BasketBall>().ShotToTarget(direction);
-
 			BasketBall ball = _ballFactory.Get() as BasketBall;
-			ball.transform.position = transform.position;
+			ball.Activate(transform.position, EBallOwner.RightPlayer);
 			ball.ShotToTarget(direction);
+			ball.destroyed += OnBallDestroyed;
+		}
+		void OnBallDestroyed(BasketBall usedBall)
+		{
+			usedBall.destroyed -= OnBallDestroyed;
+			_ballFactory.Restore(usedBall);
 		}
 
-    }
+	}
 }

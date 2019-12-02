@@ -38,54 +38,65 @@ namespace BasketBallGame
         {
 			if(BasketBallGameManager.Instance.GameState == BasketBallGameManager.EGameState.Playing)
 			{
-				ShotInWindow();
+				ShootBallInTouch();
 			}
 		}
 
-        void ShotInWindow()
+        void ShootBallInTouch()
         {
             if (Input.GetMouseButtonDown(0))
             {
                 if (_ownCollider.OverlapPoint(_mainCam.ScreenToWorldPoint(Input.mousePosition)))
                 {
-                    directionArrow.transform.position = new Vector2(transform.position.x + 0.3f, transform.position.y + 0.5f);
-                    _isTargetting = true;
+					AimingShoot();
                 }
             }
             else if (Input.GetMouseButton(0) && _isTargetting)
             {
-                Vector2 target = _mainCam.ScreenToWorldPoint(Input.mousePosition);
-                float angle = Mathf.Atan2(transform.position.y - target.y, transform.position.x - target.x);
-
-
-                if (angle < angleMax && angle > angleMin)
-                {
-                    directionArrow.transform.rotation = Quaternion.AngleAxis(angle * Mathf.Rad2Deg, transform.forward);
-                }
-
-                float power = Vector2.Distance(target, transform.position);
-                _powerSize = power * _powerSizeOffset;
-                directionArrow.transform.localScale = new Vector3(_powerSize * _arrowScaleOffset, _powerSize * _arrowScaleOffset);
-            }
+				CalculateShoot();
+			}
             else if (Input.GetMouseButtonUp(0))
             {
-                directionArrow.transform.localScale = new Vector3(0, 0, 0);
-                _isTargetting = false;
-                Fire();
+                ShootBall();
             }
         }
 
-        public void Fire()
+        void ShootBall()
         {
-            Vector2 direction = directionArrow.transform.rotation * new Vector2(fireSpeed, 0.0f) * _powerSize;
+			directionArrow.transform.localScale = new Vector3(0, 0, 0);
+			_isTargetting = false;
+
+			Vector2 direction = directionArrow.transform.rotation * new Vector2(fireSpeed, 0.0f) * _powerSize;
             _powerSize = 0.0f;
 
-			//To DO : Instatniate 말고 pool화. 
-			//GameObject cannon = Instantiate(prefThrowBall, transform.position, transform.rotation);
-			//         cannon.GetComponent<BasketBall>().ShotToTarget(direction);
 			BasketBall ball = _ballFactory.Get() as BasketBall;
-			ball.transform.position = transform.position;
 			ball.ShotToTarget(direction);
+			ball.Activate(transform.position,EBallOwner.LeftPlayer);
+			ball.destroyed += OnBallDestroyed;
+		}
+
+		void OnBallDestroyed(BasketBall usedBall)
+		{
+			usedBall.destroyed -= OnBallDestroyed;
+			_ballFactory.Restore(usedBall);
+		}
+
+		void AimingShoot()
+		{
+			directionArrow.transform.position = new Vector2(transform.position.x + 0.3f, transform.position.y + 0.5f);
+			_isTargetting = true;
+		}
+
+		void CalculateShoot()
+		{
+			Vector2 target = _mainCam.ScreenToWorldPoint(Input.mousePosition);
+			float angle = Mathf.Atan2(transform.position.y - target.y, transform.position.x - target.x);
+
+			directionArrow.transform.rotation = Quaternion.AngleAxis(angle * Mathf.Rad2Deg, transform.forward);
+
+			float power = Vector2.Distance(target, transform.position);
+			_powerSize = power * _powerSizeOffset;
+			directionArrow.transform.localScale = new Vector3(_powerSize * _arrowScaleOffset, _powerSize * _arrowScaleOffset);
 		}
 
     }
