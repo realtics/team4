@@ -16,12 +16,19 @@ namespace BasketBallGame
 			GameOver
 		}
 
+		const string LeftPlayerObjectName = "LeftPlayer";
+		const string RightPlayerObjectName = "RightPlayer";
+
 		const float GamePrepareTime = 4.0f;
+		// Prefab Character
+		public GameObject ppiYakCharacter;
+		public GameObject turkeyJellyCharacter;
 
 		public GameObject rootCanvas;
-
 		public EGameState GameState { get; set; }
-
+		
+		public GameObject _leftPlayer;
+		public GameObject _rightPlayer;
 		void Awake()
 		{
 			instance = this;
@@ -31,6 +38,9 @@ namespace BasketBallGame
 		void Start()
 		{
 			StartGame();
+
+			SelectInstantCharacter((CHAR_INDEX)InventoryManager.instance.CurrentCharacter.Type, _leftPlayer.transform);
+			SelectInstantCharacter((CHAR_INDEX)CharacterInfo.EType.PpiYaGi, _rightPlayer.transform);
 		}
 
 		void Update()
@@ -67,6 +77,28 @@ namespace BasketBallGame
 		public void GameOver(string winner)
 		{
 			CommonUIManager.Instance.CreateWinnerNotice(rootCanvas, "플레이어 이름");
+		}
+
+		void SelectInstantCharacter(CHAR_INDEX charID, Transform parent)
+		{
+			switch (charID)
+			{
+				case (CHAR_INDEX)CharacterInfo.EType.PpiYaGi:
+					{
+						Instantiate(ppiYakCharacter, parent);
+						break;
+					}
+				case (CHAR_INDEX)CharacterInfo.EType.TurkeyJelly:
+					{
+						Instantiate(turkeyJellyCharacter, parent);
+						break;
+					}
+				default:
+					{
+						break;
+					}
+			}
+
 		}
 
 	}

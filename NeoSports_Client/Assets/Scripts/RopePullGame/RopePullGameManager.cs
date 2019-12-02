@@ -53,10 +53,7 @@ namespace RopePullGame
 
 			CachingValue();
 			InitNetwork();
-			if (!IsSingleGame())
-			{
-				CreateMultiCharacters();
-			}
+			CreateCharacters();
 			_playTime = 0.0f;
 		}
 
@@ -68,7 +65,6 @@ namespace RopePullGame
 		void CachingValue()
 		{
 			_ropePullMove = playerableObjects.GetComponent<RopePullMoveRopeWithKey>();
-			_characters = playerableObjects.GetComponentsInChildren<Character>();
 			_runnigEffects = playerableObjects.GetComponentsInChildren<Effect.RunnigEffect>();
 
 			_leftPlayer = playerableObjects.transform.Find(LeftPlayerObjectName);
@@ -80,7 +76,17 @@ namespace RopePullGame
 			}
 		}
 
-
+		void CreateCharacters()
+		{
+			if (!IsSingleGame())
+			{
+				CreateMultiCharacters();
+			}
+			else
+			{
+				CreateSingleCharacter();
+			}
+		}
 		void UpdateScene()
 		{
 			switch (_sceneState)
@@ -275,6 +281,11 @@ namespace RopePullGame
 			rightText.text = PacketQueue.Instance.guestName;
 		}
 
+		void CreateSingleCharacter()
+		{
+			SelectInstantCharacter((CHAR_INDEX)InventoryManager.Instance.CurrentCharacter.Type, _leftPlayer);
+			_characters = playerableObjects.GetComponentsInChildren<Character>();
+		}
 		bool IsSingleGame()
 		{
 			return NetworkManager.Instance.IsSinglePlay();
