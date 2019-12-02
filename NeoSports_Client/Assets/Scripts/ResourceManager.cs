@@ -13,7 +13,13 @@ public class ResourceManager : Singleton<ResourceManager>
 
 	private void Awake()
 	{
-		//DontDestroyOnLoad(this);
+		if (instance != null)
+		{
+			Destroy(gameObject);
+			return;
+		}
+		instance = this;
+		DontDestroyOnLoad(this);
 	}
 
 	public string ReadJsonDataString(string dataPath)

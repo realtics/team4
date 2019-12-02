@@ -1,14 +1,20 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.U2D;
 
-public struct Status
+public class Status
 {
 	public int strength;
 	public int endurance;
 	public int agility;
 	public int luck;
+
+	public Status()
+	{
+
+	}
 
 	public Status(int strength, int endurance, int agility, int luck)
 	{
@@ -20,6 +26,7 @@ public struct Status
 
 	public static void Add(out Status result, Status lValue, Status rValue)
 	{
+		result = new Status();
 		result.strength = lValue.strength + rValue.strength;
 		result.endurance = lValue.endurance + rValue.endurance;
 		result.agility = lValue.agility + rValue.agility;
@@ -39,9 +46,9 @@ public class CharacterInfo
 		End
 	}
 
-	public struct JsonData
+	public class JsonData
 	{
-		public EType charType;
+		public int charType;
 		public string charName;
 		public Status charStat;
 		public string iconName;
@@ -72,7 +79,7 @@ public class CharacterInfo
 
 	public CharacterInfo(JsonData data)
 	{
-		_charType = data.charType;
+		_charType = (EType)data.charType;
 		_charName = data.charName;
 		_charStat = data.charStat;
 		_iconSprite = Singleton<ResourceManager>.Instance.GetUISprite(data.iconName);

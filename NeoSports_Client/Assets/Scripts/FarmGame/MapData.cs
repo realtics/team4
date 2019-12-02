@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using UnityEngine;
+using JsonFx.Json;
 
 public struct DecorationData
 {
@@ -57,7 +58,7 @@ public class MapData : Singleton<MapData>
 	void ReadDecorationData()
 	{
 		string dataStr = LoadDataFromJson(DecorationDataPath);
-		DecorationData[] dataArr = JsonUtility.FromJson<DecorationData[]>(dataStr);
+		DecorationData[] dataArr = JsonReader.Deserialize<DecorationData[]>(dataStr);
 
 		foreach (DecorationData child in dataArr)
 		{
@@ -69,7 +70,7 @@ public class MapData : Singleton<MapData>
 	void ReadProductData()
 	{
 		string dataStr = LoadDataFromJson(ProductDataPath);
-		ProductData[] dataArr = JsonUtility.FromJson<ProductData[]>(dataStr);
+		ProductData[] dataArr = JsonReader.Deserialize<ProductData[]>(dataStr);
 
 		foreach (ProductData child in dataArr)
 		{

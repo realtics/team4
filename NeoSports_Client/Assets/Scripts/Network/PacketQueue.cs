@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using UnityEngine;
+using JsonFx.Json;
 
 public struct NetworkQueueData
 {
@@ -56,7 +57,7 @@ public class PacketQueue : Singleton<PacketQueue>
 		{
 			case (int)PACKET_INDEX.ROOM_INFO:
 			{
-				var packetdata = JsonUtility.FromJson<PACKET_ROOM_INFO>(recvData);
+				var packetdata = JsonReader.Deserialize<PACKET_ROOM_INFO>(recvData);
 				if (packetdata.roomInfo == ROOM_INDEX.MAKE_ROOM)
 				{
 					superCharIndex = (CHAR_INDEX)InventoryManager.instance.CurrentCharacter.Type;
@@ -76,12 +77,12 @@ public class PacketQueue : Singleton<PacketQueue>
 			}
 			case (int)PACKET_INDEX.REQ_IN:
 			{
-				var packetdata = JsonUtility.FromJson<PACKET_REQ_IN>(recvData);
+				var packetdata = JsonReader.Deserialize<PACKET_REQ_IN>(recvData);
 				break;
 			}
 			case (int)PACKET_INDEX.START_GAME:
 			{
-				var packetdata = JsonUtility.FromJson<PACKET_START_GAME>(recvData);
+				var packetdata = JsonReader.Deserialize<PACKET_START_GAME>(recvData);
 
 				superCharIndex = packetdata.superCharID;
 				charIndex = packetdata.charID;
@@ -94,13 +95,13 @@ public class PacketQueue : Singleton<PacketQueue>
 			}
 			case (int)PACKET_INDEX.REQ_RES_ROPE_PULL_GAME:
 			{
-				var packetdata = JsonUtility.FromJson<PACKET_REQ_RES_ROPE_PULL_GAME>(recvData);
+				var packetdata = JsonReader.Deserialize<PACKET_REQ_RES_ROPE_PULL_GAME>(recvData);
 				RopePullGame.RopePullMoveRopeWithKey.Instance.UpdateNetworkRopePostion(packetdata.ropePos);
 				break;
 			}
 			case (int)PACKET_INDEX.RES_RANK:
 			{
-				var packetdata = JsonUtility.FromJson<PACKET_RES_RANK>(recvData);
+				var packetdata = JsonReader.Deserialize<PACKET_RES_RANK>(recvData);
 				foreach (var rankdata in packetdata.rank)
 				{
 					WaitSceneManager.Instance.AddRankingName(rankdata.name);

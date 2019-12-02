@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement; //single은 PlayManager에서,멀티는 네트워크에서
+using JsonFx.Json;
 
 
 using System.Runtime.InteropServices;
@@ -134,7 +135,7 @@ public class NetworkManager : Singleton<NetworkManager>
 	{
 		string jsonBuffer;
 
-		jsonBuffer = JsonUtility.ToJson(value); //객체를 json직렬화 
+		jsonBuffer = JsonWriter.Serialize(value); //객체를 json직렬화 
 		jsonBuffer += '\0';//서버에서 널문자까지 읽기 위해 널문자붙이기
 		byte[] bufSend = new byte[bufferSize]; //전송을 위해 바이트단위로 변환
 		bufSend = Encoding.UTF8.GetBytes(jsonBuffer);
@@ -269,7 +270,7 @@ public class NetworkManager : Singleton<NetworkManager>
 			string recvData = Encoding.UTF8.GetString(recvBuf, 0, recvBytes);
 
 			
-			var headerData = JsonUtility.FromJson<HeaderPacket>(recvData);
+			var headerData = JsonReader.Deserialize<HeaderPacket>(recvData);
 			
 			//recevie 처리를 큐잉으로 대체. 
 			PacketQueue.Instance.networkQueue.Enqueue(new NetworkQueueData( headerData.header.packetIndex,recvData));

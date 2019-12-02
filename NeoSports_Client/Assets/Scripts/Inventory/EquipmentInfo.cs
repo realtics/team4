@@ -6,9 +6,9 @@ using UnityEngine.U2D;
 public class EquipmentInfo
 {
 
-	public struct JsonData
+	public class JsonData
 	{
-		public EType	itemType;
+		public int		itemType;
 		public string	itemName;
 		public Status	itemStatus;
 		public string	iconName;
@@ -46,7 +46,7 @@ public class EquipmentInfo
 
 	public EquipmentInfo(JsonData data)
 	{
-		_itemType = data.itemType;
+		_itemType = (EType)data.itemType;
 		_itemName = data.itemName;
 		_itemStat = data.itemStatus;
 		_iconSprite = Singleton<ResourceManager>.Instance.GetUISprite(data.iconName);
