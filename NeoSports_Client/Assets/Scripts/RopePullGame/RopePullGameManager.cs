@@ -161,6 +161,7 @@ namespace RopePullGame
 			{
 				foreach (Character ch in _characters)
 				{
+					if(ch !=null)
 					ch.StartRun();
 				}
 			}
@@ -168,6 +169,7 @@ namespace RopePullGame
 			{
 				foreach (Character ch in _characters)
 				{
+					if (ch != null)
 					ch.EndRun();
 				}
 			}
@@ -196,7 +198,7 @@ namespace RopePullGame
 		public void NotifyWinner(Transform winner)
 		{
 			SetWinnerGame();
-
+			
 			if (winner.gameObject.CompareTag("LeftPlayer"))
 			{
 				if (NetworkManager.Instance.isOwnHost)
@@ -279,6 +281,8 @@ namespace RopePullGame
 
 			leftText.text = PacketQueue.Instance.superName;
 			rightText.text = PacketQueue.Instance.guestName;
+
+			_characters = playerableObjects.GetComponentsInChildren<Character>();
 		}
 
 		void CreateSingleCharacter()
