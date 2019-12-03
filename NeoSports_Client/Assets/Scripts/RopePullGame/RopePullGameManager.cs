@@ -198,24 +198,37 @@ namespace RopePullGame
 		public void NotifyWinner(Transform winner)
 		{
 			SetWinnerGame();
-			
-			if (winner.gameObject.CompareTag("LeftPlayer"))
+			if (!IsSingleGame())
 			{
-				if (NetworkManager.Instance.isOwnHost)
+				if (winner.gameObject.CompareTag("LeftPlayer"))
 				{
-					NetworkManager.Instance.SendRequestExitRoom(GAME_INDEX.ROPE_PULL, true);
-					CommonUIManager.Instance.CreateWinnerNotice(rootCanvas, InventoryManager.Instance.PlayerNickName);
+					if (NetworkManager.Instance.isOwnHost)
+					{
+						NetworkManager.Instance.SendRequestExitRoom(GAME_INDEX.ROPE_PULL, true);
+						CommonUIManager.Instance.CreateWinnerNotice(rootCanvas, InventoryManager.Instance.PlayerNickName);
+					}
+					else
+					{
+						CommonUIManager.Instance.CreateLooserNotice(rootCanvas, InventoryManager.Instance.PlayerNickName);
+					}
 				}
 				else
 				{
-					CommonUIManager.Instance.CreateLooserNotice(rootCanvas, InventoryManager.Instance.PlayerNickName);
+					if (!NetworkManager.Instance.isOwnHost)
+					{
+						NetworkManager.Instance.SendRequestExitRoom(GAME_INDEX.ROPE_PULL, true);
+						CommonUIManager.Instance.CreateWinnerNotice(rootCanvas, InventoryManager.Instance.PlayerNickName);
+					}
+					else
+					{
+						CommonUIManager.Instance.CreateLooserNotice(rootCanvas, InventoryManager.Instance.PlayerNickName);
+					}
 				}
 			}
 			else
 			{
-				if (!NetworkManager.Instance.isOwnHost)
+				if ((winner.gameObject.CompareTag("LeftPlayer")))
 				{
-					NetworkManager.Instance.SendRequestExitRoom(GAME_INDEX.ROPE_PULL, true);
 					CommonUIManager.Instance.CreateWinnerNotice(rootCanvas, InventoryManager.Instance.PlayerNickName);
 				}
 				else 
@@ -223,7 +236,6 @@ namespace RopePullGame
 					CommonUIManager.Instance.CreateLooserNotice(rootCanvas, InventoryManager.Instance.PlayerNickName);
 				}
 			}
-			
 		}
 
 		public void NotifyLoser(Transform loser)
