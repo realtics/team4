@@ -7,7 +7,7 @@ namespace RopePullGame
 {
 	public class RopePullGameManager : Singleton<RopePullGameManager>
 	{
-		enum ESceneState
+		public enum ESceneState
 		{
 			Prepare,
 			Start,
@@ -46,6 +46,10 @@ namespace RopePullGame
 		RopePullMoveRopeWithKey _ropePullMove;
 		Character[] _characters;
 		Effect.RunnigEffect[] _runnigEffects;
+
+		public ESceneState SceneState {
+			get { return _sceneState; }
+		}
 
 		void Start()
 		{

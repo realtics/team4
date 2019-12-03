@@ -2988,7 +2988,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isLoopBackServer: 0
-  isAzureServer: 0
+  isAzureServer: 1
   isOwnHost: 0
   superCharIndex: 0
   charIndex: 0
