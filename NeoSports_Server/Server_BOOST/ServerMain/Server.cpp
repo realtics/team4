@@ -115,7 +115,7 @@ void Server::ProcessPacket(const int sessionID, const char* data)
 
 		if (packet->isEndGame)
 		{
-			std::cout << roomNum << "Room " << packet->gameIndex << "End Game. Winner : "
+			std::cout << roomNum << " Room " << packet->gameIndex << " End Game. Winner : "
 				<< sessionID << std::endl;
 			db.Update(_sessionVec[sessionID]->GetName(), packet->gameIndex, 1);
 		}
