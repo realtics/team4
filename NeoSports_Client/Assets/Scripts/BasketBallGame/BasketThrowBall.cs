@@ -71,7 +71,7 @@ namespace BasketBallGame
 
 			BasketBall ball = _ballFactory.Get() as BasketBall;
 			ball.ShotToTarget(direction);
-			ball.Activate(transform.position,EBallOwner.LeftPlayer);
+			ball.Activate(transform.position,EBallOwner.LeftPlayer,"Ball");
 			ball.destroyed += OnBallDestroyed;
 		}
 

@@ -80,7 +80,7 @@ namespace BasketBallGame
             _powerSize = 0.0f;
 
 			BasketBall ball = _ballFactory.Get() as BasketBall;
-			ball.Activate(transform.position, EBallOwner.RightPlayer);
+			ball.Activate(transform.position, EBallOwner.RightPlayer,"AIBall");
 			ball.ShotToTarget(direction);
 			ball.destroyed += OnBallDestroyed;
 		}

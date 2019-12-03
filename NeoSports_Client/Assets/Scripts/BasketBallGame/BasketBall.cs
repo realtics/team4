@@ -71,11 +71,12 @@ namespace BasketBallGame
 			_rb2d.velocity = direction;
 		}
 
-		public void Activate(Vector3 startPosition, EBallOwner ballMark)
+		public void Activate(Vector3 startPosition, EBallOwner ballMark, string ballTag)
 		{
 			transform.position = startPosition;
 			_isActivated = true;
 			_ownerMarking = ballMark;
+			tag = ballTag;
 		}
 	}
 }

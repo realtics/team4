@@ -38,9 +38,16 @@ namespace BasketBallGame
 		void Start()
 		{
 			StartGame();
-
-			SelectInstantCharacter((CHAR_INDEX)InventoryManager.instance.CurrentCharacter.Type, _leftPlayer.transform);
-			SelectInstantCharacter((CHAR_INDEX)CharacterInfo.EType.PpiYaGi, _rightPlayer.transform);
+			if (InventoryManager.instance != null)
+			{
+				SelectInstantCharacter((CHAR_INDEX)InventoryManager.instance.CurrentCharacter.Type, _leftPlayer.transform);
+				SelectInstantCharacter((CHAR_INDEX)CharacterInfo.EType.PpiYaGi, _rightPlayer.transform);
+			}
+			else
+			{
+				SelectInstantCharacter((CHAR_INDEX)CharacterInfo.EType.PpiYaGi, _leftPlayer.transform);
+				SelectInstantCharacter((CHAR_INDEX)CharacterInfo.EType.PpiYaGi, _rightPlayer.transform);
+			}
 		}
 
 		void Update()

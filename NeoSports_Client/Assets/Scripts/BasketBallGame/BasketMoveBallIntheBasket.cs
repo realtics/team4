@@ -26,7 +26,7 @@ namespace BasketBallGame
         {
             collision.transform.SetParent(goalInBallManager.transform);
 
-            if (collision.transform.CompareTag("Ball"))
+			if (collision.transform.CompareTag("Ball"))
             {
                 ++_leftBallCount;
                 leftText.text = _leftBallCount.ToString();
