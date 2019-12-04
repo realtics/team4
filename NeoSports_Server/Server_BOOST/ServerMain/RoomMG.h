@@ -34,11 +34,11 @@ class RoomMG
 {
 public:
 	RoomMG();
-	int SearchRoom(int roomIndex);
-	int MakeRoom(int gameIndexk, int sessionID, int charIndex);
+	int SearchRoom(GAME_INDEX roomIndex);
+	int MakeRoom(GAME_INDEX gameIndexk, int sessionID, CHAR_INDEX charIndex);
 
 	int GetRoomChar(int roomIndex, int playerIndex);
-	void SetRoomChar(int roomIndex, int charIndex);
+	void SetRoomChar(int roomIndex, CHAR_INDEX charIndex);
 
 	int GetRoomNum(int sessionID);
 

@@ -14,7 +14,7 @@ RoomMG::RoomMG()
 	}
 }
 
-int RoomMG::SearchRoom(int gameIndex)
+int RoomMG::SearchRoom(GAME_INDEX gameIndex)
 {
 	int i = 0;
 	for (auto iter = _roomVec.begin(); iter != _roomVec.end(); iter++)
@@ -28,8 +28,7 @@ int RoomMG::SearchRoom(int gameIndex)
 	i = 0;
 	for (auto iter = _roomVec.begin(); iter != _roomVec.end(); iter++)
 	{
-		if ((*iter)->isGammingRoom == false && (*iter)->gameMG.GetCurGame() == ROOM_HOST::EMPTY_ROOM
-			&& (*iter)->superSessionID == ROOM_HOST::EMPTY_ROOM)
+		if ((*iter)->isGammingRoom == false && (*iter)->gameMG.GetCurGame() == GAME_INDEX::EMPTY_GAME )
 			return i;
 
 		i++;
@@ -38,7 +37,7 @@ int RoomMG::SearchRoom(int gameIndex)
 	return FAIL_ROOM_SERCH;
 }
 
-int RoomMG::MakeRoom(int gameIndex, int sessionID, int charIndex)
+int RoomMG::MakeRoom(GAME_INDEX gameIndex, int sessionID, CHAR_INDEX charIndex)
 {
 	int roomNum = SearchRoom(gameIndex);
 	if ((roomNum != FAIL_ROOM_SERCH))
@@ -69,7 +68,7 @@ int RoomMG::MakeRoom(int gameIndex, int sessionID, int charIndex)
 	return FAIL_ROOM_SERCH;
 }
 
-void RoomMG::SetRoomChar(int roomIndex, int charIndex)
+void RoomMG::SetRoomChar(int roomIndex, CHAR_INDEX charIndex)
 {
 	for (int i = 0; i < MAX_CHAR_IN_ROOM; i++)
 	{
