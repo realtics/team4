@@ -7,14 +7,14 @@ namespace BasketBallGame
 	public class BasketBallPool : MonoBehaviour
 	{
 		[SerializeField]
-		BasketBall ballPrefab;
+		//BasketBall ballPrefab;
 		BasketBall ball;
 
 		PoolFactory ballFactory;
 
 		void Start()
 		{
-			ballFactory = new PoolFactory(ballPrefab);
+			//ballFactory = new PoolFactory(ballPrefab);
 		}
 	}
 }
