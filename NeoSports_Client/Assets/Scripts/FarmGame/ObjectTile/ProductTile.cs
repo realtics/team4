@@ -3,9 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using UnityEngine;
-using UnityEngine.U2D;
 
-public class ProductData
+public struct ProductData
 {
 	public int type;
 	public string name;
@@ -24,7 +23,7 @@ public class ProductTile : ObjectTile
 		FullGrownSprite
 	}
 
-	public class LoadData
+	public struct LoadData
 	{
 		public Point point;
 		public int productType;
@@ -37,8 +36,6 @@ public class ProductTile : ObjectTile
 	DateTime _plantingTime;
 	DateTime _harvestTime;
 	bool _canHarvest;
-
-	public SpriteAtlas farmLandTileAtlas;
 
 	public void PlantProduct(Point pt, int type)
 	{
@@ -56,7 +53,7 @@ public class ProductTile : ObjectTile
 		SetSprite();
 	}
 
-	public void LoadDataProduct(LoadData data)
+	public void LoadTileData(LoadData data)
 	{
 		productData = MapData.Instance.ProductDatas[data.productType];
 		point = data.point;
@@ -96,11 +93,11 @@ public class ProductTile : ObjectTile
 
 		renderer = transform.GetChild((int)Echild.LessGrownSprite).GetComponent<SpriteRenderer>();
 		spriteName = productData.lessGrownSprite;
-		renderer.sprite = farmLandTileAtlas.GetSprite(spriteName);
+		renderer.sprite = ResourceManager.Instance.GetFarmAtlas(spriteName);
 
 		renderer = transform.GetChild((int)Echild.FullGrownSprite).GetComponent<SpriteRenderer>();
 		spriteName = productData.fullGrownSprite;
-		renderer.sprite = farmLandTileAtlas.GetSprite(spriteName);
+		renderer.sprite = ResourceManager.Instance.GetFarmAtlas(spriteName);
 	}
 
 	void SetSprite()

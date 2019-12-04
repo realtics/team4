@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 
 public class FarmUIManager : Singleton<FarmUIManager>
@@ -16,11 +17,6 @@ public class FarmUIManager : Singleton<FarmUIManager>
 	const float DoubleTouchDuration = 0.5f;
 
 	ECategory _currentCategory;
-
-	// Input
-	int _clickCount;
-	float _touchDuration;
-	Touch _touch;
 
 	Camera _mainCamera;
 	Farmer _farmer;
@@ -42,9 +38,6 @@ public class FarmUIManager : Singleton<FarmUIManager>
 	void Awake()
 	{
 		_currentCategory = ECategory.Default;
-		_clickCount = 0;
-		_touchDuration = 0.0f;
-		_touch = new Touch();
 
 		_mainCamera = Camera.main;
 		_farmer = farmerObject.GetComponent<Farmer>();
@@ -54,99 +47,28 @@ public class FarmUIManager : Singleton<FarmUIManager>
 
 	void Update()
 	{
-		if (_currentCategory == ECategory.Default)
+		if (!EventSystem.current.IsPointerOverGameObject())
 		{
-			InputClick();
-			//InputTouch();
+			if (Input.GetMouseButtonDown(0))
+			{
+				InputClick();
+			}
 		}
 	}
 
-	#region Mouse Logic
 	void InputClick()
 	{
-		if (Input.GetMouseButtonDown(0))
-		{
-			OnPointerClick();
-		}
-	}
+		Ray ray = _mainCamera.ScreenPointToRay(Input.mousePosition);
+		RaycastHit hit;
 
-	void OnPointerClick()
-	{
-		_clickCount++;
-		if (_clickCount == 2)
+		if (Physics.Raycast(ray, out hit, 10.0f))
 		{
-			Ray ray = _mainCamera.ScreenPointToRay(Input.mousePosition);
-			RaycastHit hit;
-
-			if (Physics.Raycast(ray, out hit, Mathf.Infinity))
+			if (hit.transform.tag == ObjectTag.FarmLand)
 			{
-				DoubleClickProcess(hit.transform);
-			}
-			_clickCount = 0;
-		}
-		else
-		{
-			StartCoroutine(TickDown());
-		}
-	}
-
-	private IEnumerator TickDown()
-	{
-		yield return new WaitForSeconds(DoubleTouchDuration);
-		if (_clickCount > 0)
-		{
-			_clickCount--;
-		}
-	}
-	#endregion
-
-	#region Touch Logic
-	void InputTouch()
-	{
-		if (Input.touchCount > 0)
-		{
-			_touchDuration += Time.deltaTime;
-			_touch = Input.GetTouch(0);
-
-			if (_touch.phase == TouchPhase.Ended && _touchDuration < DoubleTouchDuration - 0.1f)
-			{
-				StartCoroutine(SingleOrDouble());
+				LandTile landTile = hit.transform.GetComponent<LandTile>();
+				_farmer.SetTargetPosition(landTile);
 			}
 		}
-		else
-		{
-			_touchDuration = 0.0f;
-		}
-	}
-
-	IEnumerator SingleOrDouble()
-	{
-		yield return new WaitForSeconds(DoubleTouchDuration);
-		if (_touch.tapCount == 1)
-		{
-			Debug.Log("Single");
-		}
-		else if (_touch.tapCount == 2)
-		{
-			StopCoroutine(SingleOrDouble());
-			Debug.Log("Double");
-		}
-	}
-	#endregion
-
-	void DoubleClickProcess(Transform hitObject)
-	{
-		if (hitObject.tag == ObjectTag.FarmLand)
-		{
-			LandTile landTile = hitObject.GetComponent<LandTile>();
-			_farmer.SetTargetPosition(landTile);
-		}
-	}
-
-	void ResetDoubleClick()
-	{
-		_clickCount = 0;
-		_touchDuration = 0.0f;
 	}
 
 	#region Button Event
@@ -173,8 +95,6 @@ public class FarmUIManager : Singleton<FarmUIManager>
 		bool active = landTileFuncGroup.activeInHierarchy;
 		objectTileFuncGroup.SetActive(false);
 		landTileFuncGroup.SetActive(!active);
-
-		ResetDoubleClick();
 	}
 
 	public void EventObjectTileFuncButton()
@@ -182,8 +102,6 @@ public class FarmUIManager : Singleton<FarmUIManager>
 		bool active = objectTileFuncGroup.activeInHierarchy;
 		landTileFuncGroup.SetActive(false);
 		objectTileFuncGroup.SetActive(!active);
-
-		ResetDoubleClick();
 	}
 
 	public void EventOpenPlantPanelButton()

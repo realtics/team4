@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
 using UnityEngine;
 
-public class DecorationData
+public struct DecorationData
 {
 	public int type;
 	public string name;
@@ -10,12 +11,42 @@ public class DecorationData
 	public string sprite;
 }
 
-public class DecorationTile : MonoBehaviour
+public class DecorationTile : ObjectTile
 {
 
-	void SetData(DecorationData data)
+	public struct LoadData
 	{
-
+		public Point point;
+		public int decorationType;
 	}
+
+	DecorationData decorationData;
+
+	public void DeployTile(Point pt, int type)
+	{
+		decorationData = MapData.Instance.DecorationDatas[type];
+		point = pt;
+
+		InitSprite();
+	}
+
+	public void LoadTileData(LoadData data)
+	{
+		decorationData = MapData.Instance.DecorationDatas[data.decorationType];
+		point = data.point;
+
+		InitSprite();
+	}
+
+	void InitSprite()
+	{
+		SpriteRenderer renderer;
+		string spriteName;
+
+		renderer = transform.GetChild(0).GetComponent<SpriteRenderer>();
+		spriteName = decorationData.sprite;
+		renderer.sprite = ResourceManager.Instance.GetFarmAtlas(spriteName);
+	}
+
 
 }

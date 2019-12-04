@@ -10,6 +10,7 @@ public class ResourceManager : Singleton<ResourceManager>
 
 	public SpriteAtlas uiAtlas;
 	public SpriteAtlas gameAtals;
+	public SpriteAtlas farmAtlas;
 
 	private void Awake()
 	{
@@ -40,6 +41,11 @@ public class ResourceManager : Singleton<ResourceManager>
 	public Sprite GetGameSprite(string name)
 	{
 		return gameAtals.GetSprite(name);
+	}
+
+	public Sprite GetFarmAtlas(string name)
+	{
+		return farmAtlas.GetSprite(name);
 	}
 
 }

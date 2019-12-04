@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Drawing;
 using UnityEngine;
-using UnityEngine.U2D;
 
 public class RoadTile : ObjectTile
 {
@@ -36,8 +35,6 @@ public class RoadTile : ObjectTile
 	const float CornerTopLeftRotation = 90;
 	const float CornerBottomLeftRotation = 180;
 	const float CornerBottomRightRotation = 270;
-
-	public SpriteAtlas farmLandTileAtlas;
 
 	EMaterial material;
 	EType type;
@@ -199,7 +196,7 @@ public class RoadTile : ObjectTile
 				break;
 		}
 
-		Sprite sprite = farmLandTileAtlas.GetSprite(spriteName);
+		Sprite sprite = ResourceManager.Instance.GetFarmAtlas(spriteName);
 		GetComponent<SpriteRenderer>().sprite = sprite;
 	}
 }

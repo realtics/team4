@@ -55,15 +55,6 @@ public class Farmer : MonoBehaviour
 		SyncCameraPosition();
 	}
 
-	void OnCollisionEnter2D(Collision2D collision)
-	{
-		if (collision.transform.tag == FarmObstacleTag)
-		{
-			_currentState = State.Idle;
-			EnterTile();
-		}
-	}
-
 	public void SetTargetPosition(LandTile landTile)
 	{
 		LeaveTile();

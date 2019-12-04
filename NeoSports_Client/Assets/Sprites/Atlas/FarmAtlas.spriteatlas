@@ -6,7 +6,7 @@ SpriteAtlas:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: FarmlandTileAtlas
+  m_Name: FarmAtlas
   m_EditorData:
     serializedVersion: 2
     textureSettings:
@@ -194,5 +194,5 @@ SpriteAtlas:
   - agave_1
   - wire_default
   - highlight
-  m_Tag: FarmlandTileAtlas
+  m_Tag: FarmAtlas
   m_IsVariant: 0

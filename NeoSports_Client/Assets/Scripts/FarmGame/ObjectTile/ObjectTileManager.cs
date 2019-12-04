@@ -85,7 +85,7 @@ public class ObjectTileManager : Singleton<ObjectTileManager>
 	{
 		GameObject tileObj = Instantiate(prefProductTile, objectTileGroup.transform);
 		ProductTile script = tileObj.GetComponent<ProductTile>();
-		script.LoadDataProduct(data);
+		script.LoadTileData(data);
 
 		objectTileDic.Add(data.point, script);
 	}
