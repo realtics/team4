@@ -43,6 +43,7 @@ public class FarmUIManager : Singleton<FarmUIManager>
 		_farmer = farmerObject.GetComponent<Farmer>();
 
 		CreatePlantScrollViewItem();
+		CreateDecorationScrollViewItem();
 	}
 
 	void Update()
@@ -171,7 +172,7 @@ public class FarmUIManager : Singleton<FarmUIManager>
 		foreach(var item in decorationDatas)
 		{
 			GameObject obj = Instantiate(prefDecorationButton, decorationScrollViewContent.transform);
-			obj.GetComponent<DecorationData>();
+			obj.GetComponent<DecorationButton>().SetData(item.Value);
 		}
 	}
 

@@ -3,12 +3,9 @@ using System.Collections.Generic;
 using System.Drawing;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.U2D;
 
 public class ProductButton : MonoBehaviour
 {
-
-	public SpriteAtlas farmLandTileAtlas;
 	public GameObject imageLessGrown;
 	public GameObject imageFullGrown;
 	public GameObject labelName;
@@ -21,8 +18,8 @@ public class ProductButton : MonoBehaviour
 	{
 		_data = data;
 
-		imageLessGrown.GetComponent<Image>().sprite = farmLandTileAtlas.GetSprite(data.lessGrownSprite);
-		imageFullGrown.GetComponent<Image>().sprite = farmLandTileAtlas.GetSprite(data.fullGrownSprite);
+		imageLessGrown.GetComponent<Image>().sprite = ResourceManager.Instance.GetFarmAtlas(data.lessGrownSprite);
+		imageFullGrown.GetComponent<Image>().sprite = ResourceManager.Instance.GetFarmAtlas(data.fullGrownSprite);
 
 		labelName.GetComponent<Text>().text = data.name;
 
@@ -45,5 +42,4 @@ public class ProductButton : MonoBehaviour
 		Point plantPoint = MapData.Instance.CurrentFarmerPoint;
 		ObjectTileManager.Instance.PlantProduct(plantPoint, _data.type);
 	}
-
 }

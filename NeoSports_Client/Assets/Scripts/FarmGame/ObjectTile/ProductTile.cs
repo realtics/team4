@@ -37,10 +37,10 @@ public class ProductTile : ObjectTile
 	DateTime _harvestTime;
 	bool _canHarvest;
 
-	public void PlantProduct(Point pt, int type)
+	public void PlantProduct(Point point, int type)
 	{
 		productData = MapData.Instance.ProductDatas[type];
-		point = pt;
+		base.point = point;
 
 		TimeSpan grownTime = new TimeSpan(productData.grownHour, productData.grownMin, 0);
 		_plantingTime = DateTime.Now;
@@ -48,7 +48,7 @@ public class ProductTile : ObjectTile
 		_canHarvest = false;
 
 		StartCoroutine(CheckCanHarvest());
-		SetPosition(pt);
+		SetPosition(point);
 		InitSprite();
 		SetSprite();
 	}

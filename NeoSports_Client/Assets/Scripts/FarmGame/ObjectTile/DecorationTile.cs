@@ -22,10 +22,10 @@ public class DecorationTile : ObjectTile
 
 	DecorationData decorationData;
 
-	public void DeployTile(Point pt, int type)
+	public void DeployTile(Point point, int type)
 	{
 		decorationData = MapData.Instance.DecorationDatas[type];
-		point = pt;
+		base.point = point;
 
 		InitSprite();
 	}

@@ -13,8 +13,9 @@ GameObject:
   - component: {fileID: 7908198450780773413}
   - component: {fileID: 3891110438211614959}
   - component: {fileID: 8270720061691967850}
+  - component: {fileID: 670993935894004008}
   m_Layer: 5
-  m_Name: Button_Decoration
+  m_Name: Prefab_Button_Decoration
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -142,6 +143,21 @@ MonoBehaviour:
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
+--- !u!114 &670993935894004008
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 821930817289036343}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 392b05f326833224da6f3783f5dfe5f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  imageTile: {fileID: 9217564090706790422}
+  labelName: {fileID: 7544252309261971078}
+  labelRequireGold: {fileID: 2931339349440647661}
 --- !u!1 &2931339349440647661
 GameObject:
   m_ObjectHideFlags: 0
@@ -381,7 +397,7 @@ GameObject:
   - component: {fileID: 3226733518778915468}
   - component: {fileID: 5489761198057787377}
   m_Layer: 5
-  m_Name: Image_Less_Grown
+  m_Name: Image_Decoration_Tile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

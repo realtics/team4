@@ -7,6 +7,7 @@ public class ObjectTileManager : Singleton<ObjectTileManager>
 {
 	public GameObject prefRoadTile;
 	public GameObject prefProductTile;
+	public GameObject prefDecorationTile;
 	public GameObject objectTileGroup;
 
 	Dictionary<Point, ObjectTile> objectTileDic;
@@ -60,25 +61,20 @@ public class ObjectTileManager : Singleton<ObjectTileManager>
 
 
 	#region Product Tile
-	public void PlantProduct(Point pt, int type)
+	public void PlantProduct(Point point, int type)
 	{
 		FarmUIManager.Instance.ClosePanel(FarmUIManager.ECategory.Plant);
 
-		if (objectTileDic.ContainsKey(pt))
+		if (CheckTileIsExist(point))
 		{
-			PopupManager.PopupData pData;
-			pData.text = "한 타일에 하나의 물체만 놓을 수 있습니다.";
-			pData.okFlag = true;
-			pData.callBack = null;
-			PopupManager.Instance.ShowPopup(pData);
 			return;
 		}
 
 		GameObject tileObj = Instantiate(prefProductTile, objectTileGroup.transform);
 		ProductTile script = tileObj.GetComponent<ProductTile>();
-		script.PlantProduct(pt, type);
+		script.PlantProduct(point, type);
 
-		objectTileDic.Add(pt, script);
+		objectTileDic.Add(point, script);
 	}
 
 	public void LoadProduct(ProductTile.LoadData data)
@@ -90,5 +86,45 @@ public class ObjectTileManager : Singleton<ObjectTileManager>
 		objectTileDic.Add(data.point, script);
 	}
 	#endregion
+
+	#region Decoration Tile
+
+	public void DeployDecoration(Point point, int type)
+	{
+		FarmUIManager.Instance.ClosePanel(FarmUIManager.ECategory.Decoration);
+
+		if (CheckTileIsExist(point))
+		{
+			return;
+		}
+
+		GameObject tileObj = Instantiate(prefDecorationTile, objectTileGroup.transform);
+		DecorationTile script = tileObj.GetComponent<DecorationTile>();
+		script.DeployTile(point, type);
+
+		objectTileDic.Add(point, script);
+	}
+
+	public void LoadDecoration(DecorationTile.LoadData data)
+	{
+
+	}
+
+	#endregion
+
+	bool CheckTileIsExist(Point point)
+	{
+		if (objectTileDic.ContainsKey(point))
+		{
+			PopupManager.PopupData pData;
+			pData.text = "한 타일에 하나의 물체만 놓을 수 있습니다.";
+			pData.okFlag = true;
+			pData.callBack = null;
+			PopupManager.Instance.ShowPopup(pData);
+			return true;
+		}
+
+		return false;
+	}
 
 }
