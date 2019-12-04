@@ -27,8 +27,8 @@ namespace BasketBallGame
             _isTargetting = false;
             _ownCollider = GetComponent<Collider2D>();
             _powerSize = 0.0f;
-            _powerSizeOffset = 0.1f;
-            _arrowScaleOffset = 5.0f;
+            _powerSizeOffset = 0.3f;
+            _arrowScaleOffset = 3.0f;
 			_mainCam = Camera.main;
 			_ballFactory = new PoolFactory(baksetballPrefab);
 

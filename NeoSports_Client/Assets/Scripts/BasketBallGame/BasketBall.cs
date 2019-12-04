@@ -15,8 +15,8 @@ namespace BasketBallGame
 	}
 	public class BasketBall : RecycleObject
 	{
-		[SerializeField]
-		float _lowerLimit;
+		
+		public float _lowerLimit;
 		public Action<BasketBall> destroyed;
 
 		Rigidbody2D _rb2d;
