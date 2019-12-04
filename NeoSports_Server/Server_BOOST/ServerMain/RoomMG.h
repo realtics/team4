@@ -10,7 +10,6 @@ class ROOM
 public:
 	void Init()
 	{
-		gameIndex = ROOM_HOST::EMPTY_ROOM;
 		superSessionID = ROOM_HOST::EMPTY_ROOM;
 		sessionID = ROOM_HOST::EMPTY_ROOM;
 
@@ -23,7 +22,6 @@ public:
 		gameMG.Init();
 	}
 	bool isGammingRoom;
-	int gameIndex; //객체가 무슨 게임의 방인지 구별
 	int charIndex[MAX_CHAR_IN_ROOM]; //방에 있는 플레이어 두명의 캐릭터 인덱스
 	int superSessionID; //방장 클라이언트
 	int sessionID; //접속한 클라이언트(상대방)
@@ -47,8 +45,11 @@ public:
 	int GetSuperSessonID(int roomNum);
 	int GetSessonID(int roomNum);
 
-	std::vector<ROOM*> roomVec;
+	ROOM* GetRoomInfo(int roomNum);
+	void InitRoom(int roomNum);
+
 private:
+	std::vector<ROOM*> _roomVec;
 
 };
 

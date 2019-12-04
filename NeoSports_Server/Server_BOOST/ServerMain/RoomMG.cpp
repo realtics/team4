@@ -4,31 +4,31 @@
 
 RoomMG::RoomMG()
 {
-	roomVec.reserve(MAX_ROOM_COUNT);
+	_roomVec.reserve(MAX_ROOM_COUNT);
 
 	for (int i = 0; i < MAX_ROOM_COUNT; i++)
 	{
 		ROOM* room = new ROOM();
 		room->Init();
-		roomVec.push_back(room);
+		_roomVec.push_back(room);
 	}
 }
 
 int RoomMG::SearchRoom(int gameIndex)
 {
 	int i = 0;
-	for (auto iter = roomVec.begin(); iter != roomVec.end(); iter++)
+	for (auto iter = _roomVec.begin(); iter != _roomVec.end(); iter++)
 	{
-		if ((*iter)->isGammingRoom == false && (*iter)->gameIndex == gameIndex)
+		if ((*iter)->isGammingRoom == false && (*iter)->gameMG.GetCurGame() == gameIndex)
 			return i;
 
 		i++;
 	}
 
 	i = 0;
-	for (auto iter = roomVec.begin(); iter != roomVec.end(); iter++)
+	for (auto iter = _roomVec.begin(); iter != _roomVec.end(); iter++)
 	{
-		if ((*iter)->isGammingRoom == false && (*iter)->gameIndex == ROOM_HOST::EMPTY_ROOM
+		if ((*iter)->isGammingRoom == false && (*iter)->gameMG.GetCurGame() == ROOM_HOST::EMPTY_ROOM
 			&& (*iter)->superSessionID == ROOM_HOST::EMPTY_ROOM)
 			return i;
 
@@ -43,23 +43,23 @@ int RoomMG::MakeRoom(int gameIndex, int sessionID, int charIndex)
 	int roomNum = SearchRoom(gameIndex);
 	if ((roomNum != FAIL_ROOM_SERCH))
 	{
-		if (roomVec[roomNum]->superSessionID == ROOM_HOST::EMPTY_ROOM)
+		if (_roomVec[roomNum]->superSessionID == ROOM_HOST::EMPTY_ROOM)
 		{
-			roomVec[roomNum]->gameIndex = gameIndex;
+			_roomVec[roomNum]->gameMG.SetCurGame((GAME_INDEX)gameIndex);
 			SetRoomChar(roomNum, charIndex);
-			roomVec[roomNum]->superSessionID = sessionID;
+			_roomVec[roomNum]->superSessionID = sessionID;
 			std::cout << "Room : " <<  sessionID << " Client "
 				<< roomNum << " RoomNum " << gameIndex << " Make Game. " << std::endl;
 			return ROOM_HOST::MAKE_ROOM;
 		}
 
-		else if (roomVec[roomNum]->superSessionID != ROOM_HOST::EMPTY_ROOM)
+		else if (_roomVec[roomNum]->superSessionID != ROOM_HOST::EMPTY_ROOM)
 		{
 			SetRoomChar(roomNum, charIndex);
-			roomVec[roomNum]->sessionID = sessionID;
+			_roomVec[roomNum]->sessionID = sessionID;
 			std::cout << sessionID << " Client "
 				<< roomNum << " Room " << gameIndex << " Enter Game. " << std::endl;
-			roomVec[roomNum]->isGammingRoom = true;
+			_roomVec[roomNum]->isGammingRoom = true;
 			std::cout << roomNum << " RoomNum " << gameIndex << " Game Start" << std::endl;
 			return ROOM_HOST::ENTER_ROOM;
 		}
@@ -73,9 +73,9 @@ void RoomMG::SetRoomChar(int roomIndex, int charIndex)
 {
 	for (int i = 0; i < MAX_CHAR_IN_ROOM; i++)
 	{
-		if (roomVec[roomIndex]->charIndex[i] == CHAR_INDEX::EMPTY_CHAR)
+		if (_roomVec[roomIndex]->charIndex[i] == CHAR_INDEX::EMPTY_CHAR)
 		{
-			roomVec[roomIndex]->charIndex[i] = charIndex;
+			_roomVec[roomIndex]->charIndex[i] = charIndex;
 			return;
 		}
 	}
@@ -83,7 +83,7 @@ void RoomMG::SetRoomChar(int roomIndex, int charIndex)
 
 int RoomMG::GetRoomChar(int roomIndex, int playerIndex)
 {
-	return roomVec[roomIndex]->charIndex[playerIndex];
+	return _roomVec[roomIndex]->charIndex[playerIndex];
 }
 
 int RoomMG::GetRoomNum(int sessionID)
@@ -92,8 +92,8 @@ int RoomMG::GetRoomNum(int sessionID)
 
 	for (int i=0; i<MAX_ROOM_COUNT; i++)
 	{
-		if (roomVec[i]->superSessionID == sessionID ||
-			roomVec[i]->sessionID == sessionID)
+		if (_roomVec[i]->superSessionID == sessionID ||
+			_roomVec[i]->sessionID == sessionID)
 		{
 			roomNum = i;
 			return roomNum;
@@ -106,13 +106,25 @@ int RoomMG::GetRoomNum(int sessionID)
 
 int RoomMG::GetSuperSessonID(int roomNum)
 {
-	return roomVec[roomNum]->superSessionID;
+	return _roomVec[roomNum]->superSessionID;
 }
 
 int RoomMG::GetSessonID(int roomNum)
 {
-	return roomVec[roomNum]->sessionID;
+	return _roomVec[roomNum]->sessionID;
 
 }
 
+ROOM* RoomMG::GetRoomInfo(int roomNum)
+{
+	ROOM* room = new ROOM;
+	room->Init();
+	room = _roomVec[roomNum];
 
+	return room;
+}
+
+void RoomMG::InitRoom(int roomNum)
+{
+	_roomVec[roomNum]->Init();
+}

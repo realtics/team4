@@ -14,6 +14,7 @@ public:
 	~GameMG();
 
 	void SetCurGame(GAME_INDEX gameIndex);
+	GAME_INDEX GetCurGame();
 
 	void Init();
 

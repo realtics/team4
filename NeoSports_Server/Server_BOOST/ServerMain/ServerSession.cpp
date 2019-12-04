@@ -91,7 +91,7 @@ void  Session::_ReceiveHandle(const boost::system::error_code& error, size_t byt
 
 void Session::PostSend(const bool Immediately, const int size, char* data)
 {
-	LockGuard sendLockGuard(_sendLock);
+	//LockGuard sendLockGuard(_sendLock);
 	char* sendData = nullptr;
 	
 	if (Immediately == false)
@@ -246,24 +246,29 @@ void Session::_ProcessPacket(const int sessionID, const char* data)
 		sendPacket.header.packetSize = sizeof(PACKET_ROOM_INFO);
 		sendPacket.roomInfo = (ROOM_HOST)mrTemp; //받는 클라입장에서 자신이 방장인지 구별
 
-		if (mrTemp == ROOM_HOST::ENTER_ROOM) //들어가는 입장이면 스타트패킷생성후 전송
+		if (mrTemp == ROOM_HOST::ENTER_ROOM) //도전자 입장이면 스타트패킷생성후 방장과 도전자에게 전송
 		{
 			int roomNum = _serverPtr->GetRoomNum(sessionID);
-			int superSessionIdTemp = roomMG.GetSuperSessonID(roomNum);
-			int sessionIdTemp = roomMG.GetSessonID(roomNum);
 
-			PACKET_START_GAME startPacket; //gameMg로 빼기?
+			ROOM* room = new ROOM;
+			room->Init();
+			room = _serverPtr->GetRoomInfo(roomNum);
+
+			int superSessionIdTemp = room->superSessionID;
+			int sessionIdTemp = room->sessionID;
+
+			PACKET_START_GAME startPacket;
 			startPacket.header.packetIndex = PACKET_INDEX::START_GAME;
 			startPacket.header.packetSize = sizeof(PACKET_START_GAME);
-			startPacket.superCharID = (CHAR_INDEX)roomMG.GetRoomChar(roomNum, 0);
-			startPacket.charID = (CHAR_INDEX)roomMG.GetRoomChar(roomNum, 1);
-			strcpy(startPacket.superName, _sessionVec[superSessionIdTemp]->GetName());
-			strcpy(startPacket.name, _sessionVec[sessionIdTemp]->GetName());
+			startPacket.superCharID = (CHAR_INDEX)room->charIndex[0]; //방장의 캐릭터
+			startPacket.charID = (CHAR_INDEX)room->charIndex[1]; //도전자의 캐릭터
+			strcpy(startPacket.superName, _serverPtr->GetSuperSessionName(superSessionIdTemp).c_str());
+			strcpy(startPacket.name, _name.c_str());
 
 			std::string aa = _SerializationJson(PACKET_INDEX::START_GAME, (const char*)&startPacket);
 
-			_sessionVec[superSessionIdTemp]->PostSend(false, aa.length(), (char*)aa.c_str());
-			_sessionVec[sessionIdTemp]->PostSend(false, aa.length(), (char*)aa.c_str());
+			_serverPtr->PostSendSession(superSessionIdTemp,false, aa.length(), (char*)aa.c_str());
+			PostSend(false, aa.length(), (char*)aa.c_str());
 
 			return;
 		}
@@ -277,7 +282,7 @@ void Session::_ProcessPacket(const int sessionID, const char* data)
 	{
 		PACKET_REQ_INIT_ROOM* packet = (PACKET_REQ_INIT_ROOM*)data;
 
-		int roomNum = roomMG.GetRoomNum(sessionID);
+		int roomNum = _serverPtr->GetRoomNum(sessionID);
 		if (roomNum == FAIL_ROOM_SERCH)
 			break;
 
@@ -285,30 +290,32 @@ void Session::_ProcessPacket(const int sessionID, const char* data)
 		{
 			std::cout << roomNum << " Room " << packet->gameIndex << " End Game. Winner : "
 				<< sessionID << std::endl;
-			db.Update(_sessionVec[sessionID]->GetName(), packet->gameIndex, 1);
+			DB::GetInstance()->Update(_serverPtr->GetSessionName(sessionID), packet->gameIndex, 1);
 		}
-
-		roomMG.roomVec[roomNum]->Init();
+		_serverPtr->InitRoom(roomNum);
 	}
 	break;
 
 	case PACKET_INDEX::REQ_RES_ROPE_PULL_GAME: //gameMG?
 	{
 		//LockGuard ropeLockGuard(_ropePullLock);
-		int roomNum = roomMG.GetRoomNum(sessionID);
+		int roomNum = _serverPtr->GetRoomNum(sessionID);
+		ROOM* room = new ROOM;
+		room->Init();
+		room = _serverPtr->GetRoomInfo(roomNum);
 
 		//클라에서 x버튼이나 게임중 메뉴의 yes,no버튼 클릭할때도
 		//게임로직 패킷이 보내져서 예외처리 해주는중
 		if (roomNum == FAIL_ROOM_SERCH ||
-			roomMG.roomVec[roomNum]->superSessionID == GAME_INDEX::EMPTY_GAME)
+			_serverPtr->GetSuperSessionID(roomNum) == GAME_INDEX::EMPTY_GAME)
 		{
 			std::cout << "(already Init)." << std::endl;
 			break;
 		}
 
 		PACKET_REQ_RES_ROPE_PULL_GAME* packet = (PACKET_REQ_RES_ROPE_PULL_GAME*)data;
-		roomMG.roomVec[roomNum]->gameMG.SetRopePos(packet->ropePos);
-		float ropePos = roomMG.roomVec[roomNum]->gameMG.GetRopePos();
+		room->gameMG.SetRopePos(packet->ropePos);
+		float ropePos = room->gameMG.GetRopePos();
 
 		PACKET_REQ_RES_ROPE_PULL_GAME resPacket;;
 		resPacket.header.packetIndex = PACKET_INDEX::REQ_RES_ROPE_PULL_GAME;
@@ -317,11 +324,11 @@ void Session::_ProcessPacket(const int sessionID, const char* data)
 
 		std::string aa = _SerializationJson(PACKET_INDEX::REQ_RES_ROPE_PULL_GAME, (const char*)&resPacket);
 
-		int superSessionIdTemp = roomMG.GetSuperSessonID(roomNum);
-		int sessionIdTemp = roomMG.GetSessonID(roomNum);
+		int superSessionIdTemp = room->superSessionID;
+		int sessionIdTemp = room->sessionID;
 
-		_sessionVec[superSessionIdTemp]->PostSend(false, aa.length(), (char*)aa.c_str());
-		_sessionVec[sessionIdTemp]->PostSend(false, aa.length(), (char*)aa.c_str());
+		_serverPtr->PostSendSession(superSessionIdTemp, false, aa.length(), (char*)aa.c_str());
+		PostSend(false, aa.length(), (char*)aa.c_str());
 	}
 	break;
 
@@ -330,7 +337,7 @@ void Session::_ProcessPacket(const int sessionID, const char* data)
 		PACKET_REQ_RANK* packet = (PACKET_REQ_RANK*)data;
 		RANK rank[MAX_RANK_COUNT];
 
-		db.Rank(packet->gameIndex, rank); //배열 포인터를 전달하고싶다
+		DB::GetInstance()->Rank(packet->gameIndex, rank);//배열 포인터를 전달하고싶다
 		PACKET_RES_RANK resRankPacket;
 		resRankPacket.header.packetIndex = PACKET_INDEX::RES_RANK;
 		resRankPacket.header.packetSize = sizeof(PACKET_RES_RANK);

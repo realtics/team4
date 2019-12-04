@@ -29,7 +29,7 @@ private:
 	Lock _sendLock;
 	Lock _recvLock;
 	Lock _closeLock;
-
+	
 	int _sessionId;
 	int _packetBufferMark;
 	char _packetBuffer[MAX_RECEIVE_BUFFER_LEN * 2];
@@ -44,10 +44,8 @@ private:
 
 	void _ProcessPacket(const int sessionID, const char* data);
 
-
 	void _WriteHandle(const boost::system::error_code& error, size_t bytesTransferred);
 	void _ReceiveHandle(const boost::system::error_code& error, size_t bytesTransferred);
-
 
 	//직렬화 역직렬화 함수 싱글톤화 시키기
 	void _DeSerializationJson(char* jsonStr);

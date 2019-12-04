@@ -21,16 +21,21 @@ public:
 	void CloseSession(const int sessionID);
 	void ProcessReqInPacket(const int sessionID, const char* data);
 
+	//Room
 	int MakeRoom(GAME_INDEX gameIndex, int sessionID, CHAR_INDEX charIndex);
 	int GetRoomNum(int sessionID);
-	//GetsuperSissonID
-	//GetsessuonID
+	void InitRoom(int roomNum);
+	ROOM* GetRoomInfo(int roomNum);
 
-	//void SetSessionName(int sessionID, std::string name);
+	//Session
+	std::string GetSessionName(int sessionID);
+	int GetSuperSessionID(int roomNum);
+	int GetSessionID(int roomNum);
+	std::string GetSuperSessionName(int sessionID);
+	void PostSendSession(int sessionID, const bool Immediately, const int size, char* data);
 
 
 private:
-	DB _db;
 	RoomMG _roomMG;
 
 	Lock _acceptLock;

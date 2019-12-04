@@ -34,6 +34,7 @@ void Server::Init(const int maxSessionCount)
 void Server::Start()
 {
 	std::cout << "Server Start..." << std::endl;
+	DB::GetInstance()->Init();
 
 	_PostAccept();
 }
@@ -60,6 +61,41 @@ int Server::GetRoomNum(int sessionID)
 	return _roomMG.GetRoomNum(sessionID);
 }
 
+int Server::GetSuperSessionID(int roomNum)
+{
+	return _roomMG.GetSuperSessonID(roomNum);
+}
+
+int Server::GetSessionID(int roomNum)
+{
+	return _roomMG.GetSessonID(roomNum);
+}
+
+ROOM* Server::GetRoomInfo(int roomNum)
+{
+	return _roomMG.GetRoomInfo(roomNum);
+}
+
+std::string Server::GetSuperSessionName(int sessionID)
+{
+	return _sessionVec[sessionID]->GetName();
+}
+
+void Server::PostSendSession(int sessionID, const bool Immediately, const int size, char* data)
+{
+	_sessionVec[sessionID]->PostSend(Immediately,size,data);
+}
+
+std::string Server::GetSessionName(int sessionID)
+{
+	return _sessionVec[sessionID]->GetName();
+}
+
+void Server::InitRoom(int roomNum)
+{
+	_roomMG.InitRoom(roomNum);
+}
+
 
 void Server::ProcessReqInPacket(const int sessionID, const char* data)
 {
@@ -67,7 +103,7 @@ void Server::ProcessReqInPacket(const int sessionID, const char* data)
 	_sessionVec[sessionID]->SetNanme(packet->name);
 
 	std::cout << "Server : Client accept. Name : " << _sessionVec[sessionID]->GetName() << std::endl;
-	_db.Insert(_sessionVec[sessionID]->GetName());
+	DB::GetInstance()->Insert(_sessionVec[sessionID]->GetName());
 }
 
 bool Server::_PostAccept()

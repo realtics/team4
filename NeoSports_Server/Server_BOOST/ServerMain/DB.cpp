@@ -6,17 +6,14 @@
 
 using namespace std;
 
-DB::DB()
-{
-	_Init();
-}
+DB* DB::_instance = nullptr;
 
 DB::~DB()
 {
 	mysql_close(&_conn);
 }
 
-void DB::_Init()
+void DB::Init()
 {
 	if (mysql_init(&_conn) == nullptr)
 	{

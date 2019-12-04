@@ -16,6 +16,12 @@ void GameMG::SetCurGame(GAME_INDEX gameIndex)
 	_curGame = gameIndex;
 }
 
+GAME_INDEX GameMG::GetCurGame()
+{
+	return _curGame;
+}
+
+
 
 void GameMG::Init()
 {
