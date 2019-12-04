@@ -7028,16 +7028,6 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: ClickEventPopup
       objectReference: {fileID: 0}
-    - target: {fileID: 1179659508126846312, guid: 476141d3c44bc8a4b8e43a8b499b721e,
-        type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 1289275824}
-    - target: {fileID: 1179659508126846312, guid: 476141d3c44bc8a4b8e43a8b499b721e,
-        type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: ClickEventPopup
-      objectReference: {fileID: 0}
     - target: {fileID: 1179659509574792243, guid: 476141d3c44bc8a4b8e43a8b499b721e,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -7047,6 +7037,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: ClosePopup
+      objectReference: {fileID: 0}
+    - target: {fileID: 1179659508126846312, guid: 476141d3c44bc8a4b8e43a8b499b721e,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1289275824}
+    - target: {fileID: 1179659508126846312, guid: 476141d3c44bc8a4b8e43a8b499b721e,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ClickEventPopup
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 476141d3c44bc8a4b8e43a8b499b721e, type: 3}
