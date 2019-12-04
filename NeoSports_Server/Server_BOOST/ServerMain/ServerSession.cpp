@@ -241,11 +241,6 @@ void Session::_ProcessPacket(const int sessionID, const char* data)
 
 		int mrTemp = _serverPtr->MakeRoom(packet->gameIndex, sessionID, packet->charIndex);
 
-		PACKET_ROOM_INFO sendPacket;
-		sendPacket.header.packetIndex = PACKET_INDEX::ROOM_INFO;
-		sendPacket.header.packetSize = sizeof(PACKET_ROOM_INFO);
-		sendPacket.roomInfo = (ROOM_HOST)mrTemp; //받는 클라입장에서 자신이 방장인지 구별
-
 		if (mrTemp == ROOM_HOST::ENTER_ROOM) //도전자 입장이면 스타트패킷생성후 방장과 도전자에게 전송
 		{
 			int roomNum = _serverPtr->GetRoomNum(sessionID);
@@ -269,9 +264,14 @@ void Session::_ProcessPacket(const int sessionID, const char* data)
 
 			_serverPtr->PostSendSession(superSessionIdTemp,false, aa.length(), (char*)aa.c_str());
 			PostSend(false, aa.length(), (char*)aa.c_str());
-
 			return;
 		}
+
+		PACKET_ROOM_INFO sendPacket;
+		sendPacket.header.packetIndex = PACKET_INDEX::ROOM_INFO;
+		sendPacket.header.packetSize = sizeof(PACKET_ROOM_INFO);
+		sendPacket.roomInfo = (ROOM_HOST)mrTemp; //받는 클라입장에서 자신이 방장인지 구별
+
 
 		std::string aa = _SerializationJson(PACKET_INDEX::ROOM_INFO, (const char*)&sendPacket);
 		PostSend(false, aa.length(), (char*)aa.c_str());
@@ -296,7 +296,7 @@ void Session::_ProcessPacket(const int sessionID, const char* data)
 	}
 	break;
 
-	case PACKET_INDEX::REQ_RES_ROPE_PULL_GAME: //gameMG?
+	case PACKET_INDEX::REQ_RES_ROPE_PULL_GAME:
 	{
 		//LockGuard ropeLockGuard(_ropePullLock);
 		int roomNum = _serverPtr->GetRoomNum(sessionID);
@@ -328,11 +328,11 @@ void Session::_ProcessPacket(const int sessionID, const char* data)
 		int sessionIdTemp = room->sessionID;
 
 		_serverPtr->PostSendSession(superSessionIdTemp, false, aa.length(), (char*)aa.c_str());
-		PostSend(false, aa.length(), (char*)aa.c_str());
+		_serverPtr->PostSendSession(sessionIdTemp,false, aa.length(), (char*)aa.c_str());
 	}
 	break;
 
-	case PACKET_INDEX::REQ_RANK: //serverClass?
+	case PACKET_INDEX::REQ_RANK:
 	{
 		PACKET_REQ_RANK* packet = (PACKET_REQ_RANK*)data;
 		RANK rank[MAX_RANK_COUNT];
