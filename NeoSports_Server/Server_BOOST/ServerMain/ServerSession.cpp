@@ -290,7 +290,8 @@ void Session::_ProcessPacket(const int sessionID, const char* data)
 		{
 			std::cout << roomNum << " Room " << packet->gameIndex << " End Game. Winner : "
 				<< sessionID << std::endl;
-			DB::GetInstance()->Update(_serverPtr->GetSessionName(sessionID), packet->gameIndex, 1);
+			int addWinRecord = 1;
+			DB::GetInstance()->Update(_serverPtr->GetSessionName(sessionID), packet->gameIndex, addWinRecord);
 		}
 		_serverPtr->InitRoom(roomNum);
 	}
