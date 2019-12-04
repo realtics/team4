@@ -19,12 +19,19 @@ public:
 	void Init(const int maxSessionCount);
 	void Start();
 	void CloseSession(const int sessionID);
-	void ProcessPacket(const int sessionID, const char* data);
+	void ProcessReqInPacket(const int sessionID, const char* data);
 
-	DB db;
-	RoomMG roomMG;
+	int MakeRoom(GAME_INDEX gameIndex, int sessionID, CHAR_INDEX charIndex);
+	int GetRoomNum(int sessionID);
+	//GetsuperSissonID
+	//GetsessuonID
+
+	//void SetSessionName(int sessionID, std::string name);
+
 
 private:
+	DB _db;
+	RoomMG _roomMG;
 
 	Lock _acceptLock;
 	Lock _ropePullLock;
@@ -40,7 +47,7 @@ private:
 	bool _PostAccept();
 	void _AcceptHandle(Session* session, const boost::system::error_code& error);
 
-	std::string _SerializationJson(int packetIndex, const char* pakcet);
+	//std::string _SerializationJson(int packetIndex, const char* pakcet);
 
 };
 

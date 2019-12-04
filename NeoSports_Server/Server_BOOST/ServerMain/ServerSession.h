@@ -1,4 +1,5 @@
 #pragma once
+#include <iostream>
 #include <deque>
 
 #include <boost/bind.hpp>
@@ -41,9 +42,16 @@ private:
 
 	Server* _serverPtr;
 
+	void _ProcessPacket(const int sessionID, const char* data);
+
+
 	void _WriteHandle(const boost::system::error_code& error, size_t bytesTransferred);
 	void _ReceiveHandle(const boost::system::error_code& error, size_t bytesTransferred);
 
+
+	//직렬화 역직렬화 함수 싱글톤화 시키기
 	void _DeSerializationJson(char* jsonStr);
+	std::string _SerializationJson(int packetIndex, const char* pakcet);
+
 };
 
