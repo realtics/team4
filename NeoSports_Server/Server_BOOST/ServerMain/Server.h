@@ -52,7 +52,6 @@ private:
 	bool _PostAccept();
 	void _AcceptHandle(Session* session, const boost::system::error_code& error);
 
-	//std::string _SerializationJson(int packetIndex, const char* pakcet);
 
 };
 

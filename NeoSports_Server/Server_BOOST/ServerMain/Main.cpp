@@ -1,5 +1,3 @@
-//패킷을 처리하는 로직을 분리해야한다(서버가 어느정도 돌아가는걸 확인한후)
-
 #include "Server.h"
 #include <process.h>
 #include <boost/bind.hpp>
