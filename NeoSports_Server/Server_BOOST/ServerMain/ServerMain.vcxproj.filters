@@ -22,6 +22,9 @@
     <Filter Include="DB">
       <UniqueIdentifier>{56dc2b53-0aed-43f3-bf5b-e7554233dc6c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameMG">
+      <UniqueIdentifier>{d67ef9b2-5e78-4251-9c3a-feeb66539a72}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ServerSession.cpp">
@@ -36,11 +39,11 @@
     <ClCompile Include="RoomMG.cpp">
       <Filter>Room</Filter>
     </ClCompile>
-    <ClCompile Include="GameMG.cpp">
-      <Filter>Room</Filter>
-    </ClCompile>
     <ClCompile Include="DB.cpp">
       <Filter>DB</Filter>
+    </ClCompile>
+    <ClCompile Include="GameMG.cpp">
+      <Filter>GameMG</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -62,11 +65,11 @@
     <ClInclude Include="Protocol.h">
       <Filter>Protocol</Filter>
     </ClInclude>
-    <ClInclude Include="GameMG.h">
-      <Filter>Room</Filter>
-    </ClInclude>
     <ClInclude Include="DB.h">
       <Filter>DB</Filter>
+    </ClInclude>
+    <ClInclude Include="GameMG.h">
+      <Filter>GameMG</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

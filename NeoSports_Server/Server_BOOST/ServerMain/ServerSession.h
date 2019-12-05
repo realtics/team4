@@ -9,6 +9,7 @@
 #include "Lock.h"
 
 class Server;
+class GameMG;
 
 class Session
 {
@@ -20,8 +21,9 @@ public:
 	void Init();
 	void PostReceive();
 	void PostSend(const bool bImmediately, const int size, char* dataPtr);
-	void SetNanme(const char* namePtr);
+	void SetName(const char* namePtr);
 	const char* GetName();
+	void SetGameMG(GameMG* gameMG);
 
 	boost::asio::ip::tcp::socket& Socket() { return Session::_socket; }
 
@@ -29,6 +31,7 @@ private:
 	Lock _sendLock;
 	Lock _recvLock;
 	Lock _closeLock;
+	Lock _ropePullLock;
 	
 	int _sessionId;
 	int _packetBufferMark;
@@ -41,8 +44,10 @@ private:
 	std::string _name;
 
 	Server* _serverPtr;
+	GameMG* _gameMG;
 
 	void _ProcessPacket(const int sessionID, const char* data);
+
 
 	void _WriteHandle(const boost::system::error_code& error, size_t bytesTransferred);
 	void _ReceiveHandle(const boost::system::error_code& error, size_t bytesTransferred);

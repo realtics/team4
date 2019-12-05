@@ -9,6 +9,7 @@
 #include "RoomMG.h"
 #include "ServerSession.h"
 #include "DB.h"
+#include "GameMG.h"
 
 class Server
 {
@@ -20,6 +21,7 @@ public:
 	void Start();
 	void CloseSession(const int sessionID);
 	void ProcessReqInPacket(const int sessionID, const char* data);
+	void ProcessInitRoomPacket(const int sessionID, const char* data);
 
 	//Room
 	int MakeRoom(GAME_INDEX gameIndex, int sessionID, CHAR_INDEX charIndex);
@@ -34,6 +36,8 @@ public:
 	std::string GetSuperSessionName(int sessionID);
 	void PostSendSession(int sessionID, const bool Immediately, const int size, char* data);
 
+	//GameMG
+	std::vector<GameMG*> GameMGPool;
 
 private:
 	RoomMG _roomMG;
@@ -51,7 +55,4 @@ private:
 
 	bool _PostAccept();
 	void _AcceptHandle(Session* session, const boost::system::error_code& error);
-
-
 };
-

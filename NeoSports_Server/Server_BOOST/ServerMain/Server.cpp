@@ -1,11 +1,18 @@
 #include "Server.h"
 #include "Json.h"
 
+const int MAX_GAME_MG_COUNT = 10;
 
 Server::Server(boost::asio::io_context& io_service) : _acceptor(io_service,
 	boost::asio::ip::tcp::endpoint(boost::asio::ip::tcp::v4(), PORT_NUMBER))
 {
 	_isAccepting = false;
+
+	for (int i = 0; i < MAX_GAME_MG_COUNT; i++)
+	{
+		GameMGPool.push_back(new GameMG);
+		GameMGPool[i]->Init();
+	}
 }
 
 Server::~Server()
@@ -94,17 +101,43 @@ std::string Server::GetSessionName(int sessionID)
 void Server::InitRoom(int roomNum)
 {
 	_roomMG.InitRoom(roomNum);
+
 }
 
 
 void Server::ProcessReqInPacket(const int sessionID, const char* data)
 {
 	PACKET_REQ_IN* packet = (PACKET_REQ_IN*)data;
-	_sessionVec[sessionID]->SetNanme(packet->name);
+	_sessionVec[sessionID]->SetName(packet->name);
 
 	std::cout << "Server : Client accept. Name : " << _sessionVec[sessionID]->GetName() << std::endl;
 	DB::GetInstance()->Insert(_sessionVec[sessionID]->GetName());
 }
+
+void Server::ProcessInitRoomPacket(const int sessionID, const char* data)
+{
+	PACKET_REQ_INIT_ROOM* packet = (PACKET_REQ_INIT_ROOM*)data;
+
+	int roomNum = GetRoomNum(sessionID);
+	if (roomNum == FAIL_ROOM_SERCH)
+		return;
+
+	if (packet->isEndGame)
+	{
+		std::cout << roomNum << " Room " << packet->gameIndex << " End Game. Winner : "
+			<< sessionID << std::endl;
+		int addWinRecord = 1;
+		DB::GetInstance()->Update(GetSessionName(sessionID), packet->gameIndex, addWinRecord);
+	}
+	int superSessionID = _roomMG.GetSuperSessonID(roomNum);
+	int challengerSessionID = _roomMG.GetSessonID(roomNum);
+
+	_sessionVec[superSessionID]->SetGameMG(nullptr);
+	_sessionVec[challengerSessionID]->SetGameMG(nullptr);
+
+	InitRoom(roomNum);
+}
+
 
 bool Server::_PostAccept()
 {

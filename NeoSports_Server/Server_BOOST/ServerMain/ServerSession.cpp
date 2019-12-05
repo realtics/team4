@@ -9,6 +9,7 @@ Session::Session(int sessionID, boost::asio::io_context& io_service, Server* ser
 	_sessionId(sessionID)
 	, _serverPtr(serverPtr)
 {
+	_gameMG = nullptr; //게임을 시작하면 Server에서 사용하고 있지 않은 게임매니저를 불러와서 적용시킴.
 }
 
 Session::~Session()
@@ -89,11 +90,17 @@ void  Session::_ReceiveHandle(const boost::system::error_code& error, size_t byt
 	}
 }
 
+void Session::SetGameMG(GameMG* gameMG)
+{
+	_gameMG = gameMG;
+}
+
+
 void Session::PostSend(const bool Immediately, const int size, char* data)
 {
 	//LockGuard sendLockGuard(_sendLock);
 	char* sendData = nullptr;
-	
+
 	if (Immediately == false)
 	{
 		sendData = new char[size];
@@ -137,7 +144,7 @@ int Session::GetSessionID()
 	return _sessionId;
 }
 
-void Session::SetNanme(const char* name)
+void Session::SetName(const char* name)
 {
 	_name = name;
 }
@@ -201,7 +208,7 @@ void Session::_DeSerializationJson(char* jsonStr)
 		packet.header.packetIndex = headerIndex;
 		packet.header.packetSize = children.get<int>("packetSize");
 		packet.ropePos = ptRecv.get<float>("ropePos");
-		memcpy(&_packetBuffer[_packetBufferMark], (char*)& packet, sizeof(packet));
+		memcpy(&_packetBuffer[_packetBufferMark], (char*)&packet, sizeof(packet));
 		break;
 	}
 
@@ -261,7 +268,7 @@ void Session::_ProcessPacket(const int sessionID, const char* data)
 
 			std::string aa = _SerializationJson(PACKET_INDEX::START_GAME, (const char*)&startPacket);
 
-			_serverPtr->PostSendSession(superSessionIdTemp,false, aa.length(), (char*)aa.c_str());
+			_serverPtr->PostSendSession(superSessionIdTemp, false, aa.length(), (char*)aa.c_str());
 			PostSend(false, aa.length(), (char*)aa.c_str());
 			return;
 		}
@@ -279,26 +286,14 @@ void Session::_ProcessPacket(const int sessionID, const char* data)
 
 	case PACKET_INDEX::REQ_INIT_ROOM: //server Class로 빼기
 	{
-		PACKET_REQ_INIT_ROOM* packet = (PACKET_REQ_INIT_ROOM*)data;
-
-		int roomNum = _serverPtr->GetRoomNum(sessionID);
-		if (roomNum == FAIL_ROOM_SERCH)
-			break;
-
-		if (packet->isEndGame)
-		{
-			std::cout << roomNum << " Room " << packet->gameIndex << " End Game. Winner : "
-				<< sessionID << std::endl;
-			int addWinRecord = 1;
-			DB::GetInstance()->Update(_serverPtr->GetSessionName(sessionID), packet->gameIndex, addWinRecord);
-		}
-		_serverPtr->InitRoom(roomNum);
+		_gameMG->Init();
+		_serverPtr->ProcessInitRoomPacket(sessionID, data);
 	}
 	break;
 
 	case PACKET_INDEX::REQ_RES_ROPE_PULL_GAME:
 	{
-		//LockGuard ropeLockGuard(_ropePullLock);
+		LockGuard ropeLockGuard(_ropePullLock);
 		int roomNum = _serverPtr->GetRoomNum(sessionID);
 		ROOM* room = new ROOM;
 		room->Init();
@@ -307,28 +302,34 @@ void Session::_ProcessPacket(const int sessionID, const char* data)
 		//클라에서 x버튼이나 게임중 메뉴의 yes,no버튼 클릭할때도
 		//게임로직 패킷이 보내져서 예외처리 해주는중
 		if (roomNum == FAIL_ROOM_SERCH ||
-			_serverPtr->GetSuperSessionID(roomNum) == GAME_INDEX::EMPTY_GAME)
+			_gameMG->GetCurGame() == GAME_INDEX::EMPTY_GAME)
 		{
 			std::cout << "(already Init)." << std::endl;
 			break;
 		}
 
-		PACKET_REQ_RES_ROPE_PULL_GAME* packet = (PACKET_REQ_RES_ROPE_PULL_GAME*)data;
-		room->gameMG.SetRopePos(packet->ropePos);
-		float ropePos = room->gameMG.GetRopePos();
+		if (_gameMG != nullptr)
+		{
 
-		PACKET_REQ_RES_ROPE_PULL_GAME resPacket;;
-		resPacket.header.packetIndex = PACKET_INDEX::REQ_RES_ROPE_PULL_GAME;
-		resPacket.header.packetSize = sizeof(PACKET_REQ_RES_ROPE_PULL_GAME);
-		resPacket.ropePos = ropePos;
+			PACKET_REQ_RES_ROPE_PULL_GAME* packet = (PACKET_REQ_RES_ROPE_PULL_GAME*)data;
+			_gameMG->SetRopePos(packet->ropePos);
+			float ropePos = _gameMG->GetRopePos();
 
-		std::string aa = _SerializationJson(PACKET_INDEX::REQ_RES_ROPE_PULL_GAME, (const char*)&resPacket);
+			PACKET_REQ_RES_ROPE_PULL_GAME resPacket;;
+			resPacket.header.packetIndex = PACKET_INDEX::REQ_RES_ROPE_PULL_GAME;
+			resPacket.header.packetSize = sizeof(PACKET_REQ_RES_ROPE_PULL_GAME);
+			resPacket.ropePos = ropePos;
 
-		int superSessionIdTemp = room->superSessionID;
-		int sessionIdTemp = room->sessionID;
+			std::string aa = _SerializationJson(PACKET_INDEX::REQ_RES_ROPE_PULL_GAME, (const char*)&resPacket);
 
-		_serverPtr->PostSendSession(superSessionIdTemp, false, aa.length(), (char*)aa.c_str());
-		_serverPtr->PostSendSession(sessionIdTemp,false, aa.length(), (char*)aa.c_str());
+			int superSessionIdTemp = room->superSessionID;
+			int sessionIdTemp = room->sessionID;
+
+			_serverPtr->PostSendSession(superSessionIdTemp, false, aa.length(), (char*)aa.c_str());
+			_serverPtr->PostSendSession(sessionIdTemp, false, aa.length(), (char*)aa.c_str());
+		}
+		else
+			std::cout << "Session : ProcessPacket : gameMG가 null입니다." << std::endl;
 	}
 	break;
 
