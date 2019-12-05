@@ -154,6 +154,11 @@ const char* Session::GetName()
 	return _name.c_str();
 }
 
+void Session::InitGameMG()
+{
+	_gameMG->Init();
+}
+
 
 void Session::_DeSerializationJson(char* jsonStr)
 {
@@ -250,6 +255,7 @@ void Session::_ProcessPacket(const int sessionID, const char* data)
 
 		if (mrTemp == ROOM_HOST::ENTER_ROOM) //도전자 입장이면 스타트패킷생성후 방장과 도전자에게 전송
 		{
+			_serverPtr->GetGameMG(false, sessionID, packet->gameIndex);
 			int roomNum = _serverPtr->GetRoomNum(sessionID);
 
 			ROOM* room = new ROOM;
@@ -272,6 +278,7 @@ void Session::_ProcessPacket(const int sessionID, const char* data)
 			PostSend(false, aa.length(), (char*)aa.c_str());
 			return;
 		}
+		_serverPtr->GetGameMG(true, sessionID, packet->gameIndex);
 
 		PACKET_ROOM_INFO sendPacket;
 		sendPacket.header.packetIndex = PACKET_INDEX::ROOM_INFO;
@@ -284,9 +291,8 @@ void Session::_ProcessPacket(const int sessionID, const char* data)
 	}
 	break;
 
-	case PACKET_INDEX::REQ_INIT_ROOM: //server Class로 빼기
+	case PACKET_INDEX::REQ_INIT_ROOM:
 	{
-		_gameMG->Init();
 		_serverPtr->ProcessInitRoomPacket(sessionID, data);
 	}
 	break;

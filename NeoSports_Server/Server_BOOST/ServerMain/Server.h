@@ -37,10 +37,11 @@ public:
 	void PostSendSession(int sessionID, const bool Immediately, const int size, char* data);
 
 	//GameMG
-	std::vector<GameMG*> GameMGPool;
+	void GetGameMG(bool isSuperSession, int sessionID, GAME_INDEX gameIndex);
 
 private:
 	RoomMG _roomMG;
+	std::vector<GameMG*> _gameMGPool;
 
 	Lock _acceptLock;
 	Lock _ropePullLock;

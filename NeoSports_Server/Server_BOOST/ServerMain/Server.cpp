@@ -10,8 +10,8 @@ Server::Server(boost::asio::io_context& io_service) : _acceptor(io_service,
 
 	for (int i = 0; i < MAX_GAME_MG_COUNT; i++)
 	{
-		GameMGPool.push_back(new GameMG);
-		GameMGPool[i]->Init();
+		_gameMGPool.push_back(new GameMG);
+		_gameMGPool[i]->Init();
 	}
 }
 
@@ -59,6 +59,7 @@ void Server::CloseSession(const int sessionID)
 	}
 }
 
+
 int Server::MakeRoom(GAME_INDEX gameIndex, int sessionID, CHAR_INDEX charIndex)
 {
 	return _roomMG.MakeRoom(gameIndex, sessionID, charIndex);
@@ -90,7 +91,7 @@ std::string Server::GetSuperSessionName(int sessionID)
 
 void Server::PostSendSession(int sessionID, const bool Immediately, const int size, char* data)
 {
-	_sessionVec[sessionID]->PostSend(Immediately,size,data);
+	_sessionVec[sessionID]->PostSend(Immediately, size, data);
 }
 
 std::string Server::GetSessionName(int sessionID)
@@ -101,7 +102,26 @@ std::string Server::GetSessionName(int sessionID)
 void Server::InitRoom(int roomNum)
 {
 	_roomMG.InitRoom(roomNum);
+}
 
+void Server::GetGameMG(bool isSuperSession, int  sessionID, GAME_INDEX gameIndex)
+{
+	for (auto iter = _gameMGPool.begin(); iter != _gameMGPool.end(); iter++)
+	{
+		if (isSuperSession == true && (*iter)->GetCurGame() == GAME_INDEX::EMPTY_GAME)
+		{
+			GameMG* gameMG = (*iter);
+			gameMG->SetCurGame(gameIndex);
+			_sessionVec[sessionID]->SetGameMG(gameMG);
+			break;
+		}
+		else if (!isSuperSession && (*iter)->GetCurGame() == gameIndex)
+		{
+			GameMG* gameMG = (*iter);
+			_sessionVec[sessionID]->SetGameMG(gameMG);
+			break;
+		}
+	}
 }
 
 
@@ -132,7 +152,10 @@ void Server::ProcessInitRoomPacket(const int sessionID, const char* data)
 	int superSessionID = _roomMG.GetSuperSessonID(roomNum);
 	int challengerSessionID = _roomMG.GetSessonID(roomNum);
 
+	_sessionVec[superSessionID]->InitGameMG();
 	_sessionVec[superSessionID]->SetGameMG(nullptr);
+
+	_sessionVec[challengerSessionID]->InitGameMG();
 	_sessionVec[challengerSessionID]->SetGameMG(nullptr);
 
 	InitRoom(roomNum);

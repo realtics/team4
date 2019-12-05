@@ -11,7 +11,7 @@ public:
 	{
 		superSessionID = ROOM_HOST::EMPTY_ROOM;
 		sessionID = ROOM_HOST::EMPTY_ROOM;
-
+		curGame = GAME_INDEX::EMPTY_GAME;
 		for (int i = 0; i < MAX_CHAR_IN_ROOM; i++)
 		{
 			charIndex[i] = CHAR_INDEX::EMPTY_CHAR;

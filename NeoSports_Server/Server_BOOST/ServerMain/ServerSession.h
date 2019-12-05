@@ -23,7 +23,9 @@ public:
 	void PostSend(const bool bImmediately, const int size, char* dataPtr);
 	void SetName(const char* namePtr);
 	const char* GetName();
+
 	void SetGameMG(GameMG* gameMG);
+	void InitGameMG();
 
 	boost::asio::ip::tcp::socket& Socket() { return Session::_socket; }
 
