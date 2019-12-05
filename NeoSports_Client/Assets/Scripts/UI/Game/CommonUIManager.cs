@@ -172,6 +172,8 @@ public class CommonUIManager : Singleton<CommonUIManager>
 			NetworkManager.Instance.SendRequestExitRoom(GAME_INDEX.ROPE_PULL, false);
 		else if (SceneManager.GetActiveScene().name == SceneName.NetworkBasketBallSceneName)
 			NetworkManager.Instance.SendRequestExitRoom(GAME_INDEX.BASKET_BALL, false);
+		else if (SceneManager.GetActiveScene().name == SceneName.WaitGameSceneName)
+			NetworkManager.Instance.SendRequestExitRoom(GAME_INDEX.EMPTY_GAME, false);
 
 	}
 
