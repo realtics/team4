@@ -150,13 +150,16 @@ void Server::ProcessInitRoomPacket(const int sessionID, const char* data)
 		DB::GetInstance()->Update(GetSessionName(sessionID), packet->gameIndex, addWinRecord);
 	}
 	int superSessionID = _roomMG.GetSuperSessonID(roomNum);
-	int challengerSessionID = _roomMG.GetSessonID(roomNum);
 
 	_sessionVec[superSessionID]->InitGameMG();
 	_sessionVec[superSessionID]->SetGameMG(nullptr);
 
-	_sessionVec[challengerSessionID]->InitGameMG();
-	_sessionVec[challengerSessionID]->SetGameMG(nullptr);
+	if (packet->gameIndex != GAME_INDEX::EMPTY_GAME)
+	{
+		int challengerSessionID = _roomMG.GetSessonID(roomNum);
+		_sessionVec[challengerSessionID]->InitGameMG();
+		_sessionVec[challengerSessionID]->SetGameMG(nullptr);
+	}
 
 	InitRoom(roomNum);
 }
