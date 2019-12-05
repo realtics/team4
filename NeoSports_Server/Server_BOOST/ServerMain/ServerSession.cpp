@@ -250,7 +250,6 @@ void Session::_ProcessPacket(const int sessionID, const char* data)
 			room = _serverPtr->GetRoomInfo(roomNum);
 
 			int superSessionIdTemp = room->superSessionID;
-			int sessionIdTemp = room->sessionID;
 
 			PACKET_START_GAME startPacket;
 			startPacket.header.packetIndex = PACKET_INDEX::START_GAME;
