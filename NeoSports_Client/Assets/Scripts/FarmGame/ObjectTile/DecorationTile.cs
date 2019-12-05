@@ -29,6 +29,7 @@ namespace FarmGame
 			decorationData = MapData.Instance.DecorationDatas[type];
 			base.point = point;
 
+			SetPosition();
 			InitSprite();
 		}
 
@@ -37,7 +38,18 @@ namespace FarmGame
 			decorationData = MapData.Instance.DecorationDatas[data.decorationType];
 			point = data.point;
 
+			SetPosition();
 			InitSprite();
+		}
+
+		void SetPosition()
+		{
+			Vector3 position = Vector3.zero;
+
+			position.x = MapData.TileSize * point.X;
+			position.y = MapData.TileSize * point.Y;
+
+			transform.localPosition = position;
 		}
 
 		void InitSprite()

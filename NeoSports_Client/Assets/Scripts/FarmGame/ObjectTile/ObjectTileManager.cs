@@ -18,6 +18,10 @@ namespace FarmGame
 		void Awake()
 		{
 			objectTileDic = new Dictionary<Point, ObjectTile>();
+		}
+
+		void Start()
+		{
 			InitRoadTile();
 		}
 
