@@ -50,7 +50,7 @@ namespace FarmGame
 			_canHarvest = false;
 
 			StartCoroutine(CheckCanHarvest());
-			SetPosition(point);
+			SetPosition();
 			InitSprite();
 			SetSprite();
 		}
@@ -73,17 +73,17 @@ namespace FarmGame
 				StartCoroutine(CheckCanHarvest());
 			}
 
-			SetPosition(data.point);
+			SetPosition();
 			InitSprite();
 			SetSprite();
 		}
 
-		void SetPosition(Point pt)
+		void SetPosition()
 		{
 			Vector3 position = Vector3.zero;
 
-			position.x = MapData.TileSize * pt.X;
-			position.y = MapData.TileSize * pt.Y;
+			position.x = MapData.TileSize * point.X;
+			position.y = MapData.TileSize * point.Y;
 
 			transform.localPosition = position;
 		}
