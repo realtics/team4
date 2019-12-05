@@ -52,7 +52,6 @@ void  Session::_ReceiveHandle(const boost::system::error_code& error, size_t byt
 	}
 	else
 	{
-		//LockGuard recvLockGuard(_recvLock);
 		_DeSerializationJson(_receiveBuffer.data());
 		int packetData = _packetBufferMark + bytesTransferred;
 		int readData = 0;
@@ -67,7 +66,6 @@ void  Session::_ReceiveHandle(const boost::system::error_code& error, size_t byt
 
 			if (header->packetSize <= packetData)
 			{
-				//_serverPtr->ProcessPacket(_sessionId, &_packetBuffer[readData]);
 				_ProcessPacket(_sessionId, &_packetBuffer[readData]);
 
 				packetData -= header->packetSize;
@@ -301,9 +299,9 @@ void Session::_ProcessPacket(const int sessionID, const char* data)
 	{
 		LockGuard ropeLockGuard(_ropePullLock);
 		int roomNum = _serverPtr->GetRoomNum(sessionID);
-		ROOM* room = new ROOM;
-		room->Init();
-		room = _serverPtr->GetRoomInfo(roomNum);
+		ROOM room;
+		room.Init();
+		room = (*_serverPtr->GetRoomInfo(roomNum));
 
 		//클라에서 x버튼이나 게임중 메뉴의 yes,no버튼 클릭할때도
 		//게임로직 패킷이 보내져서 예외처리 해주는중
@@ -328,8 +326,8 @@ void Session::_ProcessPacket(const int sessionID, const char* data)
 
 			std::string aa = _SerializationJson(PACKET_INDEX::REQ_RES_ROPE_PULL_GAME, (const char*)&resPacket);
 
-			int superSessionIdTemp = room->superSessionID;
-			int sessionIdTemp = room->sessionID;
+			int superSessionIdTemp = room.superSessionID;
+			int sessionIdTemp = room.sessionID;
 
 			_serverPtr->PostSendSession(superSessionIdTemp, false, aa.length(), (char*)aa.c_str());
 			_serverPtr->PostSendSession(sessionIdTemp, false, aa.length(), (char*)aa.c_str());
