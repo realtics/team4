@@ -256,17 +256,17 @@ void Session::_ProcessPacket(const int sessionID, const char* data)
 			_serverPtr->GetGameMG(false, sessionID, packet->gameIndex);
 			int roomNum = _serverPtr->GetRoomNum(sessionID);
 
-			ROOM* room = new ROOM;
-			room->Init();
-			room = _serverPtr->GetRoomInfo(roomNum);
+			ROOM room;
+			room.Init();
+			room = *_serverPtr->GetRoomInfo(roomNum);
 
-			int superSessionIdTemp = room->superSessionID;
+			int superSessionIdTemp = room.superSessionID;
 
 			PACKET_START_GAME* startPacket = new PACKET_START_GAME;
 			startPacket->header.packetIndex = PACKET_INDEX::START_GAME;
 			startPacket->header.packetSize = sizeof(PACKET_START_GAME);
-			startPacket->superCharID = (CHAR_INDEX)room->charIndex[0]; //방장의 캐릭터
-			startPacket->charID = (CHAR_INDEX)room->charIndex[1]; //도전자의 캐릭터
+			startPacket->superCharID = (CHAR_INDEX)room.charIndex[0]; //방장의 캐릭터
+			startPacket->charID = (CHAR_INDEX)room.charIndex[1]; //도전자의 캐릭터
 			strcpy(startPacket->superName, _serverPtr->GetSuperSessionName(superSessionIdTemp).c_str());
 			strcpy(startPacket->name, _name.c_str());
 
