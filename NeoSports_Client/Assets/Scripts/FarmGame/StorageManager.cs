@@ -3,26 +3,29 @@ using System.Collections.Generic;
 using System.Drawing;
 using UnityEngine;
 
-public class StorageManager : Singleton<StorageManager>
+namespace FarmGame
 {
-	Dictionary<int, int> _cropAmount;
-	Dictionary<int, int> _seedAmount;
-
-	int _goldAmount;
-
-	public void DeployDecoration(int type, Point pt)
+	public class StorageManager : Singleton<StorageManager>
 	{
+		Dictionary<int, int> _cropAmount;
+		Dictionary<int, int> _seedAmount;
+
+		int _goldAmount;
+
+		public void DeployDecoration(int type, Point pt)
+		{
+
+		}
+
+		public void DeployProduct(int type, Point pt)
+		{
+
+		}
+
+		public void RemoveObject(Point pt)
+		{
+
+		}
 
 	}
-
-	public void DeployProduct(int type, Point pt)
-	{
-
-	}
-
-	public void RemoveObject(Point pt)
-	{
-
-	}
-
 }

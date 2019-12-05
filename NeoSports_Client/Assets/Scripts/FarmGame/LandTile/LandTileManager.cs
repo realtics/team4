@@ -3,67 +3,71 @@ using System.Collections.Generic;
 using System.Drawing;
 using UnityEngine;
 
-public class LandTileManager : Singleton<LandTileManager>
+namespace FarmGame
 {
-
-	public GameObject prefLandTile;
-	public GameObject landTileGroup;
-
-	Dictionary<Point, LandTile> landDic;
-	Size landSize; 
-
-	public Size LandSize {
-		get { return landSize; }
-	}
-
-	void Awake()
+	public class LandTileManager : Singleton<LandTileManager>
 	{
-		instance = this;
 
-		landDic = new Dictionary<Point, LandTile>();
+		public GameObject prefLandTile;
+		public GameObject landTileGroup;
 
-		CreateLandTiles(MapData.MapWidth, MapData.MapHeight);
-	}
+		Dictionary<Point, LandTile> landDic;
+		Size landSize;
 
-	void CreateLandTiles(int width, int height)
-	{
-		landSize = new Size(width, height);
+		public Size LandSize {
+			get { return landSize; }
+		}
 
-		for (int i = 0; i < width; i++)
+		void Awake()
 		{
-			for (int j = 0; j < height; j++)
+			instance = this;
+
+			landDic = new Dictionary<Point, LandTile>();
+
+			CreateLandTiles(MapData.MapWidth, MapData.MapHeight);
+		}
+
+		void CreateLandTiles(int width, int height)
+		{
+			landSize = new Size(width, height);
+
+			for (int i = 0; i < width; i++)
 			{
-				Point pt = new Point(i, j);
-				GameObject tile = Instantiate(prefLandTile, landTileGroup.transform);
-				tile.name = i.ToString() + "_" + j.ToString() + "_LandTile";
+				for (int j = 0; j < height; j++)
+				{
+					Point pt = new Point(i, j);
+					GameObject tile = Instantiate(prefLandTile, landTileGroup.transform);
+					tile.name = i.ToString() + "_" + j.ToString() + "_LandTile";
 
-				Vector3 position = Vector3.zero;
-				position.x = i * MapData.TileSize;
-				position.y = j * MapData.TileSize;
-				tile.transform.position = position;
+					Vector3 position = Vector3.zero;
+					position.x = i * MapData.TileSize;
+					position.y = j * MapData.TileSize;
+					tile.transform.position = position;
 
-				LandTile script = tile.GetComponent<LandTile>();
-				LandTile.TileData data;
-				data.point = pt;
-				data.type = LandTile.EType.Badland;
-				data.typeIndex = 0;
-				script.SetData(data);
-				landDic.Add(pt, script);
+					LandTile script = tile.GetComponent<LandTile>();
+					LandTile.TileData data;
+					data.point = pt;
+					data.type = LandTile.EType.Badland;
+					data.typeIndex = 0;
+					script.SetData(data);
+					landDic.Add(pt, script);
+				}
 			}
 		}
-	}
 
-	void ResetLands()
-	{
-		foreach (KeyValuePair<Point, LandTile> item in landDic)
+		void ResetLands()
 		{
-			item.Value.ChangeType(LandTile.EType.Badland);
+			foreach (KeyValuePair<Point, LandTile> item in landDic)
+			{
+				item.Value.ChangeType(LandTile.EType.Badland);
+			}
 		}
-	}
 
-	public LandTile GetLandTile(Point pt)
-	{
-		return landDic[pt];
+		public LandTile GetLandTile(Point pt)
+		{
+			return landDic[pt];
+		}
+
 	}
 
 }

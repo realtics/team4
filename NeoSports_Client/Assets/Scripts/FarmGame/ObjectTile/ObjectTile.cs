@@ -3,23 +3,26 @@ using System.Collections.Generic;
 using System.Drawing;
 using UnityEngine;
 
-public class ObjectTile : MonoBehaviour
+namespace FarmGame
 {
-
-	public enum ETileType
+	public class ObjectTile : MonoBehaviour
 	{
-		Road,
-		Harvest,
-		Garbage,
-		Decoration
+
+		public enum ETileType
+		{
+			Road,
+			Harvest,
+			Garbage,
+			Decoration
+		}
+
+		protected ETileType tileType;
+
+		protected Point point;
+
+		public Point MapPoint {
+			get { return point; }
+		}
+
 	}
-
-	protected ETileType tileType;
-
-	protected Point point;
-
-	public Point MapPoint {
-		get { return point; }
-	}
-
 }

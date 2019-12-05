@@ -4,42 +4,46 @@ using System.Drawing;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ProductButton : MonoBehaviour
+namespace FarmGame
 {
-	public GameObject imageLessGrown;
-	public GameObject imageFullGrown;
-	public GameObject labelName;
-	public GameObject labelGrownTime;
-	public GameObject labelRequireGold;
-
-	ProductData _data;
-
-	public void SetData(ProductData data)
+	public class ProductButton : MonoBehaviour
 	{
-		_data = data;
+		public GameObject imageLessGrown;
+		public GameObject imageFullGrown;
+		public GameObject labelName;
+		public GameObject labelGrownTime;
+		public GameObject labelRequireGold;
 
-		imageLessGrown.GetComponent<Image>().sprite = ResourceManager.Instance.GetFarmAtlas(data.lessGrownSprite);
-		imageFullGrown.GetComponent<Image>().sprite = ResourceManager.Instance.GetFarmAtlas(data.fullGrownSprite);
+		ProductData _data;
 
-		labelName.GetComponent<Text>().text = data.name;
+		public void SetData(ProductData data)
+		{
+			_data = data;
 
-		int grownTime = (data.grownHour * 60) + data.grownMin;
-		labelGrownTime.GetComponent<Text>().text = grownTime.ToString() + "분";
-		labelRequireGold.GetComponent<Text>().text = data.price.ToString();
+			imageLessGrown.GetComponent<Image>().sprite = ResourceManager.Instance.GetFarmAtlas(data.lessGrownSprite);
+			imageFullGrown.GetComponent<Image>().sprite = ResourceManager.Instance.GetFarmAtlas(data.fullGrownSprite);
 
-		AddButtonEvent();
+			labelName.GetComponent<Text>().text = data.name;
+
+			int grownTime = (data.grownHour * 60) + data.grownMin;
+			labelGrownTime.GetComponent<Text>().text = grownTime.ToString() + "분";
+			labelRequireGold.GetComponent<Text>().text = data.price.ToString();
+
+			AddButtonEvent();
+		}
+
+		void AddButtonEvent()
+		{
+			Button button = GetComponent<Button>();
+			button.onClick.RemoveAllListeners();
+			button.onClick.AddListener(() => OnClickPlantProduct());
+		}
+
+		void OnClickPlantProduct()
+		{
+			Point plantPoint = MapData.Instance.CurrentFarmerPoint;
+			ObjectTileManager.Instance.PlantProduct(plantPoint, _data.type);
+		}
 	}
 
-	void AddButtonEvent()
-	{
-		Button button = GetComponent<Button>();
-		button.onClick.RemoveAllListeners();
-		button.onClick.AddListener(() => OnClickPlantProduct());
-	}
-
-	void OnClickPlantProduct()
-	{
-		Point plantPoint = MapData.Instance.CurrentFarmerPoint;
-		ObjectTileManager.Instance.PlantProduct(plantPoint, _data.type);
-	}
 }
