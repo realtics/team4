@@ -35,6 +35,7 @@ namespace FarmGame
 			if (objectTileDic.ContainsKey(point))
 			{
 				Destroy(objectTileDic[point].gameObject);
+				objectTileDic.Remove(point);
 			}
 		}
 
