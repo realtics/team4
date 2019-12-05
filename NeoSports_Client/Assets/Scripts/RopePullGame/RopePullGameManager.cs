@@ -316,7 +316,11 @@ namespace RopePullGame
 		}
 		bool IsSingleGame()
 		{
-			return NetworkManager.Instance.IsSinglePlay();
+			if (NetworkManager.Instance != null)
+			{
+				return NetworkManager.Instance.IsSinglePlay();
+			}
+			return false;
 		}
 	}
 }

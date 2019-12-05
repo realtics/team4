@@ -22,7 +22,10 @@ namespace RopePullGame
             Speed = 0.0f;
             powerSum = 0.0f;
             feverPower = 1.0f;
-			isSinglePlay = NetworkManager.instance.IsSinglePlay();
+			if (NetworkManager.Instance != null)
+			{
+				isSinglePlay = NetworkManager.instance.IsSinglePlay();
+			}
         }
 
         void Update()

@@ -16,8 +16,11 @@ namespace RopePullGame
 		bool _isSinglePlay;
 		void Start()
 		{
-			_isSinglePlay = NetworkManager.Instance.IsSinglePlay();
-			_isOwnHost = NetworkManager.Instance.isOwnHost;
+			if (NetworkManager.Instance != null)
+			{
+				_isSinglePlay = NetworkManager.Instance.IsSinglePlay();
+				_isOwnHost = NetworkManager.Instance.isOwnHost;
+			}
 			
 		}
 

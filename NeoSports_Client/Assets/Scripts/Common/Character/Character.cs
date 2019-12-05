@@ -2,36 +2,55 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public struct CharacterStatus
+{
+	public float agility;
+	public float endurance;
+	public float luck;
+	public float strength;
+}
 public class Character : MonoBehaviour
 {
-
+	
     protected class AnimationParameter
     {
         public const string IsJump = "IsJump";
         public const string JumpUp = "JumpUp";
         public const string IsRun = "IsRun";
     }
+	public enum EState
+	{
+		Idle,
+		Jump,
+		Run
+	}
 
-    public enum EState
-    {
-        Idle,
-        Jump,
-        Run
-    }
+	EState _currentState;
+	Animator _animator;
+	CharacterStatus _status;
 
-    EState _currentState;
-    Animator _animator;
-
-    public EState CurrentState
-    {
-        get { return _currentState; }
-    }
+	public EState CurrentState
+	{
+		get { return _currentState; }
+	}
 
     private void Start()
     {
         _currentState = EState.Idle;
         _animator = transform.GetComponent<Animator>();
-    }
+		LoadStatus();
+	}
+
+	void LoadStatus()
+	{
+		if (InventoryManager.Instance != null)
+		{
+			_status.agility = InventoryManager.Instance.CurrentCharacter.Stat.agility;
+			_status.endurance = InventoryManager.Instance.CurrentCharacter.Stat.endurance;
+			_status.luck = InventoryManager.Instance.CurrentCharacter.Stat.luck;
+			_status.strength = InventoryManager.Instance.CurrentCharacter.Stat.strength;
+		}
+	}
 	#region CharacterRender
 	public void StartJump()
     {
