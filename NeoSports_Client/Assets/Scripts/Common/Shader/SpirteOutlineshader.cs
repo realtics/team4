@@ -10,11 +10,11 @@ public class SpirteOutlineshader : MonoBehaviour
 	[Range(0, 16)]
 	public int outlineSize = 1;
 
-	private SpriteRenderer spriteRenderer;
+	private SpriteRenderer _spriteRenderer;
 
 	void OnEnable()
 	{
-		spriteRenderer = GetComponent<SpriteRenderer>();
+		_spriteRenderer = GetComponent<SpriteRenderer>();
 
 		UpdateOutline(true);
 	}
@@ -29,13 +29,25 @@ public class SpirteOutlineshader : MonoBehaviour
 		UpdateOutline(true);
 	}
 
+	public void PlayLineEffect()
+	{
+		outlineSize += 2;
+		Invoke("StopLineEffect", 0.5f);
+	}
+
+	public void StopLineEffect()
+	{
+		if(outlineSize > 0)
+		outlineSize -=2; 
+	}
+
 	void UpdateOutline(bool outline)
 	{
 		MaterialPropertyBlock mpb = new MaterialPropertyBlock();
-		spriteRenderer.GetPropertyBlock(mpb);
+		_spriteRenderer.GetPropertyBlock(mpb);
 		mpb.SetFloat("_Outline", outline ? 1f : 0);
 		mpb.SetColor("_OutlineColor", color);
 		mpb.SetFloat("_OutlineSize", outlineSize);
-		spriteRenderer.SetPropertyBlock(mpb);
+		_spriteRenderer.SetPropertyBlock(mpb);
 	}
 }

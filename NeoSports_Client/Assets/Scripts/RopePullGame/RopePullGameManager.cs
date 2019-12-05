@@ -28,6 +28,7 @@ namespace RopePullGame
 		// Public Variable
 		public GameObject rootCanvas;
 		public GameObject playerableObjects;
+		public GameObject singlePlayer;
 		public Text playTimeText;
 		public Text startCountingTimeText;
 		public Text leftText;
@@ -78,6 +79,7 @@ namespace RopePullGame
 			{
 				effect.EndEffect();
 			}
+			singlePlayer = null;
 		}
 
 		void CreateCharacters()
@@ -260,25 +262,25 @@ namespace RopePullGame
 
 		}
 
-		void SelectInstantCharacter(CHAR_INDEX charID, Transform parent)
+		GameObject SelectInstantCharacter(CHAR_INDEX charID, Transform parent)
 		{
 			switch (charID)
 			{
 				case (CHAR_INDEX)CharacterInfo.EType.PpiYaGi:
 					{
-						Instantiate(ppiYakCharacter, parent);
-						break;
+						return Instantiate(ppiYakCharacter, parent);
 					}
 				case (CHAR_INDEX)CharacterInfo.EType.TurkeyJelly:
 					{
-						Instantiate(turkeyJellyCharacter, parent);
-						break;
+						return Instantiate(turkeyJellyCharacter, parent);
+						
 					}
 				default:
 					{
 						break;
 					}
 			}
+			return null;
 
 		}
 
@@ -303,8 +305,14 @@ namespace RopePullGame
 
 		void CreateSingleCharacter()
 		{
-			SelectInstantCharacter((CHAR_INDEX)InventoryManager.Instance.CurrentCharacter.Type, _leftPlayer);
+			singlePlayer =SelectInstantCharacter((CHAR_INDEX)InventoryManager.Instance.CurrentCharacter.Type, _leftPlayer);
 			_characters = playerableObjects.GetComponentsInChildren<Character>();
+
+			var shader = singlePlayer.GetComponentInChildren<SpirteOutlineshader>();
+			
+			var playerInput = _leftPlayer.gameObject.GetComponent<RopePullInputPlayerPower>();
+			playerInput.OutlineEffect += shader.PlayLineEffect;
+
 		}
 		bool IsSingleGame()
 		{

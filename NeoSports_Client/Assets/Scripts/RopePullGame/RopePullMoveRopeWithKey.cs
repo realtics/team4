@@ -79,7 +79,7 @@ namespace RopePullGame
 
         void GetPlayersPower()
         {
-            float leftPower = LeftPlayer.GetComponent<RopePullInputPlayerPower>().PullPower;
+            float leftPower = LeftPlayer.GetComponent<RopePullInputPlayerPower>().pullPower;
             float RightPower = RightPlayer.GetComponent<RopePulllAIPlayerPower>().PullPower;
             CalculateRopeMove(leftPower, RightPower);
         }

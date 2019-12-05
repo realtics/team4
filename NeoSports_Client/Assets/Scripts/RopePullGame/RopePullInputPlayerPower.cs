@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,8 +7,9 @@ namespace RopePullGame
 {
 	public class RopePullInputPlayerPower : MonoBehaviour
 	{
-		public float PullPower;
+		public float pullPower;
 		public float strength;
+		public Action OutlineEffect;
 
 		private bool _isOwnHost;
 
@@ -16,6 +18,7 @@ namespace RopePullGame
 		{
 			_isSinglePlay = NetworkManager.Instance.IsSinglePlay();
 			_isOwnHost = NetworkManager.Instance.isOwnHost;
+			
 		}
 
 		void Update()
@@ -32,9 +35,11 @@ namespace RopePullGame
 
 			if (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonUp(0))
 			{
+				
 				if (_isSinglePlay)
 				{
-					PullPower += strength;
+					pullPower += strength;
+					OutlineEffect();
 				}
 				else
 				{
@@ -48,7 +53,7 @@ namespace RopePullGame
 
 		public void ResetPower()
 		{
-			PullPower = 0.0f;
+			pullPower = 0.0f;
 		}
 	}
 }
