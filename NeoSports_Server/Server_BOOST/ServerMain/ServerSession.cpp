@@ -264,15 +264,15 @@ void Session::_ProcessPacket(const int sessionID, const char* data)
 
 			int superSessionIdTemp = room->superSessionID;
 
-			PACKET_START_GAME startPacket;
-			startPacket.header.packetIndex = PACKET_INDEX::START_GAME;
-			startPacket.header.packetSize = sizeof(PACKET_START_GAME);
-			startPacket.superCharID = (CHAR_INDEX)room->charIndex[0]; //방장의 캐릭터
-			startPacket.charID = (CHAR_INDEX)room->charIndex[1]; //도전자의 캐릭터
-			strcpy(startPacket.superName, _serverPtr->GetSuperSessionName(superSessionIdTemp).c_str());
-			strcpy(startPacket.name, _name.c_str());
+			PACKET_START_GAME* startPacket = new PACKET_START_GAME;
+			startPacket->header.packetIndex = PACKET_INDEX::START_GAME;
+			startPacket->header.packetSize = sizeof(PACKET_START_GAME);
+			startPacket->superCharID = (CHAR_INDEX)room->charIndex[0]; //방장의 캐릭터
+			startPacket->charID = (CHAR_INDEX)room->charIndex[1]; //도전자의 캐릭터
+			strcpy(startPacket->superName, _serverPtr->GetSuperSessionName(superSessionIdTemp).c_str());
+			strcpy(startPacket->name, _name.c_str());
 
-			std::string aa = _SerializationJson(PACKET_INDEX::START_GAME, (const char*)&startPacket);
+			std::string aa = _SerializationJson(PACKET_INDEX::START_GAME, (const char*)startPacket);
 
 			_serverPtr->PostSendSession(superSessionIdTemp, false, aa.length(), (char*)aa.c_str());
 			PostSend(false, aa.length(), (char*)aa.c_str());
