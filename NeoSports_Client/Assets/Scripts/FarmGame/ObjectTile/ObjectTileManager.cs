@@ -25,6 +25,19 @@ namespace FarmGame
 			InitRoadTile();
 		}
 
+		public bool HasObjectTileAtPoint(Point point)
+		{
+			return objectTileDic.ContainsKey(point);
+		}
+
+		public void RemoveObjectTileAtPoint(Point point)
+		{
+			if (objectTileDic.ContainsKey(point))
+			{
+				Destroy(objectTileDic[point].gameObject);
+			}
+		}
+
 		#region Road Tile
 		void InitRoadTile()
 		{

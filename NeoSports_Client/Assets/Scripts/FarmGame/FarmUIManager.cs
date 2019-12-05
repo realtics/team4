@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
@@ -121,6 +122,31 @@ namespace FarmGame
 
 			objectTileFuncGroup.SetActive(false);
 			decorationPanel.SetActive(true);
+		}
+
+		public void ButtonEvent_RemoveObjectTile()
+		{
+			Point farmerPoint = MapData.Instance.CurrentFarmerPoint;
+
+			if (!ObjectTileManager.Instance.HasObjectTileAtPoint(farmerPoint))
+			{
+				return;
+			}
+
+			PopupManager.PopupData data;
+			data.text = "정말로 타일을 제거하시겠습니까?";
+			data.okFlag = false;
+			data.callBack = RemoveObjectTile;
+
+			PopupManager.Instance.ShowPopup(data);
+		}
+
+		void RemoveObjectTile()
+		{
+			Point farmerPoint = MapData.Instance.CurrentFarmerPoint;
+
+			ObjectTileManager.Instance.RemoveObjectTileAtPoint(farmerPoint);
+			objectTileFuncGroup.SetActive(false);
 		}
 
 		void ShowExitToMainMenuPopup()

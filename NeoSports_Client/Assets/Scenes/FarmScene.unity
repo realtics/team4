@@ -3397,7 +3397,7 @@ PrefabInstance:
     - target: {fileID: 1179659508631713167, guid: 476141d3c44bc8a4b8e43a8b499b721e,
         type: 3}
       propertyPath: m_RootOrder
-      value: 5
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 1179659508631713167, guid: 476141d3c44bc8a4b8e43a8b499b721e,
         type: 3}
@@ -3894,7 +3894,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1888648941}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1513105896}
+        m_MethodName: ButtonEvent_RemoveObjectTile
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1888648941
 MonoBehaviour:
   m_ObjectHideFlags: 0
