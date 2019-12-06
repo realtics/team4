@@ -53,7 +53,7 @@ namespace FarmGame
 		{
 			if (!EventSystem.current.IsPointerOverGameObject())
 			{
-				if (Input.GetMouseButtonDown(0))
+				if (Input.GetMouseButton(0))
 				{
 					InputClick();
 				}
@@ -126,9 +126,9 @@ namespace FarmGame
 
 		public void ButtonEvent_RemoveObjectTile()
 		{
-			Point farmerPoint = MapData.Instance.CurrentFarmerPoint;
+			Point cursur = MapData.Instance.CurrentFarmerPoint;
 
-			if (!ObjectTileManager.Instance.HasObjectTileAtPoint(farmerPoint))
+			if (!ObjectTileManager.Instance.HasObjectTileAtPoint(cursur))
 			{
 				return;
 			}
@@ -147,6 +147,20 @@ namespace FarmGame
 
 			ObjectTileManager.Instance.RemoveObjectTileAtPoint(farmerPoint);
 			objectTileFuncGroup.SetActive(false);
+		}
+
+		public void ButtonEvent_ChangeToGrassLand()
+		{
+			Point cursurPoint = MapData.Instance.CurrentFarmerPoint;
+
+			LandTileManager.Instance.SetLandTileType(cursurPoint, LandTile.EType.Grass);
+		}
+
+		public void ButtonEvent_ChangeToCultivate()
+		{
+			Point cursurPoint = MapData.Instance.CurrentFarmerPoint;
+
+			LandTileManager.Instance.SetLandTileType(cursurPoint, LandTile.EType.Cultivate);
 		}
 
 		void ShowExitToMainMenuPopup()

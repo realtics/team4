@@ -11,25 +11,19 @@ namespace FarmGame
 		public GameObject prefLandTile;
 		public GameObject landTileGroup;
 
-		Dictionary<Point, LandTile> landDic;
-		Size landSize;
-
-		public Size LandSize {
-			get { return landSize; }
-		}
+		Dictionary<Point, LandTile> landTileDic;
 
 		void Awake()
 		{
 			instance = this;
 
-			landDic = new Dictionary<Point, LandTile>();
+			landTileDic = new Dictionary<Point, LandTile>();
 
 			CreateLandTiles(MapData.MapWidth, MapData.MapHeight);
 		}
 
 		void CreateLandTiles(int width, int height)
 		{
-			landSize = new Size(width, height);
 
 			for (int i = 0; i < width; i++)
 			{
@@ -50,14 +44,19 @@ namespace FarmGame
 					data.type = LandTile.EType.Badland;
 					data.typeIndex = 0;
 					script.SetData(data);
-					landDic.Add(pt, script);
+					landTileDic.Add(pt, script);
 				}
 			}
 		}
 
+		public void SetLandTileType(Point point, LandTile.EType type)
+		{
+			landTileDic[point].ChangeType(type);
+		}
+
 		void ResetLands()
 		{
-			foreach (KeyValuePair<Point, LandTile> item in landDic)
+			foreach (KeyValuePair<Point, LandTile> item in landTileDic)
 			{
 				item.Value.ChangeType(LandTile.EType.Badland);
 			}
@@ -65,7 +64,7 @@ namespace FarmGame
 
 		public LandTile GetLandTile(Point pt)
 		{
-			return landDic[pt];
+			return landTileDic[pt];
 		}
 
 	}

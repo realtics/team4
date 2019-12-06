@@ -90,11 +90,12 @@ SpriteAtlas:
     - {fileID: 21300000, guid: 018483141e2b68d458776f3c709a8557, type: 3}
     - {fileID: 21300000, guid: e23a042d07c33514b930ddf8a7ae15e5, type: 3}
     - {fileID: 21300000, guid: 8ba20effeccb0b14cb68a551f4bef5b2, type: 3}
-    totalSpriteSurfaceArea: 110592
+    - {fileID: 21300000, guid: 1f26456709517ad4087a2fde8cad2f83, type: 3}
+    totalSpriteSurfaceArea: 112896
     bindAsDefault: 1
     storedHash:
       serializedVersion: 2
-      Hash: 84a04702331d60bb4b8fe795ccfaa6ec
+      Hash: 480fafccf5bef8f990eec7d15a91a260
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
   - {fileID: 21300000, guid: 0e0ae630b4cd43f46a828cb0a603d719, type: 3}
@@ -122,6 +123,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: f0380d56062da734d89e0a8b6b06da5d, type: 3}
   - {fileID: 21300000, guid: 77074576cdc867c40a0d6b25e7be535e, type: 3}
   - {fileID: 21300000, guid: 6562265729ef6ed4bb7191c6b05b0d2a, type: 3}
+  - {fileID: 21300000, guid: 1f26456709517ad4087a2fde8cad2f83, type: 3}
   - {fileID: 21300000, guid: 24ccca676040259428547cda4557e4d0, type: 3}
   - {fileID: 21300000, guid: 1a12fbc716529954a9df0e8d296dcde2, type: 3}
   - {fileID: 21300000, guid: ac67ce387262dc742b255cf3e9519573, type: 3}
@@ -171,6 +173,7 @@ SpriteAtlas:
   - clover_0
   - potato_1
   - weed_1
+  - cultivate_0
   - strawberry_0
   - tire_0
   - berry_0

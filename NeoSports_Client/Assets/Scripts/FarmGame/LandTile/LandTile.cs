@@ -12,6 +12,7 @@ namespace FarmGame
 		{
 			Badland,
 			Grass,
+			Cultivate,
 			Weed,
 			WeedOld,
 			End
@@ -33,13 +34,12 @@ namespace FarmGame
 		const string GrassSpriteName = "grass";
 		const string WeedSpriteName = "weed";
 		const string WeedOldSpriteName = "weed_old";
+		const string CultivateSpriteName = "cultivate";
 
 		EType _type;
 		int _typeIndex;
 		GameObject _highlight;
 		Point point;
-
-		public SpriteAtlas farmLandTileAtlas;
 
 		#region Property
 		public EType Type {
@@ -96,6 +96,9 @@ namespace FarmGame
 				case EType.WeedOld:
 					randIndex = Random.Range(0, WeedOldTypeCount);
 					break;
+				case EType.Cultivate:
+					randIndex = 0;
+					break;
 			}
 
 			this._type = type;
@@ -122,11 +125,14 @@ namespace FarmGame
 				case EType.WeedOld:
 					spriteName += WeedOldSpriteName;
 					break;
+				case EType.Cultivate:
+					spriteName += CultivateSpriteName;
+					break;
 			}
 
 			spriteName += "_" + _typeIndex.ToString();
 
-			Sprite tileSprite = farmLandTileAtlas.GetSprite(spriteName);
+			Sprite tileSprite = ResourceManager.Instance.GetFarmAtlas(spriteName);
 			GetComponent<SpriteRenderer>().sprite = tileSprite;
 		}
 
