@@ -7,4 +7,5 @@
 	public const string NetworkBasketBallSceneName = "NetworkBasketBallGame";
 	public const string NetworkRopeGameSceneName = "NetworkRopeGameScene";
 	public const string WaitGameSceneName = "WaitGameScene";
+	public const string FarmSceneName = "FarmScene";
 }

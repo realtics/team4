@@ -14,7 +14,8 @@ namespace FarmGame
 		{
 			Default,
 			Plant,
-			Decoration
+			Decoration,
+			Storage
 		}
 
 		const float DoubleTouchDuration = 0.5f;
@@ -24,27 +25,36 @@ namespace FarmGame
 		Camera _mainCamera;
 		Farmer _farmer;
 
+		Dictionary<int, StorageGroup> _storageGroupDic;
+
 		public GameObject prefProductButton;
 		public GameObject prefDecorationButton;
+		public GameObject prefStorageGroup;
 
 		public GameObject plantingPanel;
 		public GameObject decorationPanel;
+		public GameObject storagePanel;
 
 		public GameObject landTileFuncGroup;
 		public GameObject objectTileFuncGroup;
 
 		public GameObject productScrollViewContent;
 		public GameObject decorationScrollViewContent;
+		public GameObject storageScrollViewContent;
 
 		public GameObject farmerObject;
 
 		void Awake()
 		{
+			_storageGroupDic = new Dictionary<int, StorageGroup>();
 			_currentCategory = ECategory.Default;
 
 			_mainCamera = Camera.main;
 			_farmer = farmerObject.GetComponent<Farmer>();
+		}
 
+		void Start()
+		{
 			CreatePlantScrollViewItem();
 			CreateDecorationScrollViewItem();
 		}
@@ -75,7 +85,7 @@ namespace FarmGame
 			}
 		}
 
-		#region Button Event
+		#region Common Func
 		public void EventBackButton()
 		{
 			switch (_currentCategory)
@@ -89,11 +99,52 @@ namespace FarmGame
 				case ECategory.Decoration:
 					ClosePanel(_currentCategory);
 					break;
+				case ECategory.Storage:
+					ClosePanel(_currentCategory);
+					break;
 				default:
 					break;
 			}
 		}
 
+		public void ClosePanel(ECategory category)
+		{
+			switch (category)
+			{
+				case ECategory.Plant:
+					_currentCategory = ECategory.Default;
+					plantingPanel.SetActive(false);
+					break;
+				case ECategory.Decoration:
+					_currentCategory = ECategory.Default;
+					decorationPanel.SetActive(false);
+					break;
+				case ECategory.Storage:
+					_currentCategory = ECategory.Default;
+					storagePanel.SetActive(false);
+					break;
+				default:
+					break;
+			}
+		}
+
+		void ShowExitToMainMenuPopup()
+		{
+			PopupManager.PopupData data;
+			data.text = "메인 메뉴로 나가시겠습니까?";
+			data.okFlag = false;
+			data.callBack = ChangeSceneToMainMenu;
+			PopupManager.Instance.ShowPopup(data);
+		}
+
+		void ChangeSceneToMainMenu()
+		{
+			SceneManager.LoadScene(SceneName.MenuSceneName);
+		}
+		#endregion
+
+
+		#region Object Tile Func
 		public void EventLandTileFuncButton()
 		{
 			bool active = landTileFuncGroup.activeInHierarchy;
@@ -136,64 +187,13 @@ namespace FarmGame
 			PopupManager.PopupData data;
 			data.text = "정말로 타일을 제거하시겠습니까?";
 			data.okFlag = false;
-			data.callBack = RemoveObjectTile;
-
-			PopupManager.Instance.ShowPopup(data);
-		}
-
-		void RemoveObjectTile()
-		{
-			Point farmerPoint = MapData.Instance.CurrentFarmerPoint;
-
-			ObjectTileManager.Instance.RemoveObjectTileAtPoint(farmerPoint);
-			objectTileFuncGroup.SetActive(false);
-		}
-
-		public void ButtonEvent_ChangeToGrassLand()
-		{
-			Point cursurPoint = MapData.Instance.CurrentFarmerPoint;
-
-			LandTileManager.Instance.SetLandTileType(cursurPoint, LandTile.EType.Grass);
-		}
-
-		public void ButtonEvent_ChangeToCultivate()
-		{
-			Point cursurPoint = MapData.Instance.CurrentFarmerPoint;
-
-			LandTileManager.Instance.SetLandTileType(cursurPoint, LandTile.EType.Cultivate);
-		}
-
-		void ShowExitToMainMenuPopup()
-		{
-			PopupManager.PopupData data;
-			data.text = "메인 메뉴로 나가시겠습니까?";
-			data.okFlag = false;
-			data.callBack = ChangeSceneToMainMenu;
-			PopupManager.Instance.ShowPopup(data);
-		}
-
-		void ChangeSceneToMainMenu()
-		{
-			Debug.Log("Change To Main Menu Scene");
-			//SceneManager.LoadScene(SceneName.MenuSceneName);
-		}
-		#endregion
-
-		public void ClosePanel(ECategory category)
-		{
-			switch (category)
+			data.callBack = () =>
 			{
-				case ECategory.Plant:
-					_currentCategory = ECategory.Default;
-					plantingPanel.SetActive(false);
-					break;
-				case ECategory.Decoration:
-					_currentCategory = ECategory.Default;
-					decorationPanel.SetActive(false);
-					break;
-				default:
-					break;
-			}
+				ObjectTileManager.Instance.RemoveObjectTile();
+				objectTileFuncGroup.SetActive(false);
+			};
+
+			PopupManager.Instance.ShowPopup(data);
 		}
 
 		void CreatePlantScrollViewItem()
@@ -217,6 +217,57 @@ namespace FarmGame
 				obj.GetComponent<DecorationButton>().SetData(item.Value);
 			}
 		}
+		#endregion
+
+
+		#region Land Tile Func
+		public void ButtonEvent_ChangeToGrassLand()
+		{
+			Point cursurPoint = MapData.Instance.CurrentFarmerPoint;
+
+			LandTileManager.Instance.SetLandTileType(cursurPoint, LandTile.EType.Grass);
+		}
+
+		public void ButtonEvent_ChangeToCultivate()
+		{
+			Point cursurPoint = MapData.Instance.CurrentFarmerPoint;
+
+			LandTileManager.Instance.SetLandTileType(cursurPoint, LandTile.EType.Cultivate);
+		}
+		#endregion
+
+
+		#region Storage Func
+		public void ButtonEvent_OpenStoragePanel()
+		{
+			_currentCategory = ECategory.Storage;
+
+			storagePanel.SetActive(true);
+			UpdateStorageGroupInfo();
+		}
+
+		void UpdateStorageGroupInfo()
+		{
+			var cropAmountDic = InventoryManager.Instance.CropAmountDic;
+
+			foreach (var child in cropAmountDic)
+			{
+				if (_storageGroupDic.ContainsKey(child.Key))
+				{
+					_storageGroupDic[child.Key].SetAmount(child.Value);
+				}
+				else
+				{
+					GameObject obj = Instantiate(prefStorageGroup, storageScrollViewContent.transform);
+					StorageGroup script = obj.transform.GetComponent<StorageGroup>();
+					ProductData data = MapData.Instance.ProductDatas[child.Key];
+					script.InitData(data);
+
+					_storageGroupDic.Add(child.Key, script);
+				}
+			}
+		}
+		#endregion
 
 	}
 

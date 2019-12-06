@@ -30,8 +30,10 @@ namespace FarmGame
 			return objectTileDic.ContainsKey(point);
 		}
 
-		public void RemoveObjectTileAtPoint(Point point)
+		public void RemoveObjectTile()
 		{
+			Point point = MapData.Instance.CurrentFarmerPoint;
+
 			if (objectTileDic.ContainsKey(point))
 			{
 				Destroy(objectTileDic[point].gameObject);

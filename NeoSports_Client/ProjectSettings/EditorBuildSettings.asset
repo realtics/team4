@@ -23,4 +23,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/WaitGameScene.unity
     guid: 6a80ba12563c5994fa19238a0a47b690
+  - enabled: 1
+    path: Assets/Scenes/FarmScene.unity
+    guid: 9fc0d4010bbf28b4594072e72b8655ab
   m_configObjects: {}

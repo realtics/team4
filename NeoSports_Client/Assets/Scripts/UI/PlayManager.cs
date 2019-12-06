@@ -11,57 +11,39 @@ public class PlayManager : Singleton<PlayManager>
 	public GameObject ropeJumpMultiButton;
 	public GameObject basketBallMultiButton;
 
-	void Start()
-	{
-		DisableMultiPlayButton();
-	}
-
-	void DisableMultiPlayButton()
-	{
-		//ropePullMultiButton.GetComponent<Button>().enabled = false;
-		//ropeJumpMultiButton.GetComponent<Button>().enabled = false;
-		//basketBallMultiButton.GetComponent<Button>().enabled = false;
-	}
-
-	#region Button Event
-	public void StartRopePullSingleGame()
+	public void ButtonEvent_StartRopePullSingleGame()
 	{
 		SceneManager.LoadScene(SceneName.RopeGameSceneName);
 	}
 
-	public void StartRopePullMultiGame()
+	public void ButtonEvent_StartRopePullMultiGame()
 	{
-		//SceneManager.LoadScene(SceneName.NetworkRopeGameSceneName);
-		NetworkManager.Instance.SendRequestRoom(GAME_INDEX.ROPE_PULL);
+		SceneManager.LoadSceneAsync(SceneName.NetworkRopeGameSceneName);
 	}
 
-	public void StartJumpRopeSingleGame()
+	public void ButtonEvent_StartJumpRopeSingleGame()
 	{
 		SceneManager.LoadScene(SceneName.JumpRopeGameSceneName);
 	}
 
-	public void StartJumpRopeMultiGame()
+	public void ButtonEvent_StartJumpRopeMultiGame()
 	{
-        //SceneManager.LoadScene(SceneName.JumpRopeGameSceneName);
         NetworkManager.Instance.SendRequestRoom(GAME_INDEX.ROPE_JUMP);
-
     }
 
-	public void StartBasketBallSingleGame()
+	public void ButtonEvent_StartBasketBallSingleGame()
 	{
 		SceneManager.LoadScene(SceneName.BasketBallGameSceneName);
 	}
 
-	public void StartBasketBallMultiGame()
+	public void ButtonEvent_StartBasketBallMultiGame()
 	{
-        //SceneManager.LoadScene(SceneName.BasketBallGameSceneName);
         NetworkManager.Instance.SendRequestRoom(GAME_INDEX.BASKET_BALL);
     }
-	#endregion
 
-	public void LoadRopeGameScene()
+	public void ButtonEvent_StartFarmScene()
 	{
-		SceneManager.LoadSceneAsync(SceneName.NetworkRopeGameSceneName);
-		Debug.Log("LoadSceneCall");
+		SceneManager.LoadScene(SceneName.FarmSceneName);
 	}
+
 }
