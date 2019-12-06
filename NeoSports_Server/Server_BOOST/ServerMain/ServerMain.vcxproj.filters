@@ -19,11 +19,14 @@
     <Filter Include="Protocol">
       <UniqueIdentifier>{df281bb3-0345-4837-87d9-69ef4a8ef3ef}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameMG">
+      <UniqueIdentifier>{d67ef9b2-5e78-4251-9c3a-feeb66539a72}</UniqueIdentifier>
+    </Filter>
     <Filter Include="DB">
       <UniqueIdentifier>{56dc2b53-0aed-43f3-bf5b-e7554233dc6c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="GameMG">
-      <UniqueIdentifier>{d67ef9b2-5e78-4251-9c3a-feeb66539a72}</UniqueIdentifier>
+    <Filter Include="LogicClass">
+      <UniqueIdentifier>{952392b9-0c8f-4d01-9031-3a937ca55e71}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -44,6 +47,9 @@
     </ClCompile>
     <ClCompile Include="GameMG.cpp">
       <Filter>GameMG</Filter>
+    </ClCompile>
+    <ClCompile Include="LogicProcess.cpp">
+      <Filter>LogicClass</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -70,6 +76,9 @@
     </ClInclude>
     <ClInclude Include="GameMG.h">
       <Filter>GameMG</Filter>
+    </ClInclude>
+    <ClInclude Include="LogicProcess.h">
+      <Filter>LogicClass</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClCompile Include="DB.cpp" />
     <ClCompile Include="GameMG.cpp" />
+    <ClCompile Include="LogicProcess.cpp" />
     <ClCompile Include="RoomMG.cpp" />
     <ClCompile Include="Server.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -29,6 +30,7 @@
   <ItemGroup>
     <ClInclude Include="DB.h" />
     <ClInclude Include="GameMG.h" />
+    <ClInclude Include="LogicProcess.h" />
     <ClInclude Include="RoomMG.h" />
     <ClInclude Include="Server.h" />
     <ClInclude Include="Json.h" />
