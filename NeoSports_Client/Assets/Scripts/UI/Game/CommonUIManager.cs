@@ -13,7 +13,7 @@ public class CommonUIManager : Singleton<CommonUIManager>
 		DynamicTextUserName
 	}
 
-	public delegate void StartGameCallBack();
+	public delegate void TimerCallBack();
 
 	const string StartGameText = "게임 시작!";
 	const string SureToChangeMainMenuScene = "메인 메뉴로 나가시겠습니까?";
@@ -38,7 +38,9 @@ public class CommonUIManager : Singleton<CommonUIManager>
 
 	float _startGameTime;
 	float _elapseGameTime;
-	StartGameCallBack _startGameCallBack;
+	float _timeoutGameTime;
+	TimerCallBack _startGameCallBack;
+	TimerCallBack _timeoutCallBack;
 
 
 	#region Start Game Timer
@@ -48,7 +50,7 @@ public class CommonUIManager : Singleton<CommonUIManager>
 	/// <param name="canvas">유니티 부모 Canvas 오브젝트</param>
 	/// <param name="time">준비 시간</param>
 	/// <param name="callBack">타이머가 끝났을때 호출되는 콜백 함수</param>
-	public void CreateStartGameTimer(GameObject canvas, float time, StartGameCallBack callBack)
+	public void CreateStartGameTimer(GameObject canvas, float time, TimerCallBack callBack)
 	{
 		_startGameTimerLabel = Instantiate(prefStartGameTimerLabel, canvas.transform);
 		_startGameTimerText = _startGameTimerLabel.GetComponentInChildren<Text>();
@@ -107,6 +109,36 @@ public class CommonUIManager : Singleton<CommonUIManager>
 	public void DestroyElapseGameTimer()
 	{
 		Destroy(_elapseGameTimerLabel);
+	}
+	#endregion
+
+	#region Timeout Game Timer
+
+	public void CreateTimeoutGameTimer(GameObject canvas, float time, TimerCallBack timeoutCallBack)
+	{
+		if (_elapseGameTimerLabel != null)
+		{
+			Destroy(_elapseGameTimerLabel);
+		}
+
+		_timeoutCallBack = timeoutCallBack;
+		_elapseGameTimerLabel = Instantiate(prefElapseGameTimerLabel, canvas.transform);
+		_elapseGameTimerText = _elapseGameTimerLabel.GetComponentInChildren<Text>();
+
+		_timeoutGameTime = time;
+		_elapseGameTimerText.text = ((int)_timeoutGameTime).ToString();
+		_elapseGameTimerLabel.GetComponent<RectTransform>().anchoredPosition = ElapseGameTimerInitPosition;
+	}
+
+	public void UpdateTimeoutGameTimer()
+	{
+		_timeoutGameTime -= Time.deltaTime;
+		_elapseGameTimerText.text = ((int)_elapseGameTime).ToString();
+
+		if(_timeoutGameTime < 0f)
+		{
+			_timeoutCallBack();
+		}
 	}
 	#endregion
 
