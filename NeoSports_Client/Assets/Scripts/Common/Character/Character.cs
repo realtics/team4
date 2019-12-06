@@ -11,7 +11,6 @@ public struct CharacterStatus
 }
 public class Character : MonoBehaviour
 {
-	
     protected class AnimationParameter
     {
         public const string IsJump = "IsJump";
@@ -25,9 +24,9 @@ public class Character : MonoBehaviour
 		Run
 	}
 
+	public CharacterStatus status;
 	EState _currentState;
 	Animator _animator;
-	CharacterStatus _status;
 
 	public EState CurrentState
 	{
@@ -45,12 +44,21 @@ public class Character : MonoBehaviour
 	{
 		if (InventoryManager.Instance != null)
 		{
-			_status.agility = InventoryManager.Instance.CurrentCharacter.Stat.agility;
-			_status.endurance = InventoryManager.Instance.CurrentCharacter.Stat.endurance;
-			_status.luck = InventoryManager.Instance.CurrentCharacter.Stat.luck;
-			_status.strength = InventoryManager.Instance.CurrentCharacter.Stat.strength;
+			status.agility = InventoryManager.Instance.CurrentCharacter.Stat.agility;
+			status.endurance = InventoryManager.Instance.CurrentCharacter.Stat.endurance;
+			status.luck = InventoryManager.Instance.CurrentCharacter.Stat.luck;
+			status.strength = InventoryManager.Instance.CurrentCharacter.Stat.strength;
+		}
+		else
+		{
+			status.agility = 1;
+			status.endurance = 1;
+			status.luck = 1;
+			status.strength = 1;
 		}
 	}
+
+
 	#region CharacterRender
 	public void StartJump()
     {
@@ -86,4 +94,5 @@ public class Character : MonoBehaviour
         _currentState = EState.Idle;
     }
 	#endregion
+
 }

@@ -29,6 +29,7 @@ namespace BasketBallGame
 		
 		public GameObject _leftPlayer;
 		public GameObject _rightPlayer;
+		public Player testPlayer;
 		void Awake()
 		{
 			instance = this;

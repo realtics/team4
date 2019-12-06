@@ -15,10 +15,13 @@ public class PlayerController : MonoBehaviour
 {
 	Character _controlChar;
 	eControlScene _controlScene;
-	void InitController(Character controlCharacter)
+	Player _ownPlayer;
+
+	public void InitController(Character controlCharacter, Player player)
 	{
 		_controlChar = controlCharacter;
-		SetControlScene(SceneManager.GetActiveScene().name);
+		_ownPlayer = player;
+		SetControlScene(SceneManager.GetActiveScene().name);	
 	}
 
 	void Update() // To Do. Update 방식에서 이벤트 방식으로 추후 리팩토링
@@ -62,7 +65,21 @@ public class PlayerController : MonoBehaviour
 	#region Input Case
 	void ProcessBasket()
 	{
-		
+		if (Input.GetMouseButtonDown(0))
+		{
+			if (_ownPlayer._playerTrigger.OverlapPoint(_ownPlayer._mainCam.ScreenToWorldPoint(Input.mousePosition)))
+			{
+				_ownPlayer.AimingShoot();
+			}
+		}
+		else if (Input.GetMouseButton(0) && _ownPlayer._isClickOn)
+		{
+			_ownPlayer.CalculateShoot();
+		}
+		else if (Input.GetMouseButtonUp(0))
+		{
+			_ownPlayer.ShootBall();
+		}	
 	}
 
 	void ProcessJumpRope()
