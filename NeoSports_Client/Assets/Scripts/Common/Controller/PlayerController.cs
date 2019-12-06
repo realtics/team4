@@ -67,17 +67,23 @@ public class PlayerController : MonoBehaviour
 	{
 		if (Input.GetMouseButtonDown(0))
 		{
-			if (_ownPlayer._playerTrigger.OverlapPoint(_ownPlayer._mainCam.ScreenToWorldPoint(Input.mousePosition)))
+			if (_ownPlayer._playerTrigger.OverlapPoint(_ownPlayer.mainCam.ScreenToWorldPoint(Input.mousePosition)))
 			{
 				_ownPlayer.AimingShoot();
 			}
+			else
+			{
+				_ownPlayer.DecideTargetPos(Input.mousePosition);
+				return;
+			}
 		}
-		else if (Input.GetMouseButton(0) && _ownPlayer._isClickOn)
+		else if (Input.GetMouseButton(0) && _ownPlayer.isClickOn)
 		{
 			_ownPlayer.CalculateShoot();
 		}
 		else if (Input.GetMouseButtonUp(0))
 		{
+			if(_ownPlayer.isClickOn)
 			_ownPlayer.ShootBall();
 		}	
 	}

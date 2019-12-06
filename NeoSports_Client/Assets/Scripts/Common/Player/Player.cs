@@ -9,53 +9,68 @@ public class Player : MonoBehaviour
 	[HideInInspector]
 	public BoxCollider2D _playerTrigger;
 	[HideInInspector]
-	public Camera _mainCam;
+	public Camera mainCam;
 	[HideInInspector]
-	public bool _isClickOn;
+	public bool isClickOn;
+	[HideInInspector]
+	public Vector2 targetPos;
 
 	public GameObject _characterPrefab;
-	public PlayerController _playerController;
-	float _powerSize;
-	Character _character;
-
-	//To Do: 게임매니저로 옮겨서 플레이어로 이어주도록 해야함. 
+	public GameObject _controllerPrefab;
 	public BasketBallGame.BasketBall baksetballPrefab;
+
+
+	GameObject _instChar;
+	GameObject _instController;
+
+	PlayerController _playerController;
+	Character _character;
+	float _powerSize;
+	//To Do: 게임매니저로 옮겨서 플레이어로 이어주도록 해야함. 
+
 	PoolFactory _ballFactory;
 
-	private void Start()
+	void Start()
 	{
 		_ballFactory = new PoolFactory(baksetballPrefab);
+		targetPos = transform.position;
 		CachingValues();
 		InitPlayer(_character, _playerController);
 	}
+
+	void Update()
+	{
+		MoveToTargetPos();
+	}
+
 	void CachingValues()
 	{
-		_characterPrefab = Instantiate(_characterPrefab,this.transform);
-		_character = _characterPrefab.GetComponent<Character>();
-		_mainCam = Camera.main;
+		_instChar =Instantiate(_characterPrefab,this.transform);
+		_instController = Instantiate(_controllerPrefab, this.transform);
+		_character = _instChar.GetComponent<Character>();
+		_playerController = _instController.GetComponent<PlayerController>();
+
+		mainCam = Camera.main;
 		_playerTrigger = GetComponent<BoxCollider2D>();
-		_characterPrefab.SetActive(true);
 	}
 
 	#region public Player Function -Controller Use
 	public void InitPlayer(Character character, PlayerController controller)
 	{
 		_character = character;
-		//_character.
 		_playerController = controller;
 		_playerController.InitController(_character, this);
 	}
 
 	public void AimingShoot()
 	{
-		Debug.Log("AimShoot");
 		directionArrow.transform.position = new Vector2(transform.position.x + 0.3f, transform.position.y + 0.5f);
-		_isClickOn = true;
+		isClickOn = true;
 	}
 
 	public void CalculateShoot()
 	{
-		Vector2 target = _mainCam.ScreenToWorldPoint(Input.mousePosition);
+		Vector2 target = mainCam.ScreenToWorldPoint(Input.mousePosition);
 		float angle = Mathf.Atan2(transform.position.y - target.y, transform.position.x - target.x);
 
 		float power = Vector2.Distance(target, transform.position);
@@ -68,7 +83,7 @@ public class Player : MonoBehaviour
 	public void ShootBall()
 	{
 		directionArrow.transform.localScale = new Vector3(0, 0, 0);
-		_isClickOn = false;
+		isClickOn = false;
 
 		Vector2 direction = directionArrow.transform.rotation * new Vector2(1, 0.0f) * _powerSize;
 		_powerSize = 0.0f;
@@ -83,6 +98,32 @@ public class Player : MonoBehaviour
 	{//To Do: 게임매니저로 옮겨서 플레이어로 이어주도록 해야함. 
 		usedBall.destroyed -= OnBallDestroyed;
 		_ballFactory.Restore(usedBall);
+	}
+
+	void MoveToTargetPos()
+	{
+		if ((Vector2)transform.position != targetPos)
+		{
+			transform.position = Vector2.MoveTowards(transform.position, targetPos, _character.status.agility * Time.deltaTime);
+		}
+		else
+		{
+			_character.EndRun();
+		}
+	}
+
+	public void DecideTargetPos(Vector3 clickPos)
+	{
+		targetPos = (Vector2)mainCam.ScreenToWorldPoint(clickPos);
+
+		_character.StartRun();
+
+		#region DecideDirection
+		if (_character.transform.position.x < targetPos.x)
+			_character.spriteRenderer.flipX = false;
+		else
+			_character.spriteRenderer.flipX = true;
+		#endregion
 	}
 
 	#endregion

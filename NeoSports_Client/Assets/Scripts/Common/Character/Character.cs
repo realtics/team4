@@ -25,6 +25,8 @@ public class Character : MonoBehaviour
 	}
 
 	public CharacterStatus status;
+	public SpriteRenderer spriteRenderer;
+
 	EState _currentState;
 	Animator _animator;
 
@@ -37,6 +39,7 @@ public class Character : MonoBehaviour
     {
         _currentState = EState.Idle;
         _animator = transform.GetComponent<Animator>();
+		spriteRenderer = GetComponent<SpriteRenderer>();
 		LoadStatus();
 	}
 
