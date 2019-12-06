@@ -1,10 +1,16 @@
 #pragma once
 #include <queue>
-#include <map>
 
 #define sessionID int
 
 using namespace std;
+
+template <typename PACKET>
+struct PacketData
+{
+	sessionID sessionId;
+	PACKET packet;
+};
 
 class LogicProcess
 {
@@ -15,6 +21,5 @@ public:
 	void PushPacketQueue(sessionID sessionId, T data);
 
 private:
-	template <typename T>
-	queue<map<sessionID, T>> _packetQue;
+	queue<PacketData<int>> _packetQue;
 };

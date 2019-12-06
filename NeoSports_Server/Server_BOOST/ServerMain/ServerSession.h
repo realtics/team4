@@ -48,7 +48,8 @@ private:
 	Server* _serverPtr;
 	GameMG* _gameMG;
 
-	void _ProcessPacket(const int sessionID, const char* data);
+	void _ProcessPacket(const int sessionID, const char* data); //LogicProcessClass로 보내기
+	//LogicProcessClass를 돌리고 있는 쓰레드로 메시지(패킷)을 post하는 함수만들기
 
 
 	void _WriteHandle(const boost::system::error_code& error, size_t bytesTransferred);

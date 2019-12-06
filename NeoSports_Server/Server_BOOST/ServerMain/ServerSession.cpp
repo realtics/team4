@@ -258,7 +258,7 @@ void Session::_ProcessPacket(const int sessionID, const char* data)
 
 			ROOM room;
 			room.Init();
-			room = *_serverPtr->GetRoomInfo(roomNum);
+			room = *(_serverPtr->GetRoomInfo(roomNum));
 
 			int superSessionIdTemp = room.superSessionID;
 
