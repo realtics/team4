@@ -55,8 +55,8 @@ namespace RopePullGame
 
         void UpdateRopePosition()
         {
-			/*transform.Translate(new Vector3(feverPower * powerSum * Time.deltaTime, 0f, 0f));*/
-			transform.SetPositionAndRotation(new Vector3(feverPower*powerSum * Time.deltaTime, 0f, 0f), Quaternion.identity);
+			transform.Translate(new Vector3(feverPower * powerSum * Time.deltaTime, 0f, 0f));
+			//transform.SetPositionAndRotation(new Vector3(feverPower*powerSum * Time.deltaTime, 0f, 0f), Quaternion.identity);
 		}
 
 		public void UpdateNetworkRopePostion(float pullPower)

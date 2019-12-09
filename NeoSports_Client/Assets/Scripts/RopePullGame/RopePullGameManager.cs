@@ -330,7 +330,8 @@ namespace RopePullGame
 			_characters = playerableObjects.GetComponentsInChildren<Character>();
 
 			SelectInstantCharacter(InventoryManager.Instance.CurrentCharacter.Type);
-			Instantiate(playerPrefab, playerableObjects.transform);
+			var a = Instantiate(playerPrefab);
+            a.transform.SetParent(playerableObjects.transform);
 
 			var shader = _singlePlayer.GetComponentInChildren<SpirteOutlineshader>();
 			
