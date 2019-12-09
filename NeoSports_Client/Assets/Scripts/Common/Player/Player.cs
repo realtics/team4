@@ -26,8 +26,9 @@ public class Player : MonoBehaviour
 	PlayerController _playerController;
 	Character _character;
 	float _powerSize;
-	//To Do: 게임매니저로 옮겨서 플레이어로 이어주도록 해야함. 
 
+	SpirteOutlineshader _outlineshader;
+	//To Do: 게임매니저로 옮겨서 플레이어로 이어주도록 해야함. 
 	PoolFactory _ballFactory;
 
 	void Start()
@@ -45,9 +46,11 @@ public class Player : MonoBehaviour
 			if ((Vector2)transform.position == targetPos)
 			{
 				_character.EndRun();
+				_outlineshader.StopWalkEffect();
 				return;
 			}
 			MoveToTargetPos();
+			_outlineshader.PlayWalkEffect();
 		}
 	}
 
@@ -60,6 +63,7 @@ public class Player : MonoBehaviour
 
 		mainCam = Camera.main;
 		_playerTrigger = GetComponent<BoxCollider2D>();
+		_outlineshader = _instChar.GetComponent<SpirteOutlineshader>();
 	}
 
 	#region public Player Function -Controller Use

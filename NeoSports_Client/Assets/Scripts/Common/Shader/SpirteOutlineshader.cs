@@ -29,6 +29,17 @@ public class SpirteOutlineshader : MonoBehaviour
 		UpdateOutline(true);
 	}
 
+	public void PlayWalkEffect()
+	{
+		outlineSize = 6;
+		color = Color.yellow;
+	}
+	public void StopWalkEffect()
+	{
+		outlineSize = 0;
+		color = Color.white;
+	}
+
 	public void PlayLineEffect()
 	{
 		outlineSize += 2;
