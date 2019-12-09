@@ -16,12 +16,14 @@ public class PlayerController : MonoBehaviour
 	Character _controlChar;
 	eControlScene _controlScene;
 	Player _ownPlayer;
+	bool _isSinglePlay;
 
 	public void InitController(Character controlCharacter, Player player)
 	{
 		_controlChar = controlCharacter;
 		_ownPlayer = player;
-		SetControlScene(SceneManager.GetActiveScene().name);	
+		SetControlScene(SceneManager.GetActiveScene().name);
+		_isSinglePlay = NetworkManager.Instance.IsSinglePlay();
 	}
 
 	void Update() // To Do. Update 방식에서 이벤트 방식으로 추후 리팩토링
@@ -94,8 +96,24 @@ public class PlayerController : MonoBehaviour
     }
 
 	void ProcessPullRope()
-	{ 
+	{
+		if (RopePullGame.RopePullGameManager.Instance.SceneState != RopePullGame.RopePullGameManager.ESceneState.Play)
+		{
+			return;
+		}
 
+		if (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonUp(0))
+		{
+
+			if (_isSinglePlay)
+			{
+				_ownPlayer.PullRope();
+			}
+			else
+			{
+				_ownPlayer.NetworkPullRope();
+			}
+		}
 	}
 
 	void ProcessWaitRoom()

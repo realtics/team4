@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace RopePullGame
 {
-    public class RopePullMoveRopeWithKey : Singleton<RopePullMoveRopeWithKey>
+    public class RopePullRope : Singleton<RopePullRope>
     {
         public bool IsStart { get; set; }
         float Speed { get; set; }
@@ -30,37 +30,22 @@ namespace RopePullGame
 
         void Update()
         {
-            UpdateKey();
             UpdateRope();
-        }
-
-        public void UpdateKey()
-        {
-            if (IsStart)
-            {
-                if (Input.GetKeyDown(KeyCode.LeftArrow))
-                {
-                    transform.Translate(new Vector3(-1 * Speed * Time.deltaTime, 0f, 0f));
-                }
-                if (Input.GetKeyDown(KeyCode.RightArrow))
-                {
-                    transform.Translate(new Vector3(1 * Speed * Time.deltaTime, 0f, 0f));
-                }
-            }
         }
 
         void UpdateRope()
         {
             if (IsStart)
             {
-                GetPlayersPower();
+                //GetPlayersPower();
 				if (isSinglePlay)
 				{
 					UpdateRopePosition();
+					ResetPowerSum();
 				}
             }
-            LeftPlayer.GetComponent<RopePullInputPlayerPower>().ResetPower();
-            RightPlayer.GetComponent<RopePulllAIPlayerPower>().ResetPower();
+            //LeftPlayer.GetComponent<RopePullInputPlayerPower>().ResetPower();
+            //RightPlayer.GetComponent<RopePulllAIPlayerPower>().ResetPower();
         }
 
         void CalculateRopeMove(float leftPower, float rightPower)
@@ -70,13 +55,12 @@ namespace RopePullGame
 
         void UpdateRopePosition()
         {
-            transform.Translate(new Vector3(feverPower * powerSum * Time.deltaTime, 0f, 0f));
-        }
+			/*transform.Translate(new Vector3(feverPower * powerSum * Time.deltaTime, 0f, 0f));*/
+			transform.SetPositionAndRotation(new Vector3(feverPower*powerSum * Time.deltaTime, 0f, 0f), Quaternion.identity);
+		}
 
 		public void UpdateNetworkRopePostion(float pullPower)
 		{
-			//transform.Translate(new Vector3(pullPower * Time.deltaTime, 0f, 0f));
-			//TEST
 			transform.SetPositionAndRotation(new Vector3(pullPower * Time.deltaTime, 0f, 0f),Quaternion.identity);
 		}
 
@@ -95,5 +79,15 @@ namespace RopePullGame
         {
             feverPower = 1.0f;
         }
+
+		public void PullRope(float power)
+		{
+			powerSum += power;
+		}
+
+		void ResetPowerSum()
+		{
+			powerSum = 0.0f;
+		}
     }
 }

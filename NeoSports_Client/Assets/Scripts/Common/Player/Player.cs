@@ -26,7 +26,7 @@ public class Player : MonoBehaviour
 	PlayerController _playerController;
 	Character _character;
 	float _powerSize;
-
+	bool _isHost;
 	SpirteOutlineshader _outlineshader;
 	//To Do: 게임매니저로 옮겨서 플레이어로 이어주도록 해야함. 
 	PoolFactory _ballFactory;
@@ -64,6 +64,7 @@ public class Player : MonoBehaviour
 		mainCam = Camera.main;
 		_playerTrigger = GetComponent<BoxCollider2D>();
 		_outlineshader = _instChar.GetComponent<SpirteOutlineshader>();
+		_isHost = NetworkManager.Instance.isOwnHost;
 	}
 
 	#region public Player Function -Controller Use
@@ -132,6 +133,22 @@ public class Player : MonoBehaviour
 		else
 			_character.spriteRenderer.flipX = true;
 		#endregion
+	}
+
+	public void PullRope()
+	{
+		//if AI가 아니면 -1, AI면 1방향 힘. (싱글플레이)
+		//먼저 일반 플레이어 구현이니 일단 하드 코딩. -1
+		RopePullGame.RopePullRope.Instance.PullRope(-1 * _character.status.strength);
+		_outlineshader.PlayLineEffect();
+	}
+
+	public void NetworkPullRope()
+	{
+		if (_isHost)
+			NetworkManager.Instance.SendRequestRopePull(_character.status.strength * -1);
+		else
+			NetworkManager.Instance.SendRequestRopePull(_character.status.strength);
 	}
 
 	#endregion

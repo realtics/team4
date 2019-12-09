@@ -24,27 +24,25 @@ namespace RopePullGame
 		// Prefab Character
 		public GameObject ppiYakCharacter;
 		public GameObject turkeyJellyCharacter;
+		public GameObject playerPrefab;
 
 		// Public Variable
 		public GameObject rootCanvas;
 		public GameObject playerableObjects;
-		public GameObject singlePlayer;
-		public Text playTimeText;
-		public Text startCountingTimeText;
 		public Text leftText;
 		public Text rightText;
 		public Button restartButton;
 
 		// Private Variable
+		GameObject _singlePlayer;
+		Player _player;
 		ESceneState _sceneState;
 		float _playTime;
 
 		Transform _leftPlayer;
 		Transform _rightPlayer;
 
-		CharacterInfo _ownCharInfo;
-
-		RopePullMoveRopeWithKey _ropePullMove;
+		RopePullRope _ropePullMove;
 		Character[] _characters;
 		Effect.RunnigEffect[] _runnigEffects;
 
@@ -69,7 +67,7 @@ namespace RopePullGame
 
 		void CachingValue()
 		{
-			_ropePullMove = playerableObjects.GetComponent<RopePullMoveRopeWithKey>();
+			_ropePullMove = playerableObjects.GetComponent<RopePullRope>();
 			_runnigEffects = playerableObjects.GetComponentsInChildren<Effect.RunnigEffect>();
 
 			_leftPlayer = playerableObjects.transform.Find(LeftPlayerObjectName);
@@ -79,7 +77,8 @@ namespace RopePullGame
 			{
 				effect.EndEffect();
 			}
-			singlePlayer = null;
+			_singlePlayer = null;
+			_player = playerPrefab.GetComponent<Player>();
 		}
 
 		void CreateCharacters()
@@ -284,6 +283,28 @@ namespace RopePullGame
 
 		}
 
+		void SelectInstantCharacter(CharacterInfo.EType charType)
+		{
+			switch (charType)
+			{
+				case CharacterInfo.EType.PpiYaGi:
+					{
+						_player.characterPrefab = ppiYakCharacter;
+						break;
+					}
+				case CharacterInfo.EType.TurkeyJelly:
+					{
+						_player.characterPrefab = turkeyJellyCharacter;
+						break;
+					}
+				default:
+					{
+						break;
+					}
+			}
+
+		}
+
 		public void CreateMultiCharacters()
 		{
 			ppiYakCharacter.GetComponent<SpriteRenderer>().sortingOrder = 15;
@@ -305,10 +326,13 @@ namespace RopePullGame
 
 		void CreateSingleCharacter()
 		{
-			singlePlayer =SelectInstantCharacter((CHAR_INDEX)InventoryManager.Instance.CurrentCharacter.Type, _leftPlayer);
+			_singlePlayer =SelectInstantCharacter((CHAR_INDEX)InventoryManager.Instance.CurrentCharacter.Type, _leftPlayer);
 			_characters = playerableObjects.GetComponentsInChildren<Character>();
 
-			var shader = singlePlayer.GetComponentInChildren<SpirteOutlineshader>();
+			SelectInstantCharacter(InventoryManager.Instance.CurrentCharacter.Type);
+			Instantiate(playerPrefab, playerableObjects.transform);
+
+			var shader = _singlePlayer.GetComponentInChildren<SpirteOutlineshader>();
 			
 			var playerInput = _leftPlayer.gameObject.GetComponent<RopePullInputPlayerPower>();
 			playerInput.OutlineEffect += shader.PlayLineEffect;
