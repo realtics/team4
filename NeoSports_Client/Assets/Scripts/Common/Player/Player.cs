@@ -15,8 +15,8 @@ public class Player : MonoBehaviour
 	[HideInInspector]
 	public Vector2 targetPos;
 
-	public GameObject _characterPrefab;
-	public GameObject _controllerPrefab;
+	public GameObject characterPrefab;
+	public GameObject controllerPrefab;
 	public BasketBallGame.BasketBall baksetballPrefab;
 
 
@@ -40,13 +40,15 @@ public class Player : MonoBehaviour
 
 	void Update()
 	{
+		if ((Vector2)transform.position == targetPos)
+			return;
 		MoveToTargetPos();
 	}
 
 	void CachingValues()
 	{
-		_instChar =Instantiate(_characterPrefab,this.transform);
-		_instController = Instantiate(_controllerPrefab, this.transform);
+		_instChar =Instantiate(characterPrefab,this.transform);
+		_instController = Instantiate(controllerPrefab, this.transform);
 		_character = _instChar.GetComponent<Character>();
 		_playerController = _instController.GetComponent<PlayerController>();
 
