@@ -100,7 +100,9 @@ public class PlayerController : MonoBehaviour
 
 	void ProcessWaitRoom()
 	{
-		
+		if (Input.GetMouseButtonDown(0))
+			_ownPlayer.DecideTargetPos(Input.mousePosition);
+		return;
 	}
 
 	#endregion

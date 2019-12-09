@@ -18,6 +18,7 @@ public class PlayManager : Singleton<PlayManager>
 
 	public void ButtonEvent_StartRopePullMultiGame()
 	{
+		NetworkManager.Instance.SendRequestRoom(GAME_INDEX.ROPE_PULL);
 		SceneManager.LoadSceneAsync(SceneName.NetworkRopeGameSceneName);
 	}
 
