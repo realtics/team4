@@ -15,12 +15,12 @@ namespace FarmGame
 
 		Dictionary<Point, ObjectTile> objectTileDic;
 
-		void Awake()
+		private void Awake()
 		{
 			objectTileDic = new Dictionary<Point, ObjectTile>();
 		}
 
-		void Start()
+		private void Start()
 		{
 			InitRoadTile();
 		}
@@ -72,10 +72,10 @@ namespace FarmGame
 
 			GameObject obj = Instantiate(prefRoadTile, objectTileGroup.transform);
 			RoadTile script = obj.GetComponent<RoadTile>();
-			RoadTile.RoadData data;
+			RoadData data;
 			data.point = pt;
-			data.material = RoadTile.EMaterial.Wire;
-			data.type = RoadTile.EType.Default;
+			data.material = "wire";
+			data.type = "default";
 			script.SetData(data);
 
 			objectTileDic.Add(pt, script);

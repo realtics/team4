@@ -24,27 +24,30 @@ namespace FarmGame
 
 		DecorationData decorationData;
 
-		public void DeployTile(Point point, int type)
+		private void Awake()
 		{
 			tileType = ETileType.Decoration;
+		}
+
+		public void DeployTile(Point point, int type)
+		{
 			decorationData = MapData.Instance.DecorationDatas[type];
 			base.point = point;
 
-			SetPosition();
-			InitSprite();
+			UpdatePosition();
+			UpdateSprite();
 		}
 
 		public void LoadSaveData(SaveData data)
 		{
-			tileType = ETileType.Decoration;
 			decorationData = MapData.Instance.DecorationDatas[data.decorationType];
 			point = data.point;
 
-			SetPosition();
-			InitSprite();
+			UpdatePosition();
+			UpdateSprite();
 		}
 
-		void SetPosition()
+		void UpdatePosition()
 		{
 			Vector3 position = Vector3.zero;
 
@@ -54,7 +57,7 @@ namespace FarmGame
 			transform.localPosition = position;
 		}
 
-		void InitSprite()
+		void UpdateSprite()
 		{
 			SpriteRenderer renderer;
 			string spriteName;

@@ -5,34 +5,21 @@ using UnityEngine;
 
 namespace FarmGame
 {
+	public struct RoadData
+	{
+		public Point point;
+		public string material;
+		public string type;
+	}
+
 	public class RoadTile : ObjectTile
 	{
-		public enum EMaterial
-		{
-			Wire,
-			Fence
-		}
-
-		public enum EType
-		{
-			Default,
-			Lamp,
-			Trash,
-			Corner
-		}
-
-		public struct RoadData
-		{
-			public Point point;
-			public EMaterial material;
-			public EType type;
-		}
 
 		public struct SaveData
 		{
 			public Point point;
-			public EMaterial material;
-			public EType type;
+			public string material;
+			public string type;
 		}
 
 		const float EdgeTopRotation = 0;
@@ -45,38 +32,17 @@ namespace FarmGame
 		const float CornerBottomLeftRotation = 180;
 		const float CornerBottomRightRotation = 270;
 
-		EMaterial material;
-		EType type;
-
-		#region Property
-		public EMaterial Material {
-			get { return material; }
-			set {
-				material = value;
-				SetSprite();
-			}
-		}
-
-		public EType Type {
-			get { return type; }
-			set {
-				type = value;
-				SetSprite();
-			}
-		}
-		#endregion
+		RoadData _roadData;
 
 		public void SetData(RoadData data)
 		{
 			tileType = ETileType.Road;
-			material = data.material;
-			type = data.type;
+			_roadData = data;
 			name = data.point.X.ToString() + "_" + data.point.Y.ToString() + "_RoadTile";
 
-			SetPosition(data.point);
-			SetRotation(data.point);
-
-			SetSprite();
+			UpdatePosition(data.point);
+			UpdateRotation(data.point);
+			UpdateSprite();
 		}
 
 		public void LoadSaveData(SaveData data)
@@ -84,35 +50,41 @@ namespace FarmGame
 
 		}
 
-		void SetPosition(Point pt)
+		public SaveData MakeSaveData()
+		{
+			SaveData data = new SaveData();
+			return data;
+		}
+
+		void UpdatePosition(Point point)
 		{
 			Vector3 position = Vector3.zero;
 
-			position.x = pt.X * MapData.TileSize;
-			position.y = pt.Y * MapData.TileSize;
+			position.x = point.X * MapData.TileSize;
+			position.y = point.Y * MapData.TileSize;
 
 			transform.localPosition = position;
 		}
 
-		void SetRotation(Point pt)
+		void UpdateRotation(Point point)
 		{
-			if (IsCornerTile(pt))
+			if (IsCornerTile(point))
 			{
-				SetCornerRotation(pt);
+				UpdateCornerRotation(point);
 			}
 			else
 			{
-				SetEdgeRotation(pt);
+				UpdateEdgeRotation(point);
 			}
 		}
 
-		bool IsCornerTile(Point pt)
+		bool IsCornerTile(Point point)
 		{
-			if (pt.X == 0 || pt.X == MapData.MapWidth - 1)
+			if (point.X == 0 || point.X == MapData.MapWidth - 1)
 			{
-				if (pt.Y == 0 || pt.Y == MapData.MapHeight - 1)
+				if (point.Y == 0 || point.Y == MapData.MapHeight - 1)
 				{
-					type = EType.Corner;
+					_roadData.type = "corner";
 					return true;
 				}
 			}
@@ -120,28 +92,28 @@ namespace FarmGame
 			return false;
 		}
 
-		void SetCornerRotation(Point pt)
+		void UpdateCornerRotation(Point point)
 		{
 			Vector3 rotation = Vector3.zero;
 
-			if (pt.X == 0)
+			if (point.X == 0)
 			{
-				if (pt.Y == 0)
+				if (point.Y == 0)
 				{
 					rotation.z = CornerBottomLeftRotation;
 				}
-				else if (pt.Y == MapData.MapHeight - 1)
+				else if (point.Y == MapData.MapHeight - 1)
 				{
 					rotation.z = CornerTopLeftRotation;
 				}
 			}
-			else if (pt.X == MapData.MapWidth - 1)
+			else if (point.X == MapData.MapWidth - 1)
 			{
-				if (pt.Y == 0)
+				if (point.Y == 0)
 				{
 					rotation.z = CornerBottomRightRotation;
 				}
-				else if (pt.Y == MapData.MapHeight - 1)
+				else if (point.Y == MapData.MapHeight - 1)
 				{
 					rotation.z = CornerTopRightRotation;
 				}
@@ -150,26 +122,25 @@ namespace FarmGame
 			Quaternion q = Quaternion.identity;
 			q.eulerAngles = rotation;
 			transform.localRotation = q;
-
 		}
 
-		void SetEdgeRotation(Point pt)
+		void UpdateEdgeRotation(Point point)
 		{
 			Vector3 rotation = Vector3.zero;
 
-			if (pt.X == 0)
+			if (point.X == 0)
 			{
 				rotation.z = EdgeLeftRotation;
 			}
-			else if (pt.X == MapData.MapWidth - 1)
+			else if (point.X == MapData.MapWidth - 1)
 			{
 				rotation.z = EdgeRightRotation;
 			}
-			else if (pt.Y == 0)
+			else if (point.Y == 0)
 			{
 				rotation.z = EdgeBottomRotation;
 			}
-			else if (pt.Y == MapData.MapHeight - 1)
+			else if (point.Y == MapData.MapHeight - 1)
 			{
 				rotation.z = EdgeTopRotation;
 			}
@@ -179,37 +150,9 @@ namespace FarmGame
 			transform.localRotation = q;
 		}
 
-		void SetSprite()
+		void UpdateSprite()
 		{
-			string spriteName = string.Empty;
-			switch (material)
-			{
-				case EMaterial.Wire:
-					spriteName += "wire";
-					break;
-				case EMaterial.Fence:
-					spriteName += "fence";
-					break;
-			}
-
-			spriteName += "_";
-
-			switch (type)
-			{
-				case EType.Default:
-					spriteName += "default";
-					break;
-				case EType.Lamp:
-					spriteName += "lamp";
-					break;
-				case EType.Trash:
-					spriteName += "trash";
-					break;
-				case EType.Corner:
-					spriteName += "corner";
-					break;
-			}
-
+			string spriteName = _roadData.material + "_" + _roadData.type;
 			Sprite sprite = ResourceManager.Instance.GetFarmSprite(spriteName);
 			GetComponent<SpriteRenderer>().sprite = sprite;
 		}

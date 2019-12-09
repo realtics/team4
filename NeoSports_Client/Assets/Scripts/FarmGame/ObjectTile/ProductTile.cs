@@ -56,9 +56,9 @@ namespace FarmGame
 			_canHarvest = false;
 
 			StartCoroutine(UpdateHarvestTime());
-			SetPosition();
-			SetSprite();
-			UpdateGrownSprite();
+			UpdatePosition();
+			UpdateSprite();
+			UpdateGrownSpriteActive();
 		}
 
 		public void LoadSaveData(SaveData data)
@@ -80,12 +80,12 @@ namespace FarmGame
 				StartCoroutine(UpdateHarvestTime());
 			}
 
-			SetPosition();
-			SetSprite();
-			UpdateGrownSprite();
+			UpdatePosition();
+			UpdateSprite();
+			UpdateGrownSpriteActive();
 		}
 
-		public SaveData GetSaveData()
+		public SaveData MakeSaveData()
 		{
 			SaveData data;
 			data.point = point;
@@ -96,7 +96,7 @@ namespace FarmGame
 			return data;
 		}
 
-		void SetPosition()
+		void UpdatePosition()
 		{
 			Vector3 position = Vector3.zero;
 
@@ -106,7 +106,7 @@ namespace FarmGame
 			transform.localPosition = position;
 		}
 
-		void SetSprite()
+		void UpdateSprite()
 		{
 			SpriteRenderer renderer;
 			string spriteName;
@@ -120,7 +120,7 @@ namespace FarmGame
 			renderer.sprite = ResourceManager.Instance.GetFarmSprite(spriteName);
 		}
 
-		void UpdateGrownSprite()
+		void UpdateGrownSpriteActive()
 		{
 			if (_canHarvest)
 			{
@@ -141,7 +141,7 @@ namespace FarmGame
 				if (_harvestTime < DateTime.Now)
 				{
 					_canHarvest = true;
-					UpdateGrownSprite();
+					UpdateGrownSpriteActive();
 					Debug.Log("Harvest Time!");
 					yield break;
 				}
