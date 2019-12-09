@@ -60,7 +60,7 @@ namespace FarmGame
 		}
 		#endregion
 
-		void Awake()
+		private void Awake()
 		{
 			_highlight = transform.GetChild(0).gameObject;
 		}

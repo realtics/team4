@@ -32,7 +32,7 @@ namespace FarmGame
 		public Point CurrentFarmerPoint { get; set; }
 		#endregion
 
-		void Awake()
+		private void Awake()
 		{
 			decorationDatas = new Dictionary<int, DecorationData>();
 			productDatas = new Dictionary<int, ProductData>();

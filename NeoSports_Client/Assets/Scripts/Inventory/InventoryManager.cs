@@ -22,7 +22,7 @@ public class InventoryManager : Singleton<InventoryManager>
 	public bool IsNickNameDecide { get; set; }
 	#endregion
 
-	void Awake()
+	private void Awake()
 	{
 		if (instance != null)
 		{
@@ -40,7 +40,7 @@ public class InventoryManager : Singleton<InventoryManager>
 		IsNickNameDecide = false;
 	}
 
-	void Start()
+	private void Start()
 	{
 		ReadCharacterInfos();
 		ReadEquipmentInfos();

@@ -21,10 +21,10 @@ public class EquipmentInfo
 		End
 	}
 
-	EType	_itemType;
-	string	_itemName;
-	Status	_itemStat;
-	Sprite	_iconSprite;
+	readonly EType _itemType;
+	readonly string _itemName;
+	readonly Status _itemStat;
+	readonly Sprite _iconSprite;
 
 	#region Property
 	public string Name {

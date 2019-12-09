@@ -26,11 +26,13 @@ public class Status
 
 	public static void Add(out Status result, Status lValue, Status rValue)
 	{
-		result = new Status();
-		result.strength = lValue.strength + rValue.strength;
-		result.endurance = lValue.endurance + rValue.endurance;
-		result.agility = lValue.agility + rValue.agility;
-		result.luck = lValue.luck + rValue.luck;
+		result = new Status
+		{
+			strength = lValue.strength + rValue.strength,
+			endurance = lValue.endurance + rValue.endurance,
+			agility = lValue.agility + rValue.agility,
+			luck = lValue.luck + rValue.luck
+		};
 		return;
 	}
 }
@@ -54,10 +56,10 @@ public class CharacterInfo
 		public string iconName;
 	}
 
-	EType _charType;
-	string _charName;
-	Status _charStat;
-	Sprite _iconSprite;
+	readonly EType _charType;
+	readonly string _charName;
+	readonly Status _charStat;
+	readonly Sprite _iconSprite;
 
 	#region Property
 	public EType Type {

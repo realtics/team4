@@ -46,10 +46,11 @@ public class GallaryManager : Singleton<GallaryManager>
 
 	void Start()
 	{
-		tabDic = new Dictionary<EGallaryTab, GameObject>();
-
-		tabDic.Add(EGallaryTab.Character, scrollViewChar);
-		tabDic.Add(EGallaryTab.Equipment, scrollViewEquip);
+		tabDic = new Dictionary<EGallaryTab, GameObject>
+		{
+			{ EGallaryTab.Character, scrollViewChar },
+			{ EGallaryTab.Equipment, scrollViewEquip }
+		};
 
 		EnableTab(EGallaryTab.Character);
 	}
@@ -110,8 +111,7 @@ public class GallaryManager : Singleton<GallaryManager>
 		CharacterInfo charInfo = Singleton<InventoryManager>.Instance.CurrentCharacter;
 		EquipmentInfo equipInfo = Singleton<InventoryManager>.Instance.CurrentEquipment;
 
-		Status result;
-		Status.Add(out result, charInfo.Stat, equipInfo.Stat);
+		Status.Add(out Status result, charInfo.Stat, equipInfo.Stat);
 		labelStatusStrength.GetComponent<Text>().text = UIData.GallaryExplainStatStr + result.strength.ToString();
 		labelStatusEndurance.GetComponent<Text>().text = UIData.GallaryExplainStatEnd + result.endurance.ToString();
 		labelStatusAgility.GetComponent<Text>().text = UIData.GallaryExplainStatAgi + result.agility.ToString();

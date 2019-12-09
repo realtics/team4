@@ -16,7 +16,6 @@ namespace FarmGame
 		}
 
 		const float MoveSpeed = 3.0f;
-		const string FarmObstacleTag = "FarmObstacle";
 
 		Vector3 _targetPosition;
 		State _currentState;
@@ -24,20 +23,20 @@ namespace FarmGame
 		Camera _mainCamera;
 		LandTile _currentLandTile;
 
-		void Awake()
+		private void Awake()
 		{
 			_mainCamera = Camera.main;
 
 			_currentState = State.Idle;
 		}
 
-		void Start()
+		private void Start()
 		{
 			Point startPoint = new Point(2, 2);
 			MapData.Instance.CurrentFarmerPoint = startPoint;
 		}
 
-		void Update()
+		private void Update()
 		{
 			// Update
 			switch (_currentState)

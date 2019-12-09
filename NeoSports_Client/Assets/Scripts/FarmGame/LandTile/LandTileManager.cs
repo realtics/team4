@@ -13,7 +13,7 @@ namespace FarmGame
 
 		Dictionary<Point, LandTile> landTileDic;
 
-		void Awake()
+		private void Awake()
 		{
 			instance = this;
 

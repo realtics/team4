@@ -18,8 +18,6 @@ namespace FarmGame
 			Storage
 		}
 
-		const float DoubleTouchDuration = 0.5f;
-
 		ECategory _currentCategory;
 
 		Camera _mainCamera;
@@ -73,9 +71,8 @@ namespace FarmGame
 		void InputClick()
 		{
 			Ray ray = _mainCamera.ScreenPointToRay(Input.mousePosition);
-			RaycastHit hit;
 
-			if (Physics.Raycast(ray, out hit, 10.0f))
+			if (Physics.Raycast(ray, out RaycastHit hit, 10.0f))
 			{
 				if (hit.transform.tag == ObjectTag.FarmLand)
 				{

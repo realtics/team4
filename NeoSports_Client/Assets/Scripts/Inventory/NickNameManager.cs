@@ -12,7 +12,7 @@ namespace MainMenu
 		public GameObject nickNameInputGroup;
 		public GameObject nickNameInputText;
 
-		void Start()
+		private void Start()
 		{
 			if (InventoryManager.Instance.IsNickNameDecide)
 			{

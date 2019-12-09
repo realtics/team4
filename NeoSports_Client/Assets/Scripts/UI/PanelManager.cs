@@ -33,14 +33,15 @@ public class PanelManager : Singleton<PanelManager>
 
 	void InitPanelList()
     {
-        _panelDic = new Dictionary<EPanel, GameObject>();
-
-        _panelDic.Add(EPanel.Main, panelMain);
-        _panelDic.Add(EPanel.Play, panelPlay);
-        _panelDic.Add(EPanel.Gallary, panelGallary);
-        _panelDic.Add(EPanel.Option, panelOption);
-        _panelDic.Add(EPanel.Credit, panelCredit);
-    }
+		_panelDic = new Dictionary<EPanel, GameObject>
+		{
+			{ EPanel.Main, panelMain },
+			{ EPanel.Play, panelPlay },
+			{ EPanel.Gallary, panelGallary },
+			{ EPanel.Option, panelOption },
+			{ EPanel.Credit, panelCredit }
+		};
+	}
 
     void EnablePanel(EPanel type)
     {
