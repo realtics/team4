@@ -40,9 +40,15 @@ public class Player : MonoBehaviour
 
 	void Update()
 	{
-		if ((Vector2)transform.position == targetPos)
-			return;
-		MoveToTargetPos();
+		if (_character != null)
+		{
+			if ((Vector2)transform.position == targetPos)
+			{
+				_character.EndRun();
+				return;
+			}
+			MoveToTargetPos();
+		}
 	}
 
 	void CachingValues()
@@ -107,10 +113,6 @@ public class Player : MonoBehaviour
 		if ((Vector2)transform.position != targetPos)
 		{
 			transform.position = Vector2.MoveTowards(transform.position, targetPos, _character.status.agility * Time.deltaTime);
-		}
-		else
-		{
-			_character.EndRun();
 		}
 	}
 

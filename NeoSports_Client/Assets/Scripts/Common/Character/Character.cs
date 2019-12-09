@@ -35,7 +35,7 @@ public class Character : MonoBehaviour
 		get { return _currentState; }
 	}
 
-    private void Start()
+    private void Awake()
     {
         _currentState = EState.Idle;
         _animator = transform.GetComponent<Animator>();
