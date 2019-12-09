@@ -43,7 +43,7 @@ public class ResourceManager : Singleton<ResourceManager>
 		return gameAtals.GetSprite(name);
 	}
 
-	public Sprite GetFarmAtlas(string name)
+	public Sprite GetFarmSprite(string name)
 	{
 		return farmAtlas.GetSprite(name);
 	}

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using UnityEngine;
+using TMPro;
 
 namespace FarmGame
 {
@@ -11,21 +12,15 @@ namespace FarmGame
 		public int type;
 		public string name;
 		public int price;
-		public int grownHour;
-		public int grownMin;
+		public int grownTime;
 		public string lessGrownSprite;
 		public string fullGrownSprite;
 	}
 
 	public class ProductTile : ObjectTile
 	{
-		enum Echild
-		{
-			LessGrownSprite,
-			FullGrownSprite
-		}
 
-		public struct LoadData
+		public struct SaveData
 		{
 			public Point point;
 			public int productType;
@@ -33,30 +28,42 @@ namespace FarmGame
 			public DateTime harvestTime;
 		}
 
+		public GameObject lessGrownSpriteObject;
+		public GameObject fullGrownSpriteObject;
+		public GameObject harvestTimeTextObject;
+
 		ProductData productData;
 
 		DateTime _plantingTime;
 		DateTime _harvestTime;
 		bool _canHarvest;
 
+		TextMeshPro _harvestTimeTextMesh;
+
+		private void Awake()
+		{
+			tileType = ETileType.Harvest;
+			_harvestTimeTextMesh = harvestTimeTextObject.GetComponent<TextMeshPro>();
+		}
+
 		public void PlantProduct(Point point, int type)
 		{
 			productData = MapData.Instance.ProductDatas[type];
 			base.point = point;
 
-			TimeSpan grownTime = new TimeSpan(productData.grownHour, productData.grownMin, 0);
 			_plantingTime = DateTime.Now;
-			_harvestTime = _plantingTime.Add(grownTime);
+			_harvestTime = _plantingTime.AddMinutes(productData.grownTime);
 			_canHarvest = false;
 
-			StartCoroutine(CheckCanHarvest());
+			StartCoroutine(UpdateHarvestTime());
 			SetPosition();
-			InitSprite();
 			SetSprite();
+			UpdateGrownSprite();
 		}
 
-		public void LoadTileData(LoadData data)
+		public void LoadSaveData(SaveData data)
 		{
+			tileType = ETileType.Harvest;
 			productData = MapData.Instance.ProductDatas[data.productType];
 			point = data.point;
 
@@ -70,12 +77,23 @@ namespace FarmGame
 			else
 			{
 				_canHarvest = false;
-				StartCoroutine(CheckCanHarvest());
+				StartCoroutine(UpdateHarvestTime());
 			}
 
 			SetPosition();
-			InitSprite();
 			SetSprite();
+			UpdateGrownSprite();
+		}
+
+		public SaveData GetSaveData()
+		{
+			SaveData data;
+			data.point = point;
+			data.productType = productData.type;
+			data.plantingTime = _plantingTime;
+			data.harvestTime = _harvestTime;
+
+			return data;
 		}
 
 		void SetPosition()
@@ -88,47 +106,50 @@ namespace FarmGame
 			transform.localPosition = position;
 		}
 
-		void InitSprite()
+		void SetSprite()
 		{
 			SpriteRenderer renderer;
 			string spriteName;
 
-			renderer = transform.GetChild((int)Echild.LessGrownSprite).GetComponent<SpriteRenderer>();
+			renderer = lessGrownSpriteObject.GetComponent<SpriteRenderer>();
 			spriteName = productData.lessGrownSprite;
-			renderer.sprite = ResourceManager.Instance.GetFarmAtlas(spriteName);
+			renderer.sprite = ResourceManager.Instance.GetFarmSprite(spriteName);
 
-			renderer = transform.GetChild((int)Echild.FullGrownSprite).GetComponent<SpriteRenderer>();
+			renderer = fullGrownSpriteObject.GetComponent<SpriteRenderer>();
 			spriteName = productData.fullGrownSprite;
-			renderer.sprite = ResourceManager.Instance.GetFarmAtlas(spriteName);
+			renderer.sprite = ResourceManager.Instance.GetFarmSprite(spriteName);
 		}
 
-		void SetSprite()
+		void UpdateGrownSprite()
 		{
 			if (_canHarvest)
 			{
-				transform.GetChild((int)Echild.FullGrownSprite).gameObject.SetActive(true);
+				fullGrownSpriteObject.SetActive(true);
+				harvestTimeTextObject.SetActive(false);
 			}
 			else
 			{
-				transform.GetChild((int)Echild.FullGrownSprite).gameObject.SetActive(false);
+				fullGrownSpriteObject.SetActive(false);
+				harvestTimeTextObject.SetActive(true);
 			}
 		}
 
-		IEnumerator CheckCanHarvest()
+		IEnumerator UpdateHarvestTime()
 		{
 			while (true)
 			{
 				if (_harvestTime < DateTime.Now)
 				{
 					_canHarvest = true;
-					SetSprite();
+					UpdateGrownSprite();
 					Debug.Log("Harvest Time!");
 					yield break;
 				}
 				else
 				{
-					Debug.Log(DateTime.Now - _harvestTime);
-					yield return new WaitForSeconds(10.0f);
+					TimeSpan remainTime = _harvestTime - DateTime.Now;
+					_harvestTimeTextMesh.text = remainTime.ToString(@"hh\:mm\:ss");
+					yield return new WaitForSeconds(1.0f);
 				}
 			}
 		}

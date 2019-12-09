@@ -72,7 +72,7 @@ namespace FarmGame
 
 			GameObject obj = Instantiate(prefRoadTile, objectTileGroup.transform);
 			RoadTile script = obj.GetComponent<RoadTile>();
-			RoadTile.TileData data;
+			RoadTile.RoadData data;
 			data.point = pt;
 			data.material = RoadTile.EMaterial.Wire;
 			data.type = RoadTile.EType.Default;
@@ -100,11 +100,11 @@ namespace FarmGame
 			objectTileDic.Add(point, script);
 		}
 
-		public void LoadProduct(ProductTile.LoadData data)
+		public void LoadProduct(ProductTile.SaveData data)
 		{
 			GameObject tileObj = Instantiate(prefProductTile, objectTileGroup.transform);
 			ProductTile script = tileObj.GetComponent<ProductTile>();
-			script.LoadTileData(data);
+			script.LoadSaveData(data);
 
 			objectTileDic.Add(data.point, script);
 		}
@@ -128,7 +128,7 @@ namespace FarmGame
 			objectTileDic.Add(point, script);
 		}
 
-		public void LoadDecoration(DecorationTile.LoadData data)
+		public void LoadDecoration(DecorationTile.SaveData data)
 		{
 
 		}

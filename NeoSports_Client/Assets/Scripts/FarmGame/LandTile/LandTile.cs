@@ -132,7 +132,7 @@ namespace FarmGame
 
 			spriteName += "_" + _typeIndex.ToString();
 
-			Sprite tileSprite = ResourceManager.Instance.GetFarmAtlas(spriteName);
+			Sprite tileSprite = ResourceManager.Instance.GetFarmSprite(spriteName);
 			GetComponent<SpriteRenderer>().sprite = tileSprite;
 		}
 

@@ -20,7 +20,7 @@ namespace FarmGame
 
 		public void InitData(ProductData data)
 		{
-			Sprite sprite = ResourceManager.Instance.GetFarmAtlas(data.fullGrownSprite);
+			Sprite sprite = ResourceManager.Instance.GetFarmSprite(data.fullGrownSprite);
 			cropImage.GetComponent<Image>().sprite = sprite;
 
 			cropNameText.GetComponent<Text>().text = data.name;

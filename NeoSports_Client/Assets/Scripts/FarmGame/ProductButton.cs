@@ -20,13 +20,12 @@ namespace FarmGame
 		{
 			_data = data;
 
-			imageLessGrown.GetComponent<Image>().sprite = ResourceManager.Instance.GetFarmAtlas(data.lessGrownSprite);
-			imageFullGrown.GetComponent<Image>().sprite = ResourceManager.Instance.GetFarmAtlas(data.fullGrownSprite);
+			imageLessGrown.GetComponent<Image>().sprite = ResourceManager.Instance.GetFarmSprite(data.lessGrownSprite);
+			imageFullGrown.GetComponent<Image>().sprite = ResourceManager.Instance.GetFarmSprite(data.fullGrownSprite);
 
 			labelName.GetComponent<Text>().text = data.name;
 
-			int grownTime = (data.grownHour * 60) + data.grownMin;
-			labelGrownTime.GetComponent<Text>().text = grownTime.ToString() + "분";
+			labelGrownTime.GetComponent<Text>().text = data.grownTime.ToString() + "분";
 			labelRequireGold.GetComponent<Text>().text = data.price.ToString();
 
 			AddButtonEvent();

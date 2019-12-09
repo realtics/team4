@@ -18,7 +18,7 @@ namespace FarmGame
 		{
 			_data = data;
 
-			imageTile.GetComponent<Image>().sprite = ResourceManager.Instance.GetFarmAtlas(data.sprite);
+			imageTile.GetComponent<Image>().sprite = ResourceManager.Instance.GetFarmSprite(data.sprite);
 			labelName.GetComponent<Text>().text = data.name;
 			labelRequireGold.GetComponent<Text>().text = data.price.ToString();
 

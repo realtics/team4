@@ -16,7 +16,7 @@ namespace FarmGame
 	public class DecorationTile : ObjectTile
 	{
 
-		public struct LoadData
+		public struct SaveData
 		{
 			public Point point;
 			public int decorationType;
@@ -26,6 +26,7 @@ namespace FarmGame
 
 		public void DeployTile(Point point, int type)
 		{
+			tileType = ETileType.Decoration;
 			decorationData = MapData.Instance.DecorationDatas[type];
 			base.point = point;
 
@@ -33,8 +34,9 @@ namespace FarmGame
 			InitSprite();
 		}
 
-		public void LoadTileData(LoadData data)
+		public void LoadSaveData(SaveData data)
 		{
+			tileType = ETileType.Decoration;
 			decorationData = MapData.Instance.DecorationDatas[data.decorationType];
 			point = data.point;
 
@@ -59,7 +61,7 @@ namespace FarmGame
 
 			renderer = transform.GetChild(0).GetComponent<SpriteRenderer>();
 			spriteName = decorationData.sprite;
-			renderer.sprite = ResourceManager.Instance.GetFarmAtlas(spriteName);
+			renderer.sprite = ResourceManager.Instance.GetFarmSprite(spriteName);
 		}
 
 	}

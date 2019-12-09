@@ -21,7 +21,14 @@ namespace FarmGame
 			Corner
 		}
 
-		public struct TileData
+		public struct RoadData
+		{
+			public Point point;
+			public EMaterial material;
+			public EType type;
+		}
+
+		public struct SaveData
 		{
 			public Point point;
 			public EMaterial material;
@@ -59,7 +66,7 @@ namespace FarmGame
 		}
 		#endregion
 
-		public void SetData(TileData data)
+		public void SetData(RoadData data)
 		{
 			tileType = ETileType.Road;
 			material = data.material;
@@ -70,6 +77,11 @@ namespace FarmGame
 			SetRotation(data.point);
 
 			SetSprite();
+		}
+
+		public void LoadSaveData(SaveData data)
+		{
+
 		}
 
 		void SetPosition(Point pt)
@@ -191,14 +203,14 @@ namespace FarmGame
 					spriteName += "lamp";
 					break;
 				case EType.Trash:
-					spriteName += "Trash";
+					spriteName += "trash";
 					break;
 				case EType.Corner:
 					spriteName += "corner";
 					break;
 			}
 
-			Sprite sprite = ResourceManager.Instance.GetFarmAtlas(spriteName);
+			Sprite sprite = ResourceManager.Instance.GetFarmSprite(spriteName);
 			GetComponent<SpriteRenderer>().sprite = sprite;
 		}
 	}
