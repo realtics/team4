@@ -59,7 +59,7 @@ namespace FarmGame
 
 		void Update()
 		{
-			if (!EventSystem.current.IsPointerOverGameObject())
+			if (!EventSystem.current.IsPointerOverGameObject() && _currentCategory == ECategory.Default)
 			{
 				if (Input.GetMouseButton(0))
 				{
