@@ -7,7 +7,6 @@ namespace FarmGame
 {
 	public class LandTileManager : Singleton<LandTileManager>
 	{
-
 		public GameObject prefLandTile;
 		public GameObject landTileGroup;
 
@@ -18,13 +17,15 @@ namespace FarmGame
 			instance = this;
 
 			landTileDic = new Dictionary<Point, LandTile>();
+		}
 
+		private void Start()
+		{
 			CreateLandTiles(MapData.MapWidth, MapData.MapHeight);
 		}
 
 		void CreateLandTiles(int width, int height)
 		{
-
 			for (int i = 0; i < width; i++)
 			{
 				for (int j = 0; j < height; j++)
@@ -39,26 +40,25 @@ namespace FarmGame
 					tile.transform.position = position;
 
 					LandTile script = tile.GetComponent<LandTile>();
-					LandTile.TileData data;
-					data.point = pt;
-					data.type = LandTile.EType.Badland;
-					data.typeIndex = 0;
-					script.SetData(data);
+					LandData data = MapData.Instance.LandDataDic[LandTile.BadlandType];
+					script.CreateLand(pt, data);
 					landTileDic.Add(pt, script);
 				}
 			}
 		}
 
-		public void SetLandTileType(Point point, LandTile.EType type)
+		public void SetLandTileType(Point point, string type)
 		{
-			landTileDic[point].ChangeType(type);
+			LandData data = MapData.Instance.LandDataDic[type];
+			landTileDic[point].ChangeType(data);
 		}
 
 		void ResetLands()
 		{
+			LandData data = MapData.Instance.LandDataDic[LandTile.BadlandType];
 			foreach (KeyValuePair<Point, LandTile> item in landTileDic)
 			{
-				item.Value.ChangeType(LandTile.EType.Badland);
+				item.Value.ChangeType(data);
 			}
 		}
 

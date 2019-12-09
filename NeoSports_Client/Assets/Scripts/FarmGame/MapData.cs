@@ -9,6 +9,7 @@ namespace FarmGame
 {
 	public class MapData : Singleton<MapData>
 	{
+		const string LandDataPath = "Jsons/Farm/LandData";
 		const string DecorationDataPath = "Jsons/Farm/DecorationData";
 		const string ProductDataPath = "Jsons/Farm/ProductData";
 
@@ -17,16 +18,21 @@ namespace FarmGame
 
 		public const float TileSize = 0.48f;
 
-		Dictionary<int, DecorationData> decorationDatas;
-		Dictionary<int, ProductData> productDatas;
+		Dictionary<string, LandData> landDataDic;
+		Dictionary<int, DecorationData> decorationDataDic;
+		Dictionary<int, ProductData> productDataDic;
 
 		#region Property
-		public Dictionary<int, DecorationData> DecorationDatas {
-			get { return decorationDatas; }
+		public Dictionary<string, LandData> LandDataDic {
+			get { return landDataDic; }
 		}
 
-		public Dictionary<int, ProductData> ProductDatas {
-			get { return productDatas; }
+		public Dictionary<int, DecorationData> DecorationDataDic {
+			get { return decorationDataDic; }
+		}
+
+		public Dictionary<int, ProductData> ProductDataDic {
+			get { return productDataDic; }
 		}
 
 		public Point CurrentFarmerPoint { get; set; }
@@ -34,9 +40,11 @@ namespace FarmGame
 
 		private void Awake()
 		{
-			decorationDatas = new Dictionary<int, DecorationData>();
-			productDatas = new Dictionary<int, ProductData>();
+			landDataDic = new Dictionary<string, LandData>();
+			decorationDataDic = new Dictionary<int, DecorationData>();
+			productDataDic = new Dictionary<int, ProductData>();
 
+			ReadLandData();
 			ReadDecorationData();
 			ReadProductData();
 		}
@@ -47,30 +55,40 @@ namespace FarmGame
 			return ta.text;
 		}
 
+		void ReadLandData()
+		{
+			string dataStr = LoadDataFromJson(LandDataPath);
+			LandData[] dataArr = JsonConvert.DeserializeObject<LandData[]>(dataStr);
+
+			foreach(LandData child in dataArr)
+			{
+				landDataDic.Add(child.type, child);
+			}
+			Debug.Log("Land Data Length: " + landDataDic.Count.ToString());
+		}
+
 		void ReadDecorationData()
 		{
 			string dataStr = LoadDataFromJson(DecorationDataPath);
-			//DecorationData[] dataArr = JsonReader.Deserialize<DecorationData[]>(dataStr);
 			DecorationData[] dataArr = JsonConvert.DeserializeObject<DecorationData[]>(dataStr);
 
 			foreach (DecorationData child in dataArr)
 			{
-				decorationDatas.Add(child.type, child);
+				decorationDataDic.Add(child.type, child);
 			}
-			Debug.Log("Decoration Data Length: " + decorationDatas.Count.ToString());
+			Debug.Log("Decoration Data Length: " + decorationDataDic.Count.ToString());
 		}
 
 		void ReadProductData()
 		{
 			string dataStr = LoadDataFromJson(ProductDataPath);
-			//ProductData[] dataArr = JsonReader.Deserialize<ProductData[]>(dataStr);
 			ProductData[] dataArr = JsonConvert.DeserializeObject<ProductData[]>(dataStr);
 
 			foreach (ProductData child in dataArr)
 			{
-				productDatas.Add(child.type, child);
+				productDataDic.Add(child.type, child);
 			}
-			Debug.Log("Product Data Length: " + ProductDatas.Count.ToString());
+			Debug.Log("Product Data Length: " + ProductDataDic.Count.ToString());
 		}
 
 	}

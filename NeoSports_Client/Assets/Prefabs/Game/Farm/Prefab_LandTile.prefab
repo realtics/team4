@@ -95,8 +95,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f385c62d60f77314bb5489f5e230a552, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  farmLandTileAtlas: {fileID: 4343727234628468602, guid: 6086b02561324754081f1eb22b583f7a,
-    type: 2}
+  highlightSpriteObject: {fileID: 7345983441890971075}
 --- !u!65 &371761909732134755
 BoxCollider:
   m_ObjectHideFlags: 0

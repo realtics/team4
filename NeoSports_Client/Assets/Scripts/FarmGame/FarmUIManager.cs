@@ -195,7 +195,7 @@ namespace FarmGame
 
 		void CreatePlantScrollViewItem()
 		{
-			var productDatas = MapData.Instance.ProductDatas;
+			var productDatas = MapData.Instance.ProductDataDic;
 
 			foreach (var item in productDatas)
 			{
@@ -206,7 +206,7 @@ namespace FarmGame
 
 		void CreateDecorationScrollViewItem()
 		{
-			var decorationDatas = MapData.Instance.DecorationDatas;
+			var decorationDatas = MapData.Instance.DecorationDataDic;
 
 			foreach (var item in decorationDatas)
 			{
@@ -222,14 +222,14 @@ namespace FarmGame
 		{
 			Point cursurPoint = MapData.Instance.CurrentFarmerPoint;
 
-			LandTileManager.Instance.SetLandTileType(cursurPoint, LandTile.EType.Grass);
+			LandTileManager.Instance.SetLandTileType(cursurPoint, LandTile.GrassType);
 		}
 
 		public void ButtonEvent_ChangeToCultivate()
 		{
 			Point cursurPoint = MapData.Instance.CurrentFarmerPoint;
 
-			LandTileManager.Instance.SetLandTileType(cursurPoint, LandTile.EType.Cultivate);
+			LandTileManager.Instance.SetLandTileType(cursurPoint, LandTile.CultivateType);
 		}
 		#endregion
 
@@ -257,7 +257,7 @@ namespace FarmGame
 				{
 					GameObject obj = Instantiate(prefStorageGroup, storageScrollViewContent.transform);
 					StorageGroup script = obj.transform.GetComponent<StorageGroup>();
-					ProductData data = MapData.Instance.ProductDatas[child.Key];
+					ProductData data = MapData.Instance.ProductDataDic[child.Key];
 					script.InitData(data);
 
 					_storageGroupDic.Add(child.Key, script);

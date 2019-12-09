@@ -1,0 +1,14 @@
+[ 
+   { 
+      "type":"badland",
+      "variationCount":2
+   },
+   { 
+      "type":"grass",
+      "variationCount":2
+   },
+   { 
+      "type":"cultivate",
+      "variationCount":1
+   }
+]

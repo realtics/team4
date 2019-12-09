@@ -22,17 +22,17 @@ namespace FarmGame
 			public int decorationType;
 		}
 
-		DecorationData decorationData;
+		DecorationData _decorationData;
 
 		private void Awake()
 		{
-			tileType = ETileType.Decoration;
+			_tileType = ETileType.Decoration;
 		}
 
 		public void DeployTile(Point point, int type)
 		{
-			decorationData = MapData.Instance.DecorationDatas[type];
-			base.point = point;
+			_decorationData = MapData.Instance.DecorationDataDic[type];
+			_point = point;
 
 			UpdatePosition();
 			UpdateSprite();
@@ -40,19 +40,28 @@ namespace FarmGame
 
 		public void LoadSaveData(SaveData data)
 		{
-			decorationData = MapData.Instance.DecorationDatas[data.decorationType];
-			point = data.point;
+			_decorationData = MapData.Instance.DecorationDataDic[data.decorationType];
+			_point = data.point;
 
 			UpdatePosition();
 			UpdateSprite();
+		}
+
+		public SaveData MakeSaveData()
+		{
+			SaveData data;
+			data.point = _point;
+			data.decorationType = _decorationData.type;
+
+			return data;
 		}
 
 		void UpdatePosition()
 		{
 			Vector3 position = Vector3.zero;
 
-			position.x = MapData.TileSize * point.X;
-			position.y = MapData.TileSize * point.Y;
+			position.x = MapData.TileSize * _point.X;
+			position.y = MapData.TileSize * _point.Y;
 
 			transform.localPosition = position;
 		}
@@ -63,7 +72,7 @@ namespace FarmGame
 			string spriteName;
 
 			renderer = transform.GetChild(0).GetComponent<SpriteRenderer>();
-			spriteName = decorationData.sprite;
+			spriteName = _decorationData.sprite;
 			renderer.sprite = ResourceManager.Instance.GetFarmSprite(spriteName);
 		}
 

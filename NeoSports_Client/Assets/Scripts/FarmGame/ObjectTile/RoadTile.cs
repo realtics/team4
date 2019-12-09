@@ -7,7 +7,6 @@ namespace FarmGame
 {
 	public struct RoadData
 	{
-		public Point point;
 		public string material;
 		public string type;
 	}
@@ -34,25 +33,40 @@ namespace FarmGame
 
 		RoadData _roadData;
 
-		public void SetData(RoadData data)
+		private void Awake()
 		{
-			tileType = ETileType.Road;
-			_roadData = data;
-			name = data.point.X.ToString() + "_" + data.point.Y.ToString() + "_RoadTile";
+			_tileType = ETileType.Road;
+		}
 
-			UpdatePosition(data.point);
-			UpdateRotation(data.point);
+		public void DeployRoad(Point point, RoadData data)
+		{
+			_point = point;
+			_roadData = data;
+			name = _point.X.ToString() + "_" + _point.Y.ToString() + "_RoadTile";
+
+			UpdatePosition(_point);
+			UpdateRotation(_point);
 			UpdateSprite();
 		}
 
 		public void LoadSaveData(SaveData data)
 		{
+			_point = data.point;
+			_roadData.material = data.material;
+			_roadData.type = data.type;
+			name = _point.X.ToString() + "_" + _point.Y.ToString() + "_RoadTile";
 
+			UpdatePosition(_point);
+			UpdateRotation(_point);
+			UpdateSprite();
 		}
 
 		public SaveData MakeSaveData()
 		{
 			SaveData data = new SaveData();
+			data.point = _point;
+			data.material = _roadData.material;
+			data.type = _roadData.type;
 			return data;
 		}
 

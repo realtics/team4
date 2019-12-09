@@ -32,27 +32,26 @@ namespace FarmGame
 		public GameObject fullGrownSpriteObject;
 		public GameObject harvestTimeTextObject;
 
-		ProductData productData;
+		TextMeshPro _harvestTimeTextMesh;
 
+		ProductData _productData;
 		DateTime _plantingTime;
 		DateTime _harvestTime;
 		bool _canHarvest;
 
-		TextMeshPro _harvestTimeTextMesh;
-
 		private void Awake()
 		{
-			tileType = ETileType.Harvest;
+			_tileType = ETileType.Harvest;
 			_harvestTimeTextMesh = harvestTimeTextObject.GetComponent<TextMeshPro>();
 		}
 
 		public void PlantProduct(Point point, int type)
 		{
-			productData = MapData.Instance.ProductDatas[type];
-			base.point = point;
+			_productData = MapData.Instance.ProductDataDic[type];
+			_point = point;
 
 			_plantingTime = DateTime.Now;
-			_harvestTime = _plantingTime.AddMinutes(productData.grownTime);
+			_harvestTime = _plantingTime.AddMinutes(_productData.grownTime);
 			_canHarvest = false;
 
 			StartCoroutine(UpdateHarvestTime());
@@ -63,9 +62,9 @@ namespace FarmGame
 
 		public void LoadSaveData(SaveData data)
 		{
-			tileType = ETileType.Harvest;
-			productData = MapData.Instance.ProductDatas[data.productType];
-			point = data.point;
+			_tileType = ETileType.Harvest;
+			_productData = MapData.Instance.ProductDataDic[data.productType];
+			_point = data.point;
 
 			_plantingTime = data.plantingTime;
 			_harvestTime = data.harvestTime;
@@ -88,8 +87,8 @@ namespace FarmGame
 		public SaveData MakeSaveData()
 		{
 			SaveData data;
-			data.point = point;
-			data.productType = productData.type;
+			data.point = _point;
+			data.productType = _productData.type;
 			data.plantingTime = _plantingTime;
 			data.harvestTime = _harvestTime;
 
@@ -100,8 +99,8 @@ namespace FarmGame
 		{
 			Vector3 position = Vector3.zero;
 
-			position.x = MapData.TileSize * point.X;
-			position.y = MapData.TileSize * point.Y;
+			position.x = MapData.TileSize * _point.X;
+			position.y = MapData.TileSize * _point.Y;
 
 			transform.localPosition = position;
 		}
@@ -112,11 +111,11 @@ namespace FarmGame
 			string spriteName;
 
 			renderer = lessGrownSpriteObject.GetComponent<SpriteRenderer>();
-			spriteName = productData.lessGrownSprite;
+			spriteName = _productData.lessGrownSprite;
 			renderer.sprite = ResourceManager.Instance.GetFarmSprite(spriteName);
 
 			renderer = fullGrownSpriteObject.GetComponent<SpriteRenderer>();
-			spriteName = productData.fullGrownSprite;
+			spriteName = _productData.fullGrownSprite;
 			renderer.sprite = ResourceManager.Instance.GetFarmSprite(spriteName);
 		}
 

@@ -16,12 +16,11 @@ namespace FarmGame
 			Decoration
 		}
 
-		protected ETileType tileType;
-
-		protected Point point;
+		protected ETileType _tileType;
+		protected Point _point;
 
 		public Point MapPoint {
-			get { return point; }
+			get { return _point; }
 		}
 
 	}

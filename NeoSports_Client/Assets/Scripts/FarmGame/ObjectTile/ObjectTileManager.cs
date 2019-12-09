@@ -63,9 +63,9 @@ namespace FarmGame
 			}
 		}
 
-		void CreateRoadTileAtPoint(Point pt)
+		void CreateRoadTileAtPoint(Point point)
 		{
-			if (objectTileDic.ContainsKey(pt))
+			if (objectTileDic.ContainsKey(point))
 			{
 				return;
 			}
@@ -73,12 +73,11 @@ namespace FarmGame
 			GameObject obj = Instantiate(prefRoadTile, objectTileGroup.transform);
 			RoadTile script = obj.GetComponent<RoadTile>();
 			RoadData data;
-			data.point = pt;
 			data.material = "wire";
 			data.type = "default";
-			script.SetData(data);
+			script.DeployRoad(point, data);
 
-			objectTileDic.Add(pt, script);
+			objectTileDic.Add(point, script);
 		}
 		#endregion
 
