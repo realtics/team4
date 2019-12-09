@@ -1,4 +1,6 @@
 #include "Server.h"
+#include "LogicProcess.h"
+
 #include <process.h>
 #include <boost/bind.hpp>
 #include <boost/thread/thread.hpp>
@@ -17,6 +19,13 @@ int main()
 
 	server.Start();
 
+	LogicProcess logicProcess;
+	logicProcess.Init(&server);
+	boost::thread logicSingleThread(boost::bind(&LogicProcess::ProcessPacket, logicProcess));
+	logicSingleThread.join();
+
+	/*JSON파일을 역직렬화 해주는 멀티쓰레드
+	  역직렬화 후 LogicThread로 데이터를 보내서 싱글쓰레드로 처리한다*/
 	boost::thread_group tg;
 	for (int i = 0; i < systemInfo.dwNumberOfProcessors; i++)
 	{
@@ -25,6 +34,7 @@ int main()
 	}
 	tg.join_all();
 
+	logicProcess.StopProcess();
 	std::cout << "End Network" << std::endl;
 
 	return 0;

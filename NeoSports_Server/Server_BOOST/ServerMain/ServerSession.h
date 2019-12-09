@@ -4,6 +4,7 @@
 
 #include <boost/bind.hpp>
 #include <boost/asio.hpp>
+#include <boost/thread/thread.hpp>
 
 #include "Protocol.h"
 #include "Lock.h"
@@ -18,7 +19,7 @@ public:
 	~Session();
 
 	int GetSessionID();
-	void Init();
+	void Init(boost::thread* logicThread);
 	void PostReceive();
 	void PostSend(const bool bImmediately, const int size, char* dataPtr);
 	void SetName(const char* namePtr);
@@ -30,10 +31,11 @@ public:
 	boost::asio::ip::tcp::socket& Socket() { return Session::_socket; }
 
 private:
-	Lock _sendLock;
-	Lock _recvLock;
+	boost::thread* _logicThread;
+	//Lock _sendLock;
+	//Lock _recvLock;
 	Lock _closeLock;
-	Lock _ropePullLock;
+	//Lock _ropePullLock;
 	
 	int _sessionId;
 	int _packetBufferMark;
@@ -48,7 +50,7 @@ private:
 	Server* _serverPtr;
 	GameMG* _gameMG;
 
-	void _ProcessPacket(const int sessionID, const char* data); //LogicProcessClass로 보내기
+	//void _ProcessPacket(const int sessionID, const char* data); //LogicProcessClass로 보내기
 	//LogicProcessClass를 돌리고 있는 쓰레드로 메시지(패킷)을 post하는 함수만들기
 
 
@@ -56,7 +58,7 @@ private:
 	void _ReceiveHandle(const boost::system::error_code& error, size_t bytesTransferred);
 
 	void _DeSerializationJson(char* jsonStr);
-	std::string _SerializationJson(int packetIndex, const char* pakcet);
+	//std::string _SerializationJson(int packetIndex, const char* pakcet);
 
 };
 

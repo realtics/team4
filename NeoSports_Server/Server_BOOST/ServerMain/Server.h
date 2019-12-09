@@ -8,8 +8,9 @@
 
 #include "RoomMG.h"
 #include "ServerSession.h"
-#include "DB.h"
 #include "GameMG.h"
+
+#include <boost/thread/thread.hpp>
 
 class Server
 {
@@ -44,7 +45,7 @@ private:
 	std::vector<GameMG*> _gameMGPool;
 
 	Lock _acceptLock;
-	Lock _ropePullLock;
+	//Lock _ropePullLock;
 
 	int _seqNumber;
 	bool _isAccepting;

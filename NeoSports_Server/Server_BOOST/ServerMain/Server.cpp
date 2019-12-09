@@ -1,10 +1,12 @@
 #include "Server.h"
 #include "Json.h"
+#include "DB.h"
 
 const int MAX_GAME_MG_COUNT = 10;
 
-Server::Server(boost::asio::io_context& io_service) : _acceptor(io_service,
-	boost::asio::ip::tcp::endpoint(boost::asio::ip::tcp::v4(), PORT_NUMBER))
+Server::Server(boost::asio::io_context& io_service) :
+	_acceptor(io_service
+	, boost::asio::ip::tcp::endpoint(boost::asio::ip::tcp::v4(), PORT_NUMBER))
 {
 	_isAccepting = false;
 
@@ -41,6 +43,7 @@ void Server::Init(const int maxSessionCount)
 void Server::Start()
 {
 	std::cout << "Server Start..." << std::endl;
+
 	DB::GetInstance()->Init();
 
 	_PostAccept();
