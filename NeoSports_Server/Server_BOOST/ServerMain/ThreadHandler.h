@@ -34,6 +34,7 @@ public:
 	PacketData GetPakcetDataQueueFront();
 	HANDLE GetPacketQueueEvents();
 	bool IsEmptyPacketQueue();
+
 	//_packetQueueEvents만 바꿔주는중
 	void SetEventsObject();
 	void PopPacketQueue();

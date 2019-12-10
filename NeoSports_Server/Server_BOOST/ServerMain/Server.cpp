@@ -1,6 +1,7 @@
 #include "Server.h"
 #include "Json.h"
 #include "DB.h"
+#include "ThreadHandler.h"
 
 const int MAX_GAME_MG_COUNT = 10;
 
@@ -15,6 +16,9 @@ Server::Server(boost::asio::io_context& io_service) :
 		_gameMGPool.push_back(new GameMG);
 		_gameMGPool[i]->Init();
 	}
+
+	ThreadHandler::GetInstance()->CreateEvents(
+		ThreadHandler::GetInstance()->GetPacketQueueEvents(),false);
 }
 
 Server::~Server()
