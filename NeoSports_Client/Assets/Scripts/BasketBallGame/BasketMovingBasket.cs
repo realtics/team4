@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace BasketBallGame
 {
-    public class BasketMove : MonoBehaviour
+    public class BasketMovingBasket : MonoBehaviour
     {
         enum EMoveDirection
         {

@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 namespace BasketBallGame
 {
-    public class BasketMoveBallIntheBasket : MonoBehaviour
+    public class BasketGoalCounter : MonoBehaviour
     {
         public GameObject goalInBallManager;
         public Text leftText;

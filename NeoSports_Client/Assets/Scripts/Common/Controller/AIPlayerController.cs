@@ -27,13 +27,13 @@ public class AIPlayerController : PlayerController
 		{
 			case eControlScene.BaksetBall:
 				{
-					ProcessBasket();
-					break;
+                    StartCoroutine(nameof(ProcessBasket));
+                    break;
 				}
 			case eControlScene.JumpRoPe:
 				{
-					ProcessJumpRope();
-					break;
+                    //StartCoroutine(nameof(JumpRoPe));
+                    break;
 				}
 			case eControlScene.PullRope:
 				{
@@ -51,29 +51,18 @@ public class AIPlayerController : PlayerController
 	}
 
 	#region Input Case
-	protected override void ProcessBasket()
+	protected new IEnumerator ProcessBasket()
 	{
-		if (Input.GetMouseButtonDown(0))
-		{
-			if (_ownPlayer._playerTrigger.OverlapPoint(_ownPlayer.mainCam.ScreenToWorldPoint(Input.mousePosition)))
-			{
-				_ownPlayer.AimingShoot();
-			}
-			else
-			{
-				_ownPlayer.DecideTargetPos(Input.mousePosition);
-				return;
-			}
-		}
-		else if (Input.GetMouseButton(0) && _ownPlayer.isClickOn)
-		{
-			_ownPlayer.CalculateShoot();
-		}
-		else if (Input.GetMouseButtonUp(0))
-		{
-			if (_ownPlayer.isClickOn)
-				_ownPlayer.ShootBall();
-		}
+        while (true)
+        {
+            if (BasketBallGame.BasketBallGameManager.Instance.GameState == BasketBallGame.BasketBallGameManager.EGameState.Playing)
+            {
+                _ownPlayer.CalculateShoot();
+                _ownPlayer.ShootBall();
+                
+            }
+            yield return new WaitForSeconds(1.0f);
+        }
 	}
 
 	protected override void ProcessJumpRope()

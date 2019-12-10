@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 476902307763063080}
   - component: {fileID: 476902307763063081}
   m_Layer: 0
-  m_Name: Arrow
+  m_Name: PlayerUIArrow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -24,9 +24,9 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 476902307763063082}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0.25623095, w: 0.9666156}
   m_LocalPosition: {x: 721.3863, y: 456.85464, z: -10.917938}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
