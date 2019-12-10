@@ -31,7 +31,6 @@ public:
 	std::string orderByRank(std::string tableName, GAME_INDEX gameIndex, std::string Column);
 
 private:
-	DB() {};
 	DB(const DB& other);
 	static DB* _instance;
 
