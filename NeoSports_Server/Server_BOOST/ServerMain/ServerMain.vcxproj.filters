@@ -51,6 +51,9 @@
     <ClCompile Include="LogicProcess.cpp">
       <Filter>LogicClass</Filter>
     </ClCompile>
+    <ClCompile Include="ThreadProtocol.cpp">
+      <Filter>Protocol</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ServerSession.h">
@@ -79,6 +82,9 @@
     </ClInclude>
     <ClInclude Include="LogicProcess.h">
       <Filter>LogicClass</Filter>
+    </ClInclude>
+    <ClInclude Include="ThreadProtocol.h">
+      <Filter>Protocol</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -26,6 +26,7 @@
     <ClCompile Include="Server.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="ServerSession.cpp" />
+    <ClCompile Include="ThreadProtocol.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DB.h" />
@@ -37,6 +38,7 @@
     <ClInclude Include="Lock.h" />
     <ClInclude Include="Protocol.h" />
     <ClInclude Include="ServerSession.h" />
+    <ClInclude Include="ThreadProtocol.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
