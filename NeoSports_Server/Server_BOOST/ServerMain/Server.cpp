@@ -109,7 +109,7 @@ void Server::InitRoom(int roomNum)
 
 void Server::GetGameMG(bool isSuperSession, int  sessionID, GAME_INDEX gameIndex)
 {
-	for (auto iter = _gameMGPool.begin(); iter != _gameMGPool.end(); iter++)
+	/*for (auto iter = _gameMGPool.begin(); iter != _gameMGPool.end(); iter++)
 	{
 		if (isSuperSession == true && (*iter)->GetCurGame() == GAME_INDEX::EMPTY_GAME)
 		{
@@ -124,7 +124,7 @@ void Server::GetGameMG(bool isSuperSession, int  sessionID, GAME_INDEX gameIndex
 			_sessionVec[sessionID]->SetGameMG(gameMG);
 			break;
 		}
-	}
+	}*/
 }
 
 
@@ -154,14 +154,14 @@ void Server::ProcessInitRoomPacket(const int sessionID, const char* data)
 	}
 	int superSessionID = _roomMG.GetSuperSessonID(roomNum);
 
-	_sessionVec[superSessionID]->InitGameMG();
-	_sessionVec[superSessionID]->SetGameMG(nullptr);
+	/*_sessionVec[superSessionID]->InitGameMG();
+	_sessionVec[superSessionID]->SetGameMG(nullptr);*/
 
 	if (packet->gameIndex != GAME_INDEX::EMPTY_GAME)
 	{
 		int challengerSessionID = _roomMG.GetSessonID(roomNum);
-		_sessionVec[challengerSessionID]->InitGameMG();
-		_sessionVec[challengerSessionID]->SetGameMG(nullptr);
+		/*_sessionVec[challengerSessionID]->InitGameMG();
+		_sessionVec[challengerSessionID]->SetGameMG(nullptr);*/
 	}
 
 	InitRoom(roomNum);

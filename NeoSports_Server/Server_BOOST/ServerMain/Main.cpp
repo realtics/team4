@@ -19,11 +19,6 @@ int main()
 
 	server.Start();
 
-	LogicProcess logicProcess;
-	logicProcess.Init(&server);
-	boost::thread logicSingleThread(boost::bind(&LogicProcess::ProcessPacket, logicProcess));
-	logicSingleThread.join();
-
 	/*JSON파일을 역직렬화 해주는 멀티쓰레드
 	  역직렬화 후 LogicThread로 데이터를 보내서 싱글쓰레드로 처리한다*/
 	boost::thread_group tg;
@@ -32,6 +27,10 @@ int main()
 		tg.create_thread(boost::bind(&boost::asio::io_service::run,
 			&io_service));
 	}
+
+	LogicProcess logicProcess(&server);
+	tg.create_thread(boost::bind(&LogicProcess::ProcessPacket, &logicProcess));
+
 	tg.join_all();
 
 	logicProcess.StopProcess();

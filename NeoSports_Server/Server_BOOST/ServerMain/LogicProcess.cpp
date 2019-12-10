@@ -3,67 +3,45 @@
 #include "Server.h"
 #include "Json.h"
 #include "DB.h"
+#include "ThreadHandler.h"
 
 #include <typeinfo>
 #include <iostream>
 
-void LogicProcess::Init(Server* server)
+LogicProcess::LogicProcess(Server* serverPtr)
+	:_serverPtr(serverPtr)
 {
-	_serverPtr = server;
-	packetQueueEvents = CreateEvent(NULL, FALSE, TRUE, NULL);
-	if (packetQueueEvents == NULL)
-	{
-		cout << "LogicProcess::Init() : packetQueueEvents : error " << endl;
-	}
+	
+}
+
+LogicProcess::~LogicProcess()
+{
+	
 }
 
 void LogicProcess::StopProcess()
 {
-	while (!packetQue.empty())
+	bool temp = ThreadHandler::GetInstance()->IsEmptyPacketQueue();
+	while (!temp)
 	{
 		ProcessPacket();
 	}
 }
 
-void LogicProcess::_PostSend(const bool Immediately, const int size, char* data)
-{
-	char* sendData = nullptr;
-
-	if (Immediately == false)
-	{
-		sendData = new char[size];
-		memcpy(sendData, data, size);
-
-		_sendDataDeq.push_back(sendData);
-	}
-	else
-	{
-		sendData = data;
-	}
-
-	if (Immediately == false && _sendDataDeq.size() > 1)
-	{
-		return;
-	}
-
-	boost::asio::async_write(_socket, boost::asio::buffer(sendData, size),
-		boost::bind(&Session::_WriteHandle, this,
-			boost::asio::placeholders::error,
-			boost::asio::placeholders::bytes_transferred)
-	);
-}
 
 void LogicProcess::ProcessPacket()
 {
 	while (true)
 	{
-		int retval = WaitForSingleObject(packetQueueEvents, INFINITE);
+		int retval = WaitForSingleObject(ThreadHandler::GetInstance()->GetPacketQueueEvents(), INFINITE);
 		if (retval == WAIT_FAILED)
 			break;
 
 		std::cout << "Call Logic Thread" << std::endl;
-		const int sessionID = packetQue.front().sessionID;
-		const char* data = packetQue.front().data;
+		PacketData packetData = ThreadHandler::GetInstance()->GetPakcetDataQueueFront();
+		const int sessionID = packetData.sessionID;
+		const char* data = packetData.data;
+		ThreadHandler::GetInstance()->PopPacketQueue();
 
 		PACKET_HEADER* header = (PACKET_HEADER*)data;
 
@@ -104,7 +82,7 @@ void LogicProcess::ProcessPacket()
 				std::string aa = _SerializationJson(PACKET_INDEX::START_GAME, (const char*)startPacket);
 
 				_serverPtr->PostSendSession(superSessionIdTemp, false, aa.length(), (char*)aa.c_str());
-				PostSend(false, aa.length(), (char*)aa.c_str());
+				_serverPtr->PostSendSession(sessionIdTemp,false, aa.length(), (char*)aa.c_str());
 				return;
 			}
 			_serverPtr->GetGameMG(true, sessionID, packet->gameIndex);
@@ -116,7 +94,7 @@ void LogicProcess::ProcessPacket()
 
 
 			std::string aa = _SerializationJson(PACKET_INDEX::ROOM_INFO, (const char*)&sendPacket);
-			PostSend(false, aa.length(), (char*)aa.c_str());
+			_serverPtr->PostSendSession(sessionID, false, aa.length(), (char*)aa.c_str());
 		}
 		break;
 
@@ -126,46 +104,46 @@ void LogicProcess::ProcessPacket()
 		}
 		break;
 
-		case PACKET_INDEX::REQ_RES_ROPE_PULL_GAME:
-		{
-			int roomNum = _serverPtr->GetRoomNum(sessionID);
-			ROOM room;
-			room.Init();
-			room = (*_serverPtr->GetRoomInfo(roomNum));
+		//case PACKET_INDEX::REQ_RES_ROPE_PULL_GAME:
+		//{
+		//	int roomNum = _serverPtr->GetRoomNum(sessionID);
+		//	ROOM room;
+		//	room.Init();
+		//	room = (*_serverPtr->GetRoomInfo(roomNum));
 
-			//클라에서 x버튼이나 게임중 메뉴의 yes,no버튼 클릭할때도
-			//게임로직 패킷이 보내져서 예외처리 해주는중
-			if (roomNum == FAIL_ROOM_SERCH ||
-				_gameMG->GetCurGame() == GAME_INDEX::EMPTY_GAME)
-			{
-				std::cout << "(already Init)." << std::endl;
-				break;
-			}
+		//	//클라에서 x버튼이나 게임중 메뉴의 yes,no버튼 클릭할때도
+		//	//게임로직 패킷이 보내져서 예외처리 해주는중
+		//	if (roomNum == FAIL_ROOM_SERCH ||
+		//		_gameMG->GetCurGame() == GAME_INDEX::EMPTY_GAME)
+		//	{
+		//		std::cout << "(already Init)." << std::endl;
+		//		break;
+		//	}
 
-			if (_gameMG != nullptr)
-			{
+		//	if (_gameMG != nullptr)
+		//	{
 
-				PACKET_REQ_RES_ROPE_PULL_GAME* packet = (PACKET_REQ_RES_ROPE_PULL_GAME*)data;
-				_gameMG->SetRopePos(packet->ropePos);
-				float ropePos = _gameMG->GetRopePos();
+		//		PACKET_REQ_RES_ROPE_PULL_GAME* packet = (PACKET_REQ_RES_ROPE_PULL_GAME*)data;
+		//		_gameMG->SetRopePos(packet->ropePos);
+		//		float ropePos = _gameMG->GetRopePos();
 
-				PACKET_REQ_RES_ROPE_PULL_GAME resPacket;;
-				resPacket.header.packetIndex = PACKET_INDEX::REQ_RES_ROPE_PULL_GAME;
-				resPacket.header.packetSize = sizeof(PACKET_REQ_RES_ROPE_PULL_GAME);
-				resPacket.ropePos = ropePos;
+		//		PACKET_REQ_RES_ROPE_PULL_GAME resPacket;;
+		//		resPacket.header.packetIndex = PACKET_INDEX::REQ_RES_ROPE_PULL_GAME;
+		//		resPacket.header.packetSize = sizeof(PACKET_REQ_RES_ROPE_PULL_GAME);
+		//		resPacket.ropePos = ropePos;
 
-				std::string aa = _SerializationJson(PACKET_INDEX::REQ_RES_ROPE_PULL_GAME, (const char*)&resPacket);
+		//		std::string aa = _SerializationJson(PACKET_INDEX::REQ_RES_ROPE_PULL_GAME, (const char*)&resPacket);
 
-				int superSessionIdTemp = room.superSessionID;
-				int sessionIdTemp = room.sessionID;
+		//		int superSessionIdTemp = room.superSessionID;
+		//		int sessionIdTemp = room.sessionID;
 
-				_serverPtr->PostSendSession(superSessionIdTemp, false, aa.length(), (char*)aa.c_str());
-				_serverPtr->PostSendSession(sessionIdTemp, false, aa.length(), (char*)aa.c_str());
-			}
-			else
-				std::cout << "Session : ProcessPacket : gameMG가 null입니다." << std::endl;
-		}
-		break;
+		//		_serverPtr->PostSendSession(superSessionIdTemp, false, aa.length(), (char*)aa.c_str());
+		//		_serverPtr->PostSendSession(sessionIdTemp, false, aa.length(), (char*)aa.c_str());
+		//	}
+		//	else
+		//		std::cout << "Session : ProcessPacket : gameMG가 null입니다." << std::endl;
+		//}
+		//break;
 
 		case PACKET_INDEX::REQ_RANK:
 		{
@@ -182,7 +160,7 @@ void LogicProcess::ProcessPacket()
 				resRankPacket.rank[i].winRecord = rank[i].winRecord;
 			}
 			std::string aa = _SerializationJson(PACKET_INDEX::RES_RANK, (const char*)&resRankPacket);
-			PostSend(false, aa.length(), (char*)aa.c_str());
+			_serverPtr->PostSendSession(sessionID, false, aa.length(), (char*)aa.c_str());
 		}
 		break;
 

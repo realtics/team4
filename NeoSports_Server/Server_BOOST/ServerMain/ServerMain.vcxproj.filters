@@ -51,7 +51,7 @@
     <ClCompile Include="LogicProcess.cpp">
       <Filter>LogicClass</Filter>
     </ClCompile>
-    <ClCompile Include="ThreadProtocol.cpp">
+    <ClCompile Include="ThreadHandler.cpp">
       <Filter>Protocol</Filter>
     </ClCompile>
   </ItemGroup>
@@ -83,7 +83,7 @@
     <ClInclude Include="LogicProcess.h">
       <Filter>LogicClass</Filter>
     </ClInclude>
-    <ClInclude Include="ThreadProtocol.h">
+    <ClInclude Include="ThreadHandler.h">
       <Filter>Protocol</Filter>
     </ClInclude>
   </ItemGroup>

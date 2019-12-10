@@ -1,6 +1,7 @@
 #include "ServerSession.h"
 #include "Server.h"
 #include "Json.h"
+#include "ThreadHandler.h"
 
 #include <iostream>
 
@@ -9,8 +10,6 @@ Session::Session(int sessionID, boost::asio::io_context& io_service, Server* ser
 	_sessionId(sessionID),
 	_serverPtr(serverPtr)
 {
-	_packetBufferMark = 0;
-	_gameMG = nullptr; //게임을 시작하면 Server에서 사용하고 있지 않은 게임매니저를 불러와서 적용시킴.
 }
 
 Session::~Session()
@@ -22,85 +21,10 @@ Session::~Session()
 	}
 }
 
-void Session::_PushPacketQueue(const int sessionId, const char* data)
+void Session::Init()
 {
-	PacketData packetData(sessionId, data);
-	packetQue.push(packetData);
+	_packetBufferMark = 0;
 }
-
-void Session::PostReceive()
-{
-	_socket.async_read_some(boost::asio::buffer(_receiveBuffer),
-		boost::bind(&Session::_ReceiveHandle, this,
-			boost::asio::placeholders::error,
-			boost::asio::placeholders::bytes_transferred));
-}
-
-void  Session::_ReceiveHandle(const boost::system::error_code& error, size_t bytesTransferred)
-{
-	if (error)
-	{
-		LockGuard closeLock(_closeLock);
-		if (error == boost::asio::error::eof)
-		{
-			std::cout << "Session : Client Out" << std::endl;
-		}
-		else
-		{
-			std::cout << "Session : error No : " << error.value() << " error Message : " << error.message() <<
-				std::endl;
-		}
-		_serverPtr->CloseSession(_sessionId);
-	}
-	else
-	{
-		/*TDOD : 역직렬화가 끝난후에 TCP Byte처리는 의미가 없어 보인다
-		이미 다 받고 역직렬화를 했기때문?
-		역직렬화 하기전에 TCp Byte처리로 변경 필요*/
-		_DeSerializationJson(_receiveBuffer.data());
-		int packetData = _packetBufferMark + bytesTransferred;
-		int readData = 0;
-		PACKET_HEADER* header = (PACKET_HEADER*)&_packetBuffer[readData];
-
-		while (packetData > 0)
-		{
-			if (packetData < sizeof(PACKET_HEADER))
-			{
-				break;
-			}
-
-			if (header->packetSize <= packetData)
-			{
-				//TODO : Byte처리 수정후 락부분 수정
-				LockGuard pushPakcetQueue(_pushPakcetQueue);
-				_PushPacketQueue(_sessionId, &_packetBuffer[readData]);
-				SetEvent(packetQueueEvents);
-
-				packetData -= header->packetSize;
-				readData += header->packetSize;
-			}
-			else
-				break;
-		}
-
-		if (packetData > 0)
-		{
-			char tempBuffer[MAX_RECEIVE_BUFFER_LEN] = { 0, };
-			memcpy(&tempBuffer[0], &_packetBuffer[readData], packetData);
-			memcpy(&_packetBuffer[0], &tempBuffer[0], packetData);
-		}
-
-		_packetBufferMark = packetData;
-
-		PostReceive();
-	}
-}
-
-void Session::SetGameMG(GameMG* gameMG)
-{
-	_gameMG = gameMG;
-}
-
 
 void Session::PostSend(const bool Immediately, const int size, char* data)
 {
@@ -143,6 +67,79 @@ void Session::_WriteHandle(const boost::system::error_code& error, size_t butesT
 		PostSend(true, header->packetSize, data);
 	}
 }
+void Session::_PushPacketQueue(const int sessionId, const char* data)
+{
+	PacketData packetData(sessionId, data);
+	ThreadHandler::GetInstance()->PushPacketQueue(packetData);
+}
+
+void Session::PostReceive()
+{
+	_socket.async_read_some(boost::asio::buffer(_receiveBuffer),
+		boost::bind(&Session::_ReceiveHandle, this,
+			boost::asio::placeholders::error,
+			boost::asio::placeholders::bytes_transferred));
+}
+
+void  Session::_ReceiveHandle(const boost::system::error_code& error, size_t bytesTransferred)
+{
+	if (error)
+	{
+		if (error == boost::asio::error::eof)
+		{
+			std::cout << "Session : Client Out" << std::endl;
+		}
+		else
+		{
+			std::cout << "Session : error No : " << error.value() << " error Message : " << error.message() <<
+				std::endl;
+		}
+		_serverPtr->CloseSession(_sessionId);
+	}
+	else
+	{
+		/*TDOD : 역직렬화가 끝난후에 TCP Byte처리는 의미가 없어 보인다
+		이미 다 받고 역직렬화를 했기때문?
+		역직렬화 하기전에 TCp Byte처리로 변경 필요*/
+		_DeSerializationJson(_receiveBuffer.data());
+		int packetData = _packetBufferMark + bytesTransferred;
+		int readData = 0;
+		PACKET_HEADER* header = (PACKET_HEADER*)&_packetBuffer[readData];
+
+		while (packetData > 0)
+		{
+			if (packetData < sizeof(PACKET_HEADER))
+			{
+				break;
+			}
+
+			if (header->packetSize <= packetData)
+			{
+				//TODO : Byte처리 수정후 락부분 수정
+				LockGuard pushPakcetQueue(_pushPakcetQueue);
+				_PushPacketQueue(_sessionId, &_packetBuffer[readData]);
+				ThreadHandler::GetInstance()->SetEventsObject();
+
+				packetData -= header->packetSize;
+				readData += header->packetSize;
+			}
+			else
+				break;
+		}
+
+		if (packetData > 0)
+		{
+			char tempBuffer[MAX_RECEIVE_BUFFER_LEN] = { 0, };
+			memcpy(&tempBuffer[0], &_packetBuffer[readData], packetData);
+			memcpy(&_packetBuffer[0], &tempBuffer[0], packetData);
+		}
+
+		_packetBufferMark = packetData;
+
+		PostReceive();
+	}
+}
+
 
 int Session::GetSessionID()
 {
@@ -158,12 +155,6 @@ const char* Session::GetName()
 {
 	return _name.c_str();
 }
-
-void Session::InitGameMG()
-{
-	_gameMG->Init();
-}
-
 
 void Session::_DeSerializationJson(char* jsonStr)
 {
