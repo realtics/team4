@@ -417,11 +417,10 @@ MonoBehaviour:
     type: 3}
   turkeyJellyCharacter: {fileID: 203829877700944717, guid: 690c6258a777cc346acfc313445baf2c,
     type: 3}
-  characterSpeed: 5
-  nameText: {fileID: 1654005279}
-  rankingText: {fileID: 1358636018}
   playerPrefab: {fileID: 8020142122621805146, guid: 2f6797c75b7704646aeaecae172f8117,
     type: 3}
+  nameText: {fileID: 1654005279}
+  rankingText: {fileID: 1358636018}
 --- !u!4 &159492509
 Transform:
   m_ObjectHideFlags: 0

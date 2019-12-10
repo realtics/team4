@@ -331,7 +331,6 @@ namespace RopePullGame
 
 			var playerInst = Instantiate(playerPrefab, playerableObjects.transform);
 			_player = playerPrefab.GetComponent<Player>();
-			//_player.
 
 			SelectInstantCharacter(InventoryManager.Instance.CurrentCharacter.Type);
 

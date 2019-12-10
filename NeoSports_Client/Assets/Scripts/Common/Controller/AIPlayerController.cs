@@ -16,6 +16,10 @@ public class AIPlayerController : PlayerController
 		SetAIWithScene();
 	}
 
+	protected override void Update()//부모와 다르게 동작하기 위해서 빈 함수임에도 정의/
+	{
+		
+	}
 
 	void SetAIWithScene()
 	{

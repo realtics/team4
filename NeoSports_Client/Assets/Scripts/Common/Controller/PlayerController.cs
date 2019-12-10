@@ -28,7 +28,7 @@ public class PlayerController : MonoBehaviour
 		_isSinglePlay = NetworkManager.Instance.IsSinglePlay();
 	}
 
-	void Update() // To Do. Update 방식에서 이벤트 방식으로 추후 리팩토링
+	protected virtual void Update() // To Do. Update 방식에서 이벤트 방식으로 추후 리팩토링
 	{
 		if (_controlChar == null)
 			return;
@@ -97,7 +97,7 @@ public class PlayerController : MonoBehaviour
 
 	}
 
-	protected virtual void ProcessPullRope()
+	protected void ProcessPullRope()
 	{
 		if (RopePullGame.RopePullGameManager.Instance.SceneState != RopePullGame.RopePullGameManager.ESceneState.Play)
 		{
