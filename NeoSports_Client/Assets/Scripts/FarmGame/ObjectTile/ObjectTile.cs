@@ -10,8 +10,9 @@ namespace FarmGame
 
 		public enum ETileType
 		{
+			None,
 			Road,
-			Harvest,
+			Product,
 			Garbage,
 			Decoration
 		}
@@ -21,6 +22,10 @@ namespace FarmGame
 
 		public Point MapPoint {
 			get { return _point; }
+		}
+
+		public ETileType TileType {
+			get { return _tileType; }
 		}
 
 	}

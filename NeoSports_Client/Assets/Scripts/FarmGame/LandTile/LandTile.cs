@@ -45,14 +45,31 @@ namespace FarmGame
 		public void CreateLand(Point point, LandData data)
 		{
 			_point = point;
-
-			Vector3 position = Vector3.zero;
-			position.x = point.X * MapData.TileSize;
-			position.y = point.Y * MapData.TileSize;
-
 			_landData = data;
+			_variationIndex = Random.Range(0, data.variationCount);
 
-			SetSprite();
+			UpdatePosition();
+			UpdateSprite();
+		}
+
+		public void SetSaveData(SaveData data)
+		{
+			_point = data.point;
+			_landData = MapData.Instance.LandDataDic[data.type];
+			_variationIndex = data.variationIndex;
+
+			UpdatePosition();
+			UpdateSprite();
+		}
+
+		public SaveData GetSaveData()
+		{
+			SaveData data;
+			data.point = _point;
+			data.type = _landData.type;
+			data.variationIndex = _variationIndex;
+
+			return data;
 		}
 
 		public void ChangeType(LandData data)
@@ -60,10 +77,20 @@ namespace FarmGame
 			_landData = data;
 			_variationIndex = Random.Range(0, data.variationCount);
 
-			SetSprite();
+			UpdateSprite();
+			MapData.Instance.WriteSaveData(MapData.ESaveType.Land);
 		}
 
-		void SetSprite()
+		void UpdatePosition()
+		{
+			Vector3 position = Vector3.zero;
+			position.x = _point.X * MapData.TileSize;
+			position.y = _point.Y * MapData.TileSize;
+
+			transform.localPosition = position;
+		}
+
+		void UpdateSprite()
 		{
 			string spriteName = _landData.type + "_" + _variationIndex.ToString();
 			Sprite tileSprite = ResourceManager.Instance.GetFarmSprite(spriteName);

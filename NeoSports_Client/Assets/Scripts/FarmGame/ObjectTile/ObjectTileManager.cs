@@ -20,11 +20,6 @@ namespace FarmGame
 			objectTileDic = new Dictionary<Point, ObjectTile>();
 		}
 
-		private void Start()
-		{
-			InitRoadTile();
-		}
-
 		public bool HasObjectTileAtPoint(Point point)
 		{
 			return objectTileDic.ContainsKey(point);
@@ -36,34 +31,49 @@ namespace FarmGame
 
 			if (objectTileDic.ContainsKey(point))
 			{
+				ObjectTile.ETileType tileType = objectTileDic[point].TileType;
+
 				Destroy(objectTileDic[point].gameObject);
 				objectTileDic.Remove(point);
+
+				switch (tileType)
+				{
+					case ObjectTile.ETileType.Road:
+						MapData.Instance.WriteSaveData(MapData.ESaveType.Road);
+						break;
+					case ObjectTile.ETileType.Product:
+						MapData.Instance.WriteSaveData(MapData.ESaveType.Product);
+						break;
+					case ObjectTile.ETileType.Decoration:
+						MapData.Instance.WriteSaveData(MapData.ESaveType.Decoration);
+						break;
+				}
 			}
 		}
 
 		#region Road Tile
-		void InitRoadTile()
+		public void CreateDefaultRoadTiles(int width, int height)
 		{
-			Point pt;
+			Point point;
 
-			for (int i = 0; i < MapData.MapWidth; i++)
+			for (int i = 0; i < width; i++)
 			{
-				pt = new Point(i, 0);
-				CreateRoadTileAtPoint(pt);
-				pt = new Point(i, MapData.MapHeight - 1);
-				CreateRoadTileAtPoint(pt);
+				point = new Point(i, 0);
+				CreateDefaultRoadTileAtPoint(point);
+				point = new Point(i, height - 1);
+				CreateDefaultRoadTileAtPoint(point);
 			}
 
-			for (int i = 0; i < MapData.MapHeight; i++)
+			for (int i = 0; i < height; i++)
 			{
-				pt = new Point(0, i);
-				CreateRoadTileAtPoint(pt);
-				pt = new Point(MapData.MapWidth - 1, i);
-				CreateRoadTileAtPoint(pt);
+				point = new Point(0, i);
+				CreateDefaultRoadTileAtPoint(point);
+				point = new Point(width - 1, i);
+				CreateDefaultRoadTileAtPoint(point);
 			}
 		}
 
-		void CreateRoadTileAtPoint(Point point)
+		void CreateDefaultRoadTileAtPoint(Point point)
 		{
 			if (objectTileDic.ContainsKey(point))
 			{
@@ -79,6 +89,34 @@ namespace FarmGame
 
 			objectTileDic.Add(point, script);
 		}
+
+		public void LoadRoadTiles(RoadTile.SaveData[] datas)
+		{
+			foreach(var item in datas)
+			{
+				GameObject obj = Instantiate(prefRoadTile, objectTileGroup.transform);
+				RoadTile script = obj.GetComponent<RoadTile>();
+				script.SetSaveData(item);
+
+				objectTileDic.Add(item.point, script);
+			}
+		}
+
+		public RoadTile.SaveData[] GetRoadSaveDatas()
+		{
+			List<RoadTile.SaveData> dataList = new List<RoadTile.SaveData>();
+
+			foreach(var item in objectTileDic)
+			{
+				if(item.Value.TileType == ObjectTile.ETileType.Road)
+				{
+					var script = item.Value as RoadTile;
+					dataList.Add(script.GetSaveData());
+				}
+			}
+
+			return dataList.ToArray();
+		}
 		#endregion
 
 
@@ -92,25 +130,45 @@ namespace FarmGame
 				return;
 			}
 
-			GameObject tileObj = Instantiate(prefProductTile, objectTileGroup.transform);
-			ProductTile script = tileObj.GetComponent<ProductTile>();
+			GameObject obj = Instantiate(prefProductTile, objectTileGroup.transform);
+			ProductTile script = obj.GetComponent<ProductTile>();
 			script.PlantProduct(point, type);
 
 			objectTileDic.Add(point, script);
+			MapData.Instance.WriteSaveData(MapData.ESaveType.Product);
 		}
 
-		public void LoadProduct(ProductTile.SaveData data)
+		public void LoadProductTiles(ProductTile.SaveData[] datas)
 		{
-			GameObject tileObj = Instantiate(prefProductTile, objectTileGroup.transform);
-			ProductTile script = tileObj.GetComponent<ProductTile>();
-			script.LoadSaveData(data);
+			foreach(var item in datas)
+			{
+				GameObject obj = Instantiate(prefProductTile, objectTileGroup.transform);
+				ProductTile script = obj.GetComponent<ProductTile>();
+				script.SetSaveData(item);
 
-			objectTileDic.Add(data.point, script);
+				objectTileDic.Add(item.point, script);
+			}
+		}
+
+		public ProductTile.SaveData[] GetProductSaveDatas()
+		{
+			List<ProductTile.SaveData> dataList = new List<ProductTile.SaveData>();
+
+			foreach (var item in objectTileDic)
+			{
+				if (item.Value.TileType == ObjectTile.ETileType.Product)
+				{
+					var script = item.Value as ProductTile;
+					dataList.Add(script.GetSaveData());
+				}
+			}
+
+			return dataList.ToArray();
 		}
 		#endregion
 
-		#region Decoration Tile
 
+		#region Decoration Tile
 		public void DeployDecoration(Point point, int type)
 		{
 			FarmUIManager.Instance.ClosePanel(FarmUIManager.ECategory.Decoration);
@@ -120,19 +178,43 @@ namespace FarmGame
 				return;
 			}
 
-			GameObject tileObj = Instantiate(prefDecorationTile, objectTileGroup.transform);
-			DecorationTile script = tileObj.GetComponent<DecorationTile>();
+			GameObject obj = Instantiate(prefDecorationTile, objectTileGroup.transform);
+			DecorationTile script = obj.GetComponent<DecorationTile>();
 			script.DeployTile(point, type);
 
 			objectTileDic.Add(point, script);
+			MapData.Instance.WriteSaveData(MapData.ESaveType.Decoration);
 		}
 
-		public void LoadDecoration(DecorationTile.SaveData data)
+		public void LoadDecorationTiles(DecorationTile.SaveData[] datas)
 		{
+			foreach(var item in datas)
+			{
+				GameObject obj = Instantiate(prefDecorationTile, objectTileGroup.transform);
+				DecorationTile script = obj.GetComponent<DecorationTile>();
+				script.SetSaveData(item);
 
+				objectTileDic.Add(item.point, script);
+			}
 		}
 
+		public DecorationTile.SaveData[] GetDecorationSaveDatas()
+		{
+			List<DecorationTile.SaveData> dataList = new List<DecorationTile.SaveData>();
+
+			foreach (var item in objectTileDic)
+			{
+				if (item.Value.TileType == ObjectTile.ETileType.Decoration)
+				{
+					var script = item.Value as DecorationTile;
+					dataList.Add(script.GetSaveData());
+				}
+			}
+
+			return dataList.ToArray();
+		}
 		#endregion
+
 
 		bool CheckTileIsExist(Point point)
 		{

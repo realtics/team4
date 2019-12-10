@@ -36,9 +36,10 @@ namespace FarmGame
 
 			UpdatePosition();
 			UpdateSprite();
+			
 		}
 
-		public void LoadSaveData(SaveData data)
+		public void SetSaveData(SaveData data)
 		{
 			_decorationData = MapData.Instance.DecorationDataDic[data.decorationType];
 			_point = data.point;
@@ -47,7 +48,7 @@ namespace FarmGame
 			UpdateSprite();
 		}
 
-		public SaveData MakeSaveData()
+		public SaveData GetSaveData()
 		{
 			SaveData data;
 			data.point = _point;

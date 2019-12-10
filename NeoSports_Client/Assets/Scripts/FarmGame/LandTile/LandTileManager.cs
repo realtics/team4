@@ -19,12 +19,7 @@ namespace FarmGame
 			landTileDic = new Dictionary<Point, LandTile>();
 		}
 
-		private void Start()
-		{
-			CreateLandTiles(MapData.MapWidth, MapData.MapHeight);
-		}
-
-		void CreateLandTiles(int width, int height)
+		public void CreateDefaultLandTiles(int width, int height)
 		{
 			for (int i = 0; i < width; i++)
 			{
@@ -53,18 +48,29 @@ namespace FarmGame
 			landTileDic[point].ChangeType(data);
 		}
 
-		void ResetLands()
+		public void LoadLandTiles(LandTile.SaveData[] datas)
 		{
-			LandData data = MapData.Instance.LandDataDic[LandTile.BadlandType];
-			foreach (KeyValuePair<Point, LandTile> item in landTileDic)
+			foreach(var item in datas)
 			{
-				item.Value.ChangeType(data);
+				GameObject obj = Instantiate(prefLandTile, landTileGroup.transform);
+				LandTile script = obj.GetComponent<LandTile>();
+				script.SetSaveData(item);
+
+				landTileDic.Add(item.point, script);
 			}
 		}
 
-		public LandTile GetLandTile(Point pt)
+		public LandTile.SaveData[] GetLandSaveDatas()
 		{
-			return landTileDic[pt];
+			List<LandTile.SaveData> dataList = new List<LandTile.SaveData>();
+
+			foreach (var item in landTileDic)
+			{
+				var script = item.Value;
+				dataList.Add(script.GetSaveData());
+			}
+
+			return dataList.ToArray();
 		}
 
 	}

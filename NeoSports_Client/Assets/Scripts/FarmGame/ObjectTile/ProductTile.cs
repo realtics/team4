@@ -41,7 +41,7 @@ namespace FarmGame
 
 		private void Awake()
 		{
-			_tileType = ETileType.Harvest;
+			_tileType = ETileType.Product;
 			_harvestTimeTextMesh = harvestTimeTextObject.GetComponent<TextMeshPro>();
 		}
 
@@ -58,11 +58,12 @@ namespace FarmGame
 			UpdatePosition();
 			UpdateSprite();
 			UpdateGrownSpriteActive();
+			MapData.Instance.WriteSaveData(MapData.ESaveType.Product);
 		}
 
-		public void LoadSaveData(SaveData data)
+		public void SetSaveData(SaveData data)
 		{
-			_tileType = ETileType.Harvest;
+			_tileType = ETileType.Product;
 			_productData = MapData.Instance.ProductDataDic[data.productType];
 			_point = data.point;
 
@@ -84,7 +85,7 @@ namespace FarmGame
 			UpdateGrownSpriteActive();
 		}
 
-		public SaveData MakeSaveData()
+		public SaveData GetSaveData()
 		{
 			SaveData data;
 			data.point = _point;

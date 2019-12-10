@@ -49,7 +49,7 @@ namespace FarmGame
 			UpdateSprite();
 		}
 
-		public void LoadSaveData(SaveData data)
+		public void SetSaveData(SaveData data)
 		{
 			_point = data.point;
 			_roadData.material = data.material;
@@ -61,7 +61,7 @@ namespace FarmGame
 			UpdateSprite();
 		}
 
-		public SaveData MakeSaveData()
+		public SaveData GetSaveData()
 		{
 			SaveData data = new SaveData();
 			data.point = _point;
