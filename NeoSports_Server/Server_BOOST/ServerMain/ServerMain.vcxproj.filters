@@ -25,7 +25,7 @@
     <Filter Include="DB">
       <UniqueIdentifier>{56dc2b53-0aed-43f3-bf5b-e7554233dc6c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="LogicClass">
+    <Filter Include="LogicProcess">
       <UniqueIdentifier>{952392b9-0c8f-4d01-9031-3a937ca55e71}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -49,7 +49,7 @@
       <Filter>GameMG</Filter>
     </ClCompile>
     <ClCompile Include="LogicProcess.cpp">
-      <Filter>LogicClass</Filter>
+      <Filter>LogicProcess</Filter>
     </ClCompile>
     <ClCompile Include="ThreadHandler.cpp">
       <Filter>Protocol</Filter>
@@ -81,7 +81,7 @@
       <Filter>GameMG</Filter>
     </ClInclude>
     <ClInclude Include="LogicProcess.h">
-      <Filter>LogicClass</Filter>
+      <Filter>LogicProcess</Filter>
     </ClInclude>
     <ClInclude Include="ThreadHandler.h">
       <Filter>Protocol</Filter>
