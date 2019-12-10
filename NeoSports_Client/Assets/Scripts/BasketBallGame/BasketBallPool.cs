@@ -2,19 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace BasketBallGame
-{
-	public class BasketBallPool : MonoBehaviour
-	{
-		[SerializeField]
-		//BasketBall ballPrefab;
-		BasketBall ball;
+//To Do : 지울 예정
+//namespace BasketBallGame
+//{
+//	public class BasketBallPool : MonoBehaviour
+//	{
+//		[SerializeField]
+//		//BasketBall ballPrefab;
+//		BasketBall ball;
 
-		PoolFactory ballFactory;
+//		PoolFactory ballFactory;
 
-		void Start()
-		{
-			//ballFactory = new PoolFactory(ballPrefab);
-		}
-	}
-}
+//		void Start()
+//		{
+//			//ballFactory = new PoolFactory(ballPrefab);
+//		}
+//	}
+//}

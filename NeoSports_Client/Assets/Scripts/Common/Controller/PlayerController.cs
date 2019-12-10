@@ -3,22 +3,24 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-enum eControlScene
-{
-	NotControl,
-	PullRope,
-	JumpRoPe,
-	WaitRoom,
-	BaksetBall,
-}
+
 public class PlayerController : MonoBehaviour
 {
-	Character _controlChar;
-	eControlScene _controlScene;
-	Player _ownPlayer;
-	bool _isSinglePlay;
+	protected enum eControlScene
+	{
+		NotControl,
+		PullRope,
+		JumpRoPe,
+		WaitRoom,
+		BaksetBall,
+	}
 
-	public void InitController(Character controlCharacter, Player player)
+	protected eControlScene _controlScene;
+	protected Character _controlChar;
+	protected Player _ownPlayer;
+	protected bool _isSinglePlay;
+
+	public virtual void InitController(Character controlCharacter, Player player)
 	{
 		_controlChar = controlCharacter;
 		_ownPlayer = player;
@@ -65,7 +67,7 @@ public class PlayerController : MonoBehaviour
 	}
 
 	#region Input Case
-	void ProcessBasket()
+	protected virtual void ProcessBasket()
 	{
 		if (Input.GetMouseButtonDown(0))
 		{
@@ -85,17 +87,17 @@ public class PlayerController : MonoBehaviour
 		}
 		else if (Input.GetMouseButtonUp(0))
 		{
-			if(_ownPlayer.isClickOn)
-			_ownPlayer.ShootBall();
-		}	
+			if (_ownPlayer.isClickOn)
+				_ownPlayer.ShootBall();
+		}
 	}
 
-	void ProcessJumpRope()
+	protected virtual void ProcessJumpRope()
 	{
-		
-    }
 
-	void ProcessPullRope()
+	}
+
+	protected virtual void ProcessPullRope()
 	{
 		if (RopePullGame.RopePullGameManager.Instance.SceneState != RopePullGame.RopePullGameManager.ESceneState.Play)
 		{
@@ -116,7 +118,7 @@ public class PlayerController : MonoBehaviour
 		}
 	}
 
-	void ProcessWaitRoom()
+	protected virtual void ProcessWaitRoom()
 	{
 		if (Input.GetMouseButtonDown(0))
 			_ownPlayer.DecideTargetPos(Input.mousePosition);
@@ -126,7 +128,7 @@ public class PlayerController : MonoBehaviour
 	#endregion
 
 	#region SetSceneEnumFromString
-	void SetControlScene(string sceneName)
+	protected void SetControlScene(string sceneName)
 	{
 		if (sceneName.CompareTo(SceneName.MenuSceneName) == 0)
 		{

@@ -25,11 +25,12 @@ public class Character : MonoBehaviour
 	}
 
 	public CharacterStatus status;
+	[HideInInspector]
 	public SpriteRenderer spriteRenderer;
 
 	EState _currentState;
 	Animator _animator;
-
+	float _relaseTime = 0.3f;
 	public EState CurrentState
 	{
 		get { return _currentState; }
@@ -90,6 +91,13 @@ public class Character : MonoBehaviour
         _animator.SetBool(AnimationParameter.IsRun, true);
         _currentState = EState.Run;
     }
+
+	public void PullRopeAutoRelease()
+	{
+		_animator.SetBool(AnimationParameter.IsRun, true);
+		_currentState = EState.Run;
+		Invoke(nameof(EndRun), _relaseTime);
+	}
 
     public void EndRun()
     {

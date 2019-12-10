@@ -78,7 +78,7 @@ namespace RopePullGame
 				effect.EndEffect();
 			}
 			_singlePlayer = null;
-			_player = playerPrefab.GetComponent<Player>();
+			
 		}
 
 		void CreateCharacters()
@@ -200,7 +200,7 @@ namespace RopePullGame
 		#endregion
 
 		#region Notify Result
-		public void NotifyWinner(Transform winner)
+		public void NotifyWinner(Transform winner, string triggerSide = " ")
 		{
 			SetWinnerGame();
 			if (!IsSingleGame())
@@ -232,11 +232,11 @@ namespace RopePullGame
 			}
 			else
 			{
-				if ((winner.gameObject.CompareTag("LeftPlayer")))
+				if (triggerSide.CompareTo("Left") == 0)
 				{
 					CommonUIManager.Instance.CreateWinnerNotice(rootCanvas, InventoryManager.Instance.PlayerNickName);
 				}
-				else 
+				else
 				{
 					CommonUIManager.Instance.CreateLooserNotice(rootCanvas, InventoryManager.Instance.PlayerNickName);
 				}
@@ -329,12 +329,14 @@ namespace RopePullGame
 			_singlePlayer =SelectInstantCharacter((CHAR_INDEX)InventoryManager.Instance.CurrentCharacter.Type, _leftPlayer);
 			_characters = playerableObjects.GetComponentsInChildren<Character>();
 
+			var playerInst = Instantiate(playerPrefab, playerableObjects.transform);
+			_player = playerPrefab.GetComponent<Player>();
+			//_player.
+
 			SelectInstantCharacter(InventoryManager.Instance.CurrentCharacter.Type);
-			var a = Instantiate(playerPrefab);
-            a.transform.SetParent(playerableObjects.transform);
 
 			var shader = _singlePlayer.GetComponentInChildren<SpirteOutlineshader>();
-			
+
 			var playerInput = _leftPlayer.gameObject.GetComponent<RopePullInputPlayerPower>();
 			playerInput.OutlineEffect += shader.PlayLineEffect;
 
