@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+	const float AIShootRangeMinX = 2.0f;
+	const float AIShootRangeMaxX = 15.0f;
+	const float AIShootRangeMinY = -15.0f;
+	const float AIShootRangeMaxY = 0.0f;
 	enum ePlayerState
 	{
 		Move,
@@ -113,6 +117,32 @@ public class Player : MonoBehaviour
 		directionArrow.transform.rotation = Quaternion.AngleAxis(angle * Mathf.Rad2Deg, transform.forward);
 		directionArrow.transform.localScale = new Vector3(_powerSize , _powerSize);
 	}
+
+	public void CalculateShootAuto()
+	{
+		Vector2 target = CalculateTargetAuto();
+
+		float angle = Mathf.Atan2(transform.position.y - target.y, transform.position.x - target.x);
+
+		directionArrow.transform.rotation = Quaternion.AngleAxis(angle * Mathf.Rad2Deg, transform.forward);
+
+		float power = Vector2.Distance(new Vector2(target.x, target.y), transform.position);
+
+		_powerSize = power * _character.status.strength;
+		directionArrow.transform.localScale = new Vector3(_powerSize, _powerSize);
+	}
+
+	public Vector2 CalculateTargetAuto()
+	{
+		Vector2 target = new Vector2
+		{
+			x = Random.Range(AIShootRangeMinX, AIShootRangeMaxX),
+			y = Random.Range(AIShootRangeMinY, AIShootRangeMaxY)
+		};
+
+		return target;
+	}
+
 
 	public void ShootBall()
 	{

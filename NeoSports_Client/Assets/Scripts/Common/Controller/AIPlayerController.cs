@@ -57,7 +57,7 @@ public class AIPlayerController : PlayerController
         {
             if (BasketBallGame.BasketBallGameManager.Instance.GameState == BasketBallGame.BasketBallGameManager.EGameState.Playing)
             {
-                _ownPlayer.CalculateShoot();
+                _ownPlayer.CalculateShootAuto();
                 _ownPlayer.ShootBall();
                 
             }
