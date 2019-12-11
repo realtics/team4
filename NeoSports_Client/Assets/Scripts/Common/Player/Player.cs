@@ -93,6 +93,7 @@ public class Player : MonoBehaviour
 		_outlineshader = _instChar.GetComponent<SpirteOutlineshader>();
 
 		mainCam = Camera.main;
+		if(NetworkManager.Instance != null)
 		_isHost = NetworkManager.Instance.isOwnHost;
 	}
 
@@ -171,7 +172,7 @@ public class Player : MonoBehaviour
 
 		BasketBallGame.BasketBall ball = _ballFactory.Get() as BasketBallGame.BasketBall;
 		ball.ShotToTarget(direction);
-		ball.Activate(transform.position, BasketBallGame.EBallOwner.LeftPlayer, "Ball");
+		ball.Activate(transform.position, BasketBallGame.EBallOwner.AI, "AIBall");
 		ball.destroyed += OnBallDestroyed;
 	}
 

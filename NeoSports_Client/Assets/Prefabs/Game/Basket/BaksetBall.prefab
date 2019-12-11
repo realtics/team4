@@ -133,3 +133,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _lowerLimit: -5
+  trailPrefab: {fileID: 4635580633170650454, guid: 348a00c689095904f9f363b390f999e8,
+    type: 3}

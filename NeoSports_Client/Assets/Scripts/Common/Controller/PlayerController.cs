@@ -25,6 +25,7 @@ public class PlayerController : MonoBehaviour
 		_controlChar = controlCharacter;
 		_ownPlayer = player;
 		SetControlScene(SceneManager.GetActiveScene().name);
+		if(NetworkManager.Instance !=null)
 		_isSinglePlay = NetworkManager.Instance.IsSinglePlay();
 	}
 

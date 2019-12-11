@@ -17,17 +17,30 @@ namespace BasketBallGame
 	{
 		
 		public float _lowerLimit;
+		public TrailRenderer trailPrefab;
 		public Action<BasketBall> destroyed;
 
 		Rigidbody2D _rb2d;
 		Vector3 _prevPosition;
+		TrailRenderer _trailEffect;
 		bool _isActivated = false;
+		
 		EBallOwner _ownerMarking;
+
+		void Start()
+		{
+			_trailEffect = null;
+			if (_trailEffect == null)
+			{
+				_trailEffect = Instantiate(trailPrefab, this.transform);
+			}
+		}
 		void OnEnable()
 		{
 			_rb2d = GetComponent<Rigidbody2D>();
 			_prevPosition = transform.position;
 			_ownerMarking = EBallOwner.EMPTY;
+
 		}
 
 		void Update()
@@ -46,11 +59,13 @@ namespace BasketBallGame
 
 		void CheckOutScreenObject()
 		{
-			if (transform.position.y < _lowerLimit)
+			if (transform.position.y <= _lowerLimit)
 			{
+				destroyed(this);
 				if (destroyed != null)
 				{
-					destroyed(this);
+					
+					
 				}
 			}
 		}
