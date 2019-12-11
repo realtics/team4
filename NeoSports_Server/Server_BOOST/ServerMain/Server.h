@@ -39,7 +39,7 @@ public:
 	void PostSendSession(int sessionID, const bool Immediately, const int size, char* data);
 
 	//GameMG
-	void GetGameMG(bool isSuperSession, int sessionID, GAME_INDEX gameIndex);
+	void SetGameMG(bool isSuperSession, int sessionID, GAME_INDEX gameIndex);
 
 private:
 	ThreadHandler* _threadHanlder;

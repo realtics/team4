@@ -22,7 +22,6 @@ void ThreadHandler::PopPacketQueue()
 	_packetQue.pop();
 }
 
-
 void ThreadHandler::PushPacketQueue(PacketData packetData)
 {
 	_packetQue.push(packetData);

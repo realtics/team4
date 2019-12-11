@@ -70,7 +70,6 @@ void Session::_WriteHandle(const boost::system::error_code& error, size_t butesT
 }
 void Session::_PushPacketQueue(const int sessionId, const char* data)
 {
-	std::cout << " aa" << std::endl;
 	PacketData packetData(sessionId, data);
 	_threadHandler->PushPacketQueue(packetData);
 	_threadHandler->SetEventsObject();
@@ -106,7 +105,8 @@ void  Session::_ReceiveHandle(const boost::system::error_code& error, size_t byt
 		역직렬화 하기전에 TCp Byte처리로 변경 필요*/
 		_DeSerializationJson(_receiveBuffer.data());
 		LockGuard pushPakcetQueue(_pushPakcetQueue);
-		_PushPacketQueue(_sessionId, &_packetBuffer[0]); int packetData = _packetBufferMark + bytesTransferred;
+		_PushPacketQueue(_sessionId, &_packetBuffer[0]); 
+		//int packetData = _packetBufferMark + bytesTransferred;
 		//int readData = 0;
 		//PACKET_HEADER* header = (PACKET_HEADER*)&_packetBuffer[readData];
 

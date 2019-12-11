@@ -14,6 +14,21 @@ RoomMG::RoomMG()
 	}
 }
 
+void RoomMG::SetGameMG(int sessionID, GameMG* gameMg)
+{
+	if (gameMg != nullptr)
+	{
+		int roomNum = GetRoomNum(sessionID);
+		_roomVec[roomNum]->gameMG = gameMg;
+	}
+	else if (gameMg == nullptr)
+	{
+		int temp = GetRoomNum(sessionID);
+		_roomVec[temp]->gameMG->Init();
+	}
+}
+
+
 int RoomMG::SearchRoom(GAME_INDEX gameIndex)
 {
 	int i = 0;

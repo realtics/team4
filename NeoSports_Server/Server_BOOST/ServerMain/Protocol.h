@@ -107,6 +107,8 @@ struct PACKET_START_GAME
 
 	char superName[12];
 	char name[12];
+
+	~PACKET_START_GAME() {};
 };
 
 //줄다리기 게임 데이터 패킷

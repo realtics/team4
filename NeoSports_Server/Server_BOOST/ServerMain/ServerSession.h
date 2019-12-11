@@ -11,7 +11,6 @@
 #include "Lock.h"
 
 class Server;
-
 class Session
 {
 public:

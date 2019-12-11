@@ -8,15 +8,15 @@
 #include <typeinfo>
 #include <iostream>
 
-LogicProcess::LogicProcess(Server* serverPtr,ThreadHandler* threadHandler)
-	:_serverPtr(serverPtr),_threadHandler(threadHandler)
+LogicProcess::LogicProcess(Server* serverPtr, ThreadHandler* threadHandler)
+	:_serverPtr(serverPtr), _threadHandler(threadHandler)
 {
-	
+
 }
 
 LogicProcess::~LogicProcess()
 {
-	
+
 }
 
 void LogicProcess::StopProcess()
@@ -45,7 +45,6 @@ void LogicProcess::ProcessPacket()
 		PacketData packetData = _threadHandler->GetPakcetDataQueueFront();
 		const int sessionID = packetData.sessionID;
 		const char* data = packetData.data;
-		_threadHandler->PopPacketQueue();
 
 		PACKET_HEADER* header = (PACKET_HEADER*)data;
 
@@ -65,7 +64,7 @@ void LogicProcess::ProcessPacket()
 
 			if (mrTemp == ROOM_HOST::ENTER_ROOM) //도전자 입장이면 스타트패킷생성후 방장과 도전자에게 전송
 			{
-				_serverPtr->GetGameMG(false, sessionID, packet->gameIndex);
+				_serverPtr->SetGameMG(false, sessionID, packet->gameIndex);
 				int roomNum = _serverPtr->GetRoomNum(sessionID);
 
 				ROOM room;
@@ -86,16 +85,15 @@ void LogicProcess::ProcessPacket()
 				std::string aa = _SerializationJson(PACKET_INDEX::START_GAME, (const char*)startPacket);
 
 				_serverPtr->PostSendSession(superSessionIdTemp, false, aa.length(), (char*)aa.c_str());
-				_serverPtr->PostSendSession(sessionIdTemp,false, aa.length(), (char*)aa.c_str());
+				_serverPtr->PostSendSession(sessionIdTemp, false, aa.length(), (char*)aa.c_str());
 				return;
 			}
-			_serverPtr->GetGameMG(true, sessionID, packet->gameIndex);
+			_serverPtr->SetGameMG(true, sessionID, packet->gameIndex);
 
 			PACKET_ROOM_INFO sendPacket;
 			sendPacket.header.packetIndex = PACKET_INDEX::ROOM_INFO;
 			sendPacket.header.packetSize = sizeof(PACKET_ROOM_INFO);
 			sendPacket.roomInfo = (ROOM_HOST)mrTemp; //받는 클라입장에서 자신이 방장인지 구별
-
 
 			std::string aa = _SerializationJson(PACKET_INDEX::ROOM_INFO, (const char*)&sendPacket);
 			_serverPtr->PostSendSession(sessionID, false, aa.length(), (char*)aa.c_str());
@@ -108,46 +106,46 @@ void LogicProcess::ProcessPacket()
 		}
 		break;
 
-		//case PACKET_INDEX::REQ_RES_ROPE_PULL_GAME:
-		//{
-		//	int roomNum = _serverPtr->GetRoomNum(sessionID);
-		//	ROOM room;
-		//	room.Init();
-		//	room = (*_serverPtr->GetRoomInfo(roomNum));
+		case PACKET_INDEX::REQ_RES_ROPE_PULL_GAME:
+		{
+			int roomNum = _serverPtr->GetRoomNum(sessionID);
+			ROOM room;
+			room.Init();
+			room = (*_serverPtr->GetRoomInfo(roomNum));
 
-		//	//클라에서 x버튼이나 게임중 메뉴의 yes,no버튼 클릭할때도
-		//	//게임로직 패킷이 보내져서 예외처리 해주는중
-		//	if (roomNum == FAIL_ROOM_SERCH ||
-		//		_gameMG->GetCurGame() == GAME_INDEX::EMPTY_GAME)
-		//	{
-		//		std::cout << "(already Init)." << std::endl;
-		//		break;
-		//	}
+			//클라에서 x버튼이나 게임중 메뉴의 yes,no버튼 클릭할때도
+			//게임로직 패킷이 보내져서 예외처리 해주는중
+			if (roomNum == FAIL_ROOM_SERCH ||
+				room.curGame == GAME_INDEX::EMPTY_GAME)
+			{
+				std::cout << "(already Init)." << std::endl;
+				break;
+			}
 
-		//	if (_gameMG != nullptr)
-		//	{
+			if (room.gameMG != nullptr)
+			{
 
-		//		PACKET_REQ_RES_ROPE_PULL_GAME* packet = (PACKET_REQ_RES_ROPE_PULL_GAME*)data;
-		//		_gameMG->SetRopePos(packet->ropePos);
-		//		float ropePos = _gameMG->GetRopePos();
+				PACKET_REQ_RES_ROPE_PULL_GAME* packet = (PACKET_REQ_RES_ROPE_PULL_GAME*)data;
+				room.gameMG->SetRopePos(packet->ropePos);
+				float ropePos = room.gameMG->GetRopePos();
 
-		//		PACKET_REQ_RES_ROPE_PULL_GAME resPacket;;
-		//		resPacket.header.packetIndex = PACKET_INDEX::REQ_RES_ROPE_PULL_GAME;
-		//		resPacket.header.packetSize = sizeof(PACKET_REQ_RES_ROPE_PULL_GAME);
-		//		resPacket.ropePos = ropePos;
+				PACKET_REQ_RES_ROPE_PULL_GAME resPacket;;
+				resPacket.header.packetIndex = PACKET_INDEX::REQ_RES_ROPE_PULL_GAME;
+				resPacket.header.packetSize = sizeof(PACKET_REQ_RES_ROPE_PULL_GAME);
+				resPacket.ropePos = ropePos;
 
-		//		std::string aa = _SerializationJson(PACKET_INDEX::REQ_RES_ROPE_PULL_GAME, (const char*)&resPacket);
+				std::string aa = _SerializationJson(PACKET_INDEX::REQ_RES_ROPE_PULL_GAME, (const char*)&resPacket);
 
-		//		int superSessionIdTemp = room.superSessionID;
-		//		int sessionIdTemp = room.sessionID;
+				int superSessionIdTemp = room.superSessionID;
+				int sessionIdTemp = room.sessionID;
 
-		//		_serverPtr->PostSendSession(superSessionIdTemp, false, aa.length(), (char*)aa.c_str());
-		//		_serverPtr->PostSendSession(sessionIdTemp, false, aa.length(), (char*)aa.c_str());
-		//	}
-		//	else
-		//		std::cout << "Session : ProcessPacket : gameMG가 null입니다." << std::endl;
-		//}
-		//break;
+				_serverPtr->PostSendSession(superSessionIdTemp, false, aa.length(), (char*)aa.c_str());
+				_serverPtr->PostSendSession(sessionIdTemp, false, aa.length(), (char*)aa.c_str());
+			}
+			else
+				std::cout << "Session : ProcessPacket : gameMG가 null입니다." << std::endl;
+		}
+		break;
 
 		case PACKET_INDEX::REQ_RANK:
 		{
@@ -188,10 +186,8 @@ void LogicProcess::ProcessPacket()
 			}
 		}
 		break;*/
-
-		return;
 		}
-
+	_threadHandler->PopPacketQueue();
 	}
 }
 
@@ -199,65 +195,67 @@ std::string LogicProcess::_SerializationJson(PACKET_INDEX packetIndex, const cha
 {
 	std::string sendStr;
 
-
 	switch (packetIndex)
 	{
 	case PACKET_INDEX::ROOM_INFO:
 	{
-		PACKET_ROOM_INFO* roomInfoPacket = new PACKET_ROOM_INFO;
-		memcpy(&roomInfoPacket, &packet, sizeof(PACKET_ROOM_INFO));
+		PACKET_ROOM_INFO roomInfoPacket;
+		memset(&roomInfoPacket, 0, sizeof(PACKET_ROOM_INFO));
+		memcpy(&roomInfoPacket, packet, sizeof(PACKET_ROOM_INFO));
 
-		boost::property_tree::ptree ptSend;
+		boost::property_tree::ptree ptSendRI;
 		boost::property_tree::ptree ptSendHeader;
-		ptSendHeader.put<int>("packetIndex", roomInfoPacket->header.packetIndex);
+		ptSendHeader.put<int>("packetIndex", roomInfoPacket.header.packetIndex);
 		ptSendHeader.put<int>("packetSize", sizeof(PACKET_ROOM_INFO));
-		ptSend.add_child("header", ptSendHeader);
+		ptSendRI.add_child("header", ptSendHeader);
 
-		ptSend.put<int>("roomInfo", (ROOM_HOST)roomInfoPacket->roomInfo);
+		ptSendRI.put<int>("roomInfo", (ROOM_HOST)roomInfoPacket.roomInfo);
 
 		std::string recvTemp;
 		std::ostringstream os(recvTemp);
-		boost::property_tree::write_json(os, ptSend, false);
+		boost::property_tree::write_json(os, ptSendRI, false);
 		sendStr = os.str();
 		return sendStr;
 	}
 
 	case PACKET_INDEX::START_GAME:
 	{
-		PACKET_START_GAME* startGamePacket = new PACKET_START_GAME;
-		memcpy(&startGamePacket, &packet, sizeof(PACKET_START_GAME));
+		PACKET_START_GAME startGamePacket;
+		memset(&startGamePacket, 0, sizeof(PACKET_START_GAME));
+		memcpy(&startGamePacket, packet, sizeof(PACKET_START_GAME));
 
-		boost::property_tree::ptree ptSend;
+		boost::property_tree::ptree ptSendSGP;
 		boost::property_tree::ptree ptSendHeader;
-		ptSendHeader.put<int>("packetIndex", startGamePacket->header.packetIndex);
+		ptSendHeader.put<int>("packetIndex", startGamePacket.header.packetIndex);
 		ptSendHeader.put<int>("packetSize", sizeof(PACKET_START_GAME));
-		ptSend.add_child("header", ptSendHeader);
+		ptSendSGP.add_child("header", ptSendHeader);
 
-		ptSend.put<int>("superCharID", (CHAR_INDEX)startGamePacket->superCharID);
-		ptSend.put<int>("charID", (CHAR_INDEX)startGamePacket->charID);
+		ptSendSGP.put<int>("superCharID", (CHAR_INDEX)startGamePacket.superCharID);
+		ptSendSGP.put<int>("charID", (CHAR_INDEX)startGamePacket.charID);
 
-		ptSend.put<char*>("superName", startGamePacket->superName);
-		ptSend.put<char*>("name", startGamePacket->name);
+		ptSendSGP.put<char*>("superName", startGamePacket.superName);
+		ptSendSGP.put<char*>("name", startGamePacket.name);
 
 		std::string recvTemp;
 		std::ostringstream os(recvTemp);
-		boost::property_tree::write_json(os, ptSend, false);
+		boost::property_tree::write_json(os, ptSendSGP, false);
 		sendStr = os.str();
 		return sendStr;
 	}
 
 	case PACKET_INDEX::REQ_RES_ROPE_PULL_GAME:
 	{
-		PACKET_REQ_RES_ROPE_PULL_GAME* ropePullPacket = new PACKET_REQ_RES_ROPE_PULL_GAME;
-		memcpy(&ropePullPacket, &packet, sizeof(PACKET_REQ_RES_ROPE_PULL_GAME));
+		PACKET_REQ_RES_ROPE_PULL_GAME ropePullPacket;
+		memset(&ropePullPacket, 0, sizeof(PACKET_REQ_RES_ROPE_PULL_GAME));
+		memcpy(&ropePullPacket, packet, sizeof(PACKET_REQ_RES_ROPE_PULL_GAME));
 
 		boost::property_tree::ptree ptSend;
 		boost::property_tree::ptree ptSendHeader;
-		ptSendHeader.put<int>("packetIndex", ropePullPacket->header.packetIndex);
+		ptSendHeader.put<int>("packetIndex", ropePullPacket.header.packetIndex);
 		ptSendHeader.put<int>("packetSize", sizeof(PACKET_START_GAME));
 		ptSend.add_child("header", ptSendHeader);
 
-		ptSend.put<float>("ropePos", ropePullPacket->ropePos);
+		ptSend.put<float>("ropePos", ropePullPacket.ropePos);
 
 		std::string recvTemp;
 		std::ostringstream os(recvTemp);
@@ -265,36 +263,35 @@ std::string LogicProcess::_SerializationJson(PACKET_INDEX packetIndex, const cha
 		sendStr = os.str();
 		return sendStr;
 	}
-	break;
 
 	case PACKET_INDEX::RES_RANK:
 	{
-		PACKET_RES_RANK* resRankPacket = new PACKET_RES_RANK;
-		memcpy(&resRankPacket, &packet, sizeof(PACKET_RES_RANK));
-		boost::property_tree::ptree ptSend;
+		PACKET_RES_RANK resRankPacket;
+		memset(&resRankPacket, 0, sizeof(PACKET_RES_RANK));
+		memcpy(&resRankPacket, packet, sizeof(PACKET_RES_RANK));
+		boost::property_tree::ptree ptSendRR;
 
 		boost::property_tree::ptree ptSendHeader;
-		ptSendHeader.put<int>("packetIndex", resRankPacket->header.packetIndex);
+		ptSendHeader.put<int>("packetIndex", resRankPacket.header.packetIndex);
 		ptSendHeader.put<int>("packetSize", sizeof(PACKET_RES_RANK));
-		ptSend.add_child("header", ptSendHeader);
+		ptSendRR.add_child("header", ptSendHeader);
 
 		boost::property_tree::ptree ptSendRankArr;
 		boost::property_tree::ptree arr[MAX_RANK_COUNT];
 		for (int i = 0; i < MAX_RANK_COUNT; i++)
 		{
-			arr[i].put("name", resRankPacket->rank[i].name);
-			arr[i].put("winRecord", resRankPacket->rank[i].winRecord);
+			arr[i].put("name", resRankPacket.rank[i].name);
+			arr[i].put("winRecord", resRankPacket.rank[i].winRecord);
 			ptSendRankArr.push_back(std::make_pair("", arr[i]));
 		}
-		ptSend.add_child("rank", ptSendRankArr);
+		ptSendRR.add_child("rank", ptSendRankArr);
 
 		std::string recvTemp;
 		std::ostringstream os(recvTemp);
-		boost::property_tree::write_json(os, ptSend, false);
+		boost::property_tree::write_json(os, ptSendRR, false);
 		sendStr = os.str();
 		return sendStr;
 	}
-	break;
 
 	}
 }
