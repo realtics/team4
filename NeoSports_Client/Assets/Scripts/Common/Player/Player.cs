@@ -20,7 +20,7 @@ public class Player : MonoBehaviour
 		Right = 1,
 	};
 
-	public GameObject directionArrow;
+
 
 	[HideInInspector]
 	public BoxCollider2D _playerTrigger;
@@ -31,6 +31,7 @@ public class Player : MonoBehaviour
 	[HideInInspector]
 	public Vector2 targetPos;
 
+	public GameObject directionArrowPrefab;
 	public GameObject characterPrefab;
 	public GameObject controllerPrefab;
 	public BasketBallGame.BasketBall baksetballPrefab;
@@ -38,6 +39,7 @@ public class Player : MonoBehaviour
 
 	GameObject _instChar;
 	GameObject _instController;
+	GameObject _instArrow;
 
 	PlayerController _playerController;
 	Character _character;
@@ -81,14 +83,16 @@ public class Player : MonoBehaviour
 
 	void CachingValues()
 	{
-		_instChar =Instantiate(characterPrefab,this.transform);
+		_instChar = Instantiate(characterPrefab, this.transform);
 		_instController = Instantiate(controllerPrefab, this.transform);
+		_instArrow = Instantiate(directionArrowPrefab, this.transform);
+
 		_character = _instChar.GetComponent<Character>();
 		_playerController = _instController.GetComponent<PlayerController>();
-
-		mainCam = Camera.main;
 		_playerTrigger = GetComponent<BoxCollider2D>();
 		_outlineshader = _instChar.GetComponent<SpirteOutlineshader>();
+
+		mainCam = Camera.main;
 		_isHost = NetworkManager.Instance.isOwnHost;
 	}
 
@@ -102,7 +106,7 @@ public class Player : MonoBehaviour
 
 	public void AimingShoot()
 	{
-		directionArrow.transform.position = new Vector2(transform.position.x + 0.3f, transform.position.y + 0.5f);
+		_instArrow.transform.position = new Vector2(transform.position.x + 0.3f, transform.position.y + 0.5f);
 		isClickOn = true;
 	}
 
@@ -114,8 +118,8 @@ public class Player : MonoBehaviour
 		float power = Vector2.Distance(target, transform.position);
 		_powerSize = power * _character.status.strength;
 
-		directionArrow.transform.rotation = Quaternion.AngleAxis(angle * Mathf.Rad2Deg, transform.forward);
-		directionArrow.transform.localScale = new Vector3(_powerSize , _powerSize);
+		_instArrow.transform.rotation = Quaternion.AngleAxis(angle * Mathf.Rad2Deg, transform.forward);
+		_instArrow.transform.localScale = new Vector3(_powerSize, _powerSize);
 	}
 
 	public void CalculateShootAuto()
@@ -124,12 +128,12 @@ public class Player : MonoBehaviour
 
 		float angle = Mathf.Atan2(transform.position.y - target.y, transform.position.x - target.x);
 
-		directionArrow.transform.rotation = Quaternion.AngleAxis(angle * Mathf.Rad2Deg, transform.forward);
+		_instArrow.transform.rotation = Quaternion.AngleAxis(angle * Mathf.Rad2Deg, transform.forward);
 
 		float power = Vector2.Distance(new Vector2(target.x, target.y), transform.position);
 
 		_powerSize = power * _character.status.strength;
-		directionArrow.transform.localScale = new Vector3(_powerSize, _powerSize);
+		_instArrow.transform.localScale = new Vector3(_powerSize, _powerSize);
 	}
 
 	public Vector2 CalculateTargetAuto()
@@ -146,10 +150,23 @@ public class Player : MonoBehaviour
 
 	public void ShootBall()
 	{
-		directionArrow.transform.localScale = new Vector3(0, 0, 0);
+		_instArrow.transform.localScale = new Vector3(0, 0, 0);
 		isClickOn = false;
 
-		Vector2 direction = directionArrow.transform.rotation * new Vector2(1, 0.0f) * _powerSize;
+		Vector2 direction = _instArrow.transform.rotation * new Vector2(1, 0.0f) * _powerSize;
+		_powerSize = 0.0f;
+
+		BasketBallGame.BasketBall ball = _ballFactory.Get() as BasketBallGame.BasketBall;
+		ball.ShotToTarget(direction);
+		ball.Activate(transform.position, BasketBallGame.EBallOwner.LeftPlayer, "Ball");
+		ball.destroyed += OnBallDestroyed;
+	}
+
+	public void ShootBallAuto()
+	{
+		isClickOn = false;
+
+		Vector2 direction = _instArrow.transform.rotation * new Vector2(1, 0.0f) * _powerSize;
 		_powerSize = 0.0f;
 
 		BasketBallGame.BasketBall ball = _ballFactory.Get() as BasketBallGame.BasketBall;
@@ -208,7 +225,7 @@ public class Player : MonoBehaviour
 	{
 		RopePullGame.RopePullRope.Instance.PullRope((int)_playerLookDirection * _character.status.strength);
 		_character.PullRopeAutoRelease();
-		
+
 		_outlineshader.PlayLineEffect();
 	}
 

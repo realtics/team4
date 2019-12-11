@@ -71,12 +71,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5565dc856c60dd4e948a2fe6829b766, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  directionArrow: {fileID: 476902307763063082, guid: 6e47ea968e1fedf4ea17d4113d2c3fc2,
-    type: 3}
   _playerTrigger: {fileID: 0}
   mainCam: {fileID: 0}
   isClickOn: 0
   targetPos: {x: 0, y: 0}
+  directionArrowPrefab: {fileID: 476902307763063082, guid: 6e47ea968e1fedf4ea17d4113d2c3fc2,
+    type: 3}
   characterPrefab: {fileID: 2673625610814883514, guid: fc6c8e0c201024649a39a173fdf77f6c,
     type: 3}
   controllerPrefab: {fileID: 3490565006251744183, guid: d92b3e4d1c94d7e438315035be5e1524,

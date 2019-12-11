@@ -16,9 +16,6 @@ namespace BasketBallGame
 			GameOver
 		}
 
-		const string LeftPlayerObjectName = "LeftPlayer";
-		const string RightPlayerObjectName = "RightPlayer";
-
 		const float GamePrepareTime = 4.0f;
 		// Prefab Character
 		public GameObject ppiYakCharacter;
@@ -27,9 +24,6 @@ namespace BasketBallGame
 		public GameObject rootCanvas;
 		public EGameState GameState { get; set; }
 		
-		public GameObject _leftPlayer;
-		public GameObject _rightPlayer;
-		public Player testPlayer;
 		void Awake()
 		{
 			instance = this;
@@ -41,13 +35,12 @@ namespace BasketBallGame
 			StartGame();
 			if (InventoryManager.instance != null)
 			{
-				SelectInstantCharacter((CHAR_INDEX)InventoryManager.instance.CurrentCharacter.Type, _leftPlayer.transform);
-				SelectInstantCharacter((CHAR_INDEX)CharacterInfo.EType.PpiYaGi, _rightPlayer.transform);
+				//SelectInstantCharacter((CHAR_INDEX)InventoryManager.instance.CurrentCharacter.Type, null);
+				//SelectInstantCharacter((CHAR_INDEX)CharacterInfo.EType.PpiYaGi, null);
 			}
 			else
 			{
-				SelectInstantCharacter((CHAR_INDEX)CharacterInfo.EType.PpiYaGi, _leftPlayer.transform);
-				SelectInstantCharacter((CHAR_INDEX)CharacterInfo.EType.PpiYaGi, _rightPlayer.transform);
+				//SelectInstantCharacter((CHAR_INDEX)CharacterInfo.EType.PpiYaGi, null);
 			}
 		}
 
