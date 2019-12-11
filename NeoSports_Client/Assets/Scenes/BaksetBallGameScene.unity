@@ -154,9 +154,6 @@ MonoBehaviour:
   turkeyJellyCharacter: {fileID: 203829877700944717, guid: 690c6258a777cc346acfc313445baf2c,
     type: 3}
   rootCanvas: {fileID: 60284383}
-  _leftPlayer: {fileID: 0}
-  _rightPlayer: {fileID: 0}
-  testPlayer: {fileID: 0}
 --- !u!4 &41083355
 Transform:
   m_ObjectHideFlags: 0
@@ -5900,6 +5897,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: AIPlayer
       objectReference: {fileID: 0}
+    - target: {fileID: 7970367100557541916, guid: e2d041e3ed5c31449ad78bbf469314c6,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7970367100557541915, guid: e2d041e3ed5c31449ad78bbf469314c6,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -8056,6 +8058,80 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6892f24bd4d8c0e498a66e19644cfec9, type: 3}
+--- !u!1001 &4635580634390077239
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4635580633170650455, guid: 348a00c689095904f9f363b390f999e8,
+        type: 3}
+      propertyPath: m_Name
+      value: Prefab_ShootTrail
+      objectReference: {fileID: 0}
+    - target: {fileID: 4635580633170650453, guid: 348a00c689095904f9f363b390f999e8,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4635580633170650453, guid: 348a00c689095904f9f363b390f999e8,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4635580633170650453, guid: 348a00c689095904f9f363b390f999e8,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4635580633170650453, guid: 348a00c689095904f9f363b390f999e8,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4635580633170650453, guid: 348a00c689095904f9f363b390f999e8,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4635580633170650453, guid: 348a00c689095904f9f363b390f999e8,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4635580633170650453, guid: 348a00c689095904f9f363b390f999e8,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4635580633170650453, guid: 348a00c689095904f9f363b390f999e8,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 4635580633170650453, guid: 348a00c689095904f9f363b390f999e8,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4635580633170650453, guid: 348a00c689095904f9f363b390f999e8,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4635580633170650453, guid: 348a00c689095904f9f363b390f999e8,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4635580633170650454, guid: 348a00c689095904f9f363b390f999e8,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 348a00c689095904f9f363b390f999e8, type: 3}
 --- !u!1001 &8020142122721937353
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8106,7 +8182,7 @@ PrefabInstance:
     - target: {fileID: 8020142122621805149, guid: 2f6797c75b7704646aeaecae172f8117,
         type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8020142122621805149, guid: 2f6797c75b7704646aeaecae172f8117,
         type: 3}
