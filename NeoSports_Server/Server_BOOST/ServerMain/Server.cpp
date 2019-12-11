@@ -5,9 +5,10 @@
 
 const int MAX_GAME_MG_COUNT = 10;
 
-Server::Server(boost::asio::io_context& io_service) :
+Server::Server(boost::asio::io_context& io_service, ThreadHandler* threadHandle) :
 	_acceptor(io_service
 	, boost::asio::ip::tcp::endpoint(boost::asio::ip::tcp::v4(), PORT_NUMBER))
+	, _threadHanlder(threadHandle)
 {
 	_isAccepting = false;
 
@@ -16,9 +17,6 @@ Server::Server(boost::asio::io_context& io_service) :
 		_gameMGPool.push_back(new GameMG);
 		_gameMGPool[i]->Init();
 	}
-
-	ThreadHandler::GetInstance()->CreateEvents(
-		ThreadHandler::GetInstance()->GetPacketQueueEvents(),false);
 }
 
 Server::~Server()
@@ -49,6 +47,8 @@ void Server::Start()
 	std::cout << "Server Start..." << std::endl;
 
 	DB::GetInstance()->Init();
+
+	_threadHanlder->CreateEvents(false);
 
 	_PostAccept();
 }
@@ -200,7 +200,7 @@ void Server::_AcceptHandle(Session* session, const boost::system::error_code& er
 	{
 		std::cout << "Server : Accept : Entered Client. SessionID : " << session->GetSessionID() << std::endl;
 
-		session->Init();
+		session->Init(_threadHanlder);
 		session->PostReceive();
 
 		_PostAccept();

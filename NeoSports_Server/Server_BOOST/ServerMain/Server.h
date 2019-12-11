@@ -9,13 +9,14 @@
 #include "RoomMG.h"
 #include "ServerSession.h"
 #include "GameMG.h"
+#include "ThreadHandler.h"
 
 #include <boost/thread/thread.hpp>
 
 class Server
 {
 public:
-	Server(boost::asio::io_context& io_service);
+	Server(boost::asio::io_context& io_service, ThreadHandler* threadHandle);
 	~Server();
 
 	void Init(const int maxSessionCount);
@@ -41,6 +42,7 @@ public:
 	void GetGameMG(bool isSuperSession, int sessionID, GAME_INDEX gameIndex);
 
 private:
+	ThreadHandler* _threadHanlder;
 	RoomMG _roomMG;
 	std::vector<GameMG*> _gameMGPool;
 

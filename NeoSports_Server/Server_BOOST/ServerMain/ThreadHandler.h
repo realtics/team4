@@ -22,15 +22,15 @@ struct PacketData
 class ThreadHandler
 {
 public:
-	void CreateEvents(HANDLE eventsHandle,bool resetMode)
+	ThreadHandler() { _packetQueueEvents = 0; };
+	void CreateEvents(bool resetMode)
 	{
-		eventsHandle = CreateEvent(NULL, FALSE, resetMode, NULL);
-		if (eventsHandle == NULL)
+		_packetQueueEvents = CreateEvent(NULL, resetMode, FALSE, NULL);
+		if (_packetQueueEvents == NULL)
 		{
 			cout << "LogicProcess : packetQueueEvents : error " << endl;
 		}
 	}
-
 	PacketData GetPakcetDataQueueFront();
 	HANDLE GetPacketQueueEvents();
 	bool IsEmptyPacketQueue();
@@ -39,20 +39,7 @@ public:
 	void SetEventsObject();
 	void PopPacketQueue();
 	void PushPacketQueue(PacketData packetData);
-
-	static ThreadHandler* GetInstance()
-	{
-		if (_instance == nullptr)
-		{
-			_instance = new ThreadHandler;
-		}
-		return _instance;
-	}
-
 private:
-	ThreadHandler() {};
-	ThreadHandler(const ThreadHandler& other);
-	static ThreadHandler* _instance;
 	
 	HANDLE _packetQueueEvents;
 	queue<PacketData> _packetQue;

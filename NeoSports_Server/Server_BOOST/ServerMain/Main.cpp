@@ -1,5 +1,6 @@
 #include "Server.h"
 #include "LogicProcess.h"
+#include "ThreadHandler.h"
 
 #include <process.h>
 #include <boost/bind.hpp>
@@ -10,8 +11,9 @@ const int MAX_SESSION_COUNT = 100;
 int main()
 {
 	boost::asio::io_context io_service;
+	ThreadHandler threadHandler;
 
-	Server server(io_service);
+	Server server(io_service, &threadHandler);
 	server.Init(MAX_SESSION_COUNT);
 
 	SYSTEM_INFO systemInfo;
@@ -19,8 +21,6 @@ int main()
 
 	server.Start();
 
-	/*JSON파일을 역직렬화 해주는 멀티쓰레드
-	  역직렬화 후 LogicThread로 데이터를 보내서 싱글쓰레드로 처리한다*/
 	boost::thread_group tg;
 	for (int i = 0; i < systemInfo.dwNumberOfProcessors; i++)
 	{
@@ -28,7 +28,7 @@ int main()
 			&io_service));
 	}
 
-	LogicProcess logicProcess(&server);
+	LogicProcess logicProcess(&server,&threadHandler);
 	tg.create_thread(boost::bind(&LogicProcess::ProcessPacket, &logicProcess));
 
 	tg.join_all();

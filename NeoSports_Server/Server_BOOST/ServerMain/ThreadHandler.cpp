@@ -1,8 +1,5 @@
 #include "ThreadHandler.h"
 
-ThreadHandler* ThreadHandler::_instance = nullptr;
-
-
 bool ThreadHandler::IsEmptyPacketQueue()
 {
 	return _packetQue.empty();
@@ -35,4 +32,3 @@ void ThreadHandler::SetEventsObject()
 {
 	SetEvent(_packetQueueEvents);
 }
-

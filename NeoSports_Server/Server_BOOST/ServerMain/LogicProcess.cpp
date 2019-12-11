@@ -8,8 +8,8 @@
 #include <typeinfo>
 #include <iostream>
 
-LogicProcess::LogicProcess(Server* serverPtr)
-	:_serverPtr(serverPtr)
+LogicProcess::LogicProcess(Server* serverPtr,ThreadHandler* threadHandler)
+	:_serverPtr(serverPtr),_threadHandler(threadHandler)
 {
 	
 }
@@ -21,7 +21,7 @@ LogicProcess::~LogicProcess()
 
 void LogicProcess::StopProcess()
 {
-	bool temp = ThreadHandler::GetInstance()->IsEmptyPacketQueue();
+	bool temp = _threadHandler->IsEmptyPacketQueue();
 	while (!temp)
 	{
 		ProcessPacket();
@@ -33,15 +33,19 @@ void LogicProcess::ProcessPacket()
 {
 	while (true)
 	{
-		int retval = WaitForSingleObject(ThreadHandler::GetInstance()->GetPacketQueueEvents(), INFINITE);
+		int retval = WaitForSingleObject(_threadHandler->GetPacketQueueEvents(), INFINITE);
 		if (retval == WAIT_FAILED)
+		{
+			std::cout << "LogicProcess::ProcessPacket() : WAIT_FAILED" << std::endl;
+			std::cout << "error code : " << GetLastError() << std::endl;
 			break;
+		}
 
 		std::cout << "Call Logic Thread" << std::endl;
-		PacketData packetData = ThreadHandler::GetInstance()->GetPakcetDataQueueFront();
+		PacketData packetData = _threadHandler->GetPakcetDataQueueFront();
 		const int sessionID = packetData.sessionID;
 		const char* data = packetData.data;
-		ThreadHandler::GetInstance()->PopPacketQueue();
+		_threadHandler->PopPacketQueue();
 
 		PACKET_HEADER* header = (PACKET_HEADER*)data;
 

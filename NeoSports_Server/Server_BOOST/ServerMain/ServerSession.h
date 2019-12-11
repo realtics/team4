@@ -6,6 +6,7 @@
 #include <boost/asio.hpp>
 #include <boost/thread/thread.hpp>
 
+#include "ThreadHandler.h"
 #include "Protocol.h"
 #include "Lock.h"
 
@@ -17,7 +18,7 @@ public:
 	Session(int sessionID, boost::asio::io_context& io_service, Server* serverPtr);
 	~Session();
 
-	void Init();
+	void Init(ThreadHandler* threadHandle);
 	int GetSessionID();
 	void PostReceive();
 	void SetName(const char* namePtr);
@@ -27,6 +28,8 @@ public:
 	boost::asio::ip::tcp::socket& Socket() { return Session::_socket; }
 
 private:
+	ThreadHandler* _threadHandler;
+
 	Lock _closeLock;
 	Lock _pushPakcetQueue;
 	

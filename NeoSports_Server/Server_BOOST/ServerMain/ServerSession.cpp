@@ -21,9 +21,10 @@ Session::~Session()
 	}
 }
 
-void Session::Init()
+void Session::Init(ThreadHandler* threadHandle)
 {
 	_packetBufferMark = 0;
+	_threadHandler = threadHandle;
 }
 
 void Session::PostSend(const bool Immediately, const int size, char* data)
@@ -69,8 +70,10 @@ void Session::_WriteHandle(const boost::system::error_code& error, size_t butesT
 }
 void Session::_PushPacketQueue(const int sessionId, const char* data)
 {
+	std::cout << " aa" << std::endl;
 	PacketData packetData(sessionId, data);
-	ThreadHandler::GetInstance()->PushPacketQueue(packetData);
+	_threadHandler->PushPacketQueue(packetData);
+	_threadHandler->SetEventsObject();
 }
 
 void Session::PostReceive()
@@ -98,43 +101,43 @@ void  Session::_ReceiveHandle(const boost::system::error_code& error, size_t byt
 	}
 	else
 	{
-		/*TDOD : 역직렬화가 끝난후에 TCP Byte처리는 의미가 없어 보인다
+		/*TODO : 역직렬화가 끝난후에 TCP Byte처리는 의미가 없어 보인다
 		이미 다 받고 역직렬화를 했기때문?
 		역직렬화 하기전에 TCp Byte처리로 변경 필요*/
 		_DeSerializationJson(_receiveBuffer.data());
-		int packetData = _packetBufferMark + bytesTransferred;
-		int readData = 0;
-		PACKET_HEADER* header = (PACKET_HEADER*)&_packetBuffer[readData];
+		LockGuard pushPakcetQueue(_pushPakcetQueue);
+		_PushPacketQueue(_sessionId, &_packetBuffer[0]); int packetData = _packetBufferMark + bytesTransferred;
+		//int readData = 0;
+		//PACKET_HEADER* header = (PACKET_HEADER*)&_packetBuffer[readData];
 
-		while (packetData > 0)
-		{
-			if (packetData < sizeof(PACKET_HEADER))
-			{
-				break;
-			}
+		//while (packetData > 0)
+		//{
+		//	if (packetData < sizeof(PACKET_HEADER))
+		//	{
+		//		break;
+		//	}
 
-			if (header->packetSize <= packetData)
-			{
-				//TODO : Byte처리 수정후 락부분 수정
-				LockGuard pushPakcetQueue(_pushPakcetQueue);
-				_PushPacketQueue(_sessionId, &_packetBuffer[readData]);
-				ThreadHandler::GetInstance()->SetEventsObject();
+		//	if (header->packetSize <= packetData)
+		//	{
+		//		//TODO : Byte처리 수정후 락부분 수정
+		//		/*LockGuard pushPakcetQueue(_pushPakcetQueue);
+		//		_PushPacketQueue(_sessionId, &_packetBuffer[readData]);*/
 
-				packetData -= header->packetSize;
-				readData += header->packetSize;
-			}
-			else
-				break;
-		}
+		//		packetData -= header->packetSize;
+		//		readData += header->packetSize;
+		//	}
+		//	else
+		//		break;
+		//}
 
-		if (packetData > 0)
-		{
-			char tempBuffer[MAX_RECEIVE_BUFFER_LEN] = { 0, };
-			memcpy(&tempBuffer[0], &_packetBuffer[readData], packetData);
-			memcpy(&_packetBuffer[0], &tempBuffer[0], packetData);
-		}
+		//if (packetData > 0)
+		//{
+		//	char tempBuffer[MAX_RECEIVE_BUFFER_LEN] = { 0, };
+		//	memcpy(&tempBuffer[0], &_packetBuffer[readData], packetData);
+		//	memcpy(&_packetBuffer[0], &tempBuffer[0], packetData);
+		//}
 
-		_packetBufferMark = packetData;
+		//_packetBufferMark = packetData;
 
 		PostReceive();
 	}
