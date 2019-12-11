@@ -40,6 +40,10 @@ namespace FarmGame
 		public Point MapPoint {
 			get { return _point; }
 		}
+
+		public string Type {
+			get { return _landData.type; }
+		}
 		#endregion
 
 		public void CreateLand(Point point, LandData data)

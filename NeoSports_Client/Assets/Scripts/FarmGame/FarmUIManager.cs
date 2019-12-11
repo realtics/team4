@@ -1,7 +1,9 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 
@@ -18,86 +20,94 @@ namespace FarmGame
 			Storage
 		}
 
-		ECategory _currentCategory;
+		#region Inspector Linking
+		// Prefab
+		[SerializeField]
+		GameObject prefProductButton;
+		[SerializeField]
+		GameObject prefDecorationButton;
+		[SerializeField]
+		GameObject prefStorageGroup;
 
-		Camera _mainCamera;
-		Farmer _farmer;
+		// Panel
+		[SerializeField]
+		GameObject plantingPanel;
+		[SerializeField]
+		GameObject decorationPanel;
+		[SerializeField]
+		GameObject storagePanel;
+
+		// Func Group
+		[SerializeField]
+		GameObject landTileFuncGroup;
+		[SerializeField]
+		GameObject objectTileFuncGroup;
+		[SerializeField]
+		GameObject harvestButton;
+
+		// Scroll View
+		[SerializeField]
+		GameObject productScrollViewContent;
+		[SerializeField]
+		GameObject decorationScrollViewContent;
+		[SerializeField]
+		GameObject storageScrollViewContent;
+
+		// Product Info
+		[SerializeField]
+		GameObject productInfoGroup;
+		[SerializeField]
+		Image productInfoLessGrownImage;
+		[SerializeField]
+		Image productInfoFullGrownImage;
+		[SerializeField]
+		Text productInfoNameText;
+		[SerializeField]
+		Text productInfoEffectText;
+		#endregion
+
+		public Action harvestButtonPressed;
 
 		Dictionary<int, StorageGroup> _storageGroupDic;
 
-		public GameObject prefProductButton;
-		public GameObject prefDecorationButton;
-		public GameObject prefStorageGroup;
+		#region Property
+		public ECategory CurrentCategory { get; private set; }
+		public bool HarvestButtonActive {
+			set { harvestButton.SetActive(value); }
+		}
+		public bool ProductInfoGroupActive {
+			set { productInfoGroup.SetActive(value); }
+		}
+		#endregion
 
-		public GameObject plantingPanel;
-		public GameObject decorationPanel;
-		public GameObject storagePanel;
-
-		public GameObject landTileFuncGroup;
-		public GameObject objectTileFuncGroup;
-
-		public GameObject productScrollViewContent;
-		public GameObject decorationScrollViewContent;
-		public GameObject storageScrollViewContent;
-
-		public GameObject farmerObject;
-
-		void Awake()
+		private void Awake()
 		{
 			_storageGroupDic = new Dictionary<int, StorageGroup>();
-			_currentCategory = ECategory.Default;
-
-			_mainCamera = Camera.main;
-			_farmer = farmerObject.GetComponent<Farmer>();
+			CurrentCategory = ECategory.Default;
 		}
 
-		void Start()
+		private void Start()
 		{
 			CreatePlantScrollViewItem();
 			CreateDecorationScrollViewItem();
 		}
 
-		void Update()
-		{
-			if (!EventSystem.current.IsPointerOverGameObject() && _currentCategory == ECategory.Default)
-			{
-				if (Input.GetMouseButton(0))
-				{
-					InputClick();
-				}
-			}
-		}
-
-		void InputClick()
-		{
-			Ray ray = _mainCamera.ScreenPointToRay(Input.mousePosition);
-
-			if (Physics.Raycast(ray, out RaycastHit hit, 10.0f))
-			{
-				if (hit.transform.tag == ObjectTag.FarmLand)
-				{
-					LandTile landTile = hit.transform.GetComponent<LandTile>();
-					_farmer.SetTargetPosition(landTile);
-				}
-			}
-		}
-
 		#region Common Func
 		public void EventBackButton()
 		{
-			switch (_currentCategory)
+			switch (CurrentCategory)
 			{
 				case ECategory.Default:
 					ShowExitToMainMenuPopup();
 					break;
 				case ECategory.Plant:
-					ClosePanel(_currentCategory);
+					ClosePanel(CurrentCategory);
 					break;
 				case ECategory.Decoration:
-					ClosePanel(_currentCategory);
+					ClosePanel(CurrentCategory);
 					break;
 				case ECategory.Storage:
-					ClosePanel(_currentCategory);
+					ClosePanel(CurrentCategory);
 					break;
 				default:
 					break;
@@ -109,15 +119,15 @@ namespace FarmGame
 			switch (category)
 			{
 				case ECategory.Plant:
-					_currentCategory = ECategory.Default;
+					CurrentCategory = ECategory.Default;
 					plantingPanel.SetActive(false);
 					break;
 				case ECategory.Decoration:
-					_currentCategory = ECategory.Default;
+					CurrentCategory = ECategory.Default;
 					decorationPanel.SetActive(false);
 					break;
 				case ECategory.Storage:
-					_currentCategory = ECategory.Default;
+					CurrentCategory = ECategory.Default;
 					storagePanel.SetActive(false);
 					break;
 				default:
@@ -158,7 +168,7 @@ namespace FarmGame
 
 		public void EventOpenPlantPanelButton()
 		{
-			_currentCategory = ECategory.Plant;
+			CurrentCategory = ECategory.Plant;
 
 			objectTileFuncGroup.SetActive(false);
 			plantingPanel.SetActive(true);
@@ -166,7 +176,7 @@ namespace FarmGame
 
 		public void EventOpenDecorationPanelButton()
 		{
-			_currentCategory = ECategory.Decoration;
+			CurrentCategory = ECategory.Decoration;
 
 			objectTileFuncGroup.SetActive(false);
 			decorationPanel.SetActive(true);
@@ -237,7 +247,7 @@ namespace FarmGame
 		#region Storage Func
 		public void ButtonEvent_OpenStoragePanel()
 		{
-			_currentCategory = ECategory.Storage;
+			CurrentCategory = ECategory.Storage;
 
 			storagePanel.SetActive(true);
 			UpdateStorageGroupInfo();
@@ -265,6 +275,37 @@ namespace FarmGame
 			}
 		}
 		#endregion
+
+
+		#region Product Info
+		public void SetProductInfoData(ProductData data, float grownSpeed)
+		{
+			productInfoLessGrownImage.sprite = ResourceManager.Instance.GetFarmSprite(data.lessGrownSprite);
+			productInfoFullGrownImage.sprite = ResourceManager.Instance.GetFarmSprite(data.fullGrownSprite);
+
+			productInfoNameText.text = data.name;
+
+			productInfoEffectText.text = "성장 속도 " + (grownSpeed * 100).ToString("+0;-#") + " % ";
+			if(grownSpeed < 0.0f)
+			{
+				productInfoEffectText.color = UnityEngine.Color.red;
+			}
+			else if(grownSpeed > 0.0f)
+			{
+				productInfoEffectText.color = UnityEngine.Color.green;
+			}
+			else
+			{
+				productInfoEffectText.color = UnityEngine.Color.grey;
+			}
+		}
+		#endregion
+
+		public void ButtonEvent_HarvestProduct()
+		{
+			harvestButton.SetActive(false);
+			harvestButtonPressed();
+		}
 
 	}
 

@@ -92,7 +92,7 @@ namespace FarmGame
 
 		public void LoadRoadTiles(RoadTile.SaveData[] datas)
 		{
-			foreach(var item in datas)
+			foreach (var item in datas)
 			{
 				GameObject obj = Instantiate(prefRoadTile, objectTileGroup.transform);
 				RoadTile script = obj.GetComponent<RoadTile>();
@@ -106,9 +106,9 @@ namespace FarmGame
 		{
 			List<RoadTile.SaveData> dataList = new List<RoadTile.SaveData>();
 
-			foreach(var item in objectTileDic)
+			foreach (var item in objectTileDic)
 			{
-				if(item.Value.TileType == ObjectTile.ETileType.Road)
+				if (item.Value.TileType == ObjectTile.ETileType.Road)
 				{
 					var script = item.Value as RoadTile;
 					dataList.Add(script.GetSaveData());
@@ -140,7 +140,7 @@ namespace FarmGame
 
 		public void LoadProductTiles(ProductTile.SaveData[] datas)
 		{
-			foreach(var item in datas)
+			foreach (var item in datas)
 			{
 				GameObject obj = Instantiate(prefProductTile, objectTileGroup.transform);
 				ProductTile script = obj.GetComponent<ProductTile>();
@@ -188,7 +188,7 @@ namespace FarmGame
 
 		public void LoadDecorationTiles(DecorationTile.SaveData[] datas)
 		{
-			foreach(var item in datas)
+			foreach (var item in datas)
 			{
 				GameObject obj = Instantiate(prefDecorationTile, objectTileGroup.transform);
 				DecorationTile script = obj.GetComponent<DecorationTile>();
@@ -215,7 +215,6 @@ namespace FarmGame
 		}
 		#endregion
 
-
 		bool CheckTileIsExist(Point point)
 		{
 			if (objectTileDic.ContainsKey(point))
@@ -231,6 +230,17 @@ namespace FarmGame
 			return false;
 		}
 
+		public ProductTile GetProductTileAtPoint(Point point)
+		{
+			if (objectTileDic.ContainsKey(point))
+			{
+				if (objectTileDic[point].TileType == ObjectTile.ETileType.Product)
+				{
+					return objectTileDic[point] as ProductTile;
+				}
+			}
+			return null;
+		}
 	}
 
 }

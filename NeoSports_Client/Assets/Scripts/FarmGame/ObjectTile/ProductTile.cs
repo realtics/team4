@@ -37,7 +37,11 @@ namespace FarmGame
 		ProductData _productData;
 		DateTime _plantingTime;
 		DateTime _harvestTime;
-		bool _canHarvest;
+
+		public bool CanHarvest { get; private set; }
+		public ProductData ProductData {
+			get { return _productData; }
+		}
 
 		private void Awake()
 		{
@@ -52,13 +56,26 @@ namespace FarmGame
 
 			_plantingTime = DateTime.Now;
 			_harvestTime = _plantingTime.AddMinutes(_productData.grownTime);
-			_canHarvest = false;
+			CanHarvest = false;
 
 			StartCoroutine(UpdateHarvestTime());
 			UpdatePosition();
 			UpdateSprite();
 			UpdateGrownSpriteActive();
-			MapData.Instance.WriteSaveData(MapData.ESaveType.Product);
+		}
+
+		public void HarvestProduct()
+		{
+			if (CanHarvest)
+			{
+				// 수확 데이터 추가
+				_plantingTime = DateTime.Now;
+				_harvestTime = _plantingTime.AddMinutes(_productData.grownTime);
+				CanHarvest = false;
+
+				StartCoroutine(UpdateHarvestTime());
+				UpdateGrownSpriteActive();
+			}
 		}
 
 		public void SetSaveData(SaveData data)
@@ -72,11 +89,11 @@ namespace FarmGame
 
 			if (_harvestTime < DateTime.Now)
 			{
-				_canHarvest = true;
+				CanHarvest = true;
 			}
 			else
 			{
-				_canHarvest = false;
+				CanHarvest = false;
 				StartCoroutine(UpdateHarvestTime());
 			}
 
@@ -122,7 +139,7 @@ namespace FarmGame
 
 		void UpdateGrownSpriteActive()
 		{
-			if (_canHarvest)
+			if (CanHarvest)
 			{
 				fullGrownSpriteObject.SetActive(true);
 				harvestTimeTextObject.SetActive(false);
@@ -140,7 +157,7 @@ namespace FarmGame
 			{
 				if (_harvestTime < DateTime.Now)
 				{
-					_canHarvest = true;
+					CanHarvest = true;
 					UpdateGrownSpriteActive();
 					Debug.Log("Harvest Time!");
 					yield break;
