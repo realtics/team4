@@ -89,5 +89,8 @@
     <ClInclude Include="ThreadHandler.h">
       <Filter>ThreadHandler</Filter>
     </ClInclude>
+    <ClInclude Include="Time.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

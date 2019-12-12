@@ -101,9 +101,16 @@ void  Session::_ReceiveHandle(const boost::system::error_code& error, size_t byt
 	}
 	else
 	{
-		/*TODO : 역직렬화가 끝난후에 TCP Byte처리는 의미가 없어 보인다
-		이미 다 받고 역직렬화를 했기때문?
-		역직렬화 하기전에 TCp Byte처리로 변경 필요*/
+		/*TODO : 최소 JSON길이를 알 수 있는 부분까지 읽은후
+		파싱해서 전체데이터를 파싱한 길이만큼인가 까지 읽어서 사용하기*/
+
+		////받은 JSON의 총길이를 알 수 있는 값이 저장되있는 위치
+		//int jsonStrLen = 45;
+		//while (strlen(_receiveBuffer.data()) < jsonStrLen)
+		//{
+
+		//}
+
 		_DeSerializationJson(_receiveBuffer.data());
 		LockGuard pushPakcetQueue(_pushPakcetQueue); //필요한가?
 		_PushPacketQueue(_sessionId, &_packetBuffer[0]);
@@ -120,7 +127,6 @@ void  Session::_ReceiveHandle(const boost::system::error_code& error, size_t byt
 
 		//	if (header->packetSize <= packetData)
 		//	{
-		//		//TODO : Byte처리 수정후 락부분 수정
 		//		/*LockGuard pushPakcetQueue(_pushPakcetQueue);
 		//		_PushPacketQueue(_sessionId, &_packetBuffer[readData]);*/
 
@@ -223,6 +229,16 @@ void Session::_DeSerializationJson(char* jsonStr)
 		packet.header.packetIndex = headerIndex;
 		packet.header.packetSize = children.get<int>("packetSize");
 		packet.gameIndex = (GAME_INDEX)ptRecv.get<int>("gameIndex");
+
+		memcpy(&_packetBuffer[_packetBufferMark], (char*)&packet, sizeof(packet));
+		break;
+	}
+
+	case PACKET_INDEX::REQ_TIME:
+	{
+		PACKET_REQ_TIME packet;
+		packet.header.packetIndex = headerIndex;
+		packet.header.packetSize = 0; //요청확인만 하면 되므로 사이즈 불필요
 
 		memcpy(&_packetBuffer[_packetBufferMark], (char*)&packet, sizeof(packet));
 		break;

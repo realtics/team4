@@ -4,6 +4,7 @@
 #include "Json.h"
 #include "DB.h"
 #include "ThreadHandler.h"
+#include "Time.h"
 
 #include <typeinfo>
 #include <iostream>
@@ -55,6 +56,23 @@ void LogicProcess::ProcessPacket()
 		}
 		break;
 
+		case PACKET_INDEX::REQ_TIME:
+		{
+			//PACKET_RES_NOW_TIME* packet = (PACKET_RES_NOW_TIME*)data;
+			PACKET_RES_NOW_TIME sendPacket;
+			sendPacket.header.packetIndex = PACKET_INDEX::RES_NOW_TIME;
+			sendPacket.header.packetSize = sizeof(PACKET_RES_NOW_TIME);
+
+			std::string tempTimeStr = currentDateTime();
+			int strLen = strlen(tempTimeStr.data());
+			memcpy(&sendPacket.time, tempTimeStr.data(), sizeof(strLen));
+
+			std::string aa = _SerializationJson(PACKET_INDEX::RES_NOW_TIME, (const char*)&sendPacket);
+			_serverPtr->PostSendSession(sessionID, false, aa.length(), (char*)aa.c_str());
+			break;
+		}
+
+
 		case PACKET_INDEX::REQ_MULTI_ROOM:
 		{
 			PACKET_REQ_MULTI_ROOM* packet = (PACKET_REQ_MULTI_ROOM*)data;
@@ -74,32 +92,30 @@ void LogicProcess::ProcessPacket()
 				int sessionIdTemp = room.sessionID;
 
 				PACKET_START_GAME* startPacket = new PACKET_START_GAME;
-				startPacket->header.packetIndex = PACKET_INDEX::START_GAME;
+				startPacket->header.packetIndex = PACKET_INDEX::RES_START_GAME;
 				startPacket->header.packetSize = sizeof(PACKET_START_GAME);
 				startPacket->superCharID = (CHAR_INDEX)room.charIndex[0]; //방장의 캐릭터
 				startPacket->charID = (CHAR_INDEX)room.charIndex[1]; //도전자의 캐릭터
 				strcpy(startPacket->superName, _serverPtr->GetSuperSessionName(superSessionIdTemp).c_str());
 				strcpy(startPacket->name, _serverPtr->GetSessionName(sessionIdTemp).c_str());
 
-				std::string aa = _SerializationJson(PACKET_INDEX::START_GAME, (const char*)startPacket);
+				std::string aa = _SerializationJson(PACKET_INDEX::RES_START_GAME, (const char*)startPacket);
 
 				_serverPtr->PostSendSession(superSessionIdTemp, false, aa.length(), (char*)aa.c_str());
 				_serverPtr->PostSendSession(sessionIdTemp, false, aa.length(), (char*)aa.c_str());
-
 				break;
 			}
 			else if (mrTemp == ROOM_HOST::MAKE_ROOM)
 			{
+				_serverPtr->SetGameMG(true, sessionID, packet->gameIndex);
 
-			_serverPtr->SetGameMG(true, sessionID, packet->gameIndex);
+				PACKET_ROOM_INFO sendPacket;
+				sendPacket.header.packetIndex = PACKET_INDEX::RES_ROOM_INFO;
+				sendPacket.header.packetSize = sizeof(PACKET_ROOM_INFO);
+				sendPacket.roomInfo = (ROOM_HOST)mrTemp; //받는 클라입장에서 자신이 방장인지 구별
 
-			PACKET_ROOM_INFO sendPacket;
-			sendPacket.header.packetIndex = PACKET_INDEX::ROOM_INFO;
-			sendPacket.header.packetSize = sizeof(PACKET_ROOM_INFO);
-			sendPacket.roomInfo = (ROOM_HOST)mrTemp; //받는 클라입장에서 자신이 방장인지 구별
-
-			std::string aa = _SerializationJson(PACKET_INDEX::ROOM_INFO, (const char*)&sendPacket);
-			_serverPtr->PostSendSession(sessionID, false, aa.length(), (char*)aa.c_str());
+				std::string aa = _SerializationJson(PACKET_INDEX::RES_ROOM_INFO, (const char*)&sendPacket);
+				_serverPtr->PostSendSession(sessionID, false, aa.length(), (char*)aa.c_str());
 			}
 		}
 		break;
@@ -191,7 +207,7 @@ void LogicProcess::ProcessPacket()
 		}
 		break;*/
 		}
-	_threadHandler->PopPacketQueue();
+		_threadHandler->PopPacketQueue();
 	}
 }
 
@@ -201,7 +217,7 @@ std::string LogicProcess::_SerializationJson(PACKET_INDEX packetIndex, const cha
 
 	switch (packetIndex)
 	{
-	case PACKET_INDEX::ROOM_INFO:
+	case PACKET_INDEX::RES_ROOM_INFO:
 	{
 		PACKET_ROOM_INFO roomInfoPacket;
 		memset(&roomInfoPacket, 0, sizeof(PACKET_ROOM_INFO));
@@ -222,7 +238,31 @@ std::string LogicProcess::_SerializationJson(PACKET_INDEX packetIndex, const cha
 		return sendStr;
 	}
 
-	case PACKET_INDEX::START_GAME:
+	case PACKET_INDEX::RES_NOW_TIME:
+	{
+		PACKET_RES_NOW_TIME timePacket;
+		memset(&timePacket, 0, sizeof(PACKET_RES_NOW_TIME));
+		memcpy(&timePacket, packet, sizeof(PACKET_RES_NOW_TIME));
+
+		boost::property_tree::ptree ptSendT;
+		boost::property_tree::ptree ptSendHeader;
+		ptSendHeader.put<int>("packetIndex", timePacket.header.packetIndex);
+		ptSendHeader.put<int>("packetSize", sizeof(PACKET_RES_NOW_TIME));
+		ptSendT.add_child("header", ptSendHeader);
+
+		std::string tempTimeStr = currentDateTime();
+		char tempTimChar[30];
+		memcpy(&tempTimChar, tempTimeStr.data(), sizeof(strlen(tempTimeStr.data())));
+		ptSendT.put<char*>("time", tempTimChar);
+
+		std::string recvTemp;
+		std::ostringstream os(recvTemp);
+		boost::property_tree::write_json(os, ptSendT, false);
+		sendStr = os.str();
+		return sendStr;
+	}
+
+	case PACKET_INDEX::RES_START_GAME:
 	{
 		PACKET_START_GAME startGamePacket;
 		memset(&startGamePacket, 0, sizeof(PACKET_START_GAME));

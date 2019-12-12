@@ -13,7 +13,6 @@ const int FAIL_ROOM_SERCH = -101;
 
 const int MAX_RANK_COUNT = 5;
 
-	
 enum ROOM_HOST
 {
 	EMPTY_ROOM = 11,
@@ -42,9 +41,12 @@ enum PACKET_INDEX
 	REQ_IN = 200,
 
 	REQ_MULTI_ROOM, //클라에서 같이하기 눌렀을때 방을 만들거나 방이있으면 접속함
-	START_GAME,
 	REQ_INIT_ROOM,
-	ROOM_INFO,
+	REQ_TIME,
+
+	RES_START_GAME,
+	RES_ROOM_INFO,
+	RES_NOW_TIME,
 
 	//줄다리기용 패킷
 	REQ_RES_ROPE_PULL_GAME,
@@ -70,6 +72,18 @@ struct PACKET_HEADER
 {
 	int packetIndex;
 	int packetSize;
+};
+
+//데이터없이 요청만하는 패킷
+struct PACKET_REQ_TIME
+{
+	PACKET_HEADER header;
+};
+
+struct PACKET_RES_NOW_TIME
+{
+	PACKET_HEADER header;
+	char time[30];
 };
 
 struct PACKET_REQ_RANK
