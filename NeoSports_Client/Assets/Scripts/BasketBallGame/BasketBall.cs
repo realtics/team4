@@ -17,7 +17,7 @@ namespace BasketBallGame
 	{
 		
 		public float _lowerLimit;
-		public TrailRenderer trailPrefab;
+		//public TrailRenderer trailPrefab;
 		public Action<BasketBall> destroyed;
 
 		Rigidbody2D _rb2d;
@@ -27,20 +27,15 @@ namespace BasketBallGame
 		
 		EBallOwner _ownerMarking;
 
-		void Start()
+		void Awake()
 		{
-			_trailEffect = null;
-			if (_trailEffect == null)
-			{
-				_trailEffect = Instantiate(trailPrefab, this.transform);
-			}
+			_trailEffect = GetComponent<TrailRenderer>();
 		}
 		void OnEnable()
 		{
 			_rb2d = GetComponent<Rigidbody2D>();
 			_prevPosition = transform.position;
 			_ownerMarking = EBallOwner.EMPTY;
-
 		}
 
 		void Update()
@@ -92,6 +87,7 @@ namespace BasketBallGame
 			_isActivated = true;
 			_ownerMarking = ballMark;
 			tag = ballTag;
+			_trailEffect.Clear();
 		}
 	}
 }
