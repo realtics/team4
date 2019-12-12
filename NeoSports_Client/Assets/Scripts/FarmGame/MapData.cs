@@ -31,6 +31,13 @@ namespace FarmGame
 
 		public const float TileSize = 0.48f;
 
+		[SerializeField]
+		GameObject prefPlayer;
+		[SerializeField]
+		GameObject prefPpiYaGi;
+		[SerializeField]
+		GameObject prefTurkeyJelly;
+
 		#region Property
 		public Dictionary<string, LandData> LandDataDic { get; private set; }
 		public Dictionary<int, DecorationData> DecorationDataDic { get; private set; }
@@ -47,6 +54,8 @@ namespace FarmGame
 			ReadLandData();
 			ReadDecorationData();
 			ReadProductData();
+
+			CreateFarmer();
 		}
 
 		private void Start()
@@ -70,7 +79,7 @@ namespace FarmGame
 			string dataStr = ReadJsonDataString(LandDataPath);
 			LandData[] dataArr = JsonConvert.DeserializeObject<LandData[]>(dataStr);
 
-			foreach(LandData child in dataArr)
+			foreach (LandData child in dataArr)
 			{
 				LandDataDic.Add(child.type, child);
 			}
@@ -150,7 +159,7 @@ namespace FarmGame
 			switch (type)
 			{
 				case ESaveType.Land:
-					var  landDataArr = LandTileManager.Instance.GetLandSaveDatas();
+					var landDataArr = LandTileManager.Instance.GetLandSaveDatas();
 					WriteTileSave(landDataArr, LandSaveDataKey);
 					break;
 				case ESaveType.Road:
@@ -189,5 +198,35 @@ namespace FarmGame
 			PlayerPrefs.SetString(key, dataStr);
 		}
 		#endregion
+
+		void CreateFarmer()
+		{
+			GameObject obj = Instantiate(prefPlayer);
+			Player script = obj.GetComponent<Player>();
+			CharacterInfo.EType type = CharacterInfo.EType.PpiYaGi; 
+			if (InventoryManager.Instance != null)
+			{
+				type = InventoryManager.Instance.CurrentCharacter.Type;
+				Debug.Log("Selected Character Call");
+			}
+
+			switch (type)
+			{
+				case CharacterInfo.EType.PpiYaGi:
+					script.characterPrefab = prefPpiYaGi;
+					Debug.Log("Current Character is PpiYaGi");
+					break;
+				case CharacterInfo.EType.TurkeyJelly:
+					script.characterPrefab = prefTurkeyJelly;
+					Debug.Log("Current Character is TurkeyJelly");
+					break;
+				default:
+					script.characterPrefab = prefPpiYaGi;
+					Debug.LogWarning("Unknown Character Type");
+					break;
+			}
+
+			script.FarmStart();
+		}
 	}
 }

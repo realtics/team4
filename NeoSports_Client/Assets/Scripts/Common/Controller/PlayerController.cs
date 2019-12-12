@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.EventSystems;
+using FarmGame;
 
 
 public class PlayerController : MonoBehaviour
@@ -13,6 +15,7 @@ public class PlayerController : MonoBehaviour
 		JumpRoPe,
 		WaitRoom,
 		BaksetBall,
+		Farm
 	}
 
 	protected eControlScene _controlScene;
@@ -62,6 +65,9 @@ public class PlayerController : MonoBehaviour
 					ProcessWaitRoom();
 					break;
 				}
+			case eControlScene.Farm:
+				ProcessFarm();
+				break;
 			default:
 				break;
 		}
@@ -126,6 +132,33 @@ public class PlayerController : MonoBehaviour
 		return;
 	}
 
+	void ProcessFarm()
+	{
+		if (!EventSystem.current.IsPointerOverGameObject() &&
+				FarmUIManager.Instance.CurrentCategory == FarmUIManager.ECategory.Default)
+		{
+			if (Input.GetMouseButton(0))
+			{
+				FarmRayTarget();
+			}
+		}
+
+		_ownPlayer.FarmUpdate();
+	}
+
+	void FarmRayTarget()
+	{
+		Ray ray = _ownPlayer.mainCam.ScreenPointToRay(Input.mousePosition);
+
+		if (Physics.Raycast(ray, out RaycastHit hit, 10.0f))
+		{
+			if (hit.transform.tag == ObjectTag.FarmLand)
+			{
+				LandTile landTile = hit.transform.GetComponent<LandTile>();
+				_ownPlayer.SetTargetPosition(landTile);
+			}
+		}
+	}
 	#endregion
 
 	#region SetSceneEnumFromString
@@ -164,6 +197,11 @@ public class PlayerController : MonoBehaviour
 		else if (sceneName.CompareTo(SceneName.WaitGameSceneName) == 0)
 		{
 			_controlScene = eControlScene.WaitRoom;
+			return;
+		}
+		else if(sceneName.CompareTo(SceneName.FarmSceneName) == 0)
+		{
+			_controlScene = eControlScene.Farm;
 			return;
 		}
 		_controlScene = eControlScene.NotControl;
