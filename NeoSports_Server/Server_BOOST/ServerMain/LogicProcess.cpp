@@ -21,8 +21,7 @@ LogicProcess::~LogicProcess()
 
 void LogicProcess::StopProcess()
 {
-	bool temp = _threadHandler->IsEmptyPacketQueue();
-	while (!temp)
+	while (!_threadHandler->IsEmptyPacketQueue())
 	{
 		ProcessPacket();
 	}
@@ -31,7 +30,7 @@ void LogicProcess::StopProcess()
 
 void LogicProcess::ProcessPacket()
 {
-	while (true)
+	while (true) //TODO : bool변수 만들기
 	{
 		int retval = WaitForSingleObject(_threadHandler->GetPacketQueueEvents(), INFINITE);
 		if (retval == WAIT_FAILED)
@@ -86,8 +85,12 @@ void LogicProcess::ProcessPacket()
 
 				_serverPtr->PostSendSession(superSessionIdTemp, false, aa.length(), (char*)aa.c_str());
 				_serverPtr->PostSendSession(sessionIdTemp, false, aa.length(), (char*)aa.c_str());
-				return;
+
+				break;
 			}
+			else if (mrTemp == ROOM_HOST::MAKE_ROOM)
+			{
+
 			_serverPtr->SetGameMG(true, sessionID, packet->gameIndex);
 
 			PACKET_ROOM_INFO sendPacket;
@@ -97,6 +100,7 @@ void LogicProcess::ProcessPacket()
 
 			std::string aa = _SerializationJson(PACKET_INDEX::ROOM_INFO, (const char*)&sendPacket);
 			_serverPtr->PostSendSession(sessionID, false, aa.length(), (char*)aa.c_str());
+			}
 		}
 		break;
 

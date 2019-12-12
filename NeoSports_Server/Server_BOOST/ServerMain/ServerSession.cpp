@@ -68,6 +68,7 @@ void Session::_WriteHandle(const boost::system::error_code& error, size_t butesT
 		PostSend(true, header->packetSize, data);
 	}
 }
+
 void Session::_PushPacketQueue(const int sessionId, const char* data)
 {
 	PacketData packetData(sessionId, data);
@@ -104,8 +105,8 @@ void  Session::_ReceiveHandle(const boost::system::error_code& error, size_t byt
 		이미 다 받고 역직렬화를 했기때문?
 		역직렬화 하기전에 TCp Byte처리로 변경 필요*/
 		_DeSerializationJson(_receiveBuffer.data());
-		LockGuard pushPakcetQueue(_pushPakcetQueue);
-		_PushPacketQueue(_sessionId, &_packetBuffer[0]); 
+		LockGuard pushPakcetQueue(_pushPakcetQueue); //필요한가?
+		_PushPacketQueue(_sessionId, &_packetBuffer[0]);
 		//int packetData = _packetBufferMark + bytesTransferred;
 		//int readData = 0;
 		//PACKET_HEADER* header = (PACKET_HEADER*)&_packetBuffer[readData];

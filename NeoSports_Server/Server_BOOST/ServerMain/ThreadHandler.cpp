@@ -1,4 +1,5 @@
 #include "ThreadHandler.h"
+#include <iostream>
 
 bool ThreadHandler::IsEmptyPacketQueue()
 {
@@ -29,5 +30,9 @@ void ThreadHandler::PushPacketQueue(PacketData packetData)
 
 void ThreadHandler::SetEventsObject()
 {
-	SetEvent(_packetQueueEvents);
+	int temp = SetEvent(_packetQueueEvents);
+	if (temp == 0)
+	{
+		std::cout << "ThreadHandler::SetEventsObject() error" << std::endl;
+	}
 }

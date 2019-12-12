@@ -28,6 +28,9 @@
     <Filter Include="LogicProcess">
       <UniqueIdentifier>{952392b9-0c8f-4d01-9031-3a937ca55e71}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ThreadHandler">
+      <UniqueIdentifier>{4abb3d75-125d-4d56-bc16-6a46c15cbb78}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ServerSession.cpp">
@@ -52,7 +55,7 @@
       <Filter>LogicProcess</Filter>
     </ClCompile>
     <ClCompile Include="ThreadHandler.cpp">
-      <Filter>Protocol</Filter>
+      <Filter>ThreadHandler</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -84,7 +87,7 @@
       <Filter>LogicProcess</Filter>
     </ClInclude>
     <ClInclude Include="ThreadHandler.h">
-      <Filter>Protocol</Filter>
+      <Filter>ThreadHandler</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
