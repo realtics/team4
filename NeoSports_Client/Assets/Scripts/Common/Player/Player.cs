@@ -44,17 +44,20 @@ public class Player : MonoBehaviour
 	public GameObject directionArrowPrefab;
 	public GameObject characterPrefab;
 	public GameObject controllerPrefab;
+    public GameObject equipmentPrefab;
 	public BasketBallGame.BasketBall baksetballPrefab;
 
 
 	GameObject _instChar;
 	GameObject _instController;
 	GameObject _instArrow;
+    GameObject _instEquipment;
 
-	PlayerController _playerController;
-	Character _character;
+    PlayerController _playerController;
+    PlayerEquipment _playerEquipment;
+    Character _character;
 
-	float _powerSize;
+    float _powerSize;
 	bool _isHost;
 	SpirteOutlineshader _outlineshader;
 
@@ -108,14 +111,17 @@ public class Player : MonoBehaviour
 		_instChar = Instantiate(characterPrefab, this.transform);
 		_instController = Instantiate(controllerPrefab, this.transform);
 		_instArrow = Instantiate(directionArrowPrefab, this.transform);
+        _instEquipment = Instantiate(equipmentPrefab, this.transform);
 
-		_character = _instChar.GetComponent<Character>();
+        _character = _instChar.GetComponent<Character>();
 		_playerController = _instController.GetComponent<PlayerController>();
 		_playerTrigger = GetComponent<BoxCollider2D>();
 		_outlineshader = _instChar.GetComponent<SpirteOutlineshader>();
 
-		
-	}
+        _playerEquipment = _instEquipment.GetComponent<PlayerEquipment>();
+
+
+    }
 
 	#region public Player Function -Controller Use
 	public void InitPlayer(Character character, PlayerController controller)
@@ -123,7 +129,8 @@ public class Player : MonoBehaviour
 		_character = character;
 		_playerController = controller;
 		_playerController.InitController(_character, this);
-	}
+        _playerEquipment.InitializeEquipItem(this);
+    }
 
 	public void AimingShoot()
 	{

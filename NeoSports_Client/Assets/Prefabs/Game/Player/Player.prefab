@@ -81,6 +81,8 @@ MonoBehaviour:
     type: 3}
   controllerPrefab: {fileID: 3490565006251744183, guid: d92b3e4d1c94d7e438315035be5e1524,
     type: 3}
+  equipmentPrefab: {fileID: 7719530836752605921, guid: abda8962259c4ac49bcae6517cf55588,
+    type: 3}
   baksetballPrefab: {fileID: 5265682357180277926, guid: 5651e0ddcdee50b498109febecc4b182,
     type: 3}
 --- !u!50 &-8314592922832011442
