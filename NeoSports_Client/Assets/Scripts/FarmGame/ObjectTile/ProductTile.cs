@@ -75,6 +75,7 @@ namespace FarmGame
 
 				StartCoroutine(UpdateHarvestTime());
 				UpdateGrownSpriteActive();
+				MapData.Instance.WriteSaveData(MapData.ESaveType.Product);
 			}
 		}
 

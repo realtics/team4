@@ -44,6 +44,16 @@ namespace FarmGame
 		GameObject objectTileFuncGroup;
 		[SerializeField]
 		GameObject harvestButton;
+		
+		// Object Tile Func Group
+		[SerializeField]
+		Button plantProductButton;
+		[SerializeField]
+		Button deployDecorationButton;
+		[SerializeField]
+		Button removeTileButton;
+		[SerializeField]
+		Text productPlantEffectText;
 
 		// Scroll View
 		[SerializeField]
@@ -241,6 +251,32 @@ namespace FarmGame
 
 			LandTileManager.Instance.SetLandTileType(cursurPoint, LandTile.CultivateType);
 		}
+
+		public void UpdatePlantProductEffectText(float grownSpeed)
+		{
+			productPlantEffectText.text = "성장 속도 " + (grownSpeed * 100).ToString("+0;-#") + " % ";
+
+			if (grownSpeed < 0.0f)
+			{
+				productPlantEffectText.color = UnityEngine.Color.red;
+			}
+			else if (grownSpeed > 0.0f)
+			{
+				productPlantEffectText.color = UnityEngine.Color.green;
+			}
+			else
+			{
+				productPlantEffectText.color = new UnityEngine.Color(0.7f, 0.7f, 0.7f);
+			}
+		}
+
+		public void ObjectTileFuncButtonInteract(bool canDeployTile)
+		{
+			plantProductButton.interactable = canDeployTile;
+			deployDecorationButton.interactable = canDeployTile;
+			removeTileButton.interactable = !canDeployTile;
+			productPlantEffectText.gameObject.SetActive(canDeployTile);
+		}
 		#endregion
 
 
@@ -296,7 +332,7 @@ namespace FarmGame
 			}
 			else
 			{
-				productInfoEffectText.color = UnityEngine.Color.grey;
+				productInfoEffectText.color = new UnityEngine.Color(0.3f, 0.3f, 0.3f);
 			}
 		}
 		#endregion

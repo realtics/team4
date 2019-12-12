@@ -349,6 +349,22 @@ public class Player : MonoBehaviour
 
 		_currentProductTile = ObjectTileManager.Instance.GetProductTileAtPoint(currentPoint);
 
+		float grownSpeed = 0.0f;
+		switch (_currentLandTile.Type)
+		{
+			case LandTile.BadlandType:
+				grownSpeed = -0.5f;
+				break;
+			case LandTile.GrassType:
+				grownSpeed = 0.0f;
+				break;
+			case LandTile.CultivateType:
+				grownSpeed = 0.5f;
+				break;
+			default:
+				Debug.LogWarning("Unknown Land Type!");
+				break;
+		}
 		if (_currentProductTile != null)
 		{
 			// 수확 기능
@@ -363,25 +379,15 @@ public class Player : MonoBehaviour
 
 			// 상단 
 			FarmUIManager.Instance.ProductInfoGroupActive = true;
-
-			float grownSpeed = 0.0f;
-			switch (_currentLandTile.Type)
-			{
-				case LandTile.BadlandType:
-					grownSpeed = -0.5f;
-					break;
-				case LandTile.GrassType:
-					grownSpeed = 0.0f;
-					break;
-				case LandTile.CultivateType:
-					grownSpeed = 0.5f;
-					break;
-				default:
-					Debug.LogWarning("Unknown Land Type!");
-					break;
-			}
-
 			FarmUIManager.Instance.SetProductInfoData(_currentProductTile.ProductData, grownSpeed);
+
+			// 버튼 비활성화
+			FarmUIManager.Instance.ObjectTileFuncButtonInteract(false);
+		}
+		else
+		{
+			FarmUIManager.Instance.UpdatePlantProductEffectText(grownSpeed);
+			FarmUIManager.Instance.ObjectTileFuncButtonInteract(true);
 		}
 
 	}
