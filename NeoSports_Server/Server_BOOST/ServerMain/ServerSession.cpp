@@ -184,6 +184,7 @@ void Session::_DeSerializationJson(char* jsonStr)
 		PACKET_REQ_IN packet;
 		packet.packetIndex = headerIndex;
 		packet.packetSize = children.get<int>("packetSize");
+		packet.clientID = ptRecv.get<int>("clientID");
 		strcpy(packet.name, ptRecv.get<std::string>("name").c_str());
 
 		memcpy(&_packetBuffer[_packetBufferMark], (char*)&packet, sizeof(packet));

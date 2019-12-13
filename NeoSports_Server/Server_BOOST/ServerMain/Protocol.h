@@ -44,6 +44,7 @@ enum PACKET_INDEX
 	REQ_INIT_ROOM,
 	REQ_TIME,
 
+	RES_IN, //클라에게 clientID를 할당하는 패킷
 	RES_START_GAME,
 	RES_ROOM_INFO,
 	RES_NOW_TIME,
@@ -56,7 +57,6 @@ enum PACKET_INDEX
 	RES_RANK,
 
 	//클라와 통신하고 있지 않은 인덱스들 (채팅용)
-	RES_IN,
 	REQ_CHAT,
 	NOTICE_CHAT,
 	//
@@ -64,7 +64,7 @@ enum PACKET_INDEX
 
 struct RANK
 {
-	char name[12];
+	int clientID;
 	int winRecord;
 };
 
@@ -74,7 +74,18 @@ struct PACKET_HEADER
 	int packetSize;
 };
 
-//데이터없이 요청만하는 패킷
+struct PACKET_RES_IN : public PACKET_HEADER
+{
+	int clientID;
+
+	void Init()
+	{
+		packetIndex = PACKET_INDEX::RES_IN;
+		packetSize = sizeof(PACKET_RES_IN);
+		clientID = 0;
+	}
+};
+
 struct PACKET_REQ_TIME
 {
 	PACKET_HEADER header;
@@ -142,6 +153,7 @@ struct PACKET_ROOM_INFO
 //처음 클라가 들어왔을때 그 클라의 이름을 받음
 struct PACKET_REQ_IN : public PACKET_HEADER
 {
+	int clientID;
 	char name[MAX_NAME_LEN];
 
 	void Init()
@@ -152,18 +164,7 @@ struct PACKET_REQ_IN : public PACKET_HEADER
 	}
 };
 
-//클라에게 접속성공인지 알려줌
-//struct PACKET_RES_IN : public PACKET_HEADER
-//{
-//	bool isSuccess;
-//
-//	void Init()
-//	{
-//		packetIndex = PACKET_INDEX::RES_IN;
-//		packetSize = sizeof(PACKET_RES_IN);
-//		isSuccess = false;
-//	}
-//};
+
 //
 ////접속되있는 클라의 메시지를 받음
 //struct PACKET_REQ_CHAT : public PACKET_HEADER

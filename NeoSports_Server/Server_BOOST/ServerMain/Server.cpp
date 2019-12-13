@@ -134,11 +134,25 @@ void Server::SetGameMG(bool isSuperSession, int  sessionID, GAME_INDEX gameIndex
 
 void Server::ProcessReqInPacket(const int sessionID, const char* data)
 {
+	//TODO : LogicProcess로 빼서 처리하기
 	PACKET_REQ_IN* packet = (PACKET_REQ_IN*)data;
 	_sessionVec[sessionID]->SetName(packet->name);
 
 	std::cout << "Server : Client accept. Name : " << _sessionVec[sessionID]->GetName() << std::endl;
-	DB::GetInstance()->Insert(_sessionVec[sessionID]->GetName());
+	int temp = DB::GetInstance()->InsertUser(packet->clientID,sessionID);
+
+	//1 == 새로운 클라의 접속
+	if (temp != -1)
+	{
+		std::cout << "clientID : " << temp << std::endl;
+	}
+
+	//2 == clientID의 정보가 이미있으므로 sessionID의 업데이트가 되었다고 알림
+	else if (temp == 0)
+	{
+		std::cout << "clientID : " << temp << std::endl;
+		std::cout << "Server::ProcessReqInPacket session Update" << std::endl;
+	}
 }
 
 void Server::ProcessInitRoomPacket(const int sessionID, const char* data)
@@ -154,7 +168,8 @@ void Server::ProcessInitRoomPacket(const int sessionID, const char* data)
 		std::cout << roomNum << " Room " << packet->gameIndex << " End Game. Winner : "
 			<< sessionID << std::endl;
 		int addWinRecord = 1;
-		DB::GetInstance()->Update(GetSessionName(sessionID), packet->gameIndex, addWinRecord);
+		int clientID = DB::GetInstance()->GetClientID(sessionID);
+		DB::GetInstance()->UpdateWinRecord(clientID, packet->gameIndex, addWinRecord);
 	}
 	int superSessionID = _roomMG.GetSuperSessonID(roomNum);
 

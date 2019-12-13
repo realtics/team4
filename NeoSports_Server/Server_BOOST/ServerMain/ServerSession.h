@@ -41,6 +41,7 @@ private:
 	std::deque<char*> _sendDataDeq;
 
 	std::string _name;
+	//현재 끼고있는 아이템 구조체 추가
 
 	Server* _serverPtr;
 

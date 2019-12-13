@@ -37,29 +37,50 @@ void DB::Init()
 
 void DB::SelectQuery()
 {
-	
+
 }
 
-void DB::Insert(std::string name)
+int DB::InsertUser(int clientID, int sessionID)
 {
-	if (name != "")
+	//최초로 접속한 클라이므로 클라ID를 넘겨줘야함
+	if (clientID == 0)
 	{
-		std::string query = "INSERT INTO game(name) values('";
+		if (mysql_query(&_conn, "SELECT * FROM user") != 0)
+		{
+			std::cout << "DB : Update mysql_query error" << std::endl;
+			return -1;
+		}
+		_pSqlRes = mysql_store_result(&_conn);
+		int maxCount = mysql_num_rows(_pSqlRes);
+		clientID = maxCount++;
+
+		std::string name = boost::lexical_cast<std::string>(clientID);
+		std::string query = "INSERT INTO user(clientID,sessionID) values('";
 		query += name;
+		query += "','";
+		query += boost::lexical_cast<std::string>(sessionID);
 		query += "')";
 		if (mysql_query(&_conn, query.c_str()) != 0)
 		{
-			std::cout << "DB : clientName is already exists.(NotNull)" << std::endl;
-			return;
+			std::cout << "DB : INSERT ClientID error" << std::endl;
+			return -1;
 		}
-		std::cout << "DB : INSERT ClientName" << std::endl;
+		std::cout << "DB : INSERT ClientID" << std::endl;
+		return clientID;
+	}
+
+	//clientID가 이미 있는 클라이므로 DB의 USER 테이블에서 sessionID만 바꾼다
+	else if (clientID != 0)
+	{
+		UpdataUserTable(clientID, sessionID);
+		return 0;
 	}
 }
 
-void DB::Delete(std::string name)
+void DB::DeleteUser(int clientID)
 {
-	std::string query = "DELETE FROM game WHERE name =";
-	query += name;
+	std::string query = "DELETE FROM user WHERE clientID =";
+	query += boost::lexical_cast<std::string>(clientID);
 	if (mysql_query(&_conn, query.c_str()) != 0)
 	{
 		std::cout << "DB : DELETE error" << std::endl;
@@ -68,38 +89,89 @@ void DB::Delete(std::string name)
 	std::cout << "DB : DELETE ROW" << std::endl;
 }
 
-
-void DB::Update(std::string name, GAME_INDEX gameIndex, int addScore)
+void DB::UpdataUserTable(int clientID, int sessionID)
 {
-	LockGuard upDateLockGuard(_upDateLock);
+	LockGuard upDateLockGuard(_userUpDateLock);
 
-	if (mysql_query(&_conn, "SELECT * FROM game") != 0)
+	if (mysql_query(&_conn, "SELECT * FROM user") != 0)
 	{
 		std::cout << "DB : Update mysql_query error" << std::endl;
 		return;
 	}
 	_pSqlRes = mysql_store_result(&_conn);
-	int numCol = mysql_num_fields(_pSqlRes); //필드수 출력
 
-	switch (gameIndex)
+	while ((_sqlRow = mysql_fetch_row(_pSqlRes)) != nullptr)
 	{
-	case EMPTY_GAME:
-		break;
-
-	case ROPE_PULL:
-	{
-		while ((_sqlRow = mysql_fetch_row(_pSqlRes)) != nullptr)
+		//_sqlRow인덱스 0 = DB의 칼럼(clientID)
+		if (_sqlRow[0] == boost::lexical_cast<std::string>(clientID))
 		{
-			//_sqlRow인덱스 0 = DB의 칼럼(name), 2 = DB의 칼럼(winRecord)
-			if (_sqlRow[0] == name)
+			std::string aa = "UPDATE user SET sessionID = ";
+			aa += boost::lexical_cast<std::string>(sessionID);
+			std::string tempStr = " WHERE clientID = ";
+			aa += tempStr;
+			aa += boost::lexical_cast<std::string>(clientID);
+
+			if (mysql_query(&_conn, aa.c_str()) != 0)
+			{
+				std::cout << "DB : Update mysql_query error" << std::endl;
+				return;
+			}
+		}
+	}
+
+	std::cout << "DB : UPDATE sessionID of clientID" << std::endl;
+}
+
+int DB::GetClientID(int sessionID)
+{
+	if (mysql_query(&_conn, "SELECT * FROM user") != 0)
+	{
+		std::cout << "DB : Update mysql_query error" << std::endl;
+		return -1;
+	}
+	_pSqlRes = mysql_store_result(&_conn);
+
+	while ((_sqlRow = mysql_fetch_row(_pSqlRes)) != nullptr)
+	{
+		//_sqlRow인덱스 1 = DB의 칼럼(sessionID)
+		if (_sqlRow[1] == boost::lexical_cast<std::string>(sessionID))
+		{
+			int temp = boost::lexical_cast<int>(_sqlRow[0]);
+			return temp;
+		}
+	}
+}
+
+void DB::UpdateWinRecord(int clientID, GAME_INDEX gameIndex, int addScore)
+{
+	LockGuard upDateLockGuard(_upDateLock);
+
+	if (mysql_query(&_conn, "SELECT * FROM gameInfo") != 0)
+	{
+		std::cout << "DB : Update mysql_query error" << std::endl;
+		return;
+	}
+	_pSqlRes = mysql_store_result(&_conn);
+
+	while ((_sqlRow = mysql_fetch_row(_pSqlRes)) != nullptr)
+	{
+		//_sqlRow인덱스 0 = DB의 칼럼(clientID), 2 = DB의 칼럼(winRecord)
+		// 1 = gameIndex
+		if (_sqlRow[0] == boost::lexical_cast<std::string>(clientID))
+		{
+			if (_sqlRow[1] == boost::lexical_cast<std::string>(gameIndex))
 			{
 				int temp = boost::lexical_cast<int>(_sqlRow[2]);
 				temp += addScore;
-				std::string aa = "UPDATE game SET winRecord = '";
+				std::string aa = "UPDATE gameInfo SET winRecord = '";
 				aa += boost::lexical_cast<std::string>(temp);
-				std::string tempStr = "' WHERE name LIKE '";
+				std::string tempStr = "' WHERE clientID = '";
 				aa += tempStr;
-				aa += name;
+				aa += boost::lexical_cast<std::string>(clientID);
+				aa += "' AND ";
+				aa += _sqlRow[1];
+				aa += " = '";
+				aa += boost::lexical_cast<std::string>(gameIndex);
 				aa += "'";
 
 				if (mysql_query(&_conn, aa.c_str()) != 0)
@@ -109,14 +181,6 @@ void DB::Update(std::string name, GAME_INDEX gameIndex, int addScore)
 				}
 			}
 		}
-		break;
-	}
-	case ROPE_JUMP:
-		break;
-	case BASKET_BALL:
-		break;
-	default:
-		break;
 	}
 }
 
@@ -124,7 +188,7 @@ void DB::Rank(GAME_INDEX gameIndex, RANK rank[])
 {
 	std::string rankStr;
 
-	rankStr = orderByRank("game", gameIndex, "winRecord");
+	rankStr = orderByRank("gameInfo", gameIndex, "winRecord");
 
 	if (mysql_query(&_conn, rankStr.c_str()) != 0)
 	{
@@ -140,8 +204,8 @@ void DB::Rank(GAME_INDEX gameIndex, RANK rank[])
 	{
 		for (int i = 0; i < numCol; i++)
 		{
-			strcpy(rank[rowNum].name, _sqlRow[0]);
-			rank[rowNum].winRecord = boost::lexical_cast<int>(_sqlRow[1]);
+			rank[rowNum].clientID = boost::lexical_cast<int>(_sqlRow[0]);
+			rank[rowNum].winRecord = boost::lexical_cast<int>(_sqlRow[2]);
 		}
 		rowNum++;
 	}
@@ -149,7 +213,7 @@ void DB::Rank(GAME_INDEX gameIndex, RANK rank[])
 
 std::string DB::orderByRank(std::string tableName, GAME_INDEX gameIndex, std::string column)
 {
-	std::string orderByStr = "SELECT name, winRecord FROM ";
+	std::string orderByStr = "SELECT clientID, winRecord FROM ";
 	orderByStr += tableName;
 	orderByStr += " WHERE gameIndex = ";
 	orderByStr += boost::lexical_cast<std::string>(gameIndex);

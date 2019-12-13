@@ -40,8 +40,8 @@ void LogicProcess::ProcessPacket()
 			std::cout << "error code : " << GetLastError() << std::endl;
 			break;
 		}
-
-		std::cout << "Call Logic Thread" << std::endl;
+		
+		//std::cout << "Call Logic Thread" << std::endl;
 		PacketData packetData = _threadHandler->GetPakcetDataQueueFront();
 		const int sessionID = packetData.sessionID;
 		const char* data = packetData.data;
@@ -52,7 +52,16 @@ void LogicProcess::ProcessPacket()
 		{
 		case PACKET_INDEX::REQ_IN:
 		{
+			//accept Ã³¸®
 			_serverPtr->ProcessReqInPacket(sessionID, data);
+
+			PACKET_RES_IN sendPacket;
+			sendPacket.Init();
+			int temp = DB::GetInstance()->GetClientID(sessionID);
+			sendPacket.clientID = temp;
+
+			std::string aa = _SerializationJson(PACKET_INDEX::RES_IN, (const char*)&sendPacket);
+			_serverPtr->PostSendSession(sessionID, false, aa.length(), (char*)aa.c_str());
 		}
 		break;
 
@@ -178,7 +187,7 @@ void LogicProcess::ProcessPacket()
 			resRankPacket.header.packetSize = sizeof(PACKET_RES_RANK);
 			for (int i = 0; i < MAX_RANK_COUNT; i++)
 			{
-				strcpy(resRankPacket.rank[i].name, rank[i].name);
+				resRankPacket.rank[i].clientID = rank[i].clientID;
 				resRankPacket.rank[i].winRecord = rank[i].winRecord;
 			}
 			std::string aa = _SerializationJson(PACKET_INDEX::RES_RANK, (const char*)&resRankPacket);
@@ -217,6 +226,27 @@ std::string LogicProcess::_SerializationJson(PACKET_INDEX packetIndex, const cha
 
 	switch (packetIndex)
 	{
+
+	case PACKET_INDEX::RES_IN:
+	{
+		PACKET_RES_IN resInPacket;
+		memcpy(&resInPacket, packet, sizeof(PACKET_RES_IN));
+
+		boost::property_tree::ptree ptSendRI;
+		boost::property_tree::ptree ptSendHeader;
+		ptSendHeader.put<int>("packetIndex", resInPacket.packetIndex);
+		ptSendHeader.put<int>("packetSize", sizeof(PACKET_RES_IN));
+		ptSendRI.add_child("header", ptSendHeader);
+
+		ptSendRI.put<int>("clientID", resInPacket.clientID);
+
+		std::string recvTemp;
+		std::ostringstream os(recvTemp);
+		boost::property_tree::write_json(os, ptSendRI, false);
+		sendStr = os.str();
+		return sendStr;
+	}
+
 	case PACKET_INDEX::RES_ROOM_INFO:
 	{
 		PACKET_ROOM_INFO roomInfoPacket;
@@ -324,7 +354,7 @@ std::string LogicProcess::_SerializationJson(PACKET_INDEX packetIndex, const cha
 		boost::property_tree::ptree arr[MAX_RANK_COUNT];
 		for (int i = 0; i < MAX_RANK_COUNT; i++)
 		{
-			arr[i].put("name", resRankPacket.rank[i].name);
+			arr[i].put("name", resRankPacket.rank[i].clientID);
 			arr[i].put("winRecord", resRankPacket.rank[i].winRecord);
 			ptSendRankArr.push_back(std::make_pair("", arr[i]));
 		}

@@ -19,16 +19,19 @@ public:
 	}
 	~DB();
 
-
 	void Init();
 
 	void SelectQuery();
-	void Insert(std::string name);
-	void Delete(std::string name);
-	void Update(std::string name, GAME_INDEX gameIndex, int addScore);
+	int InsertUser(int clientID,int sessionID);
+	void DeleteUser(int clientID);
+
+	void UpdateWinRecord(int clientID, GAME_INDEX gameIndex, int addScore);
+	void UpdataUserTable(int clientID, int sessionID);
 
 	void Rank(GAME_INDEX gameIndex, RANK rank[]);
 	std::string orderByRank(std::string tableName, GAME_INDEX gameIndex, std::string Column);
+
+	int GetClientID(int sessionID);
 
 private:
 	DB() {};
@@ -36,6 +39,7 @@ private:
 	static DB* _instance;
 
 	Lock _upDateLock;
+	Lock _userUpDateLock;
 
 	MYSQL		_conn;
 	MYSQL_RES* _pSqlRes;
