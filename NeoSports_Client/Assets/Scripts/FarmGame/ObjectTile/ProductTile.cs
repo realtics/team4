@@ -28,9 +28,12 @@ namespace FarmGame
 			public DateTime harvestTime;
 		}
 
-		public GameObject lessGrownSpriteObject;
-		public GameObject fullGrownSpriteObject;
-		public GameObject harvestTimeTextObject;
+		[SerializeField]
+		GameObject lessGrownSpriteObject;
+		[SerializeField]
+		GameObject fullGrownSpriteObject;
+		[SerializeField]
+		GameObject harvestTimeTextObject;
 
 		TextMeshPro _harvestTimeTextMesh;
 
@@ -114,16 +117,6 @@ namespace FarmGame
 			return data;
 		}
 
-		void UpdatePosition()
-		{
-			Vector3 position = Vector3.zero;
-
-			position.x = MapData.TileSize * _point.X;
-			position.y = MapData.TileSize * _point.Y;
-
-			transform.localPosition = position;
-		}
-
 		void UpdateSprite()
 		{
 			SpriteRenderer renderer;
@@ -160,7 +153,6 @@ namespace FarmGame
 				{
 					CanHarvest = true;
 					UpdateGrownSpriteActive();
-					Debug.Log("Harvest Time!");
 					yield break;
 				}
 				else

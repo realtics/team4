@@ -28,5 +28,15 @@ namespace FarmGame
 			get { return _tileType; }
 		}
 
+		protected void UpdatePosition()
+		{
+			Vector3 position = Vector3.zero;
+
+			position.x = MapData.TileSize * _point.X;
+			position.y = MapData.TileSize * _point.Y;
+
+			transform.localPosition = position;
+		}
+
 	}
 }

@@ -8,10 +8,18 @@ namespace FarmGame
 
 	public class ObjectTileManager : Singleton<ObjectTileManager>
 	{
-		public GameObject prefRoadTile;
-		public GameObject prefProductTile;
-		public GameObject prefDecorationTile;
-		public GameObject objectTileGroup;
+		#region Inspector Link
+		[SerializeField]
+		GameObject prefRoadTile;
+		[SerializeField]
+		GameObject prefProductTile;
+		[SerializeField]
+		GameObject prefDecorationTile;
+		[SerializeField]
+		GameObject prefGarbageTile;
+		[SerializeField]
+		GameObject objectTileGroup;
+		#endregion
 
 		Dictionary<Point, ObjectTile> objectTileDic;
 
@@ -214,6 +222,71 @@ namespace FarmGame
 			return dataList.ToArray();
 		}
 		#endregion
+
+
+		#region Garbage Tile
+		public void FirstFarmOpenDeployGarbage()
+		{
+			int createCount = (MapData.MapWidth * MapData.MapHeight) / 10;
+
+			Debug.Log("createCount Length: " + createCount.ToString());
+			for(int i = 0; i < createCount; i++)
+			{
+				CreateGarbageTile();
+			}
+		}
+
+		public void CreateGarbageTile()
+		{
+			while (true)
+			{
+				Point point;
+				point.X = Random.Range(0, MapData.MapWidth);
+				point.Y = Random.Range(0, MapData.MapHeight);
+				if (!objectTileDic.ContainsKey(point))
+				{
+					int typeLength = MapData.Instance.GarbageDataDic.Count;
+					int randomType = Random.Range(0, typeLength);
+
+					GameObject obj = Instantiate(prefGarbageTile, objectTileGroup.transform);
+					GarbageTile script = obj.GetComponent<GarbageTile>();
+					script.DeployTile(point, randomType);
+
+					objectTileDic.Add(point, script);
+					break;
+				}
+			}
+		}
+
+		public void LoadGarbageTile(GarbageTile.SaveData[] datas)
+		{
+			foreach(var item in datas)
+			{
+				GameObject obj = Instantiate(prefGarbageTile, objectTileGroup.transform);
+				GarbageTile script = obj.GetComponent<GarbageTile>();
+				script.SetSaveData(item);
+
+				objectTileDic.Add(item.point, script);
+			}
+		}
+
+		public GarbageTile.SaveData[] GetGarbageSaveDatas()
+		{
+			var dataList = new List<GarbageTile.SaveData>();
+
+			foreach(var item in objectTileDic)
+			{
+				if(item.Value.TileType == ObjectTile.ETileType.Garbage)
+				{
+					var script = item.Value as GarbageTile;
+					dataList.Add(script.GetSaveData());
+				}
+			}
+
+			return dataList.ToArray();
+		}
+		#endregion
+
 
 		bool CheckTileIsExist(Point point)
 		{

@@ -14,17 +14,20 @@ namespace FarmGame
 			Land,
 			Road,
 			Product,
-			Decoration
+			Decoration,
+			Garbage
 		}
 
 		const string LandDataPath = "Jsons/Farm/LandData";
 		const string ProductDataPath = "Jsons/Farm/ProductData";
 		const string DecorationDataPath = "Jsons/Farm/DecorationData";
+		const string GarbageDataPath = "Jsons/Farm/GarbageData";
 
 		const string LandSaveDataKey = "Farm_Land_Tile_Save_Data";
 		const string RoadSaveDataKey = "Farm_Road_Tile_Save_Data";
 		const string ProductSaveDataKey = "Farm_Product_Tile_Save_Data";
 		const string DecorationSaveDataKey = "Farm_Decoration_Tile_Save_Data";
+		const string GarbageSaveDataKey = "Farm_Garbage_Tile_Save_Data";
 
 		public const int MapWidth = 15;
 		public const int MapHeight = 10;
@@ -42,6 +45,7 @@ namespace FarmGame
 		public Dictionary<string, LandData> LandDataDic { get; private set; }
 		public Dictionary<int, DecorationData> DecorationDataDic { get; private set; }
 		public Dictionary<int, ProductData> ProductDataDic { get; private set; }
+		public Dictionary<int, GarbageData> GarbageDataDic { get; private set; }
 		public Point CurrentFarmerPoint { get; set; }
 		#endregion
 
@@ -50,10 +54,13 @@ namespace FarmGame
 			LandDataDic = new Dictionary<string, LandData>();
 			DecorationDataDic = new Dictionary<int, DecorationData>();
 			ProductDataDic = new Dictionary<int, ProductData>();
+			GarbageDataDic = new Dictionary<int, GarbageData>();
 
+			// Read Json Data
 			ReadLandData();
 			ReadDecorationData();
 			ReadProductData();
+			ReadGarbageData();
 
 			CreateFarmer();
 		}
@@ -83,7 +90,6 @@ namespace FarmGame
 			{
 				LandDataDic.Add(child.type, child);
 			}
-			Debug.Log("Land Data Length: " + LandDataDic.Count.ToString());
 		}
 
 		void ReadDecorationData()
@@ -95,7 +101,6 @@ namespace FarmGame
 			{
 				DecorationDataDic.Add(child.type, child);
 			}
-			Debug.Log("Decoration Data Length: " + DecorationDataDic.Count.ToString());
 		}
 
 		void ReadProductData()
@@ -107,7 +112,18 @@ namespace FarmGame
 			{
 				ProductDataDic.Add(child.type, child);
 			}
-			Debug.Log("Product Data Length: " + ProductDataDic.Count.ToString());
+		}
+
+		void ReadGarbageData()
+		{
+			string dataStr = ReadJsonDataString(GarbageDataPath);
+			GarbageData[] dataArr = JsonConvert.DeserializeObject<GarbageData[]>(dataStr);
+
+			foreach(GarbageData child in dataArr)
+			{
+				GarbageDataDic.Add(child.type, child);
+			}
+			Debug.Log("Garbage Data Length: " + GarbageDataDic.Count.ToString());
 		}
 		#endregion
 
@@ -119,7 +135,6 @@ namespace FarmGame
 			{
 				LandTile.SaveData[] dataArr = ReadTileSave<LandTile.SaveData[]>(LandSaveDataKey);
 				LandTileManager.Instance.LoadLandTiles(dataArr);
-				Debug.Log("Load Land Save Data");
 			}
 			else
 			{
@@ -131,7 +146,6 @@ namespace FarmGame
 			{
 				RoadTile.SaveData[] dataArr = ReadTileSave<RoadTile.SaveData[]>(RoadSaveDataKey);
 				ObjectTileManager.Instance.LoadRoadTiles(dataArr);
-				Debug.Log("Load Road Save Data");
 			}
 			else
 			{
@@ -143,14 +157,24 @@ namespace FarmGame
 			{
 				ProductTile.SaveData[] dataArr = ReadTileSave<ProductTile.SaveData[]>(ProductSaveDataKey);
 				ObjectTileManager.Instance.LoadProductTiles(dataArr);
-				Debug.Log("Load Product Save Data");
 			}
 
 			if (PlayerPrefs.HasKey(DecorationSaveDataKey))
 			{
 				DecorationTile.SaveData[] dataArr = ReadTileSave<DecorationTile.SaveData[]>(DecorationSaveDataKey);
 				ObjectTileManager.Instance.LoadDecorationTiles(dataArr);
-				Debug.Log("Load Decoration Save Data");
+			}
+
+			if (PlayerPrefs.HasKey(GarbageSaveDataKey))
+			{
+				GarbageTile.SaveData[] dataArr = ReadTileSave<GarbageTile.SaveData[]>(GarbageSaveDataKey);
+				ObjectTileManager.Instance.LoadGarbageTile(dataArr);
+			}
+			else
+			{
+				ObjectTileManager.Instance.FirstFarmOpenDeployGarbage();
+				WriteSaveData(ESaveType.Garbage);
+				Debug.Log("Create First Garbage Tiles!");
 			}
 		}
 
@@ -174,15 +198,21 @@ namespace FarmGame
 					var decorationDataArr = ObjectTileManager.Instance.GetDecorationSaveDatas();
 					WriteTileSave(decorationDataArr, DecorationSaveDataKey);
 					break;
+				case ESaveType.Garbage:
+					var garbageDataArr = ObjectTileManager.Instance.GetGarbageSaveDatas();
+					WriteTileSave(garbageDataArr, GarbageSaveDataKey);
+					break;
 			}
 		}
 
 		public void ButtonEvent_ClearSaveData()
 		{
+			Debug.Log("ClearSaveData!");
 			PlayerPrefs.DeleteKey(LandSaveDataKey);
 			PlayerPrefs.DeleteKey(RoadSaveDataKey);
 			PlayerPrefs.DeleteKey(ProductSaveDataKey);
 			PlayerPrefs.DeleteKey(DecorationSaveDataKey);
+			PlayerPrefs.DeleteKey(GarbageSaveDataKey);
 		}
 
 		T ReadTileSave<T>(string key)

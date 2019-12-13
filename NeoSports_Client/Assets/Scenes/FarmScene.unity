@@ -773,6 +773,7 @@ GameObject:
   - component: {fileID: 307849429}
   - component: {fileID: 307849431}
   - component: {fileID: 307849430}
+  - component: {fileID: 307849432}
   m_Layer: 5
   m_Name: Image_Gold_Sprite
   m_TagString: Untagged
@@ -835,6 +836,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 307849428}
   m_CullTransparentMesh: 0
+--- !u!114 &307849432
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 307849428}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfabb0440166ab443bba8876756fdfa9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.78431374}
+  m_EffectDistance: {x: 2, y: -2}
+  m_UseGraphicAlpha: 1
 --- !u!1 &318632274
 GameObject:
   m_ObjectHideFlags: 0
@@ -1127,6 +1143,8 @@ MonoBehaviour:
   prefProductTile: {fileID: 5087609022182960965, guid: 436744e5a26640f4fbd7ce52e940fabc,
     type: 3}
   prefDecorationTile: {fileID: 4453403605186245008, guid: a4e3635b0b986f74391246eceb223383,
+    type: 3}
+  prefGarbageTile: {fileID: 8173347936221161404, guid: fe5caa6644fa3d841b707030a507ff74,
     type: 3}
   objectTileGroup: {fileID: 595834799}
 --- !u!4 &384241139
@@ -4855,6 +4873,7 @@ GameObject:
   - component: {fileID: 1765427364}
   - component: {fileID: 1765427366}
   - component: {fileID: 1765427365}
+  - component: {fileID: 1765427367}
   m_Layer: 5
   m_Name: Label_DynamicText_Gold_Amount
   m_TagString: Untagged
@@ -4921,6 +4940,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1765427363}
   m_CullTransparentMesh: 0
+--- !u!114 &1765427367
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1765427363}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfabb0440166ab443bba8876756fdfa9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.78431374}
+  m_EffectDistance: {x: 2, y: -2}
+  m_UseGraphicAlpha: 1
 --- !u!1 &1785792129
 GameObject:
   m_ObjectHideFlags: 0

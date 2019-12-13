@@ -5,17 +5,16 @@ using UnityEngine;
 
 namespace FarmGame
 {
-	public struct DecorationData
+	public struct GarbageData
 	{
 		public int type;
 		public string name;
-		public int price;
+		public int removeCost;
 		public string sprite;
 	}
 
-	public class DecorationTile : ObjectTile
+	public class GarbageTile : ObjectTile
 	{
-
 		public struct SaveData
 		{
 			public Point point;
@@ -25,16 +24,16 @@ namespace FarmGame
 		[SerializeField]
 		SpriteRenderer spriteRenderer;
 
-		DecorationData _decorationData;
+		GarbageData _garbageData;
 
 		private void Awake()
 		{
-			_tileType = ETileType.Decoration;
+			_tileType = ETileType.Garbage;
 		}
 
 		public void DeployTile(Point point, int type)
 		{
-			_decorationData = MapData.Instance.DecorationDataDic[type];
+			_garbageData = MapData.Instance.GarbageDataDic[type];
 			_point = point;
 
 			UpdatePosition();
@@ -43,7 +42,7 @@ namespace FarmGame
 
 		public void SetSaveData(SaveData data)
 		{
-			_decorationData = MapData.Instance.DecorationDataDic[data.type];
+			_garbageData = MapData.Instance.GarbageDataDic[data.type];
 			_point = data.point;
 
 			UpdatePosition();
@@ -54,18 +53,19 @@ namespace FarmGame
 		{
 			SaveData data;
 			data.point = _point;
-			data.type = _decorationData.type;
+			data.type = _garbageData.type;
 
 			return data;
 		}
 
 		void UpdateSprite()
 		{
-			string spriteName = _decorationData.sprite;
+			string spriteName = _garbageData.sprite; 
 
 			spriteRenderer.sprite = ResourceManager.Instance.GetFarmSprite(spriteName);
 		}
 
 	}
-
 }
+
+
