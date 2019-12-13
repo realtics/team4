@@ -47,6 +47,7 @@ public class Player : MonoBehaviour
     public GameObject equipmentPrefab;
 	public BasketBallGame.BasketBall baksetballPrefab;
 
+	public Character _character { get; set; }
 
 	GameObject _instChar;
 	GameObject _instController;
@@ -55,7 +56,6 @@ public class Player : MonoBehaviour
 
     PlayerController _playerController;
     PlayerEquipment _playerEquipment;
-    Character _character;
 
     float _powerSize;
 	bool _isHost;

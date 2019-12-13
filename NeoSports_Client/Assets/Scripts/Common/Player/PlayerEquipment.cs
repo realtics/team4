@@ -20,6 +20,7 @@ public class PlayerEquipment : MonoBehaviour
         _equipSprite = _headSocket.gameObject.AddComponent<SpriteRenderer>();
 		_equipSprite.sprite = equipInfo.IconSprite;
         _equipSprite.sortingOrder = 16;
+
 		//transform.localPosition = new Vector3(player.transform.position.y + 1);
 	}
 }

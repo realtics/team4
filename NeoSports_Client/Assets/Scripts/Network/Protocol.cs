@@ -31,9 +31,12 @@ public enum PACKET_INDEX
     REQ_IN = 200,
 
     REQ_MULTI_ROOM, //클라에서 같이하기 눌렀을때 방을 만들거나 방이있으면 접속함
-    START_GAME,
-    REQ_INIT_ROOM,
-    ROOM_INFO,
+	REQ_INIT_ROOM,
+	REQ_TIME,
+
+	RES_START_GAME,
+    RES_ROOM_INFO,
+	RES_NOW_TIME,
 
 	//줄다리기용 패킷
 	REQ_RES_ROPE_PULL_GAME,

@@ -55,7 +55,7 @@ public class PacketQueue : Singleton<PacketQueue>
 	{
 		switch (pakcetIndex)
 		{
-			case (int)PACKET_INDEX.ROOM_INFO:
+			case (int)PACKET_INDEX.RES_ROOM_INFO:
 			{
 				var packetdata = JsonConvert.DeserializeObject<PACKET_ROOM_INFO>(recvData);
 				if (packetdata.roomInfo == ROOM_INDEX.MAKE_ROOM)
@@ -80,7 +80,7 @@ public class PacketQueue : Singleton<PacketQueue>
 				var packetdata = JsonConvert.DeserializeObject<PACKET_REQ_IN>(recvData);
 				break;
 			}
-			case (int)PACKET_INDEX.START_GAME:
+			case (int)PACKET_INDEX.RES_START_GAME:
 			{
 				var packetdata = JsonConvert.DeserializeObject<PACKET_START_GAME>(recvData);
 
