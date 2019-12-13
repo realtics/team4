@@ -317,9 +317,12 @@ public class Player : MonoBehaviour
 		_farmState = eFarmState.Move;
 
 		if (OwnCharacter.transform.position.x < _targetPosition.x)
-			OwnCharacter.spriteRenderer.flipX = false;
-		else
-			OwnCharacter.spriteRenderer.flipX = true;
+		{
+			SetFlipCharacter(false);
+		}
+		else { 
+			SetFlipCharacter(true);
+		}
 	}
 
 	void MoveToTargetPosition()
