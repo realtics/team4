@@ -105,5 +105,4 @@ public class Character : MonoBehaviour
         _currentState = EState.Idle;
     }
 	#endregion
-
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -30,6 +31,9 @@ public class PlayerEquipment : MonoBehaviour
 
 	public void SetEquipFilp(bool isFlip)
 	{
+		if(_equipSprite != null)
 		_equipSprite.flipX = isFlip;
 	}
+
+
 }

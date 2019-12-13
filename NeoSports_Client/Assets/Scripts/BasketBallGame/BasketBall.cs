@@ -13,9 +13,10 @@ namespace BasketBallGame
 		RightPlayer,
 		AI,
 	}
+
 	public class BasketBall : RecycleObject
 	{
-		
+
 		public float _lowerLimit;
 		//public TrailRenderer trailPrefab;
 		public Action<BasketBall> destroyed;
@@ -24,7 +25,7 @@ namespace BasketBallGame
 		Vector3 _prevPosition;
 		TrailRenderer _trailEffect;
 		bool _isActivated = false;
-		
+
 		EBallOwner _ownerMarking;
 
 		void Awake()
@@ -59,8 +60,8 @@ namespace BasketBallGame
 				destroyed(this);
 				if (destroyed != null)
 				{
-					
-					
+
+
 				}
 			}
 		}
