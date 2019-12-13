@@ -47,8 +47,6 @@ public class Player : MonoBehaviour
     public GameObject equipmentPrefab;
 	public BasketBallGame.BasketBall baksetballPrefab;
 
-	public Character _character { get; set; }
-
 	GameObject _instChar;
 	GameObject _instController;
 	GameObject _instArrow;
@@ -67,6 +65,10 @@ public class Player : MonoBehaviour
 	//To Do: 게임매니저로 옮겨서 플레이어로 이어주도록 해야함. 
 	PoolFactory _ballFactory;
 
+	#region Property
+	public Character OwnCharacter { get; set; }
+	#endregion
+
 	private void Awake()
 	{
 		_ballFactory = new PoolFactory(baksetballPrefab);
@@ -79,7 +81,7 @@ public class Player : MonoBehaviour
 	{
 		CachingValues();
 		SetPlayerDirection();
-		InitPlayer(_character, _playerController);
+		InitPlayer(OwnCharacter, _playerController);
 		if (NetworkManager.Instance != null)
 			_isHost = NetworkManager.Instance.isOwnHost;
 	}
@@ -90,11 +92,11 @@ public class Player : MonoBehaviour
 
 		if (_state == ePlayerState.Move)
 		{
-			if (_character != null)
+			if (OwnCharacter != null)
 			{
 				if ((Vector2)transform.position == targetPos)
 				{
-					_character.EndRun();
+					OwnCharacter.EndRun();
 					_state = ePlayerState.Stop;
 					_outlineshader.StopWalkEffect();
 					return;
@@ -113,7 +115,7 @@ public class Player : MonoBehaviour
 		_instArrow = Instantiate(directionArrowPrefab, this.transform);
         _instEquipment = Instantiate(equipmentPrefab, this.transform);
 
-        _character = _instChar.GetComponent<Character>();
+        OwnCharacter = _instChar.GetComponent<Character>();
 		_playerController = _instController.GetComponent<PlayerController>();
 		_playerTrigger = GetComponent<BoxCollider2D>();
 		_outlineshader = _instChar.GetComponent<SpirteOutlineshader>();
@@ -126,9 +128,9 @@ public class Player : MonoBehaviour
 	#region public Player Function -Controller Use
 	public void InitPlayer(Character character, PlayerController controller)
 	{
-		_character = character;
+		OwnCharacter = character;
 		_playerController = controller;
-		_playerController.InitController(_character, this);
+		_playerController.InitController(OwnCharacter, this);
         _playerEquipment.InitializeEquipItem(this);
     }
 
@@ -144,7 +146,7 @@ public class Player : MonoBehaviour
 		float angle = Mathf.Atan2(transform.position.y - target.y, transform.position.x - target.x);
 
 		float power = Vector2.Distance(target, transform.position);
-		_powerSize = power * _character.status.strength;
+		_powerSize = power * OwnCharacter.status.strength;
 
 		_instArrow.transform.rotation = Quaternion.AngleAxis(angle * Mathf.Rad2Deg, transform.forward);
 		_instArrow.transform.localScale = new Vector3(_powerSize, _powerSize);
@@ -160,7 +162,7 @@ public class Player : MonoBehaviour
 
 		float power = Vector2.Distance(new Vector2(target.x, target.y), transform.position);
 
-		_powerSize = power * _character.status.strength;
+		_powerSize = power * OwnCharacter.status.strength;
 		_instArrow.transform.localScale = new Vector3(_powerSize, _powerSize);
 	}
 
@@ -213,7 +215,7 @@ public class Player : MonoBehaviour
 	{
 		if ((Vector2)transform.position != targetPos)
 		{
-			transform.position = Vector2.MoveTowards(transform.position, targetPos, _character.status.agility * Time.deltaTime);
+			transform.position = Vector2.MoveTowards(transform.position, targetPos, OwnCharacter.status.agility * Time.deltaTime);
 		}
 	}
 
@@ -221,29 +223,30 @@ public class Player : MonoBehaviour
 	{
 		targetPos = (Vector2)mainCam.ScreenToWorldPoint(clickPos);
 
-		_character.StartRun();
+		OwnCharacter.StartRun();
 		_state = ePlayerState.Move;
 
 		#region DecideDirection
-		if (_character.transform.position.x < targetPos.x)
-			_character.spriteRenderer.flipX = false;
+		if (OwnCharacter.transform.position.x < targetPos.x)
+			SetFlipCharacter(false);
 		else
-			_character.spriteRenderer.flipX = true;
+			SetFlipCharacter(true);
 		#endregion
 	}
 
 	public void SetFlipCharacter(bool isFlip)
 	{
-		_character.spriteRenderer.flipX = isFlip;
+		OwnCharacter.spriteRenderer.flipX = isFlip;
+		_playerEquipment.SetEquipFilp(!isFlip);
 	}
 
 	void SetPlayerDirection()
 	{
-		if (_character.spriteRenderer.flipX)
+		if (OwnCharacter.spriteRenderer.flipX)
 		{
 			_playerLookDirection = eLookDirection.Left;
 		}
-		else if (!_character.spriteRenderer.flipX)
+		else if (!OwnCharacter.spriteRenderer.flipX)
 		{
 			_playerLookDirection = eLookDirection.Right;
 		}
@@ -251,8 +254,8 @@ public class Player : MonoBehaviour
 
 	public void PullRope()
 	{
-		RopePullGame.RopePullRope.Instance.PullRope((int)_playerLookDirection * _character.status.strength);
-		_character.PullRopeAutoRelease();
+		RopePullGame.RopePullRope.Instance.PullRope((int)_playerLookDirection * OwnCharacter.status.strength);
+		OwnCharacter.PullRopeAutoRelease();
 
 		_outlineshader.PlayLineEffect();
 	}
@@ -260,9 +263,9 @@ public class Player : MonoBehaviour
 	public void NetworkPullRope()
 	{
 		if (_isHost)
-			NetworkManager.Instance.SendRequestRopePull(_character.status.strength * -1);
+			NetworkManager.Instance.SendRequestRopePull(OwnCharacter.status.strength * -1);
 		else
-			NetworkManager.Instance.SendRequestRopePull(_character.status.strength);
+			NetworkManager.Instance.SendRequestRopePull(OwnCharacter.status.strength);
 	}
 
 	#endregion
@@ -306,17 +309,17 @@ public class Player : MonoBehaviour
 
 	public void SetTargetPosition(LandTile landTile)
 	{
-		_character.StartRun();
+		OwnCharacter.StartRun();
 		LeaveTile();
 		_targetPosition = landTile.transform.position;
 		_targetPosition.z = transform.localPosition.z;
 		_currentLandTile = landTile;
 		_farmState = eFarmState.Move;
 
-		if (_character.transform.position.x < _targetPosition.x)
-			_character.spriteRenderer.flipX = false;
+		if (OwnCharacter.transform.position.x < _targetPosition.x)
+			OwnCharacter.spriteRenderer.flipX = false;
 		else
-			_character.spriteRenderer.flipX = true;
+			OwnCharacter.spriteRenderer.flipX = true;
 	}
 
 	void MoveToTargetPosition()
@@ -348,7 +351,7 @@ public class Player : MonoBehaviour
 
 	void EnterTile()
 	{
-		_character.EndRun();
+		OwnCharacter.EndRun();
 
 		Point currentPoint = _currentLandTile.MapPoint;
 		MapData.Instance.CurrentFarmerPoint = currentPoint;

@@ -4,9 +4,13 @@ using UnityEngine;
 
 public class PlayerEquipment : MonoBehaviour
 {
+	const string HeadSocketName = "HeadSocket";
+
 	Player _ownPlayer;
 	SpriteRenderer _equipSprite;
-    Transform _headSocket;
+	Character _ownCharacter;
+
+	Transform equipTransform;
 
 	public void InitializeEquipItem(Player player)
 	{
@@ -15,12 +19,17 @@ public class PlayerEquipment : MonoBehaviour
 		EquipmentInfo equipInfo = InventoryManager.Instance.CurrentEquipment;
 		_ownPlayer = player;
 
-        _headSocket = transform.GetChild(0);
+		_ownCharacter = _ownPlayer.OwnCharacter;
 
-        _equipSprite = _headSocket.gameObject.AddComponent<SpriteRenderer>();
+		equipTransform = _ownCharacter.transform.Find(HeadSocketName);
+
+        _equipSprite = equipTransform.gameObject.AddComponent<SpriteRenderer>();
 		_equipSprite.sprite = equipInfo.IconSprite;
         _equipSprite.sortingOrder = 16;
+	}
 
-		//transform.localPosition = new Vector3(player.transform.position.y + 1);
+	public void SetEquipFilp(bool isFlip)
+	{
+		_equipSprite.flipX = isFlip;
 	}
 }
