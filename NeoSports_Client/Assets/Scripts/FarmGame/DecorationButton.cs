@@ -8,11 +8,28 @@ namespace FarmGame
 {
 	public class DecorationButton : MonoBehaviour
 	{
-		public GameObject imageTile;
-		public GameObject labelName;
-		public GameObject labelRequireGold;
+		[SerializeField]
+		GameObject imageTile;
+		[SerializeField]
+		GameObject labelName;
+		[SerializeField]
+		GameObject labelRequireGold;
+		[SerializeField]
+		Button buttonScript;
 
 		DecorationData _data;
+
+		private void OnEnable()
+		{
+			if (ResourceManager.Instance.GetGoldResource() < _data.price)
+			{
+				buttonScript.interactable = false;
+			}
+			else
+			{
+				buttonScript.interactable = true;
+			}
+		}
 
 		public void SetData(DecorationData data)
 		{
@@ -34,8 +51,16 @@ namespace FarmGame
 
 		void OnClickDeployDecoration()
 		{
+			if(ResourceManager.Instance.GetGoldResource() < _data.price)
+			{
+				return;
+			}
+
 			Point deployPoint = MapData.Instance.CurrentFarmerPoint;
 			ObjectTileManager.Instance.DeployDecoration(deployPoint, _data.type);
+
+			ResourceManager.Instance.AddGoldResource(-_data.price);
+			FarmUIManager.Instance.UpdateGoldResourceLabel();
 		}
 	}
 

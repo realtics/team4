@@ -345,13 +345,19 @@ namespace FarmGame
 		public void UpdateGoldResourceLabel()
 		{
 			int value = ResourceManager.Instance.GetGoldResource();
-			goldResourceAmountText.text = value.ToString("N0");
+			goldResourceAmountText.text = value.ToString("N0");		// "N0" to 00,000 (for comma)
 		}
 
 		public void ButtonEvent_HarvestProduct()
 		{
 			harvestButton.SetActive(false);
 			harvestButtonPressed();
+		}
+
+		public void ButtonEvent_DEBUG_GoldIncrease()
+		{
+			ResourceManager.Instance.AddGoldResource(100);
+			UpdateGoldResourceLabel();
 		}
 
 	}

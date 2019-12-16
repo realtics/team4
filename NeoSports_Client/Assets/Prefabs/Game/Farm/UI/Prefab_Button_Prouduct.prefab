@@ -534,13 +534,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a6283e6935c9e64a85737742a44fcac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  farmLandTileAtlas: {fileID: 4343727234628468602, guid: 6086b02561324754081f1eb22b583f7a,
-    type: 2}
   imageLessGrown: {fileID: 2247660945910198110}
   imageFullGrown: {fileID: 8554051886028184401}
   labelName: {fileID: 605883193400068558}
   labelGrownTime: {fileID: 4197994789448303284}
   labelRequireGold: {fileID: 5220837002010670757}
+  buttonScript: {fileID: 6258339230333640615}
 --- !u!1 &8554051886028184401
 GameObject:
   m_ObjectHideFlags: 0

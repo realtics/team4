@@ -158,6 +158,7 @@ MonoBehaviour:
   imageTile: {fileID: 9217564090706790422}
   labelName: {fileID: 7544252309261971078}
   labelRequireGold: {fileID: 2931339349440647661}
+  buttonScript: {fileID: 3891110438211614959}
 --- !u!1 &2931339349440647661
 GameObject:
   m_ObjectHideFlags: 0
