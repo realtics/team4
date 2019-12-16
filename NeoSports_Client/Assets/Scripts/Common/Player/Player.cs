@@ -266,11 +266,13 @@ public class Player : MonoBehaviour
 		{
 			_playerLookDirection = eLookDirection.Left;
 			OwnCharacter.spriteRenderer.flipX = true;
+			_playerEquipment.SetEquipFilp(true);
 		}
 		else if (direction == eLookDirection.Right)
 		{
 			_playerLookDirection = eLookDirection.Right;
 			OwnCharacter.spriteRenderer.flipX = false;
+			_playerEquipment.SetEquipFilp(false);
 		}
 	}
 

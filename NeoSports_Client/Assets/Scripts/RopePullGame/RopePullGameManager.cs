@@ -25,6 +25,7 @@ namespace RopePullGame
 		public GameObject ppiYakCharacter;
 		public GameObject turkeyJellyCharacter;
 		public GameObject playerPrefab;
+		public GameObject AIPlayerPrefab;
 
 		// Public Variable
 		public GameObject rootCanvas;
@@ -34,8 +35,8 @@ namespace RopePullGame
 		public Button restartButton;
 
 		// Private Variable
-		GameObject _singlePlayer;
 		Player _player;
+		Player _AIPlayer;
 		ESceneState _sceneState;
 		float _playTime;
 
@@ -43,8 +44,6 @@ namespace RopePullGame
 		Transform _rightPlayer;
 
 		RopePullRope _ropePullMove;
-		Character[] _characters;
-		Effect.RunnigEffect[] _runnigEffects;
 
 		public ESceneState SceneState {
 			get { return _sceneState; }
@@ -55,7 +54,6 @@ namespace RopePullGame
 			_sceneState = ESceneState.Prepare;
 
 			CachingValue();
-			InitNetwork();
 			CreateCharacters();
 			_playTime = 0.0f;
 		}
@@ -68,16 +66,9 @@ namespace RopePullGame
 		void CachingValue()
 		{
 			_ropePullMove = playerableObjects.GetComponent<RopePullRope>();
-			_runnigEffects = playerableObjects.GetComponentsInChildren<Effect.RunnigEffect>();
 
 			_leftPlayer = playerableObjects.transform.Find(LeftPlayerObjectName);
 			_rightPlayer = playerableObjects.transform.Find(RightPlayerObjectName);
-
-			foreach (Effect.RunnigEffect effect in _runnigEffects)
-			{
-				effect.EndEffect();
-			}
-			_singlePlayer = null;
 			
 		}
 
@@ -156,46 +147,6 @@ namespace RopePullGame
 		void SetObjectsMove(bool isMove)
 		{
 			_ropePullMove.IsStart = isMove;
-			SetCharactersAnimation(isMove);
-			SetRuningEffects(isMove);
-		}
-
-		void SetCharactersAnimation(bool isMove)
-		{
-			if (isMove)
-			{
-				foreach (Character ch in _characters)
-				{
-					if(ch !=null)
-					ch.StartRun();
-				}
-			}
-			else
-			{
-				foreach (Character ch in _characters)
-				{
-					if (ch != null)
-					ch.EndRun();
-				}
-			}
-		}
-
-		void SetRuningEffects(bool isMove)
-		{
-			if (isMove)
-			{
-				foreach (Effect.RunnigEffect effect in _runnigEffects)
-				{
-					effect.StartEffect();
-				}
-			}
-			else
-			{
-				foreach (Effect.RunnigEffect effect in _runnigEffects)
-				{
-					effect.EndEffect();
-				}
-			}
 		}
 		#endregion
 
@@ -255,11 +206,6 @@ namespace RopePullGame
 			SetObjectsMove(false);
 		}
 		#endregion
-
-		void InitNetwork()
-		{
-
-		}
 
 		GameObject SelectInstantCharacter(CHAR_INDEX charID, Transform parent)
 		{
@@ -322,26 +268,20 @@ namespace RopePullGame
 			leftText.text = PacketQueue.Instance.superName;
 			rightText.text = PacketQueue.Instance.guestName;
 
-			_characters = playerableObjects.GetComponentsInChildren<Character>();
 		}
 
 		void CreateSingleCharacter()
 		{
-			_singlePlayer =SelectInstantCharacter((CHAR_INDEX)InventoryManager.Instance.CurrentCharacter.Type, _leftPlayer);
-			_characters = playerableObjects.GetComponentsInChildren<Character>();
-
 			var playerInst = Instantiate(playerPrefab, playerableObjects.transform);
 			_player = playerInst.GetComponent<Player>();
-			_player.Initialize();
-
 			SelectInstantCharacter(InventoryManager.Instance.CurrentCharacter.Type);
+			_player.Initialize();
 			_player.SetPlayerDirection(Player.eLookDirection.Left);
-			//_player.SetFlipCharacter(true);
 
-			var shader = _singlePlayer.GetComponentInChildren<SpirteOutlineshader>();
-
-			var playerInput = _leftPlayer.gameObject.GetComponent<RopePullInputPlayerPower>();
-			playerInput.OutlineEffect += shader.PlayLineEffect;
+			var AIPlayerInst = Instantiate(AIPlayerPrefab, playerableObjects.transform);
+			_AIPlayer = AIPlayerInst.GetComponent<Player>();
+			_AIPlayer.Initialize();
+			_AIPlayer.SetPlayerDirection(Player.eLookDirection.Right);
 
 		}
 		bool IsSingleGame()

@@ -20,14 +20,22 @@ namespace BasketBallGame
 		// Prefab Character
 		public GameObject ppiYakCharacter;
 		public GameObject turkeyJellyCharacter;
+		public GameObject playerPrefab;
+		public GameObject AIPlayerPrefab;
 
 		public GameObject rootCanvas;
+
+		// Private Variable
+		Player _player;
+		Player _AIPlayer;
+
 		public EGameState GameState { get; set; }
 		
 		void Awake()
 		{
 			instance = this;
 			GameState = EGameState.PlayerWait;
+			CreateSingleCharacter();
 		}
 
 		void Start()
@@ -35,12 +43,11 @@ namespace BasketBallGame
 			StartGame();
 			if (InventoryManager.instance != null)
 			{
-				//SelectInstantCharacter((CHAR_INDEX)InventoryManager.instance.CurrentCharacter.Type, null);
-				//SelectInstantCharacter((CHAR_INDEX)CharacterInfo.EType.PpiYaGi, null);
+
 			}
 			else
 			{
-				//SelectInstantCharacter((CHAR_INDEX)CharacterInfo.EType.PpiYaGi, null);
+
 			}
 		}
 
@@ -80,27 +87,41 @@ namespace BasketBallGame
 			CommonUIManager.Instance.CreateWinnerNotice(rootCanvas, "플레이어 이름");
 		}
 
-		void SelectInstantCharacter(CHAR_INDEX charID, Transform parent)
+		void CreateSingleCharacter()
 		{
-			switch (charID)
+			var playerInst = Instantiate(playerPrefab, null);
+			_player = playerInst.GetComponent<Player>();
+			SelectInstantCharacter(InventoryManager.Instance.CurrentCharacter.Type);
+			_player.Initialize();
+			_player.SetPlayerDirection(Player.eLookDirection.Left);
+
+			var AIPlayerInst = Instantiate(AIPlayerPrefab, null);
+			_AIPlayer = AIPlayerInst.GetComponent<Player>();
+			_AIPlayer.Initialize();
+			_AIPlayer.SetPlayerDirection(Player.eLookDirection.Right);
+
+		}
+		void SelectInstantCharacter(CharacterInfo.EType charType)
+		{
+			switch (charType)
 			{
-				case (CHAR_INDEX)CharacterInfo.EType.PpiYaGi:
+				case CharacterInfo.EType.PpiYaGi:
 					{
-						Instantiate(ppiYakCharacter, parent);
+						_player.characterPrefab = ppiYakCharacter;
 						break;
 					}
-				case (CHAR_INDEX)CharacterInfo.EType.TurkeyJelly:
+				case CharacterInfo.EType.TurkeyJelly:
 					{
-						Instantiate(turkeyJellyCharacter, parent);
+						_player.characterPrefab = turkeyJellyCharacter;
 						break;
 					}
 				default:
 					{
+						_player.characterPrefab = ppiYakCharacter;
 						break;
 					}
 			}
 
 		}
-
 	}
 }
