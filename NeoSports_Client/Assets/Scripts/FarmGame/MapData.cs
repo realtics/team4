@@ -23,12 +23,6 @@ namespace FarmGame
 		const string DecorationDataPath = "Jsons/Farm/DecorationData";
 		const string GarbageDataPath = "Jsons/Farm/GarbageData";
 
-		const string LandSaveDataKey = "Farm_Land_Tile_Save_Data";
-		const string RoadSaveDataKey = "Farm_Road_Tile_Save_Data";
-		const string ProductSaveDataKey = "Farm_Product_Tile_Save_Data";
-		const string DecorationSaveDataKey = "Farm_Decoration_Tile_Save_Data";
-		const string GarbageSaveDataKey = "Farm_Garbage_Tile_Save_Data";
-
 		public const int MapWidth = 15;
 		public const int MapHeight = 10;
 
@@ -131,9 +125,9 @@ namespace FarmGame
 		#region Read & Write Save Data
 		void CheckSaveDataIsExist()
 		{
-			if (PlayerPrefs.HasKey(LandSaveDataKey))
+			if (PlayerPrefs.HasKey(PrefsKey.LandSaveDataKey))
 			{
-				LandTile.SaveData[] dataArr = ReadTileSave<LandTile.SaveData[]>(LandSaveDataKey);
+				LandTile.SaveData[] dataArr = ReadTileSave<LandTile.SaveData[]>(PrefsKey.LandSaveDataKey);
 				LandTileManager.Instance.LoadLandTiles(dataArr);
 			}
 			else
@@ -142,9 +136,9 @@ namespace FarmGame
 				WriteSaveData(ESaveType.Land);
 			}
 
-			if (PlayerPrefs.HasKey(RoadSaveDataKey))
+			if (PlayerPrefs.HasKey(PrefsKey.RoadSaveDataKey))
 			{
-				RoadTile.SaveData[] dataArr = ReadTileSave<RoadTile.SaveData[]>(RoadSaveDataKey);
+				RoadTile.SaveData[] dataArr = ReadTileSave<RoadTile.SaveData[]>(PrefsKey.RoadSaveDataKey);
 				ObjectTileManager.Instance.LoadRoadTiles(dataArr);
 			}
 			else
@@ -153,21 +147,21 @@ namespace FarmGame
 				WriteSaveData(ESaveType.Road);
 			}
 
-			if (PlayerPrefs.HasKey(ProductSaveDataKey))
+			if (PlayerPrefs.HasKey(PrefsKey.ProductSaveDataKey))
 			{
-				ProductTile.SaveData[] dataArr = ReadTileSave<ProductTile.SaveData[]>(ProductSaveDataKey);
+				ProductTile.SaveData[] dataArr = ReadTileSave<ProductTile.SaveData[]>(PrefsKey.ProductSaveDataKey);
 				ObjectTileManager.Instance.LoadProductTiles(dataArr);
 			}
 
-			if (PlayerPrefs.HasKey(DecorationSaveDataKey))
+			if (PlayerPrefs.HasKey(PrefsKey.DecorationSaveDataKey))
 			{
-				DecorationTile.SaveData[] dataArr = ReadTileSave<DecorationTile.SaveData[]>(DecorationSaveDataKey);
+				DecorationTile.SaveData[] dataArr = ReadTileSave<DecorationTile.SaveData[]>(PrefsKey.DecorationSaveDataKey);
 				ObjectTileManager.Instance.LoadDecorationTiles(dataArr);
 			}
 
-			if (PlayerPrefs.HasKey(GarbageSaveDataKey))
+			if (PlayerPrefs.HasKey(PrefsKey.GarbageSaveDataKey))
 			{
-				GarbageTile.SaveData[] dataArr = ReadTileSave<GarbageTile.SaveData[]>(GarbageSaveDataKey);
+				GarbageTile.SaveData[] dataArr = ReadTileSave<GarbageTile.SaveData[]>(PrefsKey.GarbageSaveDataKey);
 				ObjectTileManager.Instance.LoadGarbageTile(dataArr);
 			}
 			else
@@ -184,35 +178,40 @@ namespace FarmGame
 			{
 				case ESaveType.Land:
 					var landDataArr = LandTileManager.Instance.GetLandSaveDatas();
-					WriteTileSave(landDataArr, LandSaveDataKey);
+					WriteTileSave(landDataArr, PrefsKey.LandSaveDataKey);
 					break;
 				case ESaveType.Road:
 					var roadDataArr = ObjectTileManager.Instance.GetRoadSaveDatas();
-					WriteTileSave(roadDataArr, RoadSaveDataKey);
+					WriteTileSave(roadDataArr, PrefsKey.RoadSaveDataKey);
 					break;
 				case ESaveType.Product:
 					var productDataArr = ObjectTileManager.Instance.GetProductSaveDatas();
-					WriteTileSave(productDataArr, ProductSaveDataKey);
+					WriteTileSave(productDataArr, PrefsKey.ProductSaveDataKey);
 					break;
 				case ESaveType.Decoration:
 					var decorationDataArr = ObjectTileManager.Instance.GetDecorationSaveDatas();
-					WriteTileSave(decorationDataArr, DecorationSaveDataKey);
+					WriteTileSave(decorationDataArr, PrefsKey.DecorationSaveDataKey);
 					break;
 				case ESaveType.Garbage:
 					var garbageDataArr = ObjectTileManager.Instance.GetGarbageSaveDatas();
-					WriteTileSave(garbageDataArr, GarbageSaveDataKey);
+					WriteTileSave(garbageDataArr, PrefsKey.GarbageSaveDataKey);
 					break;
 			}
 		}
 
 		public void ButtonEvent_ClearSaveData()
 		{
+			PlayerPrefs.DeleteKey(PrefsKey.GoldResourceSaveDataKey);
+			PlayerPrefs.DeleteKey(PrefsKey.ProductResourceSaveDataKey);
+
+			PlayerPrefs.DeleteKey(PrefsKey.LandSaveDataKey);
+			PlayerPrefs.DeleteKey(PrefsKey.RoadSaveDataKey);
+			PlayerPrefs.DeleteKey(PrefsKey.ProductSaveDataKey);
+			PlayerPrefs.DeleteKey(PrefsKey.DecorationSaveDataKey);
+			PlayerPrefs.DeleteKey(PrefsKey.GarbageSaveDataKey);
+#if UNITY_EDITOR
 			Debug.Log("ClearSaveData!");
-			PlayerPrefs.DeleteKey(LandSaveDataKey);
-			PlayerPrefs.DeleteKey(RoadSaveDataKey);
-			PlayerPrefs.DeleteKey(ProductSaveDataKey);
-			PlayerPrefs.DeleteKey(DecorationSaveDataKey);
-			PlayerPrefs.DeleteKey(GarbageSaveDataKey);
+#endif
 		}
 
 		T ReadTileSave<T>(string key)
