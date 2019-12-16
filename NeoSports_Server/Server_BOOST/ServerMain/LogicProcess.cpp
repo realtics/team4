@@ -192,16 +192,20 @@ void LogicProcess::ProcessPacket()
 		case PACKET_INDEX::REQ_RANK:
 		{
 			PACKET_REQ_RANK* packet = (PACKET_REQ_RANK*)data;
-			RANK rank[MAX_RANK_COUNT];
+			RANK rank[MAX_RANK_COUNT]
+				= { { NULL,NULL },{ NULL,NULL },{ NULL,NULL },{ NULL,NULL }, { NULL,NULL }, };
 
-			DB::GetInstance()->Rank(packet->gameIndex, rank);//배열 포인터를 전달하고싶다
+			DB::GetInstance()->Rank(packet->gameIndex, rank);
 			PACKET_RES_RANK resRankPacket;
 			resRankPacket.header.packetIndex = PACKET_INDEX::RES_RANK;
 			resRankPacket.header.packetSize = sizeof(PACKET_RES_RANK);
 			for (int i = 0; i < MAX_RANK_COUNT; i++)
 			{
-				resRankPacket.rank[i].clientID = rank[i].clientID;
-				resRankPacket.rank[i].winRecord = rank[i].winRecord;
+				if (rank[i].clientID != NULL)
+				{
+					resRankPacket.rank[i].clientID = rank[i].clientID;
+					resRankPacket.rank[i].winRecord = rank[i].winRecord;
+				}
 			}
 			std::string aa = _SerializationJson(PACKET_INDEX::RES_RANK, (const char*)&resRankPacket);
 			_serverPtr->PostSendSession(sessionID, false, aa.length(), (char*)aa.c_str());

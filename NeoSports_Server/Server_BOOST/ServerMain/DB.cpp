@@ -201,13 +201,12 @@ void DB::UpdateWinRecord(int clientID, GAME_INDEX gameIndex, int addScore)
 	}
 
 	//Update할 ROW가 없다면 ROW를 추가한다
-	InsertGameInfo(clientID, gameIndex,1);
+	InsertGameInfo(clientID, gameIndex, 1);
 }
 
 void DB::Rank(GAME_INDEX gameIndex, RANK rank[])
 {
-	std::string rankStr;
-
+	std::string rankStr = "";
 	rankStr = orderByRank("gameInfo", gameIndex, "winRecord");
 
 	if (mysql_query(&_conn, rankStr.c_str()) != 0)

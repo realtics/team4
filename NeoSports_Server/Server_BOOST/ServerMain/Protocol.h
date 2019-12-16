@@ -106,7 +106,8 @@ struct PACKET_REQ_RANK
 struct PACKET_RES_RANK
 {
 	PACKET_HEADER header;
-	RANK rank[MAX_RANK_COUNT];
+	RANK rank[MAX_RANK_COUNT]
+		= { { NULL,NULL },{ NULL,NULL },{ NULL,NULL },{ NULL,NULL }, { NULL,NULL }, };;
 };
 
 //클라가 멀티게임 버튼을 눌렀을때
