@@ -255,7 +255,7 @@ namespace FarmGame
 					Debug.LogWarning("Unknown Character Type");
 					break;
 			}
-
+			script.Initialize();
 			script.FarmStart();
 		}
 	}

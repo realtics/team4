@@ -299,6 +299,7 @@ namespace RopePullGame
 					}
 				default:
 					{
+						_player.characterPrefab = ppiYakCharacter;
 						break;
 					}
 			}
@@ -330,9 +331,12 @@ namespace RopePullGame
 			_characters = playerableObjects.GetComponentsInChildren<Character>();
 
 			var playerInst = Instantiate(playerPrefab, playerableObjects.transform);
-			_player = playerPrefab.GetComponent<Player>();
+			_player = playerInst.GetComponent<Player>();
+			_player.Initialize();
 
 			SelectInstantCharacter(InventoryManager.Instance.CurrentCharacter.Type);
+			_player.SetPlayerDirection(Player.eLookDirection.Left);
+			//_player.SetFlipCharacter(true);
 
 			var shader = _singlePlayer.GetComponentInChildren<SpirteOutlineshader>();
 

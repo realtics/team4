@@ -10,6 +10,13 @@ public class Player : MonoBehaviour
 	const float AIShootRangeMaxX = 15.0f;
 	const float AIShootRangeMinY = -15.0f;
 	const float AIShootRangeMaxY = 0.0f;
+
+	public enum eLookDirection
+	{
+		Left = -1,
+		Right = 1,
+	};
+
 	enum ePlayerState
 	{
 		Move,
@@ -23,14 +30,6 @@ public class Player : MonoBehaviour
 		Move,
 		Acting
 	}
-
-	enum eLookDirection
-	{
-		Left = -1,
-		Right = 1,
-	};
-
-
 
 	[HideInInspector]
 	public BoxCollider2D _playerTrigger;
@@ -74,17 +73,26 @@ public class Player : MonoBehaviour
 		_ballFactory = new PoolFactory(baksetballPrefab);
 		targetPos = transform.position;
 		mainCam = Camera.main;
-
+		
 	}
 
-	void Start()
+	public void Initialize()
 	{
 		CachingValues();
-		SetPlayerDirection();
+		InitPlayerDirection();
 		InitPlayer(OwnCharacter, _playerController);
 		if (NetworkManager.Instance != null)
 			_isHost = NetworkManager.Instance.isOwnHost;
 	}
+
+	//void Start()
+	//{
+	//	CachingValues();
+	//	InitPlayerDirection();
+	//	InitPlayer(OwnCharacter, _playerController);
+	//	if (NetworkManager.Instance != null)
+	//		_isHost = NetworkManager.Instance.isOwnHost;
+	//}
 
 	void Update()
 	{
@@ -240,7 +248,7 @@ public class Player : MonoBehaviour
 		_playerEquipment.SetEquipFilp(!isFlip);
 	}
 
-	void SetPlayerDirection()
+	void InitPlayerDirection()
 	{
 		if (OwnCharacter.spriteRenderer.flipX)
 		{
@@ -249,6 +257,20 @@ public class Player : MonoBehaviour
 		else if (!OwnCharacter.spriteRenderer.flipX)
 		{
 			_playerLookDirection = eLookDirection.Right;
+		}
+	}
+
+	public void SetPlayerDirection(eLookDirection direction)
+	{
+		if (direction == eLookDirection.Left)
+		{
+			_playerLookDirection = eLookDirection.Left;
+			OwnCharacter.spriteRenderer.flipX = true;
+		}
+		else if (direction == eLookDirection.Right)
+		{
+			_playerLookDirection = eLookDirection.Right;
+			OwnCharacter.spriteRenderer.flipX = false;
 		}
 	}
 
