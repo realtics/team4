@@ -139,20 +139,20 @@ void Server::ProcessReqInPacket(const int sessionID, const char* data)
 	_sessionVec[sessionID]->SetName(packet->name);
 
 	std::cout << "Server : Client accept. Name : " << _sessionVec[sessionID]->GetName() << std::endl;
-	int temp = DB::GetInstance()->InsertUser(packet->clientID,sessionID);
+	//int temp = DB::GetInstance()->InsertUser(&packet->clientID,sessionID);
 
-	//1 == 새로운 클라의 접속
-	if (temp != -1)
-	{
-		std::cout << "clientID : " << temp << std::endl;
-	}
+	////1 == 새로운 클라의 접속
+	//if (temp != -1)
+	//{
+	//	std::cout << "clientID : " << temp << std::endl;
+	//}
 
-	//2 == clientID의 정보가 이미있으므로 sessionID의 업데이트가 되었다고 알림
-	else if (temp == 0)
-	{
-		std::cout << "clientID : " << temp << std::endl;
-		std::cout << "Server::ProcessReqInPacket session Update" << std::endl;
-	}
+	////2 == clientID의 정보가 이미있으므로 sessionID의 업데이트가 되었다고 알림
+	//else if (temp == 0)
+	//{
+	//	std::cout << "clientID : " << temp << std::endl;
+	//	std::cout << "Server::ProcessReqInPacket session Update" << std::endl;
+	//}
 }
 
 void Server::ProcessInitRoomPacket(const int sessionID, const char* data)

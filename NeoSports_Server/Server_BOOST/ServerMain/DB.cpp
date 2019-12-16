@@ -40,11 +40,13 @@ void DB::SelectQuery()
 
 }
 
-int DB::InsertUser(int clientID, int sessionID)
+int DB::InsertUser(int* clientID, int sessionID)
 {
-	//최초로 접속한 클라이므로 클라ID를 넘겨줘야함
-	if (clientID == 0)
+	if (clientID == NULL)
 	{
+		std::cout << "DB::InsertUser &clientID is NULL" << std::endl;
+		return -1;
+	}
 		if (mysql_query(&_conn, "SELECT * FROM user") != 0)
 		{
 			std::cout << "DB : Update mysql_query error" << std::endl;
@@ -52,11 +54,10 @@ int DB::InsertUser(int clientID, int sessionID)
 		}
 		_pSqlRes = mysql_store_result(&_conn);
 		int maxCount = mysql_num_rows(_pSqlRes);
-		clientID = maxCount++;
+		*clientID = maxCount++;
 
-		std::string name = boost::lexical_cast<std::string>(clientID);
 		std::string query = "INSERT INTO user(clientID,sessionID) values('";
-		query += name;
+		query += boost::lexical_cast<std::string>(*clientID);;
 		query += "','";
 		query += boost::lexical_cast<std::string>(sessionID);
 		query += "')";
@@ -66,15 +67,8 @@ int DB::InsertUser(int clientID, int sessionID)
 			return -1;
 		}
 		std::cout << "DB : INSERT ClientID" << std::endl;
-		return clientID;
-	}
-
-	//clientID가 이미 있는 클라이므로 DB의 USER 테이블에서 sessionID만 바꾼다
-	else if (clientID != 0)
-	{
-		UpdataUserTable(clientID, sessionID);
-		return 0;
-	}
+		return *clientID;
+	
 }
 
 void DB::DeleteUser(int clientID)
@@ -91,20 +85,20 @@ void DB::DeleteUser(int clientID)
 
 void DB::UpdataUserTable(int clientID, int sessionID)
 {
-	LockGuard upDateLockGuard(_userUpDateLock);
+	//LockGuard upDateLockGuard(_userUpDateLock);
 
-	if (mysql_query(&_conn, "SELECT * FROM user") != 0)
-	{
-		std::cout << "DB : Update mysql_query error" << std::endl;
-		return;
-	}
-	_pSqlRes = mysql_store_result(&_conn);
+	//if (mysql_query(&_conn, "SELECT * FROM user") != 0)
+	//{
+	//	std::cout << "DB : Update mysql_query error" << std::endl;
+	//	return;
+	//}
+	//_pSqlRes = mysql_store_result(&_conn);
 
-	while ((_sqlRow = mysql_fetch_row(_pSqlRes)) != nullptr)
-	{
-		//_sqlRow인덱스 0 = DB의 칼럼(clientID)
-		if (_sqlRow[0] == boost::lexical_cast<std::string>(clientID))
-		{
+	//while ((_sqlRow = mysql_fetch_row(_pSqlRes)) != nullptr)
+	//{
+	//	//_sqlRow인덱스 0 = DB의 칼럼(clientID)
+	//	if (_sqlRow[0] == boost::lexical_cast<std::string>(clientID))
+	//	{
 			std::string aa = "UPDATE user SET sessionID = ";
 			aa += boost::lexical_cast<std::string>(sessionID);
 			std::string tempStr = " WHERE clientID = ";
@@ -113,11 +107,11 @@ void DB::UpdataUserTable(int clientID, int sessionID)
 
 			if (mysql_query(&_conn, aa.c_str()) != 0)
 			{
-				std::cout << "DB : Update mysql_query error" << std::endl;
+				std::cout << "DB : UpdataUserTable error" << std::endl;
 				return;
 			}
-		}
-	}
+		/*}
+	}*/
 
 	std::cout << "DB : UPDATE sessionID of clientID" << std::endl;
 }
@@ -134,10 +128,10 @@ int DB::GetClientID(int sessionID)
 	while ((_sqlRow = mysql_fetch_row(_pSqlRes)) != nullptr)
 	{
 		//_sqlRow인덱스 1 = DB의 칼럼(sessionID)
+		//_sqlRow인덱스 0 = DB의 칼럼(clientID)
 		if (_sqlRow[1] == boost::lexical_cast<std::string>(sessionID))
 		{
-			int temp = boost::lexical_cast<int>(_sqlRow[0]);
-			return temp;
+			return boost::lexical_cast<int>(_sqlRow[0]);;
 		}
 	}
 }

@@ -1,9 +1,19 @@
-19.12.06
-디비 테이블(현재1개 - 임시용)
+19.12.16 (1차 DB 리펙토링)
+디비 테이블(neoSport SCHEMAS 4 Tables)
 
-[game]
-name(PK)  gameIndex  winRecord
+[farmInfo]
+clientID(FK)	infoJSON
+: 클라이언트의 농장정보를 JSON으로 저장하는 테이블
 
+[gameInfo]
+clientID(FK)  gameIndex(FK)  winRecord
+:누가 무슨 게임을 몇번 이겼는지 저장하는 테이블
 
-닉네임(name)을 기본키로 가지는 game테이블.
-누가 무슨 게임을 몇번 이겼는지만 적혀있다.(현재는 21번게임 (줄다리기)만 입력하는 상태)
+[name]
+clientID(FK)	name
+:클라이언트의 닉네임을 저장하는 테이블
+
+[user]
+clientID(PK) sessionID
+:클라이언트 식별정보인 clientID와 접속할때마다 clientID를 구별하는 sessionID.
+sesisonID는 매번 바뀐다.(코드레벨에서 sessionID와 DB의 clientID를 이어주는 정보)

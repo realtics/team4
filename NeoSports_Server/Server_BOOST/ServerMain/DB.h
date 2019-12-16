@@ -22,7 +22,7 @@ public:
 	void Init();
 
 	void SelectQuery();
-	int InsertUser(int clientID,int sessionID);
+	int InsertUser(int* clientID,int sessionID);
 	void DeleteUser(int clientID);
 
 	void UpdateWinRecord(int clientID, GAME_INDEX gameIndex, int addScore);

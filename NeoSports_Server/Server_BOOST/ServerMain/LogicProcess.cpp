@@ -25,6 +25,8 @@ void LogicProcess::StopProcess()
 	while (!_threadHandler->IsEmptyPacketQueue())
 	{
 		ProcessPacket();
+		/*이대로 ProcessPacket을 호출하면 WaitForSingleObject때문에 동작을
+		안하지않나??*/
 	}
 }
 
@@ -40,7 +42,7 @@ void LogicProcess::ProcessPacket()
 			std::cout << "error code : " << GetLastError() << std::endl;
 			break;
 		}
-		
+
 		//std::cout << "Call Logic Thread" << std::endl;
 		PacketData packetData = _threadHandler->GetPakcetDataQueueFront();
 		const int sessionID = packetData.sessionID;
@@ -55,13 +57,24 @@ void LogicProcess::ProcessPacket()
 			//accept 처리
 			_serverPtr->ProcessReqInPacket(sessionID, data);
 
-			PACKET_RES_IN sendPacket;
-			sendPacket.Init();
-			int temp = DB::GetInstance()->GetClientID(sessionID);
-			sendPacket.clientID = temp;
+			//clientID조회를 위해 clientID값을 얻어온다
+			PACKET_REQ_IN* recvPakcet = (PACKET_REQ_IN*)data;
+			if (recvPakcet->clientID == 0)
+			{
+				//clientID 조회 및 전송
+				PACKET_RES_IN sendPacket;
+				sendPacket.Init();
+				int temp = DB::GetInstance()->InsertUser(&recvPakcet->clientID, sessionID);
+				sendPacket.clientID = temp;
 
-			std::string aa = _SerializationJson(PACKET_INDEX::RES_IN, (const char*)&sendPacket);
-			_serverPtr->PostSendSession(sessionID, false, aa.length(), (char*)aa.c_str());
+				std::string aa = _SerializationJson(PACKET_INDEX::RES_IN, (const char*)&sendPacket);
+				_serverPtr->PostSendSession(sessionID, false, aa.length(), (char*)aa.c_str());
+			}
+
+			else if (recvPakcet->clientID != 0)
+			{
+				DB::GetInstance()->UpdataUserTable(recvPakcet->clientID, sessionID);
+			}
 		}
 		break;
 
