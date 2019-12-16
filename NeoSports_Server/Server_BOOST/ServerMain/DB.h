@@ -22,8 +22,11 @@ public:
 	void Init();
 
 	void SelectQuery();
-	int InsertUser(int* clientID,int sessionID);
+	int InsertUser(int* clientID, int sessionID);
 	void DeleteUser(int clientID);
+
+	void InsertGameInfo(int clientID, GAME_INDEX gameIndex,int winRecord);
+	void SetNameTable(int clientID, std::string name);
 
 	void UpdateWinRecord(int clientID, GAME_INDEX gameIndex, int addScore);
 	void UpdataUserTable(int clientID, int sessionID);

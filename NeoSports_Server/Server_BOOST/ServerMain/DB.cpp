@@ -40,35 +40,73 @@ void DB::SelectQuery()
 
 }
 
-int DB::InsertUser(int* clientID, int sessionID)
+int DB::InsertUser(int* clientID, int data)
 {
 	if (clientID == NULL)
 	{
 		std::cout << "DB::InsertUser &clientID is NULL" << std::endl;
 		return -1;
 	}
-		if (mysql_query(&_conn, "SELECT * FROM user") != 0)
-		{
-			std::cout << "DB : Update mysql_query error" << std::endl;
-			return -1;
-		}
-		_pSqlRes = mysql_store_result(&_conn);
-		int maxCount = mysql_num_rows(_pSqlRes);
-		*clientID = maxCount++;
+	if (mysql_query(&_conn, "SELECT * FROM user") != 0)
+	{
+		std::cout << "DB : Update mysql_query error" << std::endl;
+		return -1;
+	}
+	_pSqlRes = mysql_store_result(&_conn);
+	int maxCount = mysql_num_rows(_pSqlRes);
+	*clientID = maxCount++;
 
-		std::string query = "INSERT INTO user(clientID,sessionID) values('";
-		query += boost::lexical_cast<std::string>(*clientID);;
-		query += "','";
-		query += boost::lexical_cast<std::string>(sessionID);
-		query += "')";
-		if (mysql_query(&_conn, query.c_str()) != 0)
-		{
-			std::cout << "DB : INSERT ClientID error" << std::endl;
-			return -1;
-		}
-		std::cout << "DB : INSERT ClientID" << std::endl;
-		return *clientID;
-	
+	std::string query = "";
+	query = "INSERT INTO user(clientID,sessionID) values('";
+	query += boost::lexical_cast<std::string>(*clientID);;
+	query += "','";
+	query += boost::lexical_cast<std::string>(data);
+	query += "')";
+
+	if (mysql_query(&_conn, query.c_str()) != 0)
+	{
+		std::cout << "DB : INSERT ClientID error" << std::endl;
+		return -1;
+	}
+	std::cout << "DB : INSERT ClientID" << std::endl;
+	return *clientID;
+
+}
+
+void DB::InsertGameInfo(int clientID, GAME_INDEX gameIndex, int winRecord)
+{
+	std::string query = "";
+	query = "INSERT INTO gameInfo values('";
+	query += boost::lexical_cast<std::string>(clientID);;
+	query += "','";
+	query += boost::lexical_cast<std::string>(gameIndex);
+	query += "','";
+	query += boost::lexical_cast<std::string>(winRecord);
+	query += "')";
+
+	if (mysql_query(&_conn, query.c_str()) != 0)
+	{
+		std::cout << "DB : INSERT GameInfo error" << std::endl;
+		return;
+	}
+	std::cout << "DB : INSERT GameInfo" << std::endl;
+}
+
+void DB::SetNameTable(int clientID, std::string name)
+{
+	std::string query = "";
+	query = "INSERT INTO name(clientID,name) values('";
+	query += boost::lexical_cast<std::string>(clientID);;
+	query += "','";
+	query += name;
+	query += "')";
+
+	if (mysql_query(&_conn, query.c_str()) != 0)
+	{
+		std::cout << "DB : INSERT Name error" << std::endl;
+		return;
+	}
+	std::cout << "DB : INSERT Name" << std::endl;
 }
 
 void DB::DeleteUser(int clientID)
@@ -85,33 +123,17 @@ void DB::DeleteUser(int clientID)
 
 void DB::UpdataUserTable(int clientID, int sessionID)
 {
-	//LockGuard upDateLockGuard(_userUpDateLock);
+	std::string aa = "UPDATE user SET sessionID = ";
+	aa += boost::lexical_cast<std::string>(sessionID);
+	std::string tempStr = " WHERE clientID = ";
+	aa += tempStr;
+	aa += boost::lexical_cast<std::string>(clientID);
 
-	//if (mysql_query(&_conn, "SELECT * FROM user") != 0)
-	//{
-	//	std::cout << "DB : Update mysql_query error" << std::endl;
-	//	return;
-	//}
-	//_pSqlRes = mysql_store_result(&_conn);
-
-	//while ((_sqlRow = mysql_fetch_row(_pSqlRes)) != nullptr)
-	//{
-	//	//_sqlRow인덱스 0 = DB의 칼럼(clientID)
-	//	if (_sqlRow[0] == boost::lexical_cast<std::string>(clientID))
-	//	{
-			std::string aa = "UPDATE user SET sessionID = ";
-			aa += boost::lexical_cast<std::string>(sessionID);
-			std::string tempStr = " WHERE clientID = ";
-			aa += tempStr;
-			aa += boost::lexical_cast<std::string>(clientID);
-
-			if (mysql_query(&_conn, aa.c_str()) != 0)
-			{
-				std::cout << "DB : UpdataUserTable error" << std::endl;
-				return;
-			}
-		/*}
-	}*/
+	if (mysql_query(&_conn, aa.c_str()) != 0)
+	{
+		std::cout << "DB : UpdataUserTable error" << std::endl;
+		return;
+	}
 
 	std::cout << "DB : UPDATE sessionID of clientID" << std::endl;
 }
@@ -173,9 +195,13 @@ void DB::UpdateWinRecord(int clientID, GAME_INDEX gameIndex, int addScore)
 					std::cout << "DB : Update mysql_query error" << std::endl;
 					return;
 				}
+				return;
 			}
 		}
 	}
+
+	//Update할 ROW가 없다면 ROW를 추가한다
+	InsertGameInfo(clientID, gameIndex,1);
 }
 
 void DB::Rank(GAME_INDEX gameIndex, RANK rank[])
