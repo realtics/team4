@@ -17,7 +17,8 @@ public class WaitSceneManager : Singleton<WaitSceneManager>
 
 	void Start()
 	{
-		_player = playerPrefab.GetComponent<Player>();
+		var playerInst = Instantiate(playerPrefab, null);
+		_player = playerInst.GetComponent<Player>();
 
 		if (InventoryManager.Instance != null)
 		{
@@ -29,7 +30,8 @@ public class WaitSceneManager : Singleton<WaitSceneManager>
 			SelectInstantCharacter(CharacterInfo.EType.PpiYaGi);
 		}
 
-		Instantiate(playerPrefab, null);
+
+		_player.Initialize();
 	}
 
 	void SelectInstantCharacter(CharacterInfo.EType charType)
