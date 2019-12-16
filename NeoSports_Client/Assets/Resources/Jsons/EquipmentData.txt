@@ -20,5 +20,38 @@
          "luck":1
       },
       "iconName":"Equipment_Fedora_1"
+   },
+   { 
+      "itemType":2,
+      "itemName":"빨간 캡모자",
+      "itemStatus":{ 
+         "strength":2,
+         "endurance":1,
+         "agility":2,
+         "luck":1
+      },
+      "iconName":"RedCap"
+   },
+   { 
+      "itemType":3,
+      "itemName":"사슴 뿔",
+      "itemStatus":{ 
+         "strength":2,
+         "endurance":4,
+         "agility":2,
+         "luck":1
+      },
+      "iconName":"DeerHorn"
+   },
+   { 
+      "itemType":4,
+      "itemName":"산타 모자",
+      "itemStatus":{ 
+         "strength":2,
+         "endurance":4,
+         "agility":4,
+         "luck":7
+      },
+      "iconName":"SantaHat"
    }
 ]

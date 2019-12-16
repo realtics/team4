@@ -35,22 +35,31 @@ SpriteAtlas:
     - {fileID: 7894758045334605482, guid: a5bc11e156dd91f4a92383fbcf910233, type: 3}
     - {fileID: -7167223357044997742, guid: 408b8aada4b88014db7a27119106e0d4, type: 3}
     - {fileID: 21300000, guid: b220f3d311fd19740ace7b83cd06cce0, type: 3}
-    totalSpriteSurfaceArea: 432737
+    - {fileID: 21300000, guid: c09112884f2767e4b95a1e1d7cca2196, type: 3}
+    - {fileID: 21300000, guid: 670de2a47ed348c45be8bd2097b90515, type: 3}
+    - {fileID: 21300000, guid: 554240554583dff42ab851987c754cae, type: 3}
+    totalSpriteSurfaceArea: 1152737
     bindAsDefault: 1
     storedHash:
       serializedVersion: 2
-      Hash: f1f0090c1fe0f08f8b75961c2d8fa630
+      Hash: a5c293f68d3a619f4ce12b980dd4306e
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
   - {fileID: -5364114642270749980, guid: a5bc11e156dd91f4a92383fbcf910233, type: 3}
   - {fileID: 7894758045334605482, guid: a5bc11e156dd91f4a92383fbcf910233, type: 3}
   - {fileID: 21300000, guid: b220f3d311fd19740ace7b83cd06cce0, type: 3}
+  - {fileID: 21300000, guid: 670de2a47ed348c45be8bd2097b90515, type: 3}
+  - {fileID: 21300000, guid: 554240554583dff42ab851987c754cae, type: 3}
+  - {fileID: 21300000, guid: c09112884f2767e4b95a1e1d7cca2196, type: 3}
   - {fileID: -7167223357044997742, guid: 408b8aada4b88014db7a27119106e0d4, type: 3}
   - {fileID: 6749064067597077865, guid: f1ea92ed4b13788478c5446c6ade726b, type: 3}
   m_PackedSpriteNamesToIndex:
   - Equipment_Fedora_0
   - Equipment_Fedora_1
   - Ppi_Ya_Gi_Icon
+  - RedCap
+  - DeerHorn
+  - SantaHat
   - Icon_Group_78
   - Turkey_Jelly_Idle_0
   m_Tag: UIAtlas

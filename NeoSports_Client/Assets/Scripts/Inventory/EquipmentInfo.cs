@@ -18,6 +18,9 @@ public class EquipmentInfo
 	{
 		BlackFedora,
 		BrownFedora,
+        RedCap,
+        DeerHorn,
+        SantaHat,
 		End
 	}
 
