@@ -74,6 +74,10 @@ namespace FarmGame
 		Text productInfoNameText;
 		[SerializeField]
 		Text productInfoEffectText;
+
+		// Resource Info
+		[SerializeField]
+		Text goldResourceAmountText;
 		#endregion
 
 		public Action harvestButtonPressed;
@@ -100,6 +104,7 @@ namespace FarmGame
 		{
 			CreatePlantScrollViewItem();
 			CreateDecorationScrollViewItem();
+			UpdateGoldResourceLabel();
 		}
 
 		#region Common Func
@@ -336,6 +341,12 @@ namespace FarmGame
 			}
 		}
 		#endregion
+
+		public void UpdateGoldResourceLabel()
+		{
+			int value = ResourceManager.Instance.GetGoldResource();
+			goldResourceAmountText.text = value.ToString("N0");
+		}
 
 		public void ButtonEvent_HarvestProduct()
 		{

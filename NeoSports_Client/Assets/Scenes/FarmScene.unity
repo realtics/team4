@@ -4174,6 +4174,7 @@ MonoBehaviour:
   productInfoFullGrownImage: {fileID: 951977109}
   productInfoNameText: {fileID: 268229896}
   productInfoEffectText: {fileID: 1703469741}
+  goldResourceAmountText: {fileID: 1765427365}
 --- !u!4 &1513105897
 Transform:
   m_ObjectHideFlags: 0
