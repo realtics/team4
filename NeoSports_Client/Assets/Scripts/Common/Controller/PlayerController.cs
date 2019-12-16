@@ -76,6 +76,10 @@ public class PlayerController : MonoBehaviour
 	#region Input Case
 	protected virtual void ProcessBasket()
 	{
+		if (BasketBallGame.BasketBallGameManager.Instance.GameState != BasketBallGame.BasketBallGameManager.EGameState.Playing)
+		{
+			return;
+		}
 		if (Input.GetMouseButtonDown(0))
 		{
 			if (_ownPlayer._playerTrigger.OverlapPoint(_ownPlayer.mainCam.ScreenToWorldPoint(Input.mousePosition)))

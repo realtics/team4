@@ -16,6 +16,8 @@ namespace BasketBallGame
 			GameOver
 		}
 
+		public float endGameTime;
+
 		const float GamePrepareTime = 4.0f;
 		// Prefab Character
 		public GameObject ppiYakCharacter;
@@ -62,6 +64,7 @@ namespace BasketBallGame
 					break;
 				case EGameState.Playing:
 					CommonUIManager.Instance.UpdateElapseGameTimer();
+					CommonUIManager.Instance.UpdateTimeoutGameTimer();
 					break;
 				case EGameState.GameOver:
 					break;
@@ -80,11 +83,14 @@ namespace BasketBallGame
 		{
 			GameState = EGameState.Playing;
 			CommonUIManager.Instance.CreateElapseGameTimer(rootCanvas);
+			CommonUIManager.Instance.CreateTimeoutGameTimer(rootCanvas, endGameTime, EndGame);
 		}
 
-		public void GameOver(string winner)
+		void EndGame()
 		{
+			GameState = EGameState.GameOver;
 			CommonUIManager.Instance.CreateWinnerNotice(rootCanvas, "플레이어 이름");
+			CommonUIManager.Instance.DestroyElapseGameTimer();
 		}
 
 		void CreateSingleCharacter()
