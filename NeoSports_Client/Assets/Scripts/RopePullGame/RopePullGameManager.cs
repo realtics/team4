@@ -103,6 +103,7 @@ namespace RopePullGame
 					break;
 				case ESceneState.SetWinner:
 					restartButton.gameObject.SetActive(true);
+					Invoke(nameof(PopUpNextLevel),1.5f);
 					_sceneState = ESceneState.WaitRestart;
 					break;
 				case ESceneState.WaitRestart:
@@ -291,6 +292,20 @@ namespace RopePullGame
 				return NetworkManager.Instance.IsSinglePlay();
 			}
 			return false;
+		}
+
+		void PopUpNextLevel()
+		{
+			PopupManager.PopupData data;
+			data.text = "다음 단계로..";
+			data.okFlag = true;
+			data.callBack = MoveNextLevel;
+			Singleton<PopupManager>.Instance.ShowPopup(data);
+		}
+
+		void MoveNextLevel()
+		{
+			Debug.Log("NextLeel");
 		}
 	}
 }

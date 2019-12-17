@@ -296,7 +296,7 @@ public class Player : MonoBehaviour
 
 	#region Farm Function
 
-	const float MoveSpeed = 3.0f;
+	const float MoveSpeed = 1.5f;
 	Vector3 _targetPosition;
 
 	LandTile _currentLandTile;
