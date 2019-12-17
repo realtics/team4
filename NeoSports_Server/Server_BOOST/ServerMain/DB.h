@@ -34,6 +34,10 @@ public:
 	void Rank(GAME_INDEX gameIndex, RANK rank[]);
 	std::string orderByRank(std::string tableName, GAME_INDEX gameIndex, std::string Column);
 
+	std::string GetFarmInfo(int clientID);
+	void SetFarmInfo(int clientID, std::string farmJson);
+	void InsertFarmInfo(int clientID, std::string farmJson);
+
 	int GetClientID(int sessionID);
 
 private:

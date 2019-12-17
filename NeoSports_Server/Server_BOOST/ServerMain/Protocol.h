@@ -43,6 +43,8 @@ enum PACKET_INDEX
 	REQ_MULTI_ROOM, //클라에서 같이하기 눌렀을때 방을 만들거나 방이있으면 접속함
 	REQ_INIT_ROOM,
 	REQ_TIME,
+	REQ_ENTER_FARM,
+	REQ_SAVE_FARM,
 
 	RES_IN, //클라에게 clientID를 할당하는 패킷
 	RES_START_GAME,
@@ -74,6 +76,17 @@ struct PACKET_HEADER
 	int packetSize;
 };
 
+struct PACKET_REQ_RES_ENTER_FARM : public PACKET_HEADER
+{
+	char farmInfoJSON[1024] = {0,};
+
+	void Init()
+	{
+		packetIndex = PACKET_INDEX::REQ_ENTER_FARM;
+		packetSize = sizeof(PACKET_REQ_RES_ENTER_FARM);
+	}
+};
+
 struct PACKET_RES_IN : public PACKET_HEADER
 {
 	int clientID;
@@ -86,7 +99,7 @@ struct PACKET_RES_IN : public PACKET_HEADER
 	}
 };
 
-struct PACKET_REQ_TIME
+struct PACKET_REQ_UNKNOWN //데이터 없이 요청만 하는 패킷
 {
 	PACKET_HEADER header;
 };
@@ -133,8 +146,6 @@ struct PACKET_START_GAME
 
 	char superName[12];
 	char name[12];
-
-	~PACKET_START_GAME() {};
 };
 
 //줄다리기 게임 데이터 패킷
@@ -164,7 +175,6 @@ struct PACKET_REQ_IN : public PACKET_HEADER
 		//memset(name,0,MAX_NAME_LEN);
 	}
 };
-
 
 //
 ////접속되있는 클라의 메시지를 받음

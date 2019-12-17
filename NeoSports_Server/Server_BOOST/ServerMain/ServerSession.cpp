@@ -237,9 +237,30 @@ void Session::_DeSerializationJson(char* jsonStr)
 
 	case PACKET_INDEX::REQ_TIME:
 	{
-		PACKET_REQ_TIME packet;
+		PACKET_REQ_UNKNOWN packet;
 		packet.header.packetIndex = headerIndex;
 		packet.header.packetSize = 0; //요청확인만 하면 되므로 사이즈 불필요
+
+		memcpy(&_packetBuffer[_packetBufferMark], (char*)&packet, sizeof(packet));
+		break;
+	}
+
+	case PACKET_INDEX::REQ_ENTER_FARM:
+	{
+		PACKET_REQ_UNKNOWN packet;
+		packet.header.packetIndex = headerIndex;
+		packet.header.packetSize = 0; //요청확인만 하면 되므로 사이즈 불필요
+
+		memcpy(&_packetBuffer[_packetBufferMark], (char*)&packet, sizeof(packet));
+		break;
+	}
+
+	case PACKET_INDEX::REQ_SAVE_FARM:
+	{
+		PACKET_REQ_RES_FARM packet;
+		packet.packetIndex = headerIndex;
+		packet.packetSize = children.get<int>("packetSize");
+		memcpy(&packet.farmInfoJSON, ptRecv.get<char*>("infoJson"), sizeof(1024)); //size = ??
 
 		memcpy(&_packetBuffer[_packetBufferMark], (char*)&packet, sizeof(packet));
 		break;

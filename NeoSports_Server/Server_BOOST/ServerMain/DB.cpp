@@ -158,6 +158,92 @@ int DB::GetClientID(int sessionID)
 	}
 }
 
+std::string DB::GetFarmInfo(int clientID)
+{
+	if (clientID == 0)
+	{
+		std::cout << "DB : GetFarmInfo clientID == 0 " << std::endl;
+		return;
+	}
+
+	if (mysql_query(&_conn, "SELECT * FROM farmInfo") != 0)
+	{
+		std::cout << "DB : GetFarmInfo mysql_query error" << std::endl;
+		return;
+	}
+	_pSqlRes = mysql_store_result(&_conn);
+
+	while ((_sqlRow = mysql_fetch_row(_pSqlRes)) != nullptr)
+	{
+		//_sqlRowÀÎµ¦½º 0 = DBÀÇ Ä®·³(clientID), 1 == farmInfo
+		if (_sqlRow[0] == boost::lexical_cast<std::string>(clientID))
+		{
+			if (_sqlRow[1] != NULL)
+				return _sqlRow[1];
+			else
+				return "";
+		}
+	}
+
+}
+
+void DB::SetFarmInfo(int clientID, std::string farmJson)
+{
+	if (clientID == 0)
+	{
+		std::cout << "DB : SetFarmInfo clientID == 0 " << std::endl;
+		return;
+	}
+
+	if (mysql_query(&_conn, "SELECT * FROM farmInfo") != 0)
+	{
+		std::cout << "DB : GetFarmInfo mysql_query error" << std::endl;
+		return;
+	}
+	_pSqlRes = mysql_store_result(&_conn);
+
+	while ((_sqlRow = mysql_fetch_row(_pSqlRes)) != nullptr)
+	{
+		//_sqlRowÀÎµ¦½º 0 = DBÀÇ Ä®·³(clientID), 1 == farmInfo
+		if (_sqlRow[0] == boost::lexical_cast<std::string>(clientID))
+		{
+			std::string aa = "UPDATE farmInfo SET infoJson = '";
+			aa += farmJson;
+			std::string tempStr = "' WHERE clientID = '";
+			aa += tempStr;
+			aa += boost::lexical_cast<std::string>(clientID);
+			aa += "'";
+
+			if (mysql_query(&_conn, aa.c_str()) != 0)
+			{
+				std::cout << "DB : SetFarmInfo mysql_query error" << std::endl;
+				return;
+			}
+			return;
+		}
+	}
+	InsertFarmInfo(clientID, farmJson);
+}
+
+void DB::InsertFarmInfo(int clientID, std::string farmJson)
+{
+	std::string query = "";
+	query = "INSERT INTO farmInfo values('";
+	query += boost::lexical_cast<std::string>(clientID);;
+	query += "','";
+	query += farmJson;
+	query += "')";
+
+	if (mysql_query(&_conn, query.c_str()) != 0)
+	{
+		std::cout << "DB : INSERT FarmInfo error" << std::endl;
+		return;
+	}
+	std::cout << "DB : INSERT InsertFarmInfo" << std::endl;
+}
+
+
+
 void DB::UpdateWinRecord(int clientID, GAME_INDEX gameIndex, int addScore)
 {
 	LockGuard upDateLockGuard(_upDateLock);

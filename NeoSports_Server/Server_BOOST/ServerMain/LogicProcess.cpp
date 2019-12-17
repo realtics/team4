@@ -75,8 +75,34 @@ void LogicProcess::ProcessPacket()
 			{
 				DB::GetInstance()->UpdataUserTable(recvPakcet->clientID, sessionID);
 			}
+
+			break;
 		}
-		break;
+
+		case PACKET_INDEX::REQ_SAVE_FARM:
+		{
+			PACKET_REQ_RES_FARM* packet = (PACKET_REQ_RES_FARM*)data;
+			int clientID = DB::GetInstance()->GetClientID(sessionID);
+			DB::GetInstance()->SetFarmInfo(clientID, packet->farmInfoJSON);
+
+			break;
+		}
+
+		case PACKET_INDEX::REQ_ENTER_FARM:
+		{
+			PACKET_REQ_RES_FARM sendPacket;
+			sendPacket.Init();
+
+			int clientID = DB::GetInstance()->GetClientID(sessionID);
+			std::string farmJson = DB::GetInstance()->GetFarmInfo(clientID);
+			int farmJsonLength = strlen(farmJson.c_str());
+
+			memcpy(&sendPacket.farmInfoJSON, farmJson.c_str(), sizeof(farmJsonLength));
+
+			std::string aa = _SerializationJson(PACKET_INDEX::REQ_ENTER_FARM, (const char*)&sendPacket);
+			_serverPtr->PostSendSession(sessionID, false, aa.length(), (char*)aa.c_str());
+			break;
+		}
 
 		case PACKET_INDEX::REQ_TIME:
 		{
@@ -305,6 +331,26 @@ std::string LogicProcess::_SerializationJson(PACKET_INDEX packetIndex, const cha
 		std::string recvTemp;
 		std::ostringstream os(recvTemp);
 		boost::property_tree::write_json(os, ptSendT, false);
+		sendStr = os.str();
+		return sendStr;
+	}
+
+	case PACKET_INDEX::REQ_ENTER_FARM:
+	{
+		PACKET_REQ_RES_FARM farmInfoPacket;
+		farmInfoPacket.Init();
+
+		boost::property_tree::ptree ptSendFarmInfo;
+		boost::property_tree::ptree ptSendHeader;
+		ptSendHeader.put<int>("packetIndex", farmInfoPacket.packetIndex);
+		ptSendHeader.put<int>("packetSize", sizeof(PACKET_RES_NOW_TIME));
+		ptSendFarmInfo.add_child("header", ptSendHeader);
+
+		ptSendFarmInfo.put<char*>("farmInfoJSON", farmInfoPacket.farmInfoJSON);
+
+		std::string recvTemp;
+		std::ostringstream os(recvTemp);
+		boost::property_tree::write_json(os, ptSendFarmInfo, false);
 		sendStr = os.str();
 		return sendStr;
 	}
