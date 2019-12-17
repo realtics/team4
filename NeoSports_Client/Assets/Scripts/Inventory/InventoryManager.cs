@@ -15,7 +15,6 @@ public class InventoryManager : Singleton<InventoryManager>
 	#region Property
 	public Dictionary<CharacterInfo.EType, CharacterInfo> CharacterInfos { get; set; }
 	public Dictionary<EquipmentInfo.EType, EquipmentInfo> EquipmentInfos { get; set; }
-	public Dictionary<int, int> CropAmountDic { get; set; }
 	public CharacterInfo CurrentCharacter { get; set; }
 	public EquipmentInfo CurrentEquipment { get; set; }
 	public string PlayerNickName { get; set; }
@@ -34,7 +33,6 @@ public class InventoryManager : Singleton<InventoryManager>
 
 		CharacterInfos = new Dictionary<CharacterInfo.EType, CharacterInfo>();
 		EquipmentInfos = new Dictionary<EquipmentInfo.EType, EquipmentInfo>();
-		CropAmountDic = new Dictionary<int, int>();
 
 		PlayerNickName = "플레이어";
 		IsNickNameDecide = false;

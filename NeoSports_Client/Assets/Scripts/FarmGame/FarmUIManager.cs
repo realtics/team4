@@ -290,13 +290,13 @@ namespace FarmGame
 		{
 			CurrentCategory = ECategory.Storage;
 
-			storagePanel.SetActive(true);
 			UpdateStorageGroupInfo();
+			storagePanel.SetActive(true);
 		}
 
 		void UpdateStorageGroupInfo()
 		{
-			var cropAmountDic = InventoryManager.Instance.CropAmountDic;
+			var cropAmountDic = ResourceManager.Instance.ProductResourceDic;
 
 			foreach (var child in cropAmountDic)
 			{
@@ -309,7 +309,7 @@ namespace FarmGame
 					GameObject obj = Instantiate(prefStorageGroup, storageScrollViewContent.transform);
 					StorageGroup script = obj.transform.GetComponent<StorageGroup>();
 					ProductData data = MapData.Instance.ProductDataDic[child.Key];
-					script.InitData(data);
+					script.InitData(data, child.Value);
 
 					_storageGroupDic.Add(child.Key, script);
 				}

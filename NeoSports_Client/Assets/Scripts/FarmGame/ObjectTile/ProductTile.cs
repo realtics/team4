@@ -71,7 +71,7 @@ namespace FarmGame
 		{
 			if (CanHarvest)
 			{
-				// 수확 데이터 추가
+				ResourceManager.Instance.AddProductResource(_productData.type, 1);
 				_plantingTime = DateTime.Now;
 				_harvestTime = _plantingTime.AddMinutes(_productData.grownTime);
 				CanHarvest = false;

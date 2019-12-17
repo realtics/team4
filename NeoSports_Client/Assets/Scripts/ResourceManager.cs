@@ -20,7 +20,8 @@ public class ResourceManager : Singleton<ResourceManager>
 	public SpriteAtlas farmAtlas;
 
 	int goldResource;
-	Dictionary<int, int> productResourceDic;
+
+	public Dictionary<int, int> ProductResourceDic { get; private set; }
 
 	private void Awake()
 	{
@@ -83,9 +84,9 @@ public class ResourceManager : Singleton<ResourceManager>
 
 	public int GetProductResource(int type)
 	{
-		if (productResourceDic.ContainsKey(type))
+		if (ProductResourceDic.ContainsKey(type))
 		{
-			return productResourceDic[type];
+			return ProductResourceDic[type];
 		}
 
 		return 0;
@@ -95,14 +96,14 @@ public class ResourceManager : Singleton<ResourceManager>
 	{
 		int result;
 
-		if (productResourceDic.ContainsKey(type))
+		if (ProductResourceDic.ContainsKey(type))
 		{
-			productResourceDic[type] = value;
-			result = productResourceDic[type];
+			ProductResourceDic[type] = value;
+			result = ProductResourceDic[type];
 		}
 		else
 		{
-			productResourceDic.Add(type, value);
+			ProductResourceDic.Add(type, value);
 			result = value;
 		}
 
@@ -114,14 +115,14 @@ public class ResourceManager : Singleton<ResourceManager>
 	{
 		int result;
 
-		if (productResourceDic.ContainsKey(type))
+		if (ProductResourceDic.ContainsKey(type))
 		{
-			productResourceDic[type] += value;
-			result = productResourceDic[type];
+			ProductResourceDic[type] += value;
+			result = ProductResourceDic[type];
 		}
 		else
 		{
-			productResourceDic.Add(type, value);
+			ProductResourceDic.Add(type, value);
 			result = value;
 		}
 
@@ -131,10 +132,10 @@ public class ResourceManager : Singleton<ResourceManager>
 
 	void SaveProductResourceData()
 	{
-		ProductResourceData[] datas = new ProductResourceData[productResourceDic.Count];
+		ProductResourceData[] datas = new ProductResourceData[ProductResourceDic.Count];
 
 		int index = 0;
-		foreach(var item in productResourceDic)
+		foreach(var item in ProductResourceDic)
 		{
 			datas[index].type = item.Key;
 			datas[index].amount = item.Value;
@@ -150,7 +151,7 @@ public class ResourceManager : Singleton<ResourceManager>
 	{
 		goldResource = PlayerPrefs.GetInt(PrefsKey.GoldResourceSaveDataKey, 0);
 
-		productResourceDic = new Dictionary<int, int>();
+		ProductResourceDic = new Dictionary<int, int>();
 		if (PlayerPrefs.HasKey(PrefsKey.ProductResourceSaveDataKey))
 		{
 			string dataStr = PlayerPrefs.GetString(PrefsKey.ProductResourceSaveDataKey);
@@ -158,7 +159,7 @@ public class ResourceManager : Singleton<ResourceManager>
 
 			foreach(var item in datas)
 			{
-				productResourceDic.Add(item.type, item.amount);
+				ProductResourceDic.Add(item.type, item.amount);
 			}
 		}
 
