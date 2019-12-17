@@ -272,17 +272,19 @@ namespace RopePullGame
 			//SelectInstantCharacter(CharIndex, _rightPlayer);
 			if (NetworkManager.Instance.isOwnHost)
 			{
-				var playerInst = Instantiate(playerPrefab, playerableObjects.transform);
+				var playerInst = Instantiate(playerPrefab, _leftPlayer.transform);
 				_player = playerInst.GetComponent<Player>();
 				SelectInstantCharacter((CharacterInfo.EType)superCharIndex, _player);
 				_player.Initialize();
 				_player.SetPlayerDirection(Player.eLookDirection.Left);
+				_player.transform.localPosition = new Vector3(0.0f, 0.0f,0.0f);
 
-				var otherPlayerInst = Instantiate(playerPrefab, playerableObjects.transform);
-				_player = otherPlayerInst.GetComponent<Player>();
+				var otherPlayerInst = Instantiate(playerPrefab, _rightPlayer.transform);
+				_otherPlayer = otherPlayerInst.GetComponent<Player>();
 				SelectInstantCharacter((CharacterInfo.EType)CharIndex, _otherPlayer);
-				_player.Initialize();
-				_player.SetPlayerDirection(Player.eLookDirection.Right);
+				_otherPlayer.Initialize();
+				_otherPlayer.SetPlayerDirection(Player.eLookDirection.Right);
+				_otherPlayer.transform.localPosition = new Vector3(0.0f, 0.0f, 0.0f);
 
 				leftText.text = PacketQueue.Instance.superName;
 				rightText.text = PacketQueue.Instance.guestName;
@@ -290,17 +292,19 @@ namespace RopePullGame
 			}
 			else 
 			{
-				var playerInst = Instantiate(playerPrefab, playerableObjects.transform);
+				var playerInst = Instantiate(playerPrefab, _rightPlayer.transform);
 				_player = playerInst.GetComponent<Player>();
 				SelectInstantCharacter((CharacterInfo.EType)CharIndex, _player);
 				_player.Initialize();
-				_player.SetPlayerDirection(Player.eLookDirection.Left);
-
-				var otherPlayerInst = Instantiate(playerPrefab, playerableObjects.transform);
-				_player = otherPlayerInst.GetComponent<Player>();
-				SelectInstantCharacter((CharacterInfo.EType)superCharIndex, _otherPlayer);
-				_player.Initialize();
 				_player.SetPlayerDirection(Player.eLookDirection.Right);
+				_player.transform.localPosition = new Vector3(0.0f, 0.0f, 0.0f);
+
+				var otherPlayerInst = Instantiate(playerPrefab, _leftPlayer.transform);
+				_otherPlayer = otherPlayerInst.GetComponent<Player>();
+				SelectInstantCharacter((CharacterInfo.EType)superCharIndex, _otherPlayer);
+				_otherPlayer.Initialize();
+				_otherPlayer.SetPlayerDirection(Player.eLookDirection.Left);
+				_otherPlayer.transform.localPosition = new Vector3(0.0f, 0.0f, 0.0f);
 
 				rightText.text = PacketQueue.Instance.superName;
 				leftText.text = PacketQueue.Instance.guestName;
