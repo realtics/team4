@@ -133,7 +133,7 @@ public class CommonUIManager : Singleton<CommonUIManager>
 	public void UpdateTimeoutGameTimer()
 	{
 		_timeoutGameTime -= Time.deltaTime;
-		_elapseGameTimerText.text = ((int)_elapseGameTime).ToString();
+		_elapseGameTimerText.text = ((int)_timeoutGameTime).ToString();
 
 		if(_timeoutGameTime < 0f)
 		{

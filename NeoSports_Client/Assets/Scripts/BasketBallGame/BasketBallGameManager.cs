@@ -63,7 +63,7 @@ namespace BasketBallGame
 					CommonUIManager.Instance.UpdateStartGameTimer();
 					break;
 				case EGameState.Playing:
-					CommonUIManager.Instance.UpdateElapseGameTimer();
+					//CommonUIManager.Instance.UpdateElapseGameTimer();
 					CommonUIManager.Instance.UpdateTimeoutGameTimer();
 					break;
 				case EGameState.GameOver:
@@ -82,7 +82,7 @@ namespace BasketBallGame
 		void StartPlaying()
 		{
 			GameState = EGameState.Playing;
-			CommonUIManager.Instance.CreateElapseGameTimer(rootCanvas);
+			//CommonUIManager.Instance.CreateElapseGameTimer(rootCanvas);
 			CommonUIManager.Instance.CreateTimeoutGameTimer(rootCanvas, endGameTime, EndGame);
 		}
 
