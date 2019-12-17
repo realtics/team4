@@ -8,4 +8,5 @@
 	public const string NetworkRopeGameSceneName = "NetworkRopeGameScene";
 	public const string WaitGameSceneName = "WaitGameScene";
 	public const string FarmSceneName = "FarmScene";
+	public const string FriendFarmSceneName = "FriendFarmScene";
 }

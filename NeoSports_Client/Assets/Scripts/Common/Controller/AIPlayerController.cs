@@ -25,12 +25,12 @@ public class AIPlayerController : PlayerController
 	{
 		switch (_controlScene)
 		{
-			case eControlScene.BaksetBall:
+			case eControlScene.BasketBall:
 				{
                     StartCoroutine(nameof(ProcessBasket));
                     break;
 				}
-			case eControlScene.JumpRoPe:
+			case eControlScene.JumpRope:
 				{
                     //StartCoroutine(nameof(JumpRoPe));
                     break;

@@ -12,10 +12,11 @@ public class PlayerController : MonoBehaviour
 	{
 		NotControl,
 		PullRope,
-		JumpRoPe,
+		JumpRope,
 		WaitRoom,
-		BaksetBall,
-		Farm
+		BasketBall,
+		Farm,
+		FriendFarm
 	}
 
 	protected eControlScene _controlScene;
@@ -45,12 +46,12 @@ public class PlayerController : MonoBehaviour
 	{
 		switch (_controlScene)
 		{
-			case eControlScene.BaksetBall:
+			case eControlScene.BasketBall:
 				{
 					ProcessBasket();
 					break;
 				}
-			case eControlScene.JumpRoPe:
+			case eControlScene.JumpRope:
 				{
 					ProcessJumpRope();
 					break;
@@ -66,6 +67,9 @@ public class PlayerController : MonoBehaviour
 					break;
 				}
 			case eControlScene.Farm:
+				ProcessFarm();
+				break;
+			case eControlScene.FriendFarm:
 				ProcessFarm();
 				break;
 			default:
@@ -168,48 +172,40 @@ public class PlayerController : MonoBehaviour
 	#region SetSceneEnumFromString
 	protected void SetControlScene(string sceneName)
 	{
-		if (sceneName.CompareTo(SceneName.MenuSceneName) == 0)
+		switch (sceneName)
 		{
-			_controlScene = eControlScene.NotControl;
-			return;
+			case SceneName.MenuSceneName:
+				_controlScene = eControlScene.NotControl;
+				break;
+			case SceneName.NetworkBasketBallSceneName:
+				_controlScene = eControlScene.BasketBall;
+				break;
+			case SceneName.BasketBallGameSceneName:
+				_controlScene = eControlScene.BasketBall;
+				break;
+			case SceneName.NetworkRopeGameSceneName:
+				_controlScene = eControlScene.PullRope;
+				break;
+			case SceneName.RopeGameSceneName:
+				_controlScene = eControlScene.PullRope;
+				break;
+			case SceneName.JumpRopeGameSceneName:
+				_controlScene = eControlScene.JumpRope;
+				break;
+			case SceneName.WaitGameSceneName:
+				_controlScene = eControlScene.WaitRoom;
+				break;
+			case SceneName.FarmSceneName:
+				_controlScene = eControlScene.Farm;
+				break;
+			case SceneName.FriendFarmSceneName:
+				_controlScene = eControlScene.FriendFarm;
+				break;
+			default:
+				_controlScene = eControlScene.NotControl;
+				break;
 		}
-		else if (sceneName.CompareTo(SceneName.NetworkBasketBallSceneName) == 0)
-		{
-			_controlScene = eControlScene.BaksetBall;
-			return;
-		}
-		else if (sceneName.CompareTo(SceneName.BasketBallGameSceneName) == 0)
-		{
-			_controlScene = eControlScene.BaksetBall;
-			return;
-		}
-		else if (sceneName.CompareTo(SceneName.NetworkRopeGameSceneName) == 0)
-		{
-			_controlScene = eControlScene.PullRope;
-			return;
-		}
-		else if (sceneName.CompareTo(SceneName.RopeGameSceneName) == 0)
-		{
-			_controlScene = eControlScene.PullRope;
-			return;
-		}
-		else if (sceneName.CompareTo(SceneName.JumpRopeGameSceneName) == 0)
-		{
-			_controlScene = eControlScene.JumpRoPe;
-			return;
-		}
-		else if (sceneName.CompareTo(SceneName.WaitGameSceneName) == 0)
-		{
-			_controlScene = eControlScene.WaitRoom;
-			return;
-		}
-		else if(sceneName.CompareTo(SceneName.FarmSceneName) == 0)
-		{
-			_controlScene = eControlScene.Farm;
-			return;
-		}
-		_controlScene = eControlScene.NotControl;
-		return;
+		
 	}
 	#endregion
 }
