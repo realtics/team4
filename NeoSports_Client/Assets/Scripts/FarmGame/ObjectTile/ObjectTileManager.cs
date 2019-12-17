@@ -33,6 +33,15 @@ namespace FarmGame
 			return objectTileDic.ContainsKey(point);
 		}
 
+		public ObjectTile.ETileType GetObjectTileTypeAtPoint(Point point)
+		{
+			if (objectTileDic.ContainsKey(point))
+			{
+				return objectTileDic[point].TileType;
+			}
+			return ObjectTile.ETileType.None;
+		}
+
 		public void RemoveObjectTile()
 		{
 			Point point = MapData.Instance.CurrentFarmerPoint;
@@ -54,6 +63,9 @@ namespace FarmGame
 						break;
 					case ObjectTile.ETileType.Decoration:
 						MapData.Instance.WriteSaveData(MapData.ESaveType.Decoration);
+						break;
+					case ObjectTile.ETileType.Garbage:
+						MapData.Instance.WriteSaveData(MapData.ESaveType.Garbage);
 						break;
 				}
 			}
@@ -229,7 +241,6 @@ namespace FarmGame
 		{
 			int createCount = (MapData.MapWidth * MapData.MapHeight) / 10;
 
-			Debug.Log("createCount Length: " + createCount.ToString());
 			for(int i = 0; i < createCount; i++)
 			{
 				CreateGarbageTile();
@@ -310,6 +321,18 @@ namespace FarmGame
 				if (objectTileDic[point].TileType == ObjectTile.ETileType.Product)
 				{
 					return objectTileDic[point] as ProductTile;
+				}
+			}
+			return null;
+		}
+
+		public GarbageTile GetGarbageTileAtPoint(Point point)
+		{
+			if (objectTileDic.ContainsKey(point))
+			{
+				if (objectTileDic[point].TileType == ObjectTile.ETileType.Garbage)
+				{
+					return objectTileDic[point] as GarbageTile;
 				}
 			}
 			return null;

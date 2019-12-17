@@ -58,6 +58,11 @@ namespace FarmGame
 			return data;
 		}
 
+		public GarbageData GetGarbageData()
+		{
+			return _garbageData;
+		}
+
 		void UpdateSprite()
 		{
 			string spriteName = _garbageData.sprite; 

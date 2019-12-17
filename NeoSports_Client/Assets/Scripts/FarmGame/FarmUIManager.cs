@@ -44,6 +44,12 @@ namespace FarmGame
 		GameObject objectTileFuncGroup;
 		[SerializeField]
 		GameObject harvestButton;
+		[SerializeField]
+		GameObject cleaningGarbageGroup;
+		[SerializeField]
+		Button cleaningGarbageButton;
+		[SerializeField]
+		Text cleaningGarbagePrice;
 		
 		// Object Tile Func Group
 		[SerializeField]
@@ -81,6 +87,7 @@ namespace FarmGame
 		#endregion
 
 		public Action harvestButtonPressed;
+		public Action cleaningGarbageButtonPressed;
 
 		Dictionary<int, StorageGroup> _storageGroupDic;
 
@@ -281,6 +288,30 @@ namespace FarmGame
 			deployDecorationButton.interactable = canDeployTile;
 			removeTileButton.interactable = !canDeployTile;
 			productPlantEffectText.gameObject.SetActive(canDeployTile);
+
+			cleaningGarbageGroup.SetActive(false);
+		}
+
+		public void GarbageTileFuncButtonInteract(GarbageData data)
+		{
+			removeTileButton.interactable = false;
+
+			cleaningGarbagePrice.text = data.removeCost.ToString("N0") + "사용";
+			if(data.removeCost <= ResourceManager.Instance.GetGoldResource())
+			{
+				cleaningGarbageButton.interactable = true;
+			}
+			else
+			{
+				cleaningGarbageButton.interactable = false;
+			}
+
+			cleaningGarbageGroup.SetActive(true);
+		}
+
+		public void GarbageTileFuncGroupInactive()
+		{
+			cleaningGarbageGroup.SetActive(false);
 		}
 		#endregion
 
@@ -352,6 +383,12 @@ namespace FarmGame
 		{
 			harvestButton.SetActive(false);
 			harvestButtonPressed();
+		}
+
+		public void ButtonEvent_CleaningGarbage()
+		{
+			cleaningGarbageGroup.SetActive(false);
+			cleaningGarbageButtonPressed();
 		}
 
 		public void ButtonEvent_DEBUG_GoldIncrease()

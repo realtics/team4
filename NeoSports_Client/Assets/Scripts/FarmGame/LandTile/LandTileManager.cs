@@ -73,6 +73,11 @@ namespace FarmGame
 			return dataList.ToArray();
 		}
 
+		public LandTile GetLandTileAtPoint(Point point)
+		{
+			return landTileDic[point];
+		}
+
 	}
 
 }

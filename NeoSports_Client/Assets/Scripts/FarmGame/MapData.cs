@@ -56,12 +56,12 @@ namespace FarmGame
 			ReadProductData();
 			ReadGarbageData();
 
-			CreateFarmer();
 		}
 
 		private void Start()
 		{
 			CheckSaveDataIsExist();
+			CreateFarmer();
 		}
 
 		string ReadJsonDataString(string dataPath)
@@ -117,7 +117,6 @@ namespace FarmGame
 			{
 				GarbageDataDic.Add(child.type, child);
 			}
-			Debug.Log("Garbage Data Length: " + GarbageDataDic.Count.ToString());
 		}
 		#endregion
 
@@ -256,6 +255,8 @@ namespace FarmGame
 			}
 			script.Initialize();
 			script.FarmStart();
+			LandTile firstTile = LandTileManager.Instance.GetLandTileAtPoint(CurrentFarmerPoint);
+			script.SetTargetPosition(firstTile);
 		}
 	}
 }

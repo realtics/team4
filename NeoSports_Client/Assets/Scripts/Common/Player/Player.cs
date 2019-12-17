@@ -301,12 +301,14 @@ public class Player : MonoBehaviour
 
 	LandTile _currentLandTile;
 	ProductTile _currentProductTile;
+	GarbageTile _currentGarbageTile;
 
 	public void FarmStart()
 	{
 		Point startPoint = new Point(2, 2);
 		MapData.Instance.CurrentFarmerPoint = startPoint;
 		FarmUIManager.Instance.harvestButtonPressed += HarvestCurrentProduct;
+		FarmUIManager.Instance.cleaningGarbageButtonPressed += CleaningCurrentGarbage;
 
 		transform.position = new Vector3(0.96f, 0.96f, -2.0f);
 		transform.localScale = new Vector3(0.25f, 0.25f, 1.0f);
@@ -405,8 +407,15 @@ public class Player : MonoBehaviour
 
 		if (ObjectTileManager.Instance.HasObjectTileAtPoint(currentPoint))
 		{
-			// 버튼 비활성화
-			FarmUIManager.Instance.ObjectTileFuncButtonInteract(false);
+			if(ObjectTileManager.Instance.GetObjectTileTypeAtPoint(currentPoint) == ObjectTile.ETileType.Garbage)
+			{
+				_currentGarbageTile = ObjectTileManager.Instance.GetGarbageTileAtPoint(currentPoint);
+				FarmUIManager.Instance.GarbageTileFuncButtonInteract(_currentGarbageTile.GetGarbageData());
+			}
+			else
+			{
+				FarmUIManager.Instance.ObjectTileFuncButtonInteract(false);
+			}
 		}
 		else
 		{
@@ -442,6 +451,7 @@ public class Player : MonoBehaviour
 			FarmUIManager.Instance.ProductInfoGroupActive = false;
 			StopCoroutine(CheckCanHarvestEverySeconds());
 		}
+		FarmUIManager.Instance.GarbageTileFuncGroupInactive();
 	}
 
 	IEnumerator CheckCanHarvestEverySeconds()
@@ -476,6 +486,19 @@ public class Player : MonoBehaviour
 		}
 	}
 
+	void CleaningCurrentGarbage()
+	{
+		if(_currentGarbageTile != null)
+		{
+			int removeCost = _currentGarbageTile.GetGarbageData().removeCost;
+			if (removeCost <= ResourceManager.Instance.GetGoldResource())
+			{
+				ObjectTileManager.Instance.RemoveObjectTile();
+				ResourceManager.Instance.AddGoldResource(-removeCost);
+				FarmUIManager.Instance.UpdateGoldResourceLabel();
+			}
+		}
+	}
 	#endregion
 
 }
