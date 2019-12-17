@@ -2146,7 +2146,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 692681182}
-  - component: {fileID: 692681184}
   - component: {fileID: 692681186}
   - component: {fileID: 692681187}
   m_Layer: 0
@@ -2171,20 +2170,6 @@ Transform:
   m_Father: {fileID: 1962912459}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &692681184
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 692681181}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a2920d094068b5b4580a2250e621692f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  pullPower: 0
-  strength: 7
 --- !u!61 &692681186
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -5912,7 +5897,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1767396869}
-  - component: {fileID: 1767396871}
   - component: {fileID: 1767396873}
   - component: {fileID: 1767396874}
   m_Layer: 0
@@ -5937,21 +5921,6 @@ Transform:
   m_Father: {fileID: 1962912459}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1767396871
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1767396868}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa4d0a0d23fa8704a8ce8e453fe5226c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  stength: 7
-  difficultyLevel: 0.2
-  updateAICycleTime: 0
 --- !u!61 &1767396873
 BoxCollider2D:
   m_ObjectHideFlags: 0
