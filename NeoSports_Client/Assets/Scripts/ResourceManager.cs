@@ -21,6 +21,7 @@ public class ResourceManager : Singleton<ResourceManager>
 
 	int goldResource;
 
+	public int ClientId { get; set; }
 	public Dictionary<int, int> ProductResourceDic { get; private set; }
 
 	private void Awake()
@@ -33,6 +34,7 @@ public class ResourceManager : Singleton<ResourceManager>
 		instance = this;
 		DontDestroyOnLoad(this);
 
+		LoadClientId();
 		LoadResourceSaveData();
 	}
 
@@ -45,7 +47,16 @@ public class ResourceManager : Singleton<ResourceManager>
 
 		return data;
 	}
+	#region Login Info
+	void LoadClientId()
+	{
+		ClientId = PlayerPrefs.GetInt(PrefsKey.ClientIdKey, 0);
+	}
 
+	#endregion
+
+
+	#region Sprite Getter
 	public Sprite GetUISprite(string name)
 	{
 		return uiAtlas.GetSprite(name);
@@ -60,7 +71,10 @@ public class ResourceManager : Singleton<ResourceManager>
 	{
 		return farmAtlas.GetSprite(name);
 	}
+	#endregion
 
+
+	#region Resource Get & Set / Load
 	public int GetGoldResource()
 	{
 		return goldResource;
@@ -167,5 +181,6 @@ public class ResourceManager : Singleton<ResourceManager>
 		Debug.Log("Resource Save Data Loaded");
 #endif
 	}
+	#endregion
 
 }
