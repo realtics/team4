@@ -21,7 +21,7 @@ public class ResourceManager : Singleton<ResourceManager>
 
 	int goldResource;
 
-	public int ClientId { get; set; }
+	public int ClientId { get; private set; }
 	public Dictionary<int, int> ProductResourceDic { get; private set; }
 
 	private void Awake()
@@ -53,6 +53,11 @@ public class ResourceManager : Singleton<ResourceManager>
 		ClientId = PlayerPrefs.GetInt(PrefsKey.ClientIdKey, 0);
 	}
 
+	void SetClientId(int clientId)
+	{
+		ClientId = clientId;
+		PlayerPrefs.SetInt(PrefsKey.ClientIdKey, ClientId);
+	}
 	#endregion
 
 
