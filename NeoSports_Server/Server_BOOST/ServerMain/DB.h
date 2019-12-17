@@ -39,6 +39,8 @@ public:
 	void InsertFarmInfo(int clientID, std::string farmJson);
 
 	int GetClientID(int sessionID);
+	int GetGold(int clientID);
+	void SetGold(int clientID,int gold);
 
 private:
 	DB() {};
@@ -47,6 +49,7 @@ private:
 
 	Lock _upDateLock;
 	Lock _userUpDateLock;
+	Lock _userGoldUpdateLock;
 
 	MYSQL		_conn;
 	MYSQL_RES* _pSqlRes;

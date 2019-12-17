@@ -242,12 +242,46 @@ void DB::InsertFarmInfo(int clientID, std::string farmJson)
 	std::cout << "DB : INSERT InsertFarmInfo" << std::endl;
 }
 
+int DB::GetGold(int clientID)
+{
+	if (mysql_query(&_conn, "SELECT * FROM user") != 0)
+	{
+		std::cout << "DB : Update mysql_query error" << std::endl;
+		return -1;
+	}
+	_pSqlRes = mysql_store_result(&_conn);
 
+	while ((_sqlRow = mysql_fetch_row(_pSqlRes)) != nullptr)
+	{
+		//_sqlRowÀÎµ¦½º 0 = DBÀÇ Ä®·³(clientID), 2 = DBÀÇ Ä®·³(gold)
+		if (_sqlRow[0] == boost::lexical_cast<std::string>(clientID))
+		{
+			return boost::lexical_cast<int>(_sqlRow[2]);
+		}
+	}
+	return 0;
+}
+
+void DB::SetGold(int clientID, int gold)
+{
+	//LockGuard userGoldUpdateLock(_userGoldUpdateLock);
+	std::string aa = "UPDATE user SET gold = '";
+	aa += boost::lexical_cast<std::string>(gold);
+	std::string tempStr = "' WHERE clientID = '";
+	aa += tempStr;
+	aa += boost::lexical_cast<std::string>(clientID);
+	aa += "'";
+
+	if (mysql_query(&_conn, aa.c_str()) != 0)
+	{
+		std::cout << "DB : Update SetGold mysql_query error" << std::endl;
+		return;
+	}
+}
 
 void DB::UpdateWinRecord(int clientID, GAME_INDEX gameIndex, int addScore)
 {
-	LockGuard upDateLockGuard(_upDateLock);
-
+	//LockGuard upDateLockGuard(_upDateLock);
 	if (mysql_query(&_conn, "SELECT * FROM gameInfo") != 0)
 	{
 		std::cout << "DB : Update mysql_query error" << std::endl;
