@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace Effect
 {
@@ -19,7 +20,7 @@ namespace Effect
 
         void Update()
         {
-            if (Input.GetMouseButtonUp(0) == true) // mobile로 변경시 touch 이벤트 추가.
+            if (!EventSystem.current.IsPointerOverGameObject() &&Input.GetMouseButtonUp(0) == true) 
             {
                 _selftTransform.position = _mainCam.ScreenToWorldPoint(Input.mousePosition);
 
