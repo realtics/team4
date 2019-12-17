@@ -287,13 +287,9 @@ public class Player : MonoBehaviour
 	public void NetworkPullRope()
 	{
 		if (_isHost)
-		{
 			NetworkManager.Instance.SendRequestRopePull(OwnCharacter.status.strength * -1);
-		}
 		else
-		{
 			NetworkManager.Instance.SendRequestRopePull(OwnCharacter.status.strength);
-		}
 	}
 
 	#endregion
