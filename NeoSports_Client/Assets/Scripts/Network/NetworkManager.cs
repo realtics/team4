@@ -173,6 +173,13 @@ public class NetworkManager : Singleton<NetworkManager>
 					headerPacket = new PACKET_HEADER(packetIndex, packetSize);
 					return headerPacket;
 				}
+			case PACKET_INDEX.REQ_RES_ROPE_PULL_GAME:
+				{
+					int packetSize = Marshal.SizeOf<PACKET_REQ_RES_ROPE_PULL_GAME>();
+					PACKET_HEADER headerPacket;
+					headerPacket = new PACKET_HEADER(packetIndex, packetSize);
+					return headerPacket;
+				}
 			default:
 				{
 					int packetSize = Marshal.SizeOf<PACKET_REQ_IN>();
@@ -257,25 +264,35 @@ public class NetworkManager : Singleton<NetworkManager>
 
 	void HandleDataRecive(IAsyncResult ar)
 	{
-		AsyncObject ao = (AsyncObject)ar.AsyncState;
-		Int32 recvBytes = ao.workingSocket.EndReceive(ar);
-
-		//if (recvBytes > Marshal.SizeOf<PACKET_HEADER>()) //bytestream 처리 
+		try
 		{
-			//receive처리 
-			byte[] recvBuf = new byte[recvBytes];
-			Array.Copy(ao.buffer, recvBuf, recvBytes);
+			AsyncObject ao = (AsyncObject)ar.AsyncState;
+			Int32 recvBytes = ao.workingSocket.EndReceive(ar);
 
-			string recvData = Encoding.UTF8.GetString(recvBuf, 0, recvBytes);
+			if (recvBytes > Marshal.SizeOf<PACKET_HEADER>()) //bytestream 처리 
+			{
+				//receive처리 
+				byte[] recvBuf = new byte[recvBytes];
+				Array.Copy(ao.buffer, recvBuf, recvBytes);
 
-			
-			var headerData = JsonConvert.DeserializeObject<HeaderPacket>(recvData);
-			
-			//recevie 처리를 큐잉으로 대체. 
-			PacketQueue.Instance.networkQueue.Enqueue(new NetworkQueueData( headerData.header.packetIndex,recvData));
+				string recvData = Encoding.UTF8.GetString(recvBuf, 0, recvBytes);
+
+
+				var headerData = JsonConvert.DeserializeObject<HeaderPacket>(recvData);
+
+
+				//recevie 처리를 큐잉으로 대체. 
+				PacketQueue.Instance.networkQueue.Enqueue(new NetworkQueueData(headerData.header.packetIndex, recvData));
+			}
+			ao.workingSocket.BeginReceive(ao.buffer, 0, ao.buffer.Length
+				, SocketFlags.None, _receiveHandler, ao);
+
 		}
-		ao.workingSocket.BeginReceive(ao.buffer, 0, ao.buffer.Length
-			, SocketFlags.None, _receiveHandler, ao);
+		catch (SocketException se)
+		{
+			Debug.Log(se.Message);
+			return;
+		}
 	}
 
 	void ExitProgram()
