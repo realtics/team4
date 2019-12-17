@@ -163,13 +163,13 @@ std::string DB::GetFarmInfo(int clientID)
 	if (clientID == 0)
 	{
 		std::cout << "DB : GetFarmInfo clientID == 0 " << std::endl;
-		return;
+		return "";
 	}
 
 	if (mysql_query(&_conn, "SELECT * FROM farmInfo") != 0)
 	{
 		std::cout << "DB : GetFarmInfo mysql_query error" << std::endl;
-		return;
+		return "";
 	}
 	_pSqlRes = mysql_store_result(&_conn);
 

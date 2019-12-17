@@ -2,7 +2,7 @@
 디비 테이블(neoSport SCHEMAS 4 Tables)
 
 [farmInfo]
-clientID(FK)	infoJSON		gold
+clientID(FK)	infoJSON	
 : 클라이언트의 농장정보를 JSON으로 저장하는 테이블
 
 [gameInfo]
@@ -14,6 +14,6 @@ clientID(FK)	name
 :클라이언트의 닉네임을 저장하는 테이블
 
 [user]
-clientID(PK) sessionID
+clientID(PK) 	sessionID		gold
 :클라이언트 식별정보인 clientID와 접속할때마다 clientID를 구별하는 sessionID.
 sesisonID는 매번 바뀐다.(코드레벨에서 sessionID와 DB의 clientID를 이어주는 정보)

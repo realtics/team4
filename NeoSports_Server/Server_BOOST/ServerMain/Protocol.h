@@ -76,14 +76,14 @@ struct PACKET_HEADER
 	int packetSize;
 };
 
-struct PACKET_REQ_RES_ENTER_FARM : public PACKET_HEADER
+struct PACKET_REQ_RES_FARM : public PACKET_HEADER
 {
 	char farmInfoJSON[1024] = {0,};
 
 	void Init()
 	{
 		packetIndex = PACKET_INDEX::REQ_ENTER_FARM;
-		packetSize = sizeof(PACKET_REQ_RES_ENTER_FARM);
+		packetSize = sizeof(PACKET_REQ_RES_FARM);
 	}
 };
 

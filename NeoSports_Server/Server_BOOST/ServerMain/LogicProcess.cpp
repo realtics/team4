@@ -164,9 +164,9 @@ void LogicProcess::ProcessPacket()
 
 				std::string aa = _SerializationJson(PACKET_INDEX::RES_ROOM_INFO, (const char*)&sendPacket);
 				_serverPtr->PostSendSession(sessionID, false, aa.length(), (char*)aa.c_str());
+				break;
 			}
 		}
-		break;
 
 		case PACKET_INDEX::REQ_INIT_ROOM:
 		{
@@ -179,7 +179,11 @@ void LogicProcess::ProcessPacket()
 			int roomNum = _serverPtr->GetRoomNum(sessionID);
 			ROOM room;
 			room.Init();
-			room = (*_serverPtr->GetRoomInfo(roomNum));
+
+			if (roomNum != FAIL_ROOM_SERCH)
+			{
+				room = (*_serverPtr->GetRoomInfo(roomNum));
+			}
 
 			//클라에서 x버튼이나 게임중 메뉴의 yes,no버튼 클릭할때도
 			//게임로직 패킷이 보내져서 예외처리 해주는중
@@ -192,7 +196,6 @@ void LogicProcess::ProcessPacket()
 
 			if (room.gameMG != nullptr)
 			{
-
 				PACKET_REQ_RES_ROPE_PULL_GAME* packet = (PACKET_REQ_RES_ROPE_PULL_GAME*)data;
 				room.gameMG->SetRopePos(packet->ropePos);
 				float ropePos = room.gameMG->GetRopePos();

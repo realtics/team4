@@ -172,8 +172,6 @@ void Server::ProcessInitRoomPacket(const int sessionID, const char* data)
 		DB::GetInstance()->UpdateWinRecord(clientID, packet->gameIndex, addWinRecord);
 	}
 	int superSessionID = _roomMG.GetSuperSessonID(roomNum);
-
-
 	_roomMG.SetGameMG(superSessionID, nullptr);
 
 	if (packet->gameIndex != GAME_INDEX::EMPTY_GAME)
