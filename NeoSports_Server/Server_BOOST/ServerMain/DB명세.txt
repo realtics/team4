@@ -1,8 +1,8 @@
-19.12.16 (1차 DB 리펙토링)
+19.12.12 (2차 DB 리펙토링)
 디비 테이블(neoSport SCHEMAS 4 Tables)
 
 [farmInfo]
-clientID(FK)	infoJSON
+clientID(FK)	infoJSON		gold
 : 클라이언트의 농장정보를 JSON으로 저장하는 테이블
 
 [gameInfo]
