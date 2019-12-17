@@ -260,7 +260,7 @@ public class NetworkManager : Singleton<NetworkManager>
 		AsyncObject ao = (AsyncObject)ar.AsyncState;
 		Int32 recvBytes = ao.workingSocket.EndReceive(ar);
 
-		if (recvBytes > Marshal.SizeOf<PACKET_HEADER>()) //bytestream 처리 
+		//if (recvBytes > Marshal.SizeOf<PACKET_HEADER>()) //bytestream 처리 
 		{
 			//receive처리 
 			byte[] recvBuf = new byte[recvBytes];
