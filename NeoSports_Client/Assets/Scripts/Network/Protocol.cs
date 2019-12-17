@@ -33,7 +33,10 @@ public enum PACKET_INDEX
     REQ_MULTI_ROOM, //클라에서 같이하기 눌렀을때 방을 만들거나 방이있으면 접속함
 	REQ_INIT_ROOM,
 	REQ_TIME,
+	REQ_ENTER_FRAM,
+	REQ_SAVE_FRAM,
 
+	RES_IN,
 	RES_START_GAME,
     RES_ROOM_INFO,
 	RES_NOW_TIME,
@@ -46,7 +49,6 @@ public enum PACKET_INDEX
 	RES_RANK,
 
 	//클라와 통신하고 있지 않은 인덱스들 (채팅용)
-	RES_IN,
     REQ_CHAT,
     NOTICE_CHAT,
     //

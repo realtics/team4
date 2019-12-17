@@ -36,9 +36,11 @@ namespace RopePullGame
 
 		// Private Variable
 		Player _player;
+		Player _otherPlayer;
 		Player _AIPlayer;
 		ESceneState _sceneState;
 		float _playTime;
+		int _gameLevel;
 
 		Transform _leftPlayer;
 		Transform _rightPlayer;
@@ -52,11 +54,12 @@ namespace RopePullGame
 		void Start()
 		{
 			_sceneState = ESceneState.Prepare;
-
+			_gameLevel = 1;
 			CachingValue();
 			CreateCharacters();
 			_playTime = 0.0f;
 		}
+
 
 		void Update()
 		{
@@ -103,7 +106,8 @@ namespace RopePullGame
 					break;
 				case ESceneState.SetWinner:
 					restartButton.gameObject.SetActive(true);
-					Invoke(nameof(PopUpNextLevel),1.5f);
+					//Debug. Single
+					//Invoke(nameof(PopUpNextLevel),1.5f);
 					_sceneState = ESceneState.WaitRestart;
 					break;
 				case ESceneState.WaitRestart:
@@ -230,23 +234,23 @@ namespace RopePullGame
 
 		}
 
-		void SelectInstantCharacter(CharacterInfo.EType charType)
+		void SelectInstantCharacter(CharacterInfo.EType charType,Player targetPlayer)
 		{
 			switch (charType)
 			{
 				case CharacterInfo.EType.PpiYaGi:
 					{
-						_player.characterPrefab = ppiYakCharacter;
+						targetPlayer.characterPrefab = ppiYakCharacter;
 						break;
 					}
 				case CharacterInfo.EType.TurkeyJelly:
 					{
-						_player.characterPrefab = turkeyJellyCharacter;
+						targetPlayer.characterPrefab = turkeyJellyCharacter;
 						break;
 					}
 				default:
 					{
-						_player.characterPrefab = ppiYakCharacter;
+						targetPlayer.characterPrefab = ppiYakCharacter;
 						break;
 					}
 			}
@@ -255,6 +259,7 @@ namespace RopePullGame
 
 		public void CreateMultiCharacters()
 		{
+
 			ppiYakCharacter.GetComponent<SpriteRenderer>().sortingOrder = 15;
 			turkeyJellyCharacter.GetComponent<SpriteRenderer>().sortingOrder = 15;
 			ppiYakCharacter.SetActive(true);
@@ -263,11 +268,45 @@ namespace RopePullGame
 			CHAR_INDEX superCharIndex = PacketQueue.Instance.superCharIndex;
 			CHAR_INDEX CharIndex = PacketQueue.Instance.charIndex;
 
-			SelectInstantCharacter(superCharIndex, _leftPlayer);
-			SelectInstantCharacter(CharIndex, _rightPlayer);
+			//SelectInstantCharacter(superCharIndex, _leftPlayer);
+			//SelectInstantCharacter(CharIndex, _rightPlayer);
+			if (NetworkManager.Instance.isOwnHost)
+			{
+				var playerInst = Instantiate(playerPrefab, playerableObjects.transform);
+				_player = playerInst.GetComponent<Player>();
+				SelectInstantCharacter((CharacterInfo.EType)superCharIndex, _player);
+				_player.Initialize();
+				_player.SetPlayerDirection(Player.eLookDirection.Left);
 
-			leftText.text = PacketQueue.Instance.superName;
-			rightText.text = PacketQueue.Instance.guestName;
+				var otherPlayerInst = Instantiate(playerPrefab, playerableObjects.transform);
+				_player = otherPlayerInst.GetComponent<Player>();
+				SelectInstantCharacter((CharacterInfo.EType)CharIndex, _otherPlayer);
+				_player.Initialize();
+				_player.SetPlayerDirection(Player.eLookDirection.Right);
+
+				leftText.text = PacketQueue.Instance.superName;
+				rightText.text = PacketQueue.Instance.guestName;
+
+			}
+			else 
+			{
+				var playerInst = Instantiate(playerPrefab, playerableObjects.transform);
+				_player = playerInst.GetComponent<Player>();
+				SelectInstantCharacter((CharacterInfo.EType)CharIndex, _player);
+				_player.Initialize();
+				_player.SetPlayerDirection(Player.eLookDirection.Left);
+
+				var otherPlayerInst = Instantiate(playerPrefab, playerableObjects.transform);
+				_player = otherPlayerInst.GetComponent<Player>();
+				SelectInstantCharacter((CharacterInfo.EType)superCharIndex, _otherPlayer);
+				_player.Initialize();
+				_player.SetPlayerDirection(Player.eLookDirection.Right);
+
+				rightText.text = PacketQueue.Instance.superName;
+				leftText.text = PacketQueue.Instance.guestName;
+			}
+
+
 
 		}
 
@@ -275,7 +314,7 @@ namespace RopePullGame
 		{
 			var playerInst = Instantiate(playerPrefab, playerableObjects.transform);
 			_player = playerInst.GetComponent<Player>();
-			SelectInstantCharacter(InventoryManager.Instance.CurrentCharacter.Type);
+			SelectInstantCharacter(InventoryManager.Instance.CurrentCharacter.Type,_player);
 			_player.Initialize();
 			_player.SetPlayerDirection(Player.eLookDirection.Left);
 
@@ -297,7 +336,7 @@ namespace RopePullGame
 		void PopUpNextLevel()
 		{
 			PopupManager.PopupData data;
-			data.text = "다음 단계로..";
+			data.text = "다음 단계로!!";
 			data.okFlag = true;
 			data.callBack = MoveNextLevel;
 			Singleton<PopupManager>.Instance.ShowPopup(data);
@@ -306,6 +345,15 @@ namespace RopePullGame
 		void MoveNextLevel()
 		{
 			Debug.Log("NextLeel");
+			//DeleteSinglePlayers();
+
+			_gameLevel += 1;
+		}
+
+		void DeleteSinglePlayers()
+		{
+			Destroy(_player.transform.gameObject);
+			Destroy(_AIPlayer.transform.gameObject);
 		}
 	}
 }
