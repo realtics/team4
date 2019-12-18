@@ -79,6 +79,37 @@ void LogicProcess::ProcessPacket()
 			break;
 		}
 
+		case PACKET_INDEX::REQ_RES_BASKET_BALL_GAME:
+		{
+			int roomNum = _serverPtr->GetRoomNum(sessionID);
+			ROOM room;
+			room.Init();
+
+			if (roomNum != FAIL_ROOM_SERCH)
+			{
+				room = (*_serverPtr->GetRoomInfo(roomNum));
+			}
+
+			if (room.gameMG != nullptr)
+			{
+				PACKET_REQ_RES_BASKET_BALL_GAME* packet = (PACKET_REQ_RES_BASKET_BALL_GAME*)data;
+
+				std::string aa = _SerializationJson(PACKET_INDEX::REQ_RES_BASKET_BALL_GAME, (const char*)&packet);
+
+				int superSessionIdTemp = room.superSessionID;
+				int sessionIdTemp = room.sessionID;
+
+				//방장이면 방장이 아닌 플레이어에게 보내고 방장이 아니면 방장에게만 보냄
+				if (sessionID == superSessionIdTemp)
+					_serverPtr->PostSendSession(sessionIdTemp, false, aa.length(), (char*)aa.c_str());
+				else if (sessionID == sessionIdTemp)
+					_serverPtr->PostSendSession(superSessionIdTemp, false, aa.length(), (char*)aa.c_str());
+			}
+			else
+				std::cout << "Session : ProcessPacket : gameMG가 null입니다." << std::endl;
+			break;
+		}
+
 		case PACKET_INDEX::REQ_SAVE_FARM:
 		{
 			PACKET_REQ_RES_FARM* packet = (PACKET_REQ_RES_FARM*)data;
@@ -202,7 +233,7 @@ void LogicProcess::ProcessPacket()
 				room.gameMG->SetRopePos(packet->ropePos);
 				float ropePos = room.gameMG->GetRopePos();
 
-				PACKET_REQ_RES_ROPE_PULL_GAME resPacket;;
+				PACKET_REQ_RES_ROPE_PULL_GAME resPacket;
 				resPacket.header.packetIndex = PACKET_INDEX::REQ_RES_ROPE_PULL_GAME;
 				resPacket.header.packetSize = sizeof(PACKET_REQ_RES_ROPE_PULL_GAME);
 				resPacket.ropePos = ropePos;
@@ -291,6 +322,34 @@ std::string LogicProcess::_SerializationJson(PACKET_INDEX packetIndex, const cha
 		std::string recvTemp;
 		std::ostringstream os(recvTemp);
 		boost::property_tree::write_json(os, ptSendRI, false);
+		sendStr = os.str();
+
+		if (jsonLength == 0)
+		{
+			int jsonLength = sendStr.length();
+			sendStr = _SerializationJson(packetIndex, packet, jsonLength);
+		}
+
+		return sendStr;
+	}
+
+	case PACKET_INDEX::REQ_RES_BASKET_BALL_GAME:
+	{
+		PACKET_REQ_RES_BASKET_BALL_GAME bascetBallPacket;
+		memcpy(&bascetBallPacket, packet, sizeof(PACKET_REQ_RES_BASKET_BALL_GAME));
+
+		boost::property_tree::ptree ptSendBB;
+		boost::property_tree::ptree ptSendHeader;
+		ptSendHeader.put<int>("packetIndex", bascetBallPacket.packetIndex);
+		ptSendHeader.put<int>("packetSize", jsonLength);
+		ptSendBB.add_child("header", ptSendHeader);
+
+		ptSendBB.put<float>("power", bascetBallPacket.power);
+		ptSendBB.put<float>("angle", bascetBallPacket.angle);
+
+		std::string recvTemp;
+		std::ostringstream os(recvTemp);
+		boost::property_tree::write_json(os, ptSendBB, false);
 		sendStr = os.str();
 
 		if (jsonLength == 0)

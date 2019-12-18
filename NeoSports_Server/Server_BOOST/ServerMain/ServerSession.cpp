@@ -180,6 +180,18 @@ void Session::_DeSerializationJson(char* jsonStr)
 		break;
 	}
 
+	case PACKET_INDEX::REQ_RES_BASKET_BALL_GAME:
+	{
+		PACKET_BASKET_BALL_GAME packet;
+		packet.packetIndex = headerIndex;
+		packet.packetSize = children.get<int>("packetSize");
+		packet.power = ptRecv.get<int>("power");
+		packet.angle = ptRecv.get<int>("angle");
+
+		memcpy(&_packetBuffer[_packetBufferMark], (char*)&packet, sizeof(packet));
+		break;
+	}
+
 	case PACKET_INDEX::REQ_MULTI_ROOM:
 	{
 		PACKET_REQ_MULTI_ROOM packet;
