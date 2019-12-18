@@ -31,24 +31,24 @@ public enum PACKET_INDEX
     REQ_IN = 200,
 
     REQ_MULTI_ROOM, //클라에서 같이하기 눌렀을때 방을 만들거나 방이있으면 접속함
-	REQ_INIT_ROOM,
-	REQ_TIME,
-	REQ_ENTER_FRAM,
-	REQ_SAVE_FRAM,
+    REQ_INIT_ROOM,
+    REQ_TIME,
+    REQ_ENTER_FARM,
+    REQ_SAVE_FARM,
 
-	RES_IN,
-	RES_START_GAME,
+    RES_IN,
+    RES_START_GAME,
     RES_ROOM_INFO,
-	RES_NOW_TIME,
+    RES_NOW_TIME,
 
-	//줄다리기용 패킷
-	REQ_RES_ROPE_PULL_GAME,
+    //줄다리기용 패킷
+    REQ_RES_ROPE_PULL_GAME,
 
-	//게임랭킹
-	REQ_RANK,
-	RES_RANK,
+    //게임랭킹
+    REQ_RANK,
+    RES_RANK,
 
-	//클라와 통신하고 있지 않은 인덱스들 (채팅용)
+    //클라와 통신하고 있지 않은 인덱스들 (채팅용)
     REQ_CHAT,
     NOTICE_CHAT,
     //
@@ -72,48 +72,76 @@ public class PACKET_REQ_INIT_ROOM
 [StructLayout(LayoutKind.Sequential)]
 public class PACKET_REQ_RES_ROPE_PULL_GAME
 {
-	public PACKET_HEADER header;
-	public float ropePos;
+    public PACKET_HEADER header;
+    public float ropePos;
 };
 
 [StructLayout(LayoutKind.Sequential)]
 public class PACKET_REQ_MULTI_ROOM
 {
-	public PACKET_HEADER header;
-	public int gameIndex;
-	public int charIndex;
+    public PACKET_HEADER header;
+    public int gameIndex;
+    public int charIndex;
 
-	public PACKET_REQ_MULTI_ROOM(PACKET_HEADER packetHeader, GAME_INDEX _gameIndex, CHAR_INDEX _charIndex)
-	{
-		header = packetHeader;
-		gameIndex = (int)_gameIndex;
-		charIndex = (int)_charIndex;
-	}
+    public PACKET_REQ_MULTI_ROOM(PACKET_HEADER packetHeader, GAME_INDEX _gameIndex, CHAR_INDEX _charIndex)
+    {
+        header = packetHeader;
+        gameIndex = (int)_gameIndex;
+        charIndex = (int)_charIndex;
+    }
 
 };
 
 [StructLayout(LayoutKind.Sequential)]
 public class PACKET_REQ_RANK
 {
-	public PACKET_HEADER header;
-	public int gameIndex;
+    public PACKET_HEADER header;
+    public int gameIndex;
+};
+
+
+[StructLayout(LayoutKind.Sequential)]
+public struct PACKET_REQ_RES_FARM
+{
+    public PACKET_HEADER header;
+    byte farmInfoJSON;
+};
+
+[StructLayout(LayoutKind.Sequential)]
+struct PACKET_REQ_UNKNOWN //데이터 없이 요청만 하는 패킷
+{
+    PACKET_HEADER header;
 };
 #endregion
 
 [StructLayout(LayoutKind.Sequential)]
+struct PACKET_RES_NOW_TIME
+{
+    PACKET_HEADER header;
+    string time];
+};
+
+[StructLayout(LayoutKind.Sequential)]
+struct PACKET_RES_IN
+{
+    PACKET_HEADER header;
+    int clientID;
+};
+
+[StructLayout(LayoutKind.Sequential)]
 public class RANK
 {
-	public string name;
-	public int winRecord;
+    public string name;
+    public int winRecord;
 };
 
 [StructLayout(LayoutKind.Sequential, Pack = 1)]
 public class PACKET_RES_RANK
 {
-	public PACKET_HEADER header;
+    public PACKET_HEADER header;
 
-	[MarshalAs(UnmanagedType.ByValArray, SizeConst = 5)]
-	public RANK[] rank;
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 5)]
+    public RANK[] rank;
 };
 
 [StructLayout(LayoutKind.Sequential)]
@@ -141,10 +169,10 @@ public class PACKET_START_GAME
     public PACKET_HEADER header;
     public CHAR_INDEX superCharID; //방장의 캐릭터
     public CHAR_INDEX charID;
-	public GAME_INDEX gameIndex;
-	
-	public string superName;
-	public string name;
+    public GAME_INDEX gameIndex;
+
+    public string superName;
+    public string name;
 };
 
 [StructLayout(LayoutKind.Sequential)]
