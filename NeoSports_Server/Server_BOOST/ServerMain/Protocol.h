@@ -54,6 +54,9 @@ enum PACKET_INDEX
 	//줄다리기용 패킷
 	REQ_RES_ROPE_PULL_GAME,
 
+	//농구게임용 패킷
+	REQ_RES_BASKET_BALL_GAME,
+
 	//게임랭킹
 	REQ_RANK,
 	RES_RANK,
@@ -74,6 +77,18 @@ struct PACKET_HEADER
 {
 	int packetIndex;
 	int packetSize;
+};
+
+struct PACKET_BASKET_BALL_GAME : public PACKET_HEADER
+{
+	float power;
+	float angle;
+
+	void Init()
+	{
+		packetIndex = PACKET_INDEX::REQ_RES_BASKET_BALL_GAME;
+		packetSize = sizeof(PACKET_BASKET_BALL_GAME);
+	}
 };
 
 struct PACKET_REQ_RES_FARM : public PACKET_HEADER

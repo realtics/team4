@@ -40,6 +40,7 @@ namespace FarmGame
 		ProductData _productData;
 		DateTime _plantingTime;
 		DateTime _harvestTime;
+		string _landType;
 
 		public bool CanHarvest { get; private set; }
 		public ProductData ProductData {
@@ -52,19 +53,47 @@ namespace FarmGame
 			_harvestTimeTextMesh = harvestTimeTextObject.GetComponent<TextMeshPro>();
 		}
 
-		public void PlantProduct(Point point, int type)
+		public void PlantProduct(Point point, int productType, string landType)
 		{
-			_productData = MapData.Instance.ProductDataDic[type];
 			_point = point;
+			_productData = MapData.Instance.ProductDataDic[productType];
+			_landType = landType;
 
 			_plantingTime = DateTime.Now;
-			_harvestTime = _plantingTime.AddMinutes(_productData.grownTime);
 			CanHarvest = false;
 
+			CalcHarvestTime();
 			StartCoroutine(UpdateHarvestTime());
 			UpdatePosition();
 			UpdateSprite();
 			UpdateGrownSpriteActive();
+		}
+
+		public void UpdateLandType(string landType)
+		{
+			_landType = landType;
+			CalcHarvestTime();
+		}
+
+		public void CalcHarvestTime()
+		{
+			float scale;
+			switch (_landType)
+			{
+				case LandTile.BadlandType:
+					scale = LandTile.BadlandGrownSpeedScale;
+					break;
+				case LandTile.GrassType:
+					scale = LandTile.GrassGrownSpeedScale;
+					break;
+				case LandTile.CultivateType:
+					scale = LandTile.CultivateGrownSpeedScale;
+					break;
+				default:
+					scale = 1.0f;
+					break;
+			}
+			_harvestTime = _plantingTime.AddMinutes(_productData.grownTime * scale);
 		}
 
 		public void HarvestProduct()
@@ -73,20 +102,21 @@ namespace FarmGame
 			{
 				ResourceManager.Instance.AddProductResource(_productData.type, 1);
 				_plantingTime = DateTime.Now;
-				_harvestTime = _plantingTime.AddMinutes(_productData.grownTime);
 				CanHarvest = false;
 
+				CalcHarvestTime();
 				StartCoroutine(UpdateHarvestTime());
 				UpdateGrownSpriteActive();
 				MapData.Instance.WriteSaveData(MapData.ESaveType.Product);
 			}
 		}
 
-		public void SetSaveData(SaveData data)
+		public void SetSaveData(SaveData data, string landType)
 		{
 			_tileType = ETileType.Product;
-			_productData = MapData.Instance.ProductDataDic[data.productType];
 			_point = data.point;
+			_productData = MapData.Instance.ProductDataDic[data.productType];
+			_landType = landType;
 
 			_plantingTime = data.plantingTime;
 			_harvestTime = data.harvestTime;

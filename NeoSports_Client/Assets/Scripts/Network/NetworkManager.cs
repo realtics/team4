@@ -11,6 +11,7 @@ using System.Text;
 using System;
 using Newtonsoft.Json;
 
+using FarmGame;
 
 public class AsyncObject
 {
@@ -33,8 +34,8 @@ public class NetworkManager : Singleton<NetworkManager>
 
 	public bool isLoopBackServer;
 	public bool isAzureServer;
-	
-	[HideInInspector] 
+
+	[HideInInspector]
 	public bool isOwnHost;
 	[HideInInspector]
 	public CHAR_INDEX superCharIndex;
@@ -43,6 +44,8 @@ public class NetworkManager : Singleton<NetworkManager>
 
 	Socket _sock = null;
 	AsyncCallback _receiveHandler;
+
+	public bool IsConnected { get; private set; }
 
 	void Awake()
 	{
@@ -54,11 +57,13 @@ public class NetworkManager : Singleton<NetworkManager>
 		
 		instance = this;
 		isOwnHost = false;
+		IsConnected = false;
 		if (isAzureServer)
 		{
 			IpAdress = AzureIPAdress;
 		}
 		DontDestroyOnLoad(this);
+		Connect();
 	}
 
 	public void SendNickName(string playerNickName)
@@ -139,6 +144,25 @@ public class NetworkManager : Singleton<NetworkManager>
 		byte[] bufSend = new byte[bufferSize]; //전송을 위해 바이트단위로 변환
 		bufSend = Encoding.UTF8.GetBytes(jsonBuffer);
 		_sock.Send(bufSend);
+	}
+
+	public bool SendFarmSaveData(MapData.ESaveType index, string data)
+	{
+		if (!IsConnected)
+		{
+			return false;
+		}
+
+		PACKET_HEADER headerPacket = MakeHeaderPacket(PACKET_INDEX.REQ_SAVE_FARM);
+		PACKET_REQ_RES_FARM packet = new PACKET_REQ_RES_FARM
+		{
+			header = headerPacket,
+			saveIndex = index,
+			saveData = data
+		};
+
+		SendToServerPacket(packet);
+		return true;
 	}
 
 	PACKET_HEADER MakeHeaderPacket(PACKET_INDEX packetIndex)
@@ -225,8 +249,8 @@ public class NetworkManager : Singleton<NetworkManager>
 				var result = _sock.BeginConnect(new IPEndPoint(IPAddress.Parse(IpAdress), PortNumber), null, null);
 
 				
-				bool success = result.AsyncWaitHandle.WaitOne(1000, true);
-				if (success)
+				IsConnected = result.AsyncWaitHandle.WaitOne(1000, true);
+				if (IsConnected)
 				{
 					
 					//_sock.EndConnect(result);

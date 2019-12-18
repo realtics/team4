@@ -101,20 +101,40 @@ void  Session::_ReceiveHandle(const boost::system::error_code& error, size_t byt
 	}
 	else
 	{
+		// 정리필요
+		/*
 		////받은 JSON의 총길이를 알 수 있는 값이 저장되있는 위치 = [44]인덱스
 		int jsonStrLen = 45;
-		int readDate = 0;
 		while (strlen(_receiveBuffer.data()) < jsonStrLen)
 		{
-
+			_readData = strlen(_receiveBuffer.data());
+			memcpy(&_staticRecvBufHeader[_readMark], _receiveBuffer.data(), _readData);
+			_readMark += _readData;
+			PostReceive();
+			return;
 		}
+		boost::property_tree::ptree ptRecv;
+		std::istringstream is(_receiveBuffer.data());
+		boost::property_tree::read_json(is, ptRecv);
+		boost::property_tree::ptree& children = ptRecv.get_child("header");
+		int packetSize = children.get<int>("packetSize");
 
+		_readData = 0;
+		_readMark = 0;
+		while (strlen(_receiveBuffer.data()) <= packetSize)
+		{
+			_readData = strlen(_receiveBuffer.data());
+			memcpy(&_staticRecvBuf[_readMark], _receiveBuffer.data(), _readData);
+			_readMark += _readData;
+			PostReceive();
+			return;
+		}
+		*/
 		_DeSerializationJson(_receiveBuffer.data());
 
 		_pushPakcetQueueLock.Enter(); //Lock
 		_PushPacketQueue(_sessionId, &_packetBuffer[0]);
 		_pushPakcetQueueLock.Leave();
-
 		PostReceive();
 	}
 }
@@ -155,6 +175,18 @@ void Session::_DeSerializationJson(char* jsonStr)
 		packet.packetSize = children.get<int>("packetSize");
 		packet.clientID = ptRecv.get<int>("clientID");
 		strcpy(packet.name, ptRecv.get<std::string>("name").c_str());
+
+		memcpy(&_packetBuffer[_packetBufferMark], (char*)&packet, sizeof(packet));
+		break;
+	}
+
+	case PACKET_INDEX::REQ_RES_BASKET_BALL_GAME:
+	{
+		PACKET_BASKET_BALL_GAME packet;
+		packet.packetIndex = headerIndex;
+		packet.packetSize = children.get<int>("packetSize");
+		packet.power = ptRecv.get<int>("power");
+		packet.angle = ptRecv.get<int>("angle");
 
 		memcpy(&_packetBuffer[_packetBufferMark], (char*)&packet, sizeof(packet));
 		break;

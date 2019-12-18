@@ -43,7 +43,17 @@ namespace FarmGame
 		[SerializeField]
 		GameObject objectTileFuncGroup;
 		[SerializeField]
+		Text changeToGrassLandPriceText;
+		[SerializeField]
+		Text changeToCultivateLandPriceText;
+		[SerializeField]
+		Button changeToGrassLandButton;
+		[SerializeField]
+		Button changeToCultivateLandButton;
+		[SerializeField]
 		GameObject harvestButton;
+
+		// Garbage Tile Func Group
 		[SerializeField]
 		GameObject cleaningGarbageGroup;
 		[SerializeField]
@@ -105,6 +115,7 @@ namespace FarmGame
 		{
 			_storageGroupDic = new Dictionary<int, StorageGroup>();
 			CurrentCategory = ECategory.Default;
+			InitLandPriceLabel();
 		}
 
 		private void Start()
@@ -112,6 +123,12 @@ namespace FarmGame
 			CreatePlantScrollViewItem();
 			CreateDecorationScrollViewItem();
 			UpdateGoldResourceLabel();
+		}
+
+		void InitLandPriceLabel()
+		{
+			changeToGrassLandPriceText.text = LandTile.ChangeToGrassPrice.ToString("N0") + " 사용";
+			changeToCultivateLandPriceText.text = LandTile.ChangeToCultivatePrice.ToString("N0") + " 사용";
 		}
 
 		#region Common Func
@@ -246,42 +263,6 @@ namespace FarmGame
 				obj.GetComponent<DecorationButton>().SetData(item.Value);
 			}
 		}
-		#endregion
-
-
-		#region Land Tile Func
-		public void ButtonEvent_ChangeToGrassLand()
-		{
-			Point cursurPoint = MapData.Instance.CurrentFarmerPoint;
-
-			LandTileManager.Instance.SetLandTileType(cursurPoint, LandTile.GrassType);
-		}
-
-		public void ButtonEvent_ChangeToCultivate()
-		{
-			Point cursurPoint = MapData.Instance.CurrentFarmerPoint;
-
-			LandTileManager.Instance.SetLandTileType(cursurPoint, LandTile.CultivateType);
-		}
-
-		public void UpdatePlantProductEffectText(float grownSpeed)
-		{
-			productPlantEffectText.text = "성장 속도 " + (grownSpeed * 100).ToString("+0;-#") + " % ";
-
-			if (grownSpeed < 0.0f)
-			{
-				productPlantEffectText.color = UnityEngine.Color.red;
-			}
-			else if (grownSpeed > 0.0f)
-			{
-				productPlantEffectText.color = UnityEngine.Color.green;
-			}
-			else
-			{
-				productPlantEffectText.color = new UnityEngine.Color(0.7f, 0.7f, 0.7f);
-			}
-		}
-
 		public void ObjectTileFuncButtonInteract(bool canDeployTile)
 		{
 			plantProductButton.interactable = canDeployTile;
@@ -297,7 +278,7 @@ namespace FarmGame
 			removeTileButton.interactable = false;
 
 			cleaningGarbagePrice.text = data.removeCost.ToString("N0") + "사용";
-			if(data.removeCost <= ResourceManager.Instance.GetGoldResource())
+			if (data.removeCost <= ResourceManager.Instance.GetGoldResource())
 			{
 				cleaningGarbageButton.interactable = true;
 			}
@@ -312,6 +293,90 @@ namespace FarmGame
 		public void GarbageTileFuncGroupInactive()
 		{
 			cleaningGarbageGroup.SetActive(false);
+		}
+		#endregion
+
+
+		#region Land Tile Func
+		public void ButtonEvent_ChangeToGrassLand()
+		{
+			ResourceManager.Instance.AddGoldResource(-LandTile.ChangeToGrassPrice);
+			UpdateLandTileChangeInteract(LandTile.GrassType);
+			UpdateGoldResourceLabel();
+
+			Point cursurPoint = MapData.Instance.CurrentFarmerPoint;
+
+			LandTileManager.Instance.SetLandTileType(cursurPoint, LandTile.GrassType);
+			ObjectTileManager.Instance.UpdateHarvestTimeByLandChange(cursurPoint, LandTile.GrassType);
+			UpdatePlantProductEffectText(LandTile.GrassGrownSpeedScale);
+		}
+
+		public void ButtonEvent_ChangeToCultivate()
+		{
+			ResourceManager.Instance.AddGoldResource(-LandTile.ChangeToCultivatePrice);
+			UpdateLandTileChangeInteract(LandTile.CultivateType);
+			UpdateGoldResourceLabel();
+
+			Point cursurPoint = MapData.Instance.CurrentFarmerPoint;
+
+			LandTileManager.Instance.SetLandTileType(cursurPoint, LandTile.CultivateType);
+			ObjectTileManager.Instance.UpdateHarvestTimeByLandChange(cursurPoint, LandTile.CultivateType);
+			UpdatePlantProductEffectText(LandTile.CultivateGrownSpeedScale);
+		}
+
+		public void UpdatePlantProductEffectText(float grownScale)
+		{
+			grownScale -= 1.0f;
+			grownScale = -grownScale;
+			productPlantEffectText.text = "성장 속도 " + (grownScale * 100).ToString("+0;-#") + " % ";
+
+			if (grownScale < 0.0f)
+			{
+				productPlantEffectText.color = UnityEngine.Color.red;
+			}
+			else if (grownScale > 0.0f)
+			{
+				productPlantEffectText.color = UnityEngine.Color.green;
+			}
+			else
+			{
+				productPlantEffectText.color = new UnityEngine.Color(0.7f, 0.7f, 0.7f);
+			}
+		}
+
+		public void UpdateLandTileChangeInteract(string type)
+		{
+			switch (type)
+			{
+				case LandTile.BadlandType:
+					changeToGrassLandButton.interactable = true;
+					changeToCultivateLandButton.interactable = true;
+					break;
+				case LandTile.GrassType:
+					changeToGrassLandButton.interactable = false;
+					changeToCultivateLandButton.interactable = true;
+					break;
+				case LandTile.CultivateType:
+					changeToGrassLandButton.interactable = true;
+					changeToCultivateLandButton.interactable = false;
+					break;
+				default:
+					changeToGrassLandButton.interactable = true;
+					changeToCultivateLandButton.interactable = true;
+					break;
+			}
+
+			int goldAmount = ResourceManager.Instance.GetGoldResource();
+
+			if (changeToGrassLandButton.interactable)
+			{
+				changeToGrassLandButton.interactable = goldAmount < LandTile.ChangeToGrassPrice ? false : true;
+			}
+
+			if (changeToCultivateLandButton.interactable)
+			{
+				changeToCultivateLandButton.interactable = goldAmount < LandTile.ChangeToCultivatePrice ? false : true;
+			}
 		}
 		#endregion
 
@@ -350,19 +415,21 @@ namespace FarmGame
 
 
 		#region Product Info
-		public void SetProductInfoData(ProductData data, float grownSpeed)
+		public void SetProductInfoData(ProductData data, float grownScale)
 		{
+			grownScale -= 1.0f;
+			grownScale = -grownScale;
 			productInfoLessGrownImage.sprite = ResourceManager.Instance.GetFarmSprite(data.lessGrownSprite);
 			productInfoFullGrownImage.sprite = ResourceManager.Instance.GetFarmSprite(data.fullGrownSprite);
 
 			productInfoNameText.text = data.name;
 
-			productInfoEffectText.text = "성장 속도 " + (grownSpeed * 100).ToString("+0;-#") + " % ";
-			if(grownSpeed < 0.0f)
+			productInfoEffectText.text = "성장 속도 " + (grownScale * 100).ToString("+0;-#") + " % ";
+			if(grownScale < 0.0f)
 			{
 				productInfoEffectText.color = UnityEngine.Color.red;
 			}
-			else if(grownSpeed > 0.0f)
+			else if(grownScale > 0.0f)
 			{
 				productInfoEffectText.color = UnityEngine.Color.green;
 			}

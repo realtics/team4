@@ -393,18 +393,19 @@ public class Player : MonoBehaviour
 		switch (_currentLandTile.Type)
 		{
 			case LandTile.BadlandType:
-				grownSpeed = -0.5f;
+				grownSpeed = LandTile.BadlandGrownSpeedScale;
 				break;
 			case LandTile.GrassType:
-				grownSpeed = 0.0f;
+				grownSpeed = LandTile.GrassGrownSpeedScale;
 				break;
 			case LandTile.CultivateType:
-				grownSpeed = 0.5f;
+				grownSpeed = LandTile.CultivateGrownSpeedScale;
 				break;
 			default:
 				Debug.LogWarning("Unknown Land Type!");
 				break;
 		}
+		FarmUIManager.Instance.UpdateLandTileChangeInteract(_currentLandTile.Type);
 
 		if (ObjectTileManager.Instance.HasObjectTileAtPoint(currentPoint))
 		{

@@ -27,10 +27,15 @@ public:
 	boost::asio::ip::tcp::socket& Socket() { return Session::_socket; }
 
 private:
+	static char _staticRecvBufHeader[50]; //Thread공유 버퍼
+	static char _staticRecvBuf[512]; //Thread공유 버퍼
+	int _readData = 0;
+	int _readMark = 0;
+
 	ThreadHandler* _threadHandler;
 
 	Lock _closeLock;
-	Lock _pushPakcetQueue;
+	Lock _pushPakcetQueueLock;
 	
 	int _sessionId;
 	int _packetBufferMark;
@@ -41,7 +46,6 @@ private:
 	std::deque<char*> _sendDataDeq;
 
 	std::string _name;
-	//현재 끼고있는 아이템 구조체 추가
 
 	Server* _serverPtr;
 
