@@ -79,7 +79,7 @@ struct PACKET_HEADER
 	int packetSize;
 };
 
-struct PACKET_BASKET_BALL_GAME : public PACKET_HEADER
+struct PACKET_REQ_RES_BASKET_BALL_GAME : public PACKET_HEADER
 {
 	float power;
 	float angle;
@@ -87,7 +87,7 @@ struct PACKET_BASKET_BALL_GAME : public PACKET_HEADER
 	void Init()
 	{
 		packetIndex = PACKET_INDEX::REQ_RES_BASKET_BALL_GAME;
-		packetSize = sizeof(PACKET_BASKET_BALL_GAME);
+		packetSize = sizeof(PACKET_REQ_RES_BASKET_BALL_GAME);
 	}
 };
 
