@@ -54,6 +54,8 @@ public enum PACKET_INDEX
     //줄다리기용 패킷
     REQ_RES_ROPE_PULL_GAME,
 
+	REQ_RES_BASKET_BALL_GAME,
+
     //게임랭킹
     REQ_RANK,
     RES_RANK,

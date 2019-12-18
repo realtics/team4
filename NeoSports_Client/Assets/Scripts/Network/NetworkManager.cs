@@ -63,6 +63,11 @@ public class NetworkManager : Singleton<NetworkManager>
 			IpAdress = AzureIPAdress;
 		}
 		DontDestroyOnLoad(this);
+		
+	}
+
+	void Start()
+	{
 		Connect();
 	}
 
