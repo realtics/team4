@@ -187,7 +187,7 @@ std::string DB::GetFarmInfo(int clientID)
 
 }
 
-void DB::SetFarmInfo(int clientID, std::string farmJson)
+void DB::SetFarmInfo(int clientID, std::string farmJson, FARM_INDEX farmIndex)
 {
 	if (clientID == 0)
 	{
@@ -212,6 +212,8 @@ void DB::SetFarmInfo(int clientID, std::string farmJson)
 			std::string tempStr = "' WHERE clientID = '";
 			aa += tempStr;
 			aa += boost::lexical_cast<std::string>(clientID);
+			aa += "' AND farmIndex = '";
+			aa += farmIndex;
 			aa += "'";
 
 			if (mysql_query(&_conn, aa.c_str()) != 0)
@@ -222,16 +224,18 @@ void DB::SetFarmInfo(int clientID, std::string farmJson)
 			return;
 		}
 	}
-	InsertFarmInfo(clientID, farmJson);
+	InsertFarmInfo(clientID, farmJson, farmIndex);
 }
 
-void DB::InsertFarmInfo(int clientID, std::string farmJson)
+void DB::InsertFarmInfo(int clientID, std::string farmJson, FARM_INDEX farmIndex)
 {
 	std::string query = "";
 	query = "INSERT INTO farmInfo values('";
-	query += boost::lexical_cast<std::string>(clientID);;
+	query += boost::lexical_cast<std::string>(clientID);
 	query += "','";
 	query += farmJson;
+	query += "','";
+	query += boost::lexical_cast<std::string>(farmIndex);
 	query += "')";
 
 	if (mysql_query(&_conn, query.c_str()) != 0)

@@ -35,8 +35,8 @@ public:
 	std::string orderByRank(std::string tableName, GAME_INDEX gameIndex, std::string Column);
 
 	std::string GetFarmInfo(int clientID);
-	void SetFarmInfo(int clientID, std::string farmJson);
-	void InsertFarmInfo(int clientID, std::string farmJson);
+	void SetFarmInfo(int clientID, std::string farmJson, FARM_INDEX farmIndex);
+	void InsertFarmInfo(int clientID, std::string farmJson, FARM_INDEX farmIndex);
 
 	int GetClientID(int sessionID);
 	int GetGold(int clientID);

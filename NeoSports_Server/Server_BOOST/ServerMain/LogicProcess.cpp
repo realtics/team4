@@ -30,7 +30,6 @@ void LogicProcess::StopProcess()
 	}
 }
 
-
 void LogicProcess::ProcessPacket()
 {
 	while (true) //TODO : bool변수 만들기
@@ -43,7 +42,6 @@ void LogicProcess::ProcessPacket()
 			break;
 		}
 
-		//std::cout << "Call Logic Thread" << std::endl;
 		PacketData packetData = _threadHandler->GetPakcetDataQueueFront();
 		const int sessionID = packetData.sessionID;
 		const char* data = packetData.data;
@@ -114,7 +112,7 @@ void LogicProcess::ProcessPacket()
 		{
 			PACKET_REQ_RES_FARM* packet = (PACKET_REQ_RES_FARM*)data;
 			int clientID = DB::GetInstance()->GetClientID(sessionID);
-			DB::GetInstance()->SetFarmInfo(clientID, packet->farmInfoJSON);
+			DB::GetInstance()->SetFarmInfo(clientID, packet->farmInfoJSON,packet->farmIndex);
 
 			break;
 		}

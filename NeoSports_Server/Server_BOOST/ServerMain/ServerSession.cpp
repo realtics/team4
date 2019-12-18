@@ -261,6 +261,7 @@ void Session::_DeSerializationJson(char* jsonStr)
 		PACKET_REQ_RES_FARM packet;
 		packet.packetIndex = headerIndex;
 		packet.packetSize = children.get<int>("packetSize");
+		packet.farmIndex = (FARM_INDEX)ptRecv.get<int>("farmIndex");
 		memcpy(&packet.farmInfoJSON, ptRecv.get<char*>("infoJson"), sizeof(1024)); //size = ??
 
 		memcpy(&_packetBuffer[_packetBufferMark], (char*)&packet, sizeof(packet));
