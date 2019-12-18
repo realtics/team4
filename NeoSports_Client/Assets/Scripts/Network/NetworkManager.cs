@@ -280,7 +280,6 @@ public class NetworkManager : Singleton<NetworkManager>
 
 				var headerData = JsonConvert.DeserializeObject<HeaderPacket>(recvData);
 
-
 				//recevie 처리를 큐잉으로 대체. 
 				PacketQueue.Instance.networkQueue.Enqueue(new NetworkQueueData(headerData.header.packetIndex, recvData));
 			}

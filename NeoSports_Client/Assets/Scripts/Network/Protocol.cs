@@ -141,7 +141,8 @@ public class PACKET_START_GAME
     public PACKET_HEADER header;
     public CHAR_INDEX superCharID; //방장의 캐릭터
     public CHAR_INDEX charID;
-
+	public GAME_INDEX gameIndex;
+	
 	public string superName;
 	public string name;
 };

@@ -63,9 +63,9 @@ public class PacketQueue : Singleton<PacketQueue>
 					superCharIndex = (CHAR_INDEX)InventoryManager.instance.CurrentCharacter.Type;
 					NetworkManager.Instance.isOwnHost = true;
 					//To DO: 현재는 임시시스템. 
+		
 					NetworkManager.Instance.SendRequsetRank(GAME_INDEX.ROPE_PULL);
 					SceneManager.LoadScene(SceneName.WaitGameSceneName);
-
 				}
 				else
 				{
@@ -84,13 +84,15 @@ public class PacketQueue : Singleton<PacketQueue>
 			{
 				var packetdata = JsonConvert.DeserializeObject<PACKET_START_GAME>(recvData);
 
+
+				
 				superCharIndex = packetdata.superCharID;
 				charIndex = packetdata.charID;
 
 				superName = packetdata.superName.ToString();
 				guestName = packetdata.name.ToString();
-				SceneManager.LoadScene(SceneName.NetworkRopeGameSceneName);
-
+				//SceneManager.LoadScene(SceneName.NetworkRopeGameSceneName);
+				ChangeNetworkScene(packetdata.gameIndex);
 				break;
 			}
 			case (int)PACKET_INDEX.REQ_RES_ROPE_PULL_GAME:
@@ -109,6 +111,29 @@ public class PacketQueue : Singleton<PacketQueue>
 					WaitSceneManager.Instance.AddRankingName(rankdata.winRecord.ToString());
 					WaitSceneManager.Instance.AddRankingName("\n");
 				}
+				break;
+			}
+			default:
+				break;
+		}
+	}
+
+	void ChangeNetworkScene(GAME_INDEX networkGameIndex)
+	{
+		switch(networkGameIndex)
+		{
+			case GAME_INDEX.ROPE_PULL:
+			{
+				SceneManager.LoadScene(SceneName.NetworkRopeGameSceneName);
+				break;
+			}
+			case GAME_INDEX.BASKET_BALL:
+			{
+				SceneManager.LoadScene(SceneName.NetworkBasketBallSceneName);
+				break;
+			}
+			case GAME_INDEX.ROPE_JUMP:
+			{
 				break;
 			}
 			default:
