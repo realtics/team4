@@ -101,19 +101,19 @@ void  Session::_ReceiveHandle(const boost::system::error_code& error, size_t byt
 	}
 	else
 	{
-		/*TODO : 최소 JSON길이를 알 수 있는 부분까지 읽은후
-		파싱해서 전체데이터를 파싱한 길이만큼인가 까지 읽어서 사용하기*/
-
-		////받은 JSON의 총길이를 알 수 있는 값이 저장되있는 위치
-		/*int jsonStrLen = 45;
+		////받은 JSON의 총길이를 알 수 있는 값이 저장되있는 위치 = [44]인덱스
+		int jsonStrLen = 45;
+		int readDate = 0;
 		while (strlen(_receiveBuffer.data()) < jsonStrLen)
 		{
 
-		}*/
+		}
 
 		_DeSerializationJson(_receiveBuffer.data());
-		LockGuard pushPakcetQueue(_pushPakcetQueue); //필요한가?
+
+		_pushPakcetQueueLock.Enter(); //Lock
 		_PushPacketQueue(_sessionId, &_packetBuffer[0]);
+		_pushPakcetQueueLock.Leave();
 
 		PostReceive();
 	}

@@ -147,6 +147,8 @@ void LogicProcess::ProcessPacket()
 				strcpy(startPacket->superName, _serverPtr->GetSuperSessionName(superSessionIdTemp).c_str());
 				strcpy(startPacket->name, _serverPtr->GetSessionName(sessionIdTemp).c_str());
 
+				startPacket->gameIndex = room.gameMG->GetCurGame();
+
 				std::string aa = _SerializationJson(PACKET_INDEX::RES_START_GAME, (const char*)startPacket);
 
 				_serverPtr->PostSendSession(superSessionIdTemp, false, aa.length(), (char*)aa.c_str());
@@ -266,9 +268,9 @@ void LogicProcess::ProcessPacket()
 	}
 }
 
-std::string LogicProcess::_SerializationJson(PACKET_INDEX packetIndex, const char* packet)
+std::string LogicProcess::_SerializationJson(PACKET_INDEX packetIndex, const char* packet, int jsonLength)
 {
-	std::string sendStr;
+	std::string sendStr = "";
 
 	switch (packetIndex)
 	{
@@ -281,7 +283,7 @@ std::string LogicProcess::_SerializationJson(PACKET_INDEX packetIndex, const cha
 		boost::property_tree::ptree ptSendRI;
 		boost::property_tree::ptree ptSendHeader;
 		ptSendHeader.put<int>("packetIndex", resInPacket.packetIndex);
-		ptSendHeader.put<int>("packetSize", sizeof(PACKET_RES_IN));
+		ptSendHeader.put<int>("packetSize", jsonLength);
 		ptSendRI.add_child("header", ptSendHeader);
 
 		ptSendRI.put<int>("clientID", resInPacket.clientID);
@@ -290,6 +292,13 @@ std::string LogicProcess::_SerializationJson(PACKET_INDEX packetIndex, const cha
 		std::ostringstream os(recvTemp);
 		boost::property_tree::write_json(os, ptSendRI, false);
 		sendStr = os.str();
+
+		if (jsonLength == 0)
+		{
+			int jsonLength = sendStr.length();
+			sendStr = _SerializationJson(packetIndex, packet, jsonLength);
+		}
+
 		return sendStr;
 	}
 
@@ -302,7 +311,7 @@ std::string LogicProcess::_SerializationJson(PACKET_INDEX packetIndex, const cha
 		boost::property_tree::ptree ptSendRI;
 		boost::property_tree::ptree ptSendHeader;
 		ptSendHeader.put<int>("packetIndex", roomInfoPacket.header.packetIndex);
-		ptSendHeader.put<int>("packetSize", sizeof(PACKET_ROOM_INFO));
+		ptSendHeader.put<int>("packetSize", jsonLength);
 		ptSendRI.add_child("header", ptSendHeader);
 
 		ptSendRI.put<int>("roomInfo", (ROOM_HOST)roomInfoPacket.roomInfo);
@@ -311,6 +320,13 @@ std::string LogicProcess::_SerializationJson(PACKET_INDEX packetIndex, const cha
 		std::ostringstream os(recvTemp);
 		boost::property_tree::write_json(os, ptSendRI, false);
 		sendStr = os.str();
+
+		if (jsonLength == 0)
+		{
+			int jsonLength = sendStr.length();
+			sendStr = _SerializationJson(packetIndex, packet, jsonLength);
+		}
+
 		return sendStr;
 	}
 
@@ -335,6 +351,13 @@ std::string LogicProcess::_SerializationJson(PACKET_INDEX packetIndex, const cha
 		std::ostringstream os(recvTemp);
 		boost::property_tree::write_json(os, ptSendT, false);
 		sendStr = os.str();
+
+		if (jsonLength == 0)
+		{
+			int jsonLength = sendStr.length();
+			sendStr = _SerializationJson(packetIndex, packet, jsonLength);
+		}
+
 		return sendStr;
 	}
 
@@ -355,6 +378,12 @@ std::string LogicProcess::_SerializationJson(PACKET_INDEX packetIndex, const cha
 		std::ostringstream os(recvTemp);
 		boost::property_tree::write_json(os, ptSendFarmInfo, false);
 		sendStr = os.str();
+
+		if (jsonLength == 0)
+		{
+			int jsonLength = sendStr.length();
+			sendStr = _SerializationJson(packetIndex, packet, jsonLength);
+		}
 		return sendStr;
 	}
 
@@ -376,10 +405,18 @@ std::string LogicProcess::_SerializationJson(PACKET_INDEX packetIndex, const cha
 		ptSendSGP.put<char*>("superName", startGamePacket.superName);
 		ptSendSGP.put<char*>("name", startGamePacket.name);
 
+		ptSendSGP.put<int>("gameIndex", (GAME_INDEX)startGamePacket.gameIndex);
+
 		std::string recvTemp;
 		std::ostringstream os(recvTemp);
 		boost::property_tree::write_json(os, ptSendSGP, false);
 		sendStr = os.str();
+
+		if (jsonLength == 0)
+		{
+			int jsonLength = sendStr.length();
+			sendStr = _SerializationJson(packetIndex, packet, jsonLength);
+		}
 		return sendStr;
 	}
 
@@ -401,6 +438,12 @@ std::string LogicProcess::_SerializationJson(PACKET_INDEX packetIndex, const cha
 		std::ostringstream os(recvTemp);
 		boost::property_tree::write_json(os, ptSend, false);
 		sendStr = os.str();
+
+		if (jsonLength == 0)
+		{
+			int jsonLength = sendStr.length();
+			sendStr = _SerializationJson(packetIndex, packet, jsonLength);
+		}
 		return sendStr;
 	}
 
@@ -430,6 +473,12 @@ std::string LogicProcess::_SerializationJson(PACKET_INDEX packetIndex, const cha
 		std::ostringstream os(recvTemp);
 		boost::property_tree::write_json(os, ptSendRR, false);
 		sendStr = os.str();
+
+		if (jsonLength == 0)
+		{
+			int jsonLength = sendStr.length();
+			sendStr = _SerializationJson(packetIndex, packet, jsonLength);
+		}
 		return sendStr;
 	}
 

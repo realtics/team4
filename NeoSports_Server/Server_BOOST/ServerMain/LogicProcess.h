@@ -20,5 +20,5 @@ private:
 	ThreadHandler* _threadHandler;
 	Server* _serverPtr;
 
-	string _SerializationJson(PACKET_INDEX packetIndex, const char* pakcet);
+	string _SerializationJson(PACKET_INDEX packetIndex, const char* pakcet, int jsonLength = 0);
 };

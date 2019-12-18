@@ -143,6 +143,7 @@ struct PACKET_START_GAME
 	PACKET_HEADER header;
 	CHAR_INDEX superCharID; //방장의 캐릭터
 	CHAR_INDEX charID;
+	GAME_INDEX gameIndex;
 
 	char superName[12];
 	char name[12];
