@@ -216,6 +216,7 @@ namespace FarmGame
 		T ReadTileSave<T>(string key)
 		{
 			string dataStr = PlayerPrefs.GetString(key);
+			Debug.Log(dataStr);
 			T dataArr = JsonConvert.DeserializeObject<T>(dataStr);
 			return dataArr;
 		}

@@ -25,6 +25,9 @@ namespace FarmGame
 		public const string GrassType = "grass";
 		public const string CultivateType = "cultivate";
 
+		public const int ChangeToGrassPrice = 30;
+		public const int ChangeToCultivatePrice = 50;
+
 		public GameObject highlightSpriteObject;
 
 		Point _point;

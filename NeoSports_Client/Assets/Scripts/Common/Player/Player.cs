@@ -404,6 +404,7 @@ public class Player : MonoBehaviour
 				Debug.LogWarning("Unknown Land Type!");
 				break;
 		}
+		FarmUIManager.Instance.UpdateLandTileChangeInteract(_currentLandTile.Type);
 
 		if (ObjectTileManager.Instance.HasObjectTileAtPoint(currentPoint))
 		{

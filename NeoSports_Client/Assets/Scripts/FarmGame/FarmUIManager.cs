@@ -43,7 +43,17 @@ namespace FarmGame
 		[SerializeField]
 		GameObject objectTileFuncGroup;
 		[SerializeField]
+		Text changeToGrassLandPriceText;
+		[SerializeField]
+		Text changeToCultivateLandPriceText;
+		[SerializeField]
+		Button changeToGrassLandButton;
+		[SerializeField]
+		Button changeToCultivateLandButton;
+		[SerializeField]
 		GameObject harvestButton;
+
+		// Garbage Tile Func Group
 		[SerializeField]
 		GameObject cleaningGarbageGroup;
 		[SerializeField]
@@ -105,6 +115,7 @@ namespace FarmGame
 		{
 			_storageGroupDic = new Dictionary<int, StorageGroup>();
 			CurrentCategory = ECategory.Default;
+			InitLandPriceLabel();
 		}
 
 		private void Start()
@@ -112,6 +123,12 @@ namespace FarmGame
 			CreatePlantScrollViewItem();
 			CreateDecorationScrollViewItem();
 			UpdateGoldResourceLabel();
+		}
+
+		void InitLandPriceLabel()
+		{
+			changeToGrassLandPriceText.text = LandTile.ChangeToGrassPrice.ToString("N0") + " 사용";
+			changeToCultivateLandPriceText.text = LandTile.ChangeToCultivatePrice.ToString("N0") + " 사용";
 		}
 
 		#region Common Func
@@ -246,12 +263,47 @@ namespace FarmGame
 				obj.GetComponent<DecorationButton>().SetData(item.Value);
 			}
 		}
+		public void ObjectTileFuncButtonInteract(bool canDeployTile)
+		{
+			plantProductButton.interactable = canDeployTile;
+			deployDecorationButton.interactable = canDeployTile;
+			removeTileButton.interactable = !canDeployTile;
+			productPlantEffectText.gameObject.SetActive(canDeployTile);
+
+			cleaningGarbageGroup.SetActive(false);
+		}
+
+		public void GarbageTileFuncButtonInteract(GarbageData data)
+		{
+			removeTileButton.interactable = false;
+
+			cleaningGarbagePrice.text = data.removeCost.ToString("N0") + "사용";
+			if (data.removeCost <= ResourceManager.Instance.GetGoldResource())
+			{
+				cleaningGarbageButton.interactable = true;
+			}
+			else
+			{
+				cleaningGarbageButton.interactable = false;
+			}
+
+			cleaningGarbageGroup.SetActive(true);
+		}
+
+		public void GarbageTileFuncGroupInactive()
+		{
+			cleaningGarbageGroup.SetActive(false);
+		}
 		#endregion
 
 
 		#region Land Tile Func
 		public void ButtonEvent_ChangeToGrassLand()
 		{
+			ResourceManager.Instance.AddGoldResource(-LandTile.ChangeToGrassPrice);
+			UpdateLandTileChangeInteract(LandTile.GrassType);
+			UpdateGoldResourceLabel();
+
 			Point cursurPoint = MapData.Instance.CurrentFarmerPoint;
 
 			LandTileManager.Instance.SetLandTileType(cursurPoint, LandTile.GrassType);
@@ -259,6 +311,10 @@ namespace FarmGame
 
 		public void ButtonEvent_ChangeToCultivate()
 		{
+			ResourceManager.Instance.AddGoldResource(-LandTile.ChangeToCultivatePrice);
+			UpdateLandTileChangeInteract(LandTile.CultivateType);
+			UpdateGoldResourceLabel();
+
 			Point cursurPoint = MapData.Instance.CurrentFarmerPoint;
 
 			LandTileManager.Instance.SetLandTileType(cursurPoint, LandTile.CultivateType);
@@ -282,36 +338,39 @@ namespace FarmGame
 			}
 		}
 
-		public void ObjectTileFuncButtonInteract(bool canDeployTile)
+		public void UpdateLandTileChangeInteract(string type)
 		{
-			plantProductButton.interactable = canDeployTile;
-			deployDecorationButton.interactable = canDeployTile;
-			removeTileButton.interactable = !canDeployTile;
-			productPlantEffectText.gameObject.SetActive(canDeployTile);
-
-			cleaningGarbageGroup.SetActive(false);
-		}
-
-		public void GarbageTileFuncButtonInteract(GarbageData data)
-		{
-			removeTileButton.interactable = false;
-
-			cleaningGarbagePrice.text = data.removeCost.ToString("N0") + "사용";
-			if(data.removeCost <= ResourceManager.Instance.GetGoldResource())
+			switch (type)
 			{
-				cleaningGarbageButton.interactable = true;
-			}
-			else
-			{
-				cleaningGarbageButton.interactable = false;
+				case LandTile.BadlandType:
+					changeToGrassLandButton.interactable = true;
+					changeToCultivateLandButton.interactable = true;
+					break;
+				case LandTile.GrassType:
+					changeToGrassLandButton.interactable = false;
+					changeToCultivateLandButton.interactable = true;
+					break;
+				case LandTile.CultivateType:
+					changeToGrassLandButton.interactable = true;
+					changeToCultivateLandButton.interactable = false;
+					break;
+				default:
+					changeToGrassLandButton.interactable = true;
+					changeToCultivateLandButton.interactable = true;
+					break;
 			}
 
-			cleaningGarbageGroup.SetActive(true);
-		}
+			int goldAmount = ResourceManager.Instance.GetGoldResource();
 
-		public void GarbageTileFuncGroupInactive()
-		{
-			cleaningGarbageGroup.SetActive(false);
+			if (changeToGrassLandButton.interactable)
+			{
+				changeToGrassLandButton.interactable = goldAmount < LandTile.ChangeToGrassPrice ? false : true;
+			}
+
+			if (changeToCultivateLandButton.interactable)
+			{
+				changeToCultivateLandButton.interactable = goldAmount < LandTile.ChangeToCultivatePrice ? false : true;
+			}
 		}
 		#endregion
 
