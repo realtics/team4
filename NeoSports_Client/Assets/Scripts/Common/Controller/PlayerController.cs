@@ -23,18 +23,21 @@ public class PlayerController : MonoBehaviour
 	protected Character _controlChar;
 	protected Player _ownPlayer;
 	protected bool _isSinglePlay;
-
-	public virtual void InitController(Character controlCharacter, Player player)
+	protected bool _isControl;
+	public virtual void InitController(Character controlCharacter, Player player, bool isControl =true)
 	{
 		_controlChar = controlCharacter;
 		_ownPlayer = player;
 		SetControlScene(SceneManager.GetActiveScene().name);
 		if(NetworkManager.Instance !=null)
 		_isSinglePlay = NetworkManager.Instance.IsSinglePlay();
+		_isControl = isControl;
 	}
 
 	protected virtual void Update() // To Do. Update 방식에서 이벤트 방식으로 추후 리팩토링
 	{
+		if (!_isControl)
+			return;
 		if (_controlChar == null)
 			return;
 		if (_controlScene == eControlScene.NotControl)

@@ -10,9 +10,9 @@ enum eAIControlState
 }
 public class AIPlayerController : PlayerController
 {
-	public override void InitController(Character controlCharacter, Player player)
+	public override void InitController(Character controlCharacter, Player player, bool isControl = true)
 	{
-		base.InitController(controlCharacter,player);
+		base.InitController(controlCharacter,player, isControl);
 		SetAIWithScene();
 	}
 

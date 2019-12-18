@@ -56,6 +56,7 @@ public class Player : MonoBehaviour
 
     float _powerSize;
 	bool _isHost;
+	bool _isControlPlayer;
 	SpirteOutlineshader _outlineshader;
 
 	ePlayerState _state = ePlayerState.Stop;
@@ -73,11 +74,13 @@ public class Player : MonoBehaviour
 		_ballFactory = new PoolFactory(baksetballPrefab);
 		targetPos = transform.position;
 		mainCam = Camera.main;
+
 		
 	}
 
-	public void Initialize()
+	public void Initialize(bool isControlPlayer = true)
 	{
+		_isControlPlayer = isControlPlayer;
 		CachingValues();
 		InitPlayerDirection();
 		InitPlayer(OwnCharacter, _playerController);
@@ -129,16 +132,14 @@ public class Player : MonoBehaviour
 		_outlineshader = _instChar.GetComponent<SpirteOutlineshader>();
 
         _playerEquipment = _instEquipment.GetComponent<PlayerEquipment>();
-
-
-    }
+	}
 
 	#region public Player Function -Controller Use
 	public void InitPlayer(Character character, PlayerController controller)
 	{
 		OwnCharacter = character;
 		_playerController = controller;
-		_playerController.InitController(OwnCharacter, this);
+		_playerController.InitController(OwnCharacter, this,_isControlPlayer);
         _playerEquipment.InitializeEquipItem(this);
     }
 

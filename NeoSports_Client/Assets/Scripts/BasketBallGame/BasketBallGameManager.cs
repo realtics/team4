@@ -27,9 +27,17 @@ namespace BasketBallGame
 
 		public GameObject rootCanvas;
 
+		[SerializeField]
+		public Vector3 leftPlayerInitPos;
+		[SerializeField]
+		public Vector3 rightPlayerInitPos;
+
 		// Private Variable
 		Player _player;
 		Player _AIPlayer;
+		Player _otherPlayer;
+
+		bool isSingle;
 
 		public EGameState GameState { get; set; }
 		
@@ -37,20 +45,12 @@ namespace BasketBallGame
 		{
 			instance = this;
 			GameState = EGameState.PlayerWait;
-			CreateSingleCharacter();
+			InitializeGame();	
 		}
 
 		void Start()
 		{
 			StartGame();
-			if (InventoryManager.instance != null)
-			{
-
-			}
-			else
-			{
-
-			}
 		}
 
 		void Update()
@@ -124,6 +124,88 @@ namespace BasketBallGame
 				default:
 					{
 						_player.characterPrefab = ppiYakCharacter;
+						break;
+					}
+			}
+
+		}
+		void InitializeGame()
+		{
+			if (NetworkManager.instance == null)
+			{
+				isSingle = true;
+			}
+			else
+			{
+				isSingle = NetworkManager.instance.IsSinglePlay();
+			}
+
+			if (isSingle)
+			{
+				CreateSingleCharacter();
+			}
+			else 
+			{
+				CreateMultiCharacter();
+			}
+		}
+
+		void CreateMultiCharacter()
+		{
+			CHAR_INDEX superCharIndex = PacketQueue.Instance.superCharIndex;
+			CHAR_INDEX CharIndex = PacketQueue.Instance.charIndex;
+
+			if (NetworkManager.Instance.isOwnHost)
+			{
+				var playerInst = Instantiate(playerPrefab, null);
+				_player = playerInst.GetComponent<Player>();
+				SelectInstantCharacter((CharacterInfo.EType)superCharIndex, _player);
+				_player.Initialize();
+				_player.SetPlayerDirection(Player.eLookDirection.Left);
+				_player.transform.localPosition = leftPlayerInitPos;
+
+				var otherPlayerInst = Instantiate(playerPrefab, null);
+				_otherPlayer = otherPlayerInst.GetComponent<Player>();
+				SelectInstantCharacter((CharacterInfo.EType)CharIndex, _otherPlayer);
+				_otherPlayer.Initialize(false);
+				_otherPlayer.SetPlayerDirection(Player.eLookDirection.Right);
+				_otherPlayer.transform.localPosition = rightPlayerInitPos;
+			}
+			else
+			{
+				var playerInst = Instantiate(playerPrefab, null);
+				_player = playerInst.GetComponent<Player>();
+				SelectInstantCharacter((CharacterInfo.EType)CharIndex, _player);
+				_player.Initialize();
+				_player.SetPlayerDirection(Player.eLookDirection.Right);
+				_player.transform.localPosition = rightPlayerInitPos;
+
+				var otherPlayerInst = Instantiate(playerPrefab, null);
+				_otherPlayer = otherPlayerInst.GetComponent<Player>();
+				SelectInstantCharacter((CharacterInfo.EType)superCharIndex, _otherPlayer);
+				_otherPlayer.Initialize(false);
+				_otherPlayer.SetPlayerDirection(Player.eLookDirection.Left);
+				_otherPlayer.transform.localPosition = leftPlayerInitPos;
+			}
+		}
+
+		void SelectInstantCharacter(CharacterInfo.EType charType, Player targetPlayer)
+		{
+			switch (charType)
+			{
+				case CharacterInfo.EType.PpiYaGi:
+					{
+						targetPlayer.characterPrefab = ppiYakCharacter;
+						break;
+					}
+				case CharacterInfo.EType.TurkeyJelly:
+					{
+						targetPlayer.characterPrefab = turkeyJellyCharacter;
+						break;
+					}
+				default:
+					{
+						targetPlayer.characterPrefab = ppiYakCharacter;
 						break;
 					}
 			}
