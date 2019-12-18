@@ -152,9 +152,23 @@ namespace FarmGame
 
 			GameObject obj = Instantiate(prefProductTile, objectTileGroup.transform);
 			ProductTile script = obj.GetComponent<ProductTile>();
-			script.PlantProduct(point, type);
+			string landType = LandTileManager.Instance.GetLandTileAtPoint(point).Type;
+			script.PlantProduct(point, type, landType);
 
 			objectTileDic.Add(point, script);
+			MapData.Instance.WriteSaveData(MapData.ESaveType.Product);
+		}
+
+		public void UpdateHarvestTimeByLandChange(Point point, string landType)
+		{
+			if (objectTileDic.ContainsKey(point))
+			{
+				if(objectTileDic[point].TileType == ObjectTile.ETileType.Product)
+				{
+					ProductTile script = objectTileDic[point] as ProductTile;
+					script.UpdateLandType(landType);
+				}
+			}
 			MapData.Instance.WriteSaveData(MapData.ESaveType.Product);
 		}
 
@@ -164,7 +178,8 @@ namespace FarmGame
 			{
 				GameObject obj = Instantiate(prefProductTile, objectTileGroup.transform);
 				ProductTile script = obj.GetComponent<ProductTile>();
-				script.SetSaveData(item);
+				string landType = LandTileManager.Instance.GetLandTileAtPoint(item.point).Type;
+				script.SetSaveData(item, landType);
 
 				objectTileDic.Add(item.point, script);
 			}

@@ -307,6 +307,8 @@ namespace FarmGame
 			Point cursurPoint = MapData.Instance.CurrentFarmerPoint;
 
 			LandTileManager.Instance.SetLandTileType(cursurPoint, LandTile.GrassType);
+			ObjectTileManager.Instance.UpdateHarvestTimeByLandChange(cursurPoint, LandTile.GrassType);
+			UpdatePlantProductEffectText(LandTile.GrassGrownSpeedScale);
 		}
 
 		public void ButtonEvent_ChangeToCultivate()
@@ -318,17 +320,21 @@ namespace FarmGame
 			Point cursurPoint = MapData.Instance.CurrentFarmerPoint;
 
 			LandTileManager.Instance.SetLandTileType(cursurPoint, LandTile.CultivateType);
+			ObjectTileManager.Instance.UpdateHarvestTimeByLandChange(cursurPoint, LandTile.CultivateType);
+			UpdatePlantProductEffectText(LandTile.CultivateGrownSpeedScale);
 		}
 
-		public void UpdatePlantProductEffectText(float grownSpeed)
+		public void UpdatePlantProductEffectText(float grownScale)
 		{
-			productPlantEffectText.text = "성장 속도 " + (grownSpeed * 100).ToString("+0;-#") + " % ";
+			grownScale -= 1.0f;
+			grownScale = -grownScale;
+			productPlantEffectText.text = "성장 속도 " + (grownScale * 100).ToString("+0;-#") + " % ";
 
-			if (grownSpeed < 0.0f)
+			if (grownScale < 0.0f)
 			{
 				productPlantEffectText.color = UnityEngine.Color.red;
 			}
-			else if (grownSpeed > 0.0f)
+			else if (grownScale > 0.0f)
 			{
 				productPlantEffectText.color = UnityEngine.Color.green;
 			}
@@ -409,19 +415,21 @@ namespace FarmGame
 
 
 		#region Product Info
-		public void SetProductInfoData(ProductData data, float grownSpeed)
+		public void SetProductInfoData(ProductData data, float grownScale)
 		{
+			grownScale -= 1.0f;
+			grownScale = -grownScale;
 			productInfoLessGrownImage.sprite = ResourceManager.Instance.GetFarmSprite(data.lessGrownSprite);
 			productInfoFullGrownImage.sprite = ResourceManager.Instance.GetFarmSprite(data.fullGrownSprite);
 
 			productInfoNameText.text = data.name;
 
-			productInfoEffectText.text = "성장 속도 " + (grownSpeed * 100).ToString("+0;-#") + " % ";
-			if(grownSpeed < 0.0f)
+			productInfoEffectText.text = "성장 속도 " + (grownScale * 100).ToString("+0;-#") + " % ";
+			if(grownScale < 0.0f)
 			{
 				productInfoEffectText.color = UnityEngine.Color.red;
 			}
-			else if(grownSpeed > 0.0f)
+			else if(grownScale > 0.0f)
 			{
 				productInfoEffectText.color = UnityEngine.Color.green;
 			}

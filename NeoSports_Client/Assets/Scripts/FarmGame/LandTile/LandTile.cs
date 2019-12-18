@@ -25,6 +25,10 @@ namespace FarmGame
 		public const string GrassType = "grass";
 		public const string CultivateType = "cultivate";
 
+		public const float BadlandGrownSpeedScale = 1.2f;
+		public const float GrassGrownSpeedScale = 1.0f;
+		public const float CultivateGrownSpeedScale = 0.7f;
+
 		public const int ChangeToGrassPrice = 30;
 		public const int ChangeToCultivatePrice = 50;
 
