@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO.Compression;
 using UnityEngine;
 using Newtonsoft.Json;
 
@@ -167,7 +168,6 @@ namespace FarmGame
 			{
 				ObjectTileManager.Instance.FirstFarmOpenDeployGarbage();
 				WriteSaveData(ESaveType.Garbage);
-				Debug.Log("Create First Garbage Tiles!");
 			}
 		}
 
@@ -177,23 +177,23 @@ namespace FarmGame
 			{
 				case ESaveType.Land:
 					var landDataArr = LandTileManager.Instance.GetLandSaveDatas();
-					WriteTileSave(landDataArr, PrefsKey.LandSaveDataKey);
+					WriteTileSave(landDataArr, PrefsKey.LandSaveDataKey, type);
 					break;
 				case ESaveType.Road:
 					var roadDataArr = ObjectTileManager.Instance.GetRoadSaveDatas();
-					WriteTileSave(roadDataArr, PrefsKey.RoadSaveDataKey);
+					WriteTileSave(roadDataArr, PrefsKey.RoadSaveDataKey, type);
 					break;
 				case ESaveType.Product:
 					var productDataArr = ObjectTileManager.Instance.GetProductSaveDatas();
-					WriteTileSave(productDataArr, PrefsKey.ProductSaveDataKey);
+					WriteTileSave(productDataArr, PrefsKey.ProductSaveDataKey, type);
 					break;
 				case ESaveType.Decoration:
 					var decorationDataArr = ObjectTileManager.Instance.GetDecorationSaveDatas();
-					WriteTileSave(decorationDataArr, PrefsKey.DecorationSaveDataKey);
+					WriteTileSave(decorationDataArr, PrefsKey.DecorationSaveDataKey, type);
 					break;
 				case ESaveType.Garbage:
 					var garbageDataArr = ObjectTileManager.Instance.GetGarbageSaveDatas();
-					WriteTileSave(garbageDataArr, PrefsKey.GarbageSaveDataKey);
+					WriteTileSave(garbageDataArr, PrefsKey.GarbageSaveDataKey, type);
 					break;
 			}
 		}
@@ -216,15 +216,15 @@ namespace FarmGame
 		T ReadTileSave<T>(string key)
 		{
 			string dataStr = PlayerPrefs.GetString(key);
-			Debug.Log(dataStr);
 			T dataArr = JsonConvert.DeserializeObject<T>(dataStr);
 			return dataArr;
 		}
 
-		void WriteTileSave(object data, string key)
+		void WriteTileSave(object data, string key, ESaveType index)
 		{
 			string dataStr = JsonConvert.SerializeObject(data);
 			PlayerPrefs.SetString(key, dataStr);
+			NetworkManager.Instance.SendFarmSaveData(index, dataStr);
 		}
 		#endregion
 

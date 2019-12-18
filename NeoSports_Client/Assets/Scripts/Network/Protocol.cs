@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Runtime.InteropServices;
+using FarmGame;
 
 public enum ROOM_INDEX
 {
@@ -25,6 +26,15 @@ public enum CHAR_INDEX
     CHICK,
     JELLY,
 };
+
+public enum FARM_INDEX
+{
+	LAND = 300,
+	ROAD,
+	PRODUCT,
+	DECORATION,
+	GARBAGE
+}
 
 public enum PACKET_INDEX
 {
@@ -104,7 +114,8 @@ public class PACKET_REQ_RANK
 public struct PACKET_REQ_RES_FARM
 {
     public PACKET_HEADER header;
-    byte farmInfoJSON;
+	public MapData.ESaveType saveIndex;
+    public string saveData;
 };
 
 [StructLayout(LayoutKind.Sequential)]
@@ -118,7 +129,7 @@ struct PACKET_REQ_UNKNOWN //데이터 없이 요청만 하는 패킷
 struct PACKET_RES_NOW_TIME
 {
     PACKET_HEADER header;
-    string time];
+    string time;
 };
 
 [StructLayout(LayoutKind.Sequential)]
