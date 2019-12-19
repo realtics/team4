@@ -14,17 +14,7 @@ public class EquipmentInfo
 		public string	iconName;
 	}
 
-	public enum EType
-	{
-		BlackFedora,
-		BrownFedora,
-        RedCap,
-        DeerHorn,
-        SantaHat,
-		End
-	}
-
-	readonly EType _itemType;
+	readonly int _itemType;
 	readonly string _itemName;
 	readonly Status _itemStat;
 	readonly Sprite _iconSprite;
@@ -38,7 +28,7 @@ public class EquipmentInfo
 		get { return _itemStat; }
 	}
 
-	public EType Type {
+	public int Type {
 		get { return _itemType; }
 	}
 
@@ -49,7 +39,7 @@ public class EquipmentInfo
 
 	public EquipmentInfo(JsonData data)
 	{
-		_itemType = (EType)data.itemType;
+		_itemType = data.itemType;
 		_itemName = data.itemName;
 		_itemStat = data.itemStatus;
 		_iconSprite = Singleton<ResourceManager>.Instance.GetUISprite(data.iconName);

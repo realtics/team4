@@ -1,6 +1,6 @@
 [ 
    { 
-      "itemType":0,
+      "itemType":1,
       "itemName":"흑색 중절모",
       "itemStatus":{ 
          "strength":0,
@@ -11,7 +11,7 @@
       "iconName":"Equipment_Fedora_0"
    },
    { 
-      "itemType":1,
+      "itemType":2,
       "itemName":"갈색 중절모",
       "itemStatus":{ 
          "strength":1,
@@ -22,7 +22,7 @@
       "iconName":"Equipment_Fedora_1"
    },
    { 
-      "itemType":2,
+      "itemType":3,
       "itemName":"빨간 캡모자",
       "itemStatus":{ 
          "strength":2,
@@ -33,7 +33,7 @@
       "iconName":"RedCap"
    },
    { 
-      "itemType":3,
+      "itemType":4,
       "itemName":"사슴 뿔",
       "itemStatus":{ 
          "strength":2,
@@ -44,7 +44,7 @@
       "iconName":"DeerHorn"
    },
    { 
-      "itemType":4,
+      "itemType":5,
       "itemName":"산타 모자",
       "itemStatus":{ 
          "strength":2,

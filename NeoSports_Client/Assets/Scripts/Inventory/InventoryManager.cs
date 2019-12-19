@@ -7,13 +7,14 @@ using FarmGame;
 public class InventoryManager : Singleton<InventoryManager>
 {
 	public const int EmptyCharType = 100;
+	public const int EmptyEquipType = 0;
 
 	const string CharacterDataName = "CharacterData";
 	const string EquipmentDataName = "EquipmentData";
 
 	#region Property
 	public Dictionary<int, CharacterInfo> CharacterInfos { get; set; }
-	public Dictionary<EquipmentInfo.EType, EquipmentInfo> EquipmentInfos { get; set; }
+	public Dictionary<int, EquipmentInfo> EquipmentInfos { get; set; }
 	public CharacterInfo CurrentCharacter { get; set; }
 	public EquipmentInfo CurrentEquipment { get; set; }
 	public string PlayerNickName { get; set; }
@@ -34,7 +35,7 @@ public class InventoryManager : Singleton<InventoryManager>
 		DontDestroyOnLoad(this);
 
 		CharacterInfos = new Dictionary<int, CharacterInfo>();
-		EquipmentInfos = new Dictionary<EquipmentInfo.EType, EquipmentInfo>();
+		EquipmentInfos = new Dictionary<int, EquipmentInfo>();
 
 		PlayerNickName = "플레이어";
 		IsNickNameDecide = false;
@@ -45,8 +46,8 @@ public class InventoryManager : Singleton<InventoryManager>
 		ReadCharacterInfos();
 		ReadEquipmentInfos();
 
-		CurrentCharacter = CharacterInfos[101];
-		CurrentEquipment = EquipmentInfos[EquipmentInfo.EType.BlackFedora];
+		CurrentCharacter = CharacterInfos[EmptyCharType + 1];
+		CurrentEquipment = EquipmentInfos[EmptyEquipType + 1];
 		GallaryManager.Instance.SetPreview();
 	}
 
@@ -91,7 +92,7 @@ public class InventoryManager : Singleton<InventoryManager>
 		foreach (var child in datas)
 		{
 			EquipmentInfo info = new EquipmentInfo(child);
-			EquipmentInfos.Add((EquipmentInfo.EType)child.itemType, info);
+			EquipmentInfos.Add(child.itemType, info);
 		}
 	}
 	#endregion
