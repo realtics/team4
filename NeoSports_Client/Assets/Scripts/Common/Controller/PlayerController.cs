@@ -145,6 +145,14 @@ public class PlayerController : MonoBehaviour
 
 	void ProcessFarm()
 	{
+		int pointerId;
+
+#if UNITY_EDITOR || UNITY_STANDALONE || UNITY_WEBPLAYER
+		pointerId = -1;
+#elif UNITY_IOS || UNITY_ANDROID
+		pointerId = 0;
+#endif
+
 		if (!EventSystem.current.IsPointerOverGameObject() &&
 				FarmUIManager.Instance.CurrentCategory == FarmUIManager.ECategory.Default)
 		{
