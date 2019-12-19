@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿#pragma warning disable CS0649
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -24,12 +25,12 @@ public class GallaryManager : Singleton<GallaryManager>
 
 	// Scroll View Prefab
 	[SerializeField]
-	public GameObject prefButtonGallaryChar;
+	GameObject prefButtonGallaryChar;
 	[SerializeField]
-	public GameObject prefButtonGallaryEquip;
+	GameObject prefButtonGallaryEquip;
 
 	[SerializeField]
-	public GameObject panelGallary;
+	GameObject panelGallary;
 
 	// Scroll View
 	[SerializeField]
