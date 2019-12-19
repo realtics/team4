@@ -26,6 +26,7 @@ public:
 	void DeleteUser(int clientID);
 
 	void InsertGameInfo(int clientID, GAME_INDEX gameIndex,int winRecord);
+
 	void SetNameTable(int clientID, std::string name);
 
 	void UpdateWinRecord(int clientID, GAME_INDEX gameIndex, int addScore);
@@ -39,6 +40,7 @@ public:
 	void InsertFarmInfo(int clientID, std::string farmJson, FARM_INDEX farmIndex);
 
 	int GetClientID(int sessionID);
+
 	int GetGold(int clientID);
 	void SetGold(int clientID,int gold);
 

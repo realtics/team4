@@ -51,13 +51,13 @@ int DB::InsertUser(int* clientID, int data)
 	if (clientID == NULL)
 	{
 		ErrorCheck();
-		std::cout << "DB::InsertUser &clientID is NULL" << std::endl;
+		std::cout << "DB : InsertUser &clientID is NULL" << std::endl;
 		return -1;
 	}
 	if (mysql_query(&_conn, "SELECT * FROM user") != 0)
 	{
 		ErrorCheck();
-		std::cout << "DB : Update mysql_query error" << std::endl;
+		std::cout << "DB : InsertUser mysql_query error" << std::endl;
 		return -1;
 	}
 	_pSqlRes = mysql_store_result(&_conn);
@@ -103,6 +103,37 @@ void DB::InsertGameInfo(int clientID, GAME_INDEX gameIndex, int winRecord)
 
 void DB::SetNameTable(int clientID, std::string name)
 {
+	// INSERT 먼저 해보고 PROMARY KEY오류가 나면 이미 있는 clientID이므로 그떄 while하는게 좋을듯
+	if (mysql_query(&_conn, "SELECT * FROM name") != 0)
+	{
+		ErrorCheck();
+		std::cout << "DB : SetNameTable mysql_query error" << std::endl;
+		return;
+	}
+	_pSqlRes = mysql_store_result(&_conn);
+
+	while ((_sqlRow = mysql_fetch_row(_pSqlRes)) != nullptr)
+	{
+		//_sqlRow인덱스 0 = DB의 칼럼(clientID), 1 = name
+		if (_sqlRow[0] == boost::lexical_cast<std::string>(clientID))
+		{
+			std::string aa = "UPDATE name SET name = '";
+			aa += name;
+			std::string tempStr = "' WHERE clientID = '";
+			aa += tempStr;
+			aa += boost::lexical_cast<std::string>(clientID);;
+			aa += "'";
+
+			if (mysql_query(&_conn, aa.c_str()) != 0)
+			{
+				ErrorCheck();
+				std::cout << "DB : SetNameTable Name error" << std::endl;
+				return;
+			}
+			return;
+		}
+	}
+
 	std::string query = "";
 	query = "INSERT INTO name(clientID,name) values('";
 	query += boost::lexical_cast<std::string>(clientID);;
