@@ -25,7 +25,7 @@ public class ItemCharacter : MonoBehaviour
 		{
 			return;
 		}
-		Singleton<InventoryManager>.Instance.CurrentCharacter = info;
-		Singleton<GallaryManager>.Instance.SetPreview();
+		InventoryManager.Instance.CurrentCharacter = info;
+		GallaryManager.Instance.SetPreview();
 	}
 }

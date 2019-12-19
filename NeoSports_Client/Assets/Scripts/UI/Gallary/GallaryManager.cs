@@ -23,26 +23,39 @@ public class GallaryManager : Singleton<GallaryManager>
 	Dictionary<EGallaryTab, GameObject> tabDic;
 
 	// Scroll View Prefab
+	[SerializeField]
 	public GameObject prefButtonGallaryChar;
+	[SerializeField]
 	public GameObject prefButtonGallaryEquip;
 
+	[SerializeField]
 	public GameObject panelGallary;
 
 	// Scroll View
-	public GameObject scrollViewChar;
-	public GameObject scrollViewEquip;
-	public GameObject scrollViewContentChar;
-	public GameObject scrollViewContentEquip;
+	[SerializeField]
+	GameObject scrollViewChar;
+	[SerializeField]
+	GameObject scrollViewEquip;
+	[SerializeField]
+	GameObject scrollViewContentChar;
+	[SerializeField]
+	GameObject scrollViewContentEquip;
 
 	// Preview Sprite
-	public GameObject spritePreviewChar;
-	public GameObject spritePreviewEquip;
+	[SerializeField]
+	Image previewCharacterImage;
+	[SerializeField]
+	Image previewEquipmentImage;
 
 	// Preview Status
-	public GameObject labelStatusStrength;
-	public GameObject labelStatusEndurance;
-	public GameObject labelStatusAgility;
-	public GameObject labelStatusLuck;
+	[SerializeField]
+	Text strengthStatusText;
+	[SerializeField]
+	Text enduranceStatusText;
+	[SerializeField]
+	Text agilityStatusText;
+	[SerializeField]
+	Text luckStatusText;
 
 	void Start()
 	{
@@ -62,12 +75,12 @@ public class GallaryManager : Singleton<GallaryManager>
 		scrollViewChar.SetActive(true);
 		scrollViewEquip.SetActive(true);
 
+		SetPreview();
 		ClearScrollViewItem();
 		MakeScrollViewCharItem();
 		MakeScrollViewEquipItem();
 
 		scrollViewEquip.SetActive(false);
-
 	}
 
 	#region Tab Function
@@ -112,13 +125,13 @@ public class GallaryManager : Singleton<GallaryManager>
 		EquipmentInfo equipInfo = Singleton<InventoryManager>.Instance.CurrentEquipment;
 
 		Status.Add(out Status result, charInfo.Stat, equipInfo.Stat);
-		labelStatusStrength.GetComponent<Text>().text = UIData.GallaryExplainStatStr + result.strength.ToString();
-		labelStatusEndurance.GetComponent<Text>().text = UIData.GallaryExplainStatEnd + result.endurance.ToString();
-		labelStatusAgility.GetComponent<Text>().text = UIData.GallaryExplainStatAgi + result.agility.ToString();
-		labelStatusLuck.GetComponent<Text>().text = UIData.GallaryExplainStatLuk + result.luck.ToString();
+		strengthStatusText.text = UIData.GallaryExplainStatStr + result.strength.ToString();
+		enduranceStatusText.text = UIData.GallaryExplainStatEnd + result.endurance.ToString();
+		agilityStatusText.text = UIData.GallaryExplainStatAgi + result.agility.ToString();
+		luckStatusText.text = UIData.GallaryExplainStatLuk + result.luck.ToString();
 
-		spritePreviewChar.GetComponent<Image>().sprite = charInfo.IconSprite;
-		spritePreviewEquip.GetComponent<Image>().sprite = equipInfo.IconSprite;
+		previewCharacterImage.sprite = charInfo.IconSprite;
+		previewEquipmentImage.sprite = equipInfo.IconSprite;
 	}
 
 	#region Scroll View Func
@@ -144,16 +157,14 @@ public class GallaryManager : Singleton<GallaryManager>
 
 	void ClearScrollViewItem()
 	{
-		int childCount = scrollViewContentChar.transform.childCount;
-		for (int i = childCount - 1; i >= 0; i--)
+		foreach(Transform child in scrollViewContentChar.transform)
 		{
-			Destroy(scrollViewContentChar.transform.GetChild(i).gameObject);
+			Destroy(child.gameObject);
 		}
 
-		childCount = scrollViewContentEquip.transform.childCount;
-		for (int i = childCount - 1; i >= 0; i--)
+		foreach (Transform child in scrollViewContentEquip.transform)
 		{
-			Destroy(scrollViewContentEquip.transform.GetChild(0).gameObject);
+			Destroy(child.gameObject);
 		}
 	}
 	#endregion
