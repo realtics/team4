@@ -283,8 +283,8 @@ namespace RopePullGame
 				_otherPlayer.SetPlayerDirection(Player.eLookDirection.Left);
 				_otherPlayer.transform.localPosition = new Vector3(0.0f, 0.0f, 0.0f);
 
-				rightText.text = PacketQueue.Instance.superName;
-				leftText.text = PacketQueue.Instance.guestName;
+				leftText.text = PacketQueue.Instance.superName;
+				rightText.text = PacketQueue.Instance.guestName;
 			}
 
 
