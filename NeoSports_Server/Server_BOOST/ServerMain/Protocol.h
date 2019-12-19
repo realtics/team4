@@ -77,16 +77,6 @@ enum FARM_INDEX
 	GARBAGE
 };
 
-struct REQ_RES_GOLD : public PACKET_HEADER
-{
-	int gold;
-
-	void Init()
-	{
-		packetIndex = PACKET_INDEX::REQ_RES_GOLD;
-		packetSize = sizeof(REQ_RES_GOLD);
-	}
-};
 
 struct RANK
 {
@@ -98,6 +88,17 @@ struct PACKET_HEADER
 {
 	int packetIndex;
 	int packetSize;
+};
+
+struct PACKET_REQ_RES_GOLD : public PACKET_HEADER
+{
+	int gold;
+
+	void Init()
+	{
+		packetIndex = PACKET_INDEX::REQ_RES_GOLD;
+		packetSize = sizeof(PACKET_REQ_RES_GOLD);
+	}
 };
 
 struct PACKET_REQ_RES_BASKET_BALL_GAME : public PACKET_HEADER

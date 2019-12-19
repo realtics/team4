@@ -345,7 +345,7 @@ std::string LogicProcess::_SerializationJson(PACKET_INDEX packetIndex, const cha
 
 	case PACKET_INDEX::REQ_RES_GOLD:
 	{
-		PACKET_REQ_RES_GOLD goldPacket;
+		/*PACKET_REQ_RES_GOLD goldPacket;
 		memcpy(&goldPacket, packet, sizeof(PACKET_REQ_RES_GOLD));
 
 		boost::property_tree::ptree ptSendG;
@@ -367,7 +367,7 @@ std::string LogicProcess::_SerializationJson(PACKET_INDEX packetIndex, const cha
 			sendStr = _SerializationJson(packetIndex, packet, jsonLength);
 		}
 
-		return sendStr;
+		return sendStr;*/
 	}
 
 	case PACKET_INDEX::REQ_RES_BASKET_BALL_GAME:
