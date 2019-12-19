@@ -42,6 +42,8 @@ public:
 	int GetGold(int clientID);
 	void SetGold(int clientID,int gold);
 
+	void ErrorCheck();
+
 private:
 	DB() {};
 	DB(const DB& other);

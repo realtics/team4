@@ -5,6 +5,9 @@
 
 #include <iostream>
 
+std::string Session::_staticRecvBufHeader = ""; //Thread공유 버퍼
+std::string Session::_staticRecvBuf = ""; //Thread공유 버퍼
+
 Session::Session(int sessionID, boost::asio::io_context& io_service, Server* serverPtr)
 	:_socket(io_service),
 	_sessionId(sessionID),
@@ -101,23 +104,25 @@ void  Session::_ReceiveHandle(const boost::system::error_code& error, size_t byt
 	}
 	else
 	{
-		// 정리필요
-		/*
+		//  정리필요
 		////받은 JSON의 총길이를 알 수 있는 값이 저장되있는 위치 = [44]인덱스
-		int jsonStrLen = 45;
+		/*int jsonStrLen = 45;
 		while (strlen(_receiveBuffer.data()) < jsonStrLen)
 		{
 			_readData = strlen(_receiveBuffer.data());
-			memcpy(&_staticRecvBufHeader[_readMark], _receiveBuffer.data(), _readData);
+			_staticRecvBufHeader += _receiveBuffer.data();
 			_readMark += _readData;
 			PostReceive();
 			return;
 		}
+
+		_staticRecvBuf = _staticRecvBufHeader;
 		boost::property_tree::ptree ptRecv;
-		std::istringstream is(_receiveBuffer.data());
+		std::istringstream is(_staticRecvBufHeader);
 		boost::property_tree::read_json(is, ptRecv);
 		boost::property_tree::ptree& children = ptRecv.get_child("header");
 		int packetSize = children.get<int>("packetSize");
+		_staticRecvBufHeader = "";
 
 		_readData = 0;
 		_readMark = 0;
@@ -128,8 +133,8 @@ void  Session::_ReceiveHandle(const boost::system::error_code& error, size_t byt
 			_readMark += _readData;
 			PostReceive();
 			return;
-		}
-		*/
+		}*/
+
 		_DeSerializationJson(_receiveBuffer.data());
 
 		_pushPakcetQueueLock.Enter(); //Lock
@@ -261,8 +266,10 @@ void Session::_DeSerializationJson(char* jsonStr)
 		PACKET_REQ_RES_FARM packet;
 		packet.packetIndex = headerIndex;
 		packet.packetSize = children.get<int>("packetSize");
-		packet.farmIndex = (FARM_INDEX)ptRecv.get<int>("farmIndex");
-		memcpy(&packet.farmInfoJSON, ptRecv.get<char*>("infoJson"), sizeof(1024)); //size = ??
+		packet.farmIndex = (FARM_INDEX)ptRecv.get<int>("saveIndex");
+
+		std::string temp = ptRecv.get<std::string>("saveData");
+		memcpy(&packet.farmInfoJSON, temp.c_str(), strlen(temp.c_str())); //size = ??
 
 		memcpy(&_packetBuffer[_packetBufferMark], (char*)&packet, sizeof(packet));
 		break;

@@ -12,6 +12,11 @@ DB::~DB()
 {
 	mysql_close(&_conn);
 }
+void DB::ErrorCheck()
+{
+	std::cout << mysql_errno(&_conn) << std::endl;
+	std::cout << mysql_error(&_conn) << std::endl;
+}
 
 void DB::Init()
 {
@@ -30,6 +35,7 @@ void DB::Init()
 
 	if (mysql_select_db(&_conn, "neosports"))
 	{
+		ErrorCheck();
 		cout << "DB : mysql_select_db Error : " << mysql_errno(&_conn)
 			<< " : " << mysql_error(&_conn) << endl;
 	}
@@ -44,11 +50,13 @@ int DB::InsertUser(int* clientID, int data)
 {
 	if (clientID == NULL)
 	{
+		ErrorCheck();
 		std::cout << "DB::InsertUser &clientID is NULL" << std::endl;
 		return -1;
 	}
 	if (mysql_query(&_conn, "SELECT * FROM user") != 0)
 	{
+		ErrorCheck();
 		std::cout << "DB : Update mysql_query error" << std::endl;
 		return -1;
 	}
@@ -65,12 +73,12 @@ int DB::InsertUser(int* clientID, int data)
 
 	if (mysql_query(&_conn, query.c_str()) != 0)
 	{
+		ErrorCheck();
 		std::cout << "DB : INSERT ClientID error" << std::endl;
 		return -1;
 	}
 	std::cout << "DB : INSERT ClientID" << std::endl;
 	return *clientID;
-
 }
 
 void DB::InsertGameInfo(int clientID, GAME_INDEX gameIndex, int winRecord)
@@ -86,6 +94,7 @@ void DB::InsertGameInfo(int clientID, GAME_INDEX gameIndex, int winRecord)
 
 	if (mysql_query(&_conn, query.c_str()) != 0)
 	{
+		ErrorCheck();
 		std::cout << "DB : INSERT GameInfo error" << std::endl;
 		return;
 	}
@@ -103,6 +112,7 @@ void DB::SetNameTable(int clientID, std::string name)
 
 	if (mysql_query(&_conn, query.c_str()) != 0)
 	{
+		ErrorCheck();
 		std::cout << "DB : INSERT Name error" << std::endl;
 		return;
 	}
@@ -131,6 +141,7 @@ void DB::UpdataUserTable(int clientID, int sessionID)
 
 	if (mysql_query(&_conn, aa.c_str()) != 0)
 	{
+		ErrorCheck();
 		std::cout << "DB : UpdataUserTable error" << std::endl;
 		return;
 	}
@@ -142,6 +153,7 @@ int DB::GetClientID(int sessionID)
 {
 	if (mysql_query(&_conn, "SELECT * FROM user") != 0)
 	{
+		ErrorCheck();
 		std::cout << "DB : Update mysql_query error" << std::endl;
 		return -1;
 	}
@@ -162,12 +174,14 @@ std::string DB::GetFarmInfo(int clientID)
 {
 	if (clientID == 0)
 	{
+		ErrorCheck();
 		std::cout << "DB : GetFarmInfo clientID == 0 " << std::endl;
 		return "";
 	}
 
 	if (mysql_query(&_conn, "SELECT * FROM farmInfo") != 0)
 	{
+		ErrorCheck();
 		std::cout << "DB : GetFarmInfo mysql_query error" << std::endl;
 		return "";
 	}
@@ -191,12 +205,14 @@ void DB::SetFarmInfo(int clientID, std::string farmJson, FARM_INDEX farmIndex)
 {
 	if (clientID == 0)
 	{
+		ErrorCheck();
 		std::cout << "DB : SetFarmInfo clientID == 0 " << std::endl;
 		return;
 	}
 
 	if (mysql_query(&_conn, "SELECT * FROM farmInfo") != 0)
 	{
+		ErrorCheck();
 		std::cout << "DB : GetFarmInfo mysql_query error" << std::endl;
 		return;
 	}
@@ -204,24 +220,28 @@ void DB::SetFarmInfo(int clientID, std::string farmJson, FARM_INDEX farmIndex)
 
 	while ((_sqlRow = mysql_fetch_row(_pSqlRes)) != nullptr)
 	{
-		//_sqlRowÀÎµ¦½º 0 = DBÀÇ Ä®·³(clientID), 1 == farmInfo
+		//_sqlRowÀÎµ¦½º 0 = DBÀÇ Ä®·³(clientID), 2 == farmIndex
 		if (_sqlRow[0] == boost::lexical_cast<std::string>(clientID))
 		{
-			std::string aa = "UPDATE farmInfo SET infoJson = '";
-			aa += farmJson;
-			std::string tempStr = "' WHERE clientID = '";
-			aa += tempStr;
-			aa += boost::lexical_cast<std::string>(clientID);
-			aa += "' AND farmIndex = '";
-			aa += farmIndex;
-			aa += "'";
-
-			if (mysql_query(&_conn, aa.c_str()) != 0)
+			if (_sqlRow[2] == boost::lexical_cast<std::string>(farmIndex))
 			{
-				std::cout << "DB : SetFarmInfo mysql_query error" << std::endl;
+				std::string aa = "UPDATE farmInfo SET infoJson = '";
+				aa += farmJson;
+				std::string tempStr = "' WHERE clientID = '";
+				aa += tempStr;
+				aa += boost::lexical_cast<std::string>(clientID);
+				aa += "' AND farmIndex = '";
+				aa += boost::lexical_cast<std::string>(farmIndex);
+				aa += "'";
+
+				if (mysql_query(&_conn, aa.c_str()) != 0)
+				{
+					ErrorCheck();
+					std::cout << "DB : SetFarmInfo mysql_query error" << std::endl;
+					return;
+				}
 				return;
 			}
-			return;
 		}
 	}
 	InsertFarmInfo(clientID, farmJson, farmIndex);
@@ -230,7 +250,7 @@ void DB::SetFarmInfo(int clientID, std::string farmJson, FARM_INDEX farmIndex)
 void DB::InsertFarmInfo(int clientID, std::string farmJson, FARM_INDEX farmIndex)
 {
 	std::string query = "";
-	query = "INSERT INTO farmInfo values('";
+	query = "INSERT INTO farmInfo VALUES('";
 	query += boost::lexical_cast<std::string>(clientID);
 	query += "','";
 	query += farmJson;
@@ -240,6 +260,7 @@ void DB::InsertFarmInfo(int clientID, std::string farmJson, FARM_INDEX farmIndex
 
 	if (mysql_query(&_conn, query.c_str()) != 0)
 	{
+		ErrorCheck();
 		std::cout << "DB : INSERT FarmInfo error" << std::endl;
 		return;
 	}
@@ -250,6 +271,7 @@ int DB::GetGold(int clientID)
 {
 	if (mysql_query(&_conn, "SELECT * FROM user") != 0)
 	{
+		ErrorCheck();
 		std::cout << "DB : Update mysql_query error" << std::endl;
 		return -1;
 	}
@@ -278,6 +300,7 @@ void DB::SetGold(int clientID, int gold)
 
 	if (mysql_query(&_conn, aa.c_str()) != 0)
 	{
+		ErrorCheck();
 		std::cout << "DB : Update SetGold mysql_query error" << std::endl;
 		return;
 	}
@@ -288,6 +311,7 @@ void DB::UpdateWinRecord(int clientID, GAME_INDEX gameIndex, int addScore)
 	//LockGuard upDateLockGuard(_upDateLock);
 	if (mysql_query(&_conn, "SELECT * FROM gameInfo") != 0)
 	{
+		ErrorCheck();
 		std::cout << "DB : Update mysql_query error" << std::endl;
 		return;
 	}
@@ -316,6 +340,7 @@ void DB::UpdateWinRecord(int clientID, GAME_INDEX gameIndex, int addScore)
 
 				if (mysql_query(&_conn, aa.c_str()) != 0)
 				{
+					ErrorCheck();
 					std::cout << "DB : Update mysql_query error" << std::endl;
 					return;
 				}
@@ -335,6 +360,7 @@ void DB::Rank(GAME_INDEX gameIndex, RANK rank[])
 
 	if (mysql_query(&_conn, rankStr.c_str()) != 0)
 	{
+		ErrorCheck();
 		std::cout << "DB : OrderByRank mysql_query error" << std::endl;
 		return;
 	}
@@ -348,7 +374,7 @@ void DB::Rank(GAME_INDEX gameIndex, RANK rank[])
 		for (int i = 0; i < numCol; i++)
 		{
 			rank[rowNum].clientID = boost::lexical_cast<int>(_sqlRow[0]);
-			rank[rowNum].winRecord = boost::lexical_cast<int>(_sqlRow[2]);
+			rank[rowNum].winRecord = boost::lexical_cast<int>(_sqlRow[1]);
 		}
 		rowNum++;
 	}

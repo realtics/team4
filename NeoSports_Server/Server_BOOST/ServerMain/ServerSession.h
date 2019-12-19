@@ -27,8 +27,8 @@ public:
 	boost::asio::ip::tcp::socket& Socket() { return Session::_socket; }
 
 private:
-	static char _staticRecvBufHeader[50]; //Thread공유 버퍼
-	static char _staticRecvBuf[512]; //Thread공유 버퍼
+	static std::string _staticRecvBufHeader; //Thread공유 버퍼
+	static std::string _staticRecvBuf; //Thread공유 버퍼
 	int _readData = 0;
 	int _readMark = 0;
 
