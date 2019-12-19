@@ -148,11 +148,12 @@ public class CommonUIManager : Singleton<CommonUIManager>
 	/// </summary>
 	/// <param name="canvas">유니티 부모 Canvas 오브젝트</param>
 	/// <param name="name">승리 유저 이름</param>
-	public void CreateWinnerNotice(GameObject canvas, string name)
+	public void CreateWinnerNotice(GameObject canvas, string name, int rewardGold = 0)
 	{
 		_winnerNoticeLabel = Instantiate(prefWinnerNoticeLabel, canvas.transform);
-		_winnerNoticeLabel.transform.GetChild((int)ENoticeLabelChildIndex.DynamicTextUserName).
-			GetComponent<Text>().text = name;
+		WinnerNotice script = _winnerNoticeLabel.transform.GetComponent<WinnerNotice>();
+		script.SetUserNameText(name);
+		script.SetRewardGoldText(rewardGold);
 		PopupManager.Instance.SetAsLastSiblingPopup();
 	}
 
