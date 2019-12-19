@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PrefsKey
 {
+	public const string NickNameKey = "Common_NickName";
 	public const string ClientIdKey = "Common_Client_Id";
 
 	public const string GoldResourceSaveDataKey = "Resource_Gold_Save_Data";

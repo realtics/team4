@@ -9,8 +9,19 @@ namespace MainMenu
 	{
 		const int MaxNickName = 8;
 
-		public GameObject nickNameInputGroup;
-		public GameObject nickNameInputText;
+		[SerializeField]
+		GameObject nickNameInputGroup;
+		[SerializeField]
+		InputField nickNameInputField;
+		[SerializeField]
+		Text nickNameInputText;
+
+		string _nickName;
+
+		private void Awake()
+		{
+			CheckSaveNickName();
+		}
 
 		private void Start()
 		{
@@ -18,27 +29,40 @@ namespace MainMenu
 			{
 				nickNameInputGroup.SetActive(false);
 			}
+			else
+			{
+				InventoryManager.Instance.PlayerNickName = _nickName;
+			}
+		}
+
+		void CheckSaveNickName()
+		{
+			_nickName = PlayerPrefs.GetString(PrefsKey.NickNameKey, "플레이어");
+			Debug.Log(_nickName);
+			nickNameInputField.text = _nickName;
+			nickNameInputText.text = _nickName;
 		}
 
 		public void DecideNickName()
 		{
-			string inputName = nickNameInputText.transform.GetComponent<Text>().text;
-			if (!IsUseableNickName(inputName))
+			_nickName = nickNameInputText.text;
+			if (!IsUseableNickName())
 			{
 				return;
 			}
 
-			InventoryManager.Instance.PlayerNickName = inputName;
+			PlayerPrefs.SetString(PrefsKey.NickNameKey, _nickName);
+			InventoryManager.Instance.PlayerNickName = _nickName;
 			nickNameInputGroup.SetActive(false);
-			NetworkManager.Instance.SendNickName(inputName);
+			NetworkManager.Instance.SendNickName(_nickName);
 			InventoryManager.Instance.IsNickNameDecide = true;
 
-			Debug.Log("결정된 닉네임: " + inputName);
+			Debug.Log("결정된 닉네임: " + _nickName);
 		}
 
-		bool IsUseableNickName(string name)
+		bool IsUseableNickName()
 		{
-			if (name.Length == 0)
+			if (_nickName.Length == 0)
 			{
 				PopupManager.PopupData pData;
 				pData.text = "최소 1글자 이상은 입력해야 합니다!";
@@ -48,7 +72,7 @@ namespace MainMenu
 				return false;
 			}
 
-			if (name.Length > MaxNickName)
+			if (_nickName.Length > MaxNickName)
 			{
 				PopupManager.PopupData pData;
 				pData.text = "닉네임은 최대 8글자 까지 가능합니다!";

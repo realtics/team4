@@ -883,12 +883,12 @@ MonoBehaviour:
   scrollViewEquip: {fileID: 1879288742}
   scrollViewContentChar: {fileID: 462451580}
   scrollViewContentEquip: {fileID: 407005874}
-  spritePreviewChar: {fileID: 1613704218}
-  spritePreviewEquip: {fileID: 1853685752}
-  labelStatusStrength: {fileID: 64778161}
-  labelStatusEndurance: {fileID: 1469356814}
-  labelStatusAgility: {fileID: 1999587698}
-  labelStatusLuck: {fileID: 544460790}
+  previewCharacterImage: {fileID: 1613704220}
+  previewEquipmentImage: {fileID: 1853685754}
+  strengthStatusText: {fileID: 64778163}
+  enduranceStatusText: {fileID: 1469356816}
+  agilityStatusText: {fileID: 1999587700}
+  luckStatusText: {fileID: 544460792}
 --- !u!1 &201953517
 GameObject:
   m_ObjectHideFlags: 0
@@ -1005,10 +1005,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5688d2a236db32c4ea1cb597dfde586a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefCharacterPpiYaGi: {fileID: 2673625610814883514, guid: fc6c8e0c201024649a39a173fdf77f6c,
-    type: 3}
-  prefCharacterTurkeyJelly: {fileID: 203829877700944717, guid: 690c6258a777cc346acfc313445baf2c,
-    type: 3}
 --- !u!1 &255799233
 GameObject:
   m_ObjectHideFlags: 0
@@ -2205,7 +2201,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nickNameInputGroup: {fileID: 1301060042}
-  nickNameInputText: {fileID: 1038088368}
+  nickNameInputField: {fileID: 1296383898}
+  nickNameInputText: {fileID: 1038088370}
 --- !u!4 &607070002
 Transform:
   m_ObjectHideFlags: 0
