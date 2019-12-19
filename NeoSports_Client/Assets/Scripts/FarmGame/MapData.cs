@@ -225,7 +225,10 @@ namespace FarmGame
 			string dataStr = JsonConvert.SerializeObject(data);
 			PlayerPrefs.SetString(key, dataStr);
 			string compressStr = StringCompressionHelper.Compress(dataStr);
-			NetworkManager.Instance.SendFarmSaveData(index, compressStr);
+			if(NetworkManager.Instance != null)
+			{
+				NetworkManager.Instance.SendFarmSaveData(index, compressStr);
+			}
 		}
 		#endregion
 
