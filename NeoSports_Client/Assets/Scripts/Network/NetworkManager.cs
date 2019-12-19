@@ -76,7 +76,7 @@ public class NetworkManager : Singleton<NetworkManager>
 		if (_sock == null)
 			Connect();
 		PACKET_HEADER headerPacket = MakeHeaderPacket(PACKET_INDEX.REQ_IN);
-		PACKET_REQ_IN packet = new PACKET_REQ_IN { header = headerPacket, name = playerNickName };
+		PACKET_REQ_IN packet = new PACKET_REQ_IN { header = headerPacket, name = playerNickName, clientID  = ResourceManager.Instance.ClientId };
 
 		SendToServerPacket(packet);
 	}

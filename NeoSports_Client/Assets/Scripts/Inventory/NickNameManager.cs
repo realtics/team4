@@ -32,6 +32,7 @@ namespace MainMenu
 			nickNameInputGroup.SetActive(false);
 			NetworkManager.Instance.SendNickName(inputName);
 			InventoryManager.Instance.IsNickNameDecide = true;
+
 			Debug.Log("결정된 닉네임: " + inputName);
 		}
 

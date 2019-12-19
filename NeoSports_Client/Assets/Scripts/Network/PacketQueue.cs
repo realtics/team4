@@ -113,6 +113,13 @@ public class PacketQueue : Singleton<PacketQueue>
 				}
 				break;
 			}
+			case (int)PACKET_INDEX.RES_IN:
+			{
+				var packetdata = JsonConvert.DeserializeObject<PACKET_RES_IN>(recvData);
+					ResourceManager.Instance.SetClientId(packetdata.clientID);
+				break;
+			}
+	
 			default:
 				break;
 		}

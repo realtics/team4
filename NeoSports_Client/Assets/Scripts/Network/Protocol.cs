@@ -70,7 +70,8 @@ public enum PACKET_INDEX
 public class PACKET_REQ_IN
 {
     public PACKET_HEADER header;
-    public string name;
+	public int clientID;
+	public string name;
 };
 [StructLayout(LayoutKind.Sequential)]
 public class PACKET_REQ_INIT_ROOM
@@ -130,15 +131,15 @@ struct PACKET_REQ_UNKNOWN //데이터 없이 요청만 하는 패킷
 [StructLayout(LayoutKind.Sequential)]
 struct PACKET_RES_NOW_TIME
 {
-    PACKET_HEADER header;
-    string time;
+	public PACKET_HEADER header;
+	public string time;
 };
 
 [StructLayout(LayoutKind.Sequential)]
 struct PACKET_RES_IN
 {
-    PACKET_HEADER header;
-    int clientID;
+    public PACKET_HEADER header;
+    public int clientID;
 };
 
 [StructLayout(LayoutKind.Sequential)]

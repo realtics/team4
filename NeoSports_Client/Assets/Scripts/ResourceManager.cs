@@ -53,7 +53,7 @@ public class ResourceManager : Singleton<ResourceManager>
 		ClientId = PlayerPrefs.GetInt(PrefsKey.ClientIdKey, 0);
 	}
 
-	void SetClientId(int clientId)
+	public void SetClientId(int clientId)
 	{
 		ClientId = clientId;
 		PlayerPrefs.SetInt(PrefsKey.ClientIdKey, ClientId);
