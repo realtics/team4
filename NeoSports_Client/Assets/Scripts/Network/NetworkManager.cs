@@ -38,9 +38,9 @@ public class NetworkManager : Singleton<NetworkManager>
 	[HideInInspector]
 	public bool isOwnHost;
 	[HideInInspector]
-	public CHAR_INDEX superCharIndex;
+	public int superCharIndex;
 	[HideInInspector]
-	public CHAR_INDEX charIndex;
+	public int charIndex;
 
 	Socket _sock = null;
 	AsyncCallback _receiveHandler;
@@ -100,7 +100,7 @@ public class NetworkManager : Singleton<NetworkManager>
 		(
 			headerPacket,
 			roomIndex,
-			(CHAR_INDEX)InventoryManager.Instance.CurrentCharacter.Type//(int)CHAR_INDEX.CHICK 
+			InventoryManager.Instance.CurrentCharacter.Type//(int)CHAR_INDEX.CHICK 
 		);
 
 		SendToServerPacket(packet);

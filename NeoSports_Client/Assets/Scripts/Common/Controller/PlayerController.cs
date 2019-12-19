@@ -153,7 +153,7 @@ public class PlayerController : MonoBehaviour
 		pointerId = 0;
 #endif
 
-		if (!EventSystem.current.IsPointerOverGameObject() &&
+		if (!EventSystem.current.IsPointerOverGameObject(pointerId) &&
 				FarmUIManager.Instance.CurrentCategory == FarmUIManager.ECategory.Default)
 		{
 			if (Input.GetMouseButton(0))

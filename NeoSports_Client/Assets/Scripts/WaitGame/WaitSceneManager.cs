@@ -20,40 +20,15 @@ public class WaitSceneManager : Singleton<WaitSceneManager>
 		var playerInst = Instantiate(playerPrefab, null);
 		_player = playerInst.GetComponent<Player>();
 
-		if (InventoryManager.Instance != null)
-		{
-			SelectInstantCharacter(InventoryManager.Instance.CurrentCharacter.Type);
-			nameText.text = InventoryManager.Instance.PlayerNickName;
-		}
-		else
-		{
-			SelectInstantCharacter(CharacterInfo.EType.PpiYaGi);
-		}
-
-
+		SelectInstantCharacter(InventoryManager.Instance.CurrentCharacter.Type);
+		nameText.text = InventoryManager.Instance.PlayerNickName;
 		_player.Initialize();
 	}
 
-	void SelectInstantCharacter(CharacterInfo.EType charType)
+	void SelectInstantCharacter(int charType)
 	{
-		switch (charType)
-		{
-			case CharacterInfo.EType.PpiYaGi:
-				{
-					_player.characterPrefab = ppiYakCharacter;
-					break;
-				}
-			case CharacterInfo.EType.TurkeyJelly:
-				{
-					_player.characterPrefab = turkeyJellyCharacter;
-					break;
-				}
-			default:
-				{
-					break;
-				}
-		}
-
+		CharacterInfo info = InventoryManager.Instance.GetCharacterInfo(charType);
+		_player.characterPrefab = info.GetCharacterPrefab();
 	}
 
 	public void AddRankingName(string name)

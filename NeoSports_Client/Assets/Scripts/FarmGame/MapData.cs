@@ -236,28 +236,16 @@ namespace FarmGame
 		{
 			GameObject obj = Instantiate(prefPlayer);
 			Player script = obj.GetComponent<Player>();
-			CharacterInfo.EType type = CharacterInfo.EType.PpiYaGi; 
-			if (InventoryManager.Instance != null)
+
+			if(InventoryManager.Instance != null)
 			{
-				type = InventoryManager.Instance.CurrentCharacter.Type;
-				Debug.Log("Selected Character Call");
+				script.characterPrefab = InventoryManager.Instance.CurrentCharacter.GetCharacterPrefab();
+			}
+			else
+			{
+				script.characterPrefab = prefPpiYaGi;
 			}
 
-			switch (type)
-			{
-				case CharacterInfo.EType.PpiYaGi:
-					script.characterPrefab = prefPpiYaGi;
-					Debug.Log("Current Character is PpiYaGi");
-					break;
-				case CharacterInfo.EType.TurkeyJelly:
-					script.characterPrefab = prefTurkeyJelly;
-					Debug.Log("Current Character is TurkeyJelly");
-					break;
-				default:
-					script.characterPrefab = prefPpiYaGi;
-					Debug.LogWarning("Unknown Character Type");
-					break;
-			}
 			script.Initialize();
 			script.FarmStart();
 			LandTile firstTile = LandTileManager.Instance.GetLandTileAtPoint(CurrentFarmerPoint);

@@ -20,13 +20,6 @@ public enum GAME_INDEX
     BASKET_BALL,
 };
 
-public enum CHAR_INDEX
-{
-    EMPTY_CHAR = 100,
-    CHICK,
-    JELLY,
-};
-
 public enum FARM_INDEX
 {
 	LAND = 300,
@@ -96,11 +89,11 @@ public class PACKET_REQ_MULTI_ROOM
     public int gameIndex;
     public int charIndex;
 
-    public PACKET_REQ_MULTI_ROOM(PACKET_HEADER packetHeader, GAME_INDEX _gameIndex, CHAR_INDEX _charIndex)
+    public PACKET_REQ_MULTI_ROOM(PACKET_HEADER packetHeader, GAME_INDEX _gameIndex, int _charIndex)
     {
         header = packetHeader;
         gameIndex = (int)_gameIndex;
-        charIndex = (int)_charIndex;
+        charIndex = _charIndex;
     }
 
 };
@@ -181,8 +174,8 @@ public class PACKET_HEADER
 public class PACKET_START_GAME
 {
     public PACKET_HEADER header;
-    public CHAR_INDEX superCharID; //방장의 캐릭터
-    public CHAR_INDEX charID;
+    public int superCharID; //방장의 캐릭터
+    public int charID;
     public GAME_INDEX gameIndex;
 
     public string superName;
@@ -194,5 +187,5 @@ public class PACKET_ROOM_INFO
 {
     public PACKET_HEADER header;
     public ROOM_INDEX roomInfo; //방을 만든건지 들어간건지의 정보
-    public CHAR_INDEX charInfo; //상대 플레이어의 캐릭터 정보
+    public int charInfo; //상대 플레이어의 캐릭터 정보
 };

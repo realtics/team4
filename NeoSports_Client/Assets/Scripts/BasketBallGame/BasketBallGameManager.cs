@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace BasketBallGame
 {
@@ -98,9 +97,13 @@ namespace BasketBallGame
 			var playerInst = Instantiate(playerPrefab, null);
 			_player = playerInst.GetComponent<Player>();
 			if (InventoryManager.Instance != null)
-				SelectInstantCharacter(InventoryManager.Instance.CurrentCharacter.Type);
+			{
+				SelectInstantCharacter(InventoryManager.Instance.CurrentCharacter);
+			}
 			else
-				SelectInstantCharacter(CharacterInfo.EType.PpiYaGi);
+			{
+				SelectInstantCharacter(InventoryManager.Instance.DefaultCharacterInfo);
+			}
 			_player.Initialize();
 			_player.SetPlayerDirection(Player.eLookDirection.Left);
 
@@ -110,26 +113,9 @@ namespace BasketBallGame
 			_AIPlayer.SetPlayerDirection(Player.eLookDirection.Right);
 
 		}
-		void SelectInstantCharacter(CharacterInfo.EType charType)
+		void SelectInstantCharacter(CharacterInfo info)
 		{
-			switch (charType)
-			{
-				case CharacterInfo.EType.PpiYaGi:
-					{
-						_player.characterPrefab = ppiYakCharacter;
-						break;
-					}
-				case CharacterInfo.EType.TurkeyJelly:
-					{
-						_player.characterPrefab = turkeyJellyCharacter;
-						break;
-					}
-				default:
-					{
-						_player.characterPrefab = ppiYakCharacter;
-						break;
-					}
-			}
+			_player.characterPrefab = info.GetCharacterPrefab();
 
 		}
 		void InitializeGame()
@@ -155,21 +141,22 @@ namespace BasketBallGame
 
 		void CreateMultiCharacter()
 		{
-			CHAR_INDEX superCharIndex = PacketQueue.Instance.superCharIndex;
-			CHAR_INDEX CharIndex = PacketQueue.Instance.charIndex;
+			int superCharIndex = PacketQueue.Instance.superCharIndex;
+			int CharIndex = PacketQueue.Instance.charIndex;
 
 			if (NetworkManager.Instance.isOwnHost)
 			{
 				var playerInst = Instantiate(playerPrefab, null);
 				_player = playerInst.GetComponent<Player>();
-				SelectInstantCharacter((CharacterInfo.EType)superCharIndex, _player);
+				
+				SelectInstantCharacter(superCharIndex, _player);
 				_player.Initialize();
 				_player.SetPlayerDirection(Player.eLookDirection.Left);
 				_player.transform.localPosition = leftPlayerInitPos;
 
 				var otherPlayerInst = Instantiate(playerPrefab, null);
 				_otherPlayer = otherPlayerInst.GetComponent<Player>();
-				SelectInstantCharacter((CharacterInfo.EType)CharIndex, _otherPlayer);
+				SelectInstantCharacter(CharIndex, _otherPlayer);
 				_otherPlayer.Initialize(false);
 				_otherPlayer.SetPlayerDirection(Player.eLookDirection.Right);
 				_otherPlayer.transform.localPosition = rightPlayerInitPos;
@@ -178,41 +165,33 @@ namespace BasketBallGame
 			{
 				var playerInst = Instantiate(playerPrefab, null);
 				_player = playerInst.GetComponent<Player>();
-				SelectInstantCharacter((CharacterInfo.EType)CharIndex, _player);
+				SelectInstantCharacter(CharIndex, _player);
 				_player.Initialize();
 				_player.SetPlayerDirection(Player.eLookDirection.Right);
 				_player.transform.localPosition = rightPlayerInitPos;
 
 				var otherPlayerInst = Instantiate(playerPrefab, null);
 				_otherPlayer = otherPlayerInst.GetComponent<Player>();
-				SelectInstantCharacter((CharacterInfo.EType)superCharIndex, _otherPlayer);
+				SelectInstantCharacter(superCharIndex, _otherPlayer);
 				_otherPlayer.Initialize(false);
 				_otherPlayer.SetPlayerDirection(Player.eLookDirection.Left);
 				_otherPlayer.transform.localPosition = leftPlayerInitPos;
 			}
 		}
 
-		void SelectInstantCharacter(CharacterInfo.EType charType, Player targetPlayer)
+		void SelectInstantCharacter(int characterType, Player targetPlayer)
 		{
-			switch (charType)
+			CharacterInfo info;
+			if (InventoryManager.Instance.CharacterInfos.ContainsKey(characterType))
 			{
-				case CharacterInfo.EType.PpiYaGi:
-					{
-						targetPlayer.characterPrefab = ppiYakCharacter;
-						break;
-					}
-				case CharacterInfo.EType.TurkeyJelly:
-					{
-						targetPlayer.characterPrefab = turkeyJellyCharacter;
-						break;
-					}
-				default:
-					{
-						targetPlayer.characterPrefab = ppiYakCharacter;
-						break;
-					}
+				info = InventoryManager.Instance.CharacterInfos[characterType];
+			}
+			else
+			{
+				info = InventoryManager.Instance.DefaultCharacterInfo;
 			}
 
+			targetPlayer.characterPrefab = info.GetCharacterPrefab();
 		}
 	}
 }

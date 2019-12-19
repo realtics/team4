@@ -21,7 +21,7 @@ public class ItemCharacter : MonoBehaviour
 
 	void SelectItem()
 	{
-		if(info.Type == CharacterInfo.EType.Unknown)
+		if(info.Type == 100)
 		{
 			return;
 		}

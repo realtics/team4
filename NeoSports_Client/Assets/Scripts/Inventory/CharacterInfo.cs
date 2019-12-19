@@ -40,29 +40,25 @@ public class Status
 public class CharacterInfo
 {
 
-	public enum EType
-	{
-		Unknown,
-		PpiYaGi,
-		TurkeyJelly,
-		End
-	}
-
-	public class JsonData
+	public struct JsonData
 	{
 		public int charType;
 		public string charName;
 		public Status charStat;
 		public string iconName;
+		public string prefName;
 	}
 
-	readonly EType _charType;
+	const string CharacterPrefabPath = "Prefab/Character/";
+
+	readonly int _charType;
 	readonly string _charName;
 	readonly Status _charStat;
 	readonly Sprite _iconSprite;
+	GameObject _prefObject;
 
 	#region Property
-	public EType Type {
+	public int Type {
 		get { return _charType; }
 	}
 
@@ -81,11 +77,18 @@ public class CharacterInfo
 
 	public CharacterInfo(JsonData data)
 	{
-		_charType = (EType)data.charType;
+		_charType = data.charType;
 		_charName = data.charName;
 		_charStat = data.charStat;
 		_iconSprite = Singleton<ResourceManager>.Instance.GetUISprite(data.iconName);
 
+		string prefabPath = CharacterPrefabPath + data.prefName;
+		_prefObject = Resources.Load(prefabPath) as GameObject;
+	}
+
+	public GameObject GetCharacterPrefab()
+	{
+		return _prefObject;
 	}
 
 }

@@ -21,9 +21,9 @@ public class PacketQueue : Singleton<PacketQueue>
 	public Queue<NetworkQueueData> networkQueue = new Queue<NetworkQueueData>();
 
 	[HideInInspector]
-	public CHAR_INDEX superCharIndex;
+	public int superCharIndex;
 	[HideInInspector]
-	public CHAR_INDEX charIndex;
+	public int charIndex;
 	[HideInInspector]
 	public string superName;
 	[HideInInspector]
@@ -37,8 +37,8 @@ public class PacketQueue : Singleton<PacketQueue>
 			return;
 		}
 		instance = this;
-		superCharIndex = CHAR_INDEX.EMPTY_CHAR;
-		charIndex = CHAR_INDEX.EMPTY_CHAR;
+		superCharIndex = InventoryManager.EmptyCharType;
+		charIndex = InventoryManager.EmptyCharType;
 		DontDestroyOnLoad(this);
 	}
 
@@ -60,7 +60,7 @@ public class PacketQueue : Singleton<PacketQueue>
 				var packetdata = JsonConvert.DeserializeObject<PACKET_ROOM_INFO>(recvData);
 				if (packetdata.roomInfo == ROOM_INDEX.MAKE_ROOM)
 				{
-					superCharIndex = (CHAR_INDEX)InventoryManager.instance.CurrentCharacter.Type;
+					superCharIndex = InventoryManager.instance.CurrentCharacter.Type;
 					NetworkManager.Instance.isOwnHost = true;
 					//To DO: 현재는 임시시스템. 
 		

@@ -212,49 +212,26 @@ namespace RopePullGame
 		}
 		#endregion
 
-		GameObject SelectInstantCharacter(CHAR_INDEX charID, Transform parent)
+		GameObject SelectInstantCharacter(int charType, Transform parent)
 		{
-			switch (charID)
+			CharacterInfo info;
+			if (InventoryManager.Instance.CharacterInfos.ContainsKey(charType))
 			{
-				case (CHAR_INDEX)CharacterInfo.EType.PpiYaGi:
-					{
-						return Instantiate(ppiYakCharacter, parent);
-					}
-				case (CHAR_INDEX)CharacterInfo.EType.TurkeyJelly:
-					{
-						return Instantiate(turkeyJellyCharacter, parent);
-						
-					}
-				default:
-					{
-						break;
-					}
+				info = InventoryManager.Instance.CharacterInfos[charType];
 			}
-			return null;
+			else
+			{
+				info = InventoryManager.Instance.DefaultCharacterInfo;
+			}
 
+			GameObject prefab = info.GetCharacterPrefab();
+			return Instantiate(prefab, parent);
 		}
 
-		void SelectInstantCharacter(CharacterInfo.EType charType,Player targetPlayer)
+		void SelectInstantCharacter(int charType, Player targetPlayer)
 		{
-			switch (charType)
-			{
-				case CharacterInfo.EType.PpiYaGi:
-					{
-						targetPlayer.characterPrefab = ppiYakCharacter;
-						break;
-					}
-				case CharacterInfo.EType.TurkeyJelly:
-					{
-						targetPlayer.characterPrefab = turkeyJellyCharacter;
-						break;
-					}
-				default:
-					{
-						targetPlayer.characterPrefab = ppiYakCharacter;
-						break;
-					}
-			}
-
+			CharacterInfo info = InventoryManager.Instance.GetCharacterInfo(charType);
+			targetPlayer.characterPrefab = info.GetCharacterPrefab();
 		}
 
 		public void CreateMultiCharacters()
@@ -265,8 +242,8 @@ namespace RopePullGame
 			ppiYakCharacter.SetActive(true);
 			turkeyJellyCharacter.SetActive(true);
 
-			CHAR_INDEX superCharIndex = PacketQueue.Instance.superCharIndex;
-			CHAR_INDEX CharIndex = PacketQueue.Instance.charIndex;
+			int superCharIndex = PacketQueue.Instance.superCharIndex;
+			int CharIndex = PacketQueue.Instance.charIndex;
 
 			//SelectInstantCharacter(superCharIndex, _leftPlayer);
 			//SelectInstantCharacter(CharIndex, _rightPlayer);
@@ -274,14 +251,14 @@ namespace RopePullGame
 			{
 				var playerInst = Instantiate(playerPrefab, _leftPlayer.transform);
 				_player = playerInst.GetComponent<Player>();
-				SelectInstantCharacter((CharacterInfo.EType)superCharIndex, _player);
+				SelectInstantCharacter(superCharIndex, _player);
 				_player.Initialize();
 				_player.SetPlayerDirection(Player.eLookDirection.Left);
 				_player.transform.localPosition = new Vector3(0.0f, 0.0f,0.0f);
 
 				var otherPlayerInst = Instantiate(playerPrefab, _rightPlayer.transform);
 				_otherPlayer = otherPlayerInst.GetComponent<Player>();
-				SelectInstantCharacter((CharacterInfo.EType)CharIndex, _otherPlayer);
+				SelectInstantCharacter(CharIndex, _otherPlayer);
 				_otherPlayer.Initialize();
 				_otherPlayer.SetPlayerDirection(Player.eLookDirection.Right);
 				_otherPlayer.transform.localPosition = new Vector3(0.0f, 0.0f, 0.0f);
@@ -294,14 +271,14 @@ namespace RopePullGame
 			{
 				var playerInst = Instantiate(playerPrefab, _rightPlayer.transform);
 				_player = playerInst.GetComponent<Player>();
-				SelectInstantCharacter((CharacterInfo.EType)CharIndex, _player);
+				SelectInstantCharacter(CharIndex, _player);
 				_player.Initialize();
 				_player.SetPlayerDirection(Player.eLookDirection.Right);
 				_player.transform.localPosition = new Vector3(0.0f, 0.0f, 0.0f);
 
 				var otherPlayerInst = Instantiate(playerPrefab, _leftPlayer.transform);
 				_otherPlayer = otherPlayerInst.GetComponent<Player>();
-				SelectInstantCharacter((CharacterInfo.EType)superCharIndex, _otherPlayer);
+				SelectInstantCharacter(superCharIndex, _otherPlayer);
 				_otherPlayer.Initialize();
 				_otherPlayer.SetPlayerDirection(Player.eLookDirection.Left);
 				_otherPlayer.transform.localPosition = new Vector3(0.0f, 0.0f, 0.0f);

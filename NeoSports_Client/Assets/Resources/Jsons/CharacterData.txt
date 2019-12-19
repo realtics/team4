@@ -1,6 +1,6 @@
 [ 
    { 
-      "charType":1,
+      "charType":101,
       "charName":"삐약이",
       "charStat":{ 
          "strength":1,
@@ -8,10 +8,11 @@
          "agility":1,
          "luck":1
       },
-      "iconName":"Ppi_Ya_Gi_Icon"
+      "iconName":"Ppi_Ya_Gi_Icon",
+      "prefName":"Character_Ppi_Ya_Gi"
    },
    { 
-      "charType":2,
+      "charType":102,
       "charName":"터키 젤리",
       "charStat":{ 
          "strength":2,
@@ -19,10 +20,11 @@
          "agility":1,
          "luck":2
       },
-      "iconName":"Turkey_Jelly_Idle_0"
+      "iconName":"Turkey_Jelly_Idle_0",
+      "prefName":"Character_Turkey_Jelly"
    },
    { 
-      "charType":0,
+      "charType":100,
       "charName":"잠김",
       "charStat":{ 
          "strength":0,
@@ -30,6 +32,7 @@
          "agility":0,
          "luck":0
       },
-      "iconName":"Icon_Group_78"
+      "iconName":"Icon_Group_78",
+      "prefName":"Character_Ppi_Ya_Gi"
    }
 ]

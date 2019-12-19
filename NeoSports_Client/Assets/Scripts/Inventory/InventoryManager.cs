@@ -6,19 +6,21 @@ using FarmGame;
 
 public class InventoryManager : Singleton<InventoryManager>
 {
+	public const int EmptyCharType = 100;
+
 	const string CharacterDataName = "CharacterData";
 	const string EquipmentDataName = "EquipmentData";
 
-	public GameObject prefCharacterPpiYaGi;
-	public GameObject prefCharacterTurkeyJelly;
-
 	#region Property
-	public Dictionary<CharacterInfo.EType, CharacterInfo> CharacterInfos { get; set; }
+	public Dictionary<int, CharacterInfo> CharacterInfos { get; set; }
 	public Dictionary<EquipmentInfo.EType, EquipmentInfo> EquipmentInfos { get; set; }
 	public CharacterInfo CurrentCharacter { get; set; }
 	public EquipmentInfo CurrentEquipment { get; set; }
 	public string PlayerNickName { get; set; }
 	public bool IsNickNameDecide { get; set; }
+	public CharacterInfo DefaultCharacterInfo {
+		get { return CharacterInfos[1]; }
+	}
 	#endregion
 
 	private void Awake()
@@ -31,7 +33,7 @@ public class InventoryManager : Singleton<InventoryManager>
 		instance = this;
 		DontDestroyOnLoad(this);
 
-		CharacterInfos = new Dictionary<CharacterInfo.EType, CharacterInfo>();
+		CharacterInfos = new Dictionary<int, CharacterInfo>();
 		EquipmentInfos = new Dictionary<EquipmentInfo.EType, EquipmentInfo>();
 
 		PlayerNickName = "플레이어";
@@ -43,12 +45,23 @@ public class InventoryManager : Singleton<InventoryManager>
 		ReadCharacterInfos();
 		ReadEquipmentInfos();
 
-		CurrentCharacter = CharacterInfos[CharacterInfo.EType.PpiYaGi];
+		CurrentCharacter = CharacterInfos[101];
 		CurrentEquipment = EquipmentInfos[EquipmentInfo.EType.BlackFedora];
 		GallaryManager.Instance.SetPreview();
 	}
 
-	
+	public CharacterInfo GetCharacterInfo(int charType)
+	{
+		if (CharacterInfos.ContainsKey(charType))
+		{
+			return CharacterInfos[charType];
+		}
+		else
+		{
+			return DefaultCharacterInfo;
+		}
+
+	}
 
 	#region Read Infos From Json
 	void ReadCharacterInfos()
@@ -62,7 +75,7 @@ public class InventoryManager : Singleton<InventoryManager>
 		foreach (var child in datas)
 		{
 			CharacterInfo info = new CharacterInfo(child);
-			CharacterInfos.Add((CharacterInfo.EType)child.charType, info);
+			CharacterInfos.Add(child.charType, info);
 		}
 	}
 
