@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 310791170814264694}
   - component: {fileID: 5265682357180277926}
   - component: {fileID: 2495263534843741865}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: BaksetBall
   m_TagString: Ball
   m_Icon: {fileID: 0}

@@ -97,7 +97,10 @@ namespace BasketBallGame
 		{
 			var playerInst = Instantiate(playerPrefab, null);
 			_player = playerInst.GetComponent<Player>();
-			SelectInstantCharacter(InventoryManager.Instance.CurrentCharacter.Type);
+			if (InventoryManager.Instance != null)
+				SelectInstantCharacter(InventoryManager.Instance.CurrentCharacter.Type);
+			else
+				SelectInstantCharacter(CharacterInfo.EType.PpiYaGi);
 			_player.Initialize();
 			_player.SetPlayerDirection(Player.eLookDirection.Left);
 

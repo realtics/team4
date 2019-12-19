@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7970367100557541913}
   - component: {fileID: 7970367100557541914}
   - component: {fileID: 958575852519071496}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: AIPlayer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
