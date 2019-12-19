@@ -73,7 +73,19 @@ void LogicProcess::ProcessPacket()
 			{
 				DB::GetInstance()->UpdataUserTable(recvPakcet->clientID, sessionID);
 			}
+			break;
+		}
 
+		case PACKET_INDEX::REQ_RES_GOLD:
+		{
+			PACKET_REQ_RES_GOLD sendPacket;
+			sendPacket.Init();
+			int clientID = DB::GetInstance()->GetClientID(sessionID);
+			int gold = DB::GetInstance()->GetGold(clientID);
+			sendPacket.gold = gold;
+
+			std::string aa = _SerializationJson(PACKET_INDEX::REQ_RES_GOLD, (const char*)&sendPacket);
+			_serverPtr->PostSendSession(sessionID, false, aa.length(), (char*)aa.c_str());
 			break;
 		}
 
@@ -112,7 +124,7 @@ void LogicProcess::ProcessPacket()
 		{
 			PACKET_REQ_RES_FARM* packet = (PACKET_REQ_RES_FARM*)data;
 			int clientID = DB::GetInstance()->GetClientID(sessionID);
-			DB::GetInstance()->SetFarmInfo(clientID, packet->farmInfoJSON,packet->farmIndex);
+			DB::GetInstance()->SetFarmInfo(clientID, packet->farmInfoJSON, packet->farmIndex);
 
 			break;
 		}
@@ -320,6 +332,33 @@ std::string LogicProcess::_SerializationJson(PACKET_INDEX packetIndex, const cha
 		std::string recvTemp;
 		std::ostringstream os(recvTemp);
 		boost::property_tree::write_json(os, ptSendRI, false);
+		sendStr = os.str();
+
+		if (jsonLength == 0)
+		{
+			int jsonLength = sendStr.length();
+			sendStr = _SerializationJson(packetIndex, packet, jsonLength);
+		}
+
+		return sendStr;
+	}
+
+	case PACKET_INDEX::REQ_RES_GOLD:
+	{
+		PACKET_REQ_RES_GOLD goldPacket;
+		memcpy(&goldPacket, packet, sizeof(PACKET_REQ_RES_GOLD));
+
+		boost::property_tree::ptree ptSendG;
+		boost::property_tree::ptree ptSendHeader;
+		ptSendHeader.put<int>("packetIndex", goldPacket.packetIndex);
+		ptSendHeader.put<int>("packetSize", jsonLength);
+		ptSendG.add_child("header", ptSendHeader);
+
+		ptSendG.put<int>("gold", goldPacket.gold);
+
+		std::string recvTemp;
+		std::ostringstream os(recvTemp);
+		boost::property_tree::write_json(os, ptSendG, false);
 		sendStr = os.str();
 
 		if (jsonLength == 0)

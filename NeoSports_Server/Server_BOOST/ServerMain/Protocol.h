@@ -45,6 +45,7 @@ enum PACKET_INDEX
 	REQ_TIME,
 	REQ_ENTER_FARM,
 	REQ_SAVE_FARM,
+	REQ_RES_GOLD,
 
 	RES_IN, //클라에게 clientID를 할당하는 패킷
 	RES_START_GAME,
@@ -74,6 +75,17 @@ enum FARM_INDEX
 	PRODUCT,
 	DECORATION,
 	GARBAGE
+};
+
+struct REQ_RES_GOLD : public PACKET_HEADER
+{
+	int gold;
+
+	void Init()
+	{
+		packetIndex = PACKET_INDEX::REQ_RES_GOLD;
+		packetSize = sizeof(REQ_RES_GOLD);
+	}
 };
 
 struct RANK

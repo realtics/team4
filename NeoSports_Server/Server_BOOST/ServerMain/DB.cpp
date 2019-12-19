@@ -192,8 +192,8 @@ int DB::GetClientID(int sessionID)
 
 	while ((_sqlRow = mysql_fetch_row(_pSqlRes)) != nullptr)
 	{
-		//_sqlRowÀÎµ¦½º 1 = DBÀÇ Ä®·³(sessionID)
 		//_sqlRowÀÎµ¦½º 0 = DBÀÇ Ä®·³(clientID)
+		//_sqlRowÀÎµ¦½º 1 = DBÀÇ Ä®·³(sessionID)
 		if (_sqlRow[1] == boost::lexical_cast<std::string>(sessionID))
 		{
 			return boost::lexical_cast<int>(_sqlRow[0]);;
@@ -229,7 +229,6 @@ std::string DB::GetFarmInfo(int clientID)
 				return "";
 		}
 	}
-
 }
 
 void DB::SetFarmInfo(int clientID, std::string farmJson, FARM_INDEX farmIndex)
@@ -321,7 +320,6 @@ int DB::GetGold(int clientID)
 
 void DB::SetGold(int clientID, int gold)
 {
-	//LockGuard userGoldUpdateLock(_userGoldUpdateLock);
 	std::string aa = "UPDATE user SET gold = '";
 	aa += boost::lexical_cast<std::string>(gold);
 	std::string tempStr = "' WHERE clientID = '";

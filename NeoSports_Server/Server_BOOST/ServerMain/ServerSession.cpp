@@ -185,6 +185,16 @@ void Session::_DeSerializationJson(char* jsonStr)
 		break;
 	}
 
+	case PACKET_INDEX::REQ_RES_GOLD:
+	{
+		PACKET_REQ_UNKNOWN packet;
+		packet.header.packetIndex = headerIndex;
+		packet.header.packetSize = 0; //요청확인만 하면 되므로 사이즈 불필요
+
+		memcpy(&_packetBuffer[_packetBufferMark], (char*)&packet, sizeof(packet));
+		break;
+	}
+
 	case PACKET_INDEX::REQ_RES_BASKET_BALL_GAME:
 	{
 		PACKET_REQ_RES_BASKET_BALL_GAME packet;
