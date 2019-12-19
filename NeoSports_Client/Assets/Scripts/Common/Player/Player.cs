@@ -172,7 +172,7 @@ public class Player : MonoBehaviour
 		float power = Vector2.Distance(new Vector2(target.x, target.y), transform.position);
 
 		_powerSize = power * OwnCharacter.status.strength;
-		_instArrow.transform.localScale = new Vector3(_powerSize, _powerSize);
+		//_instArrow.transform.localScale = new Vector3(_powerSize, _powerSize);
 	}
 
 	public Vector2 CalculateTargetAuto()

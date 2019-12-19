@@ -554,7 +554,7 @@ GameObject:
   m_Component:
   - component: {fileID: 227081508}
   - component: {fileID: 227081507}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: rope
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1218,7 +1218,7 @@ GameObject:
   m_Component:
   - component: {fileID: 409775864}
   - component: {fileID: 409775863}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: markBall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2148,7 +2148,7 @@ GameObject:
   - component: {fileID: 692681182}
   - component: {fileID: 692681186}
   - component: {fileID: 692681187}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: LeftPlayer
   m_TagString: LeftPlayer
   m_Icon: {fileID: 0}
@@ -2229,6 +2229,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Prefab_RunEffect
       objectReference: {fileID: 0}
+    - target: {fileID: 9189855683103851043, guid: 0086540af08bdfc4e8a9d37e68323a98,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
     - target: {fileID: 9189855683103851041, guid: 0086540af08bdfc4e8a9d37e68323a98,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2283,6 +2288,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9189855682629664307, guid: 0086540af08bdfc4e8a9d37e68323a98,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 9189855683261503723, guid: 0086540af08bdfc4e8a9d37e68323a98,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0086540af08bdfc4e8a9d37e68323a98, type: 3}
@@ -2655,6 +2670,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Prefab_RunEffect
       objectReference: {fileID: 0}
+    - target: {fileID: 9189855683103851043, guid: 0086540af08bdfc4e8a9d37e68323a98,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
     - target: {fileID: 9189855683103851041, guid: 0086540af08bdfc4e8a9d37e68323a98,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2709,6 +2729,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9189855682629664307, guid: 0086540af08bdfc4e8a9d37e68323a98,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 9189855683261503723, guid: 0086540af08bdfc4e8a9d37e68323a98,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0086540af08bdfc4e8a9d37e68323a98, type: 3}
@@ -5899,7 +5929,7 @@ GameObject:
   - component: {fileID: 1767396869}
   - component: {fileID: 1767396873}
   - component: {fileID: 1767396874}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: RightPlayer
   m_TagString: RightPlayer
   m_Icon: {fileID: 0}
@@ -6615,7 +6645,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1962912459}
   - component: {fileID: 1962912460}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Group_GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
