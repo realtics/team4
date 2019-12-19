@@ -52,7 +52,7 @@ int RoomMG::SearchRoom(GAME_INDEX gameIndex)
 	return FAIL_ROOM_SERCH;
 }
 
-int RoomMG::MakeRoom(GAME_INDEX gameIndex, int sessionID, CHAR_INDEX charIndex)
+int RoomMG::MakeRoom(GAME_INDEX gameIndex, int sessionID, int charIndex)
 {
 	int roomNum = SearchRoom(gameIndex);
 	if ((roomNum != FAIL_ROOM_SERCH))
@@ -77,13 +77,12 @@ int RoomMG::MakeRoom(GAME_INDEX gameIndex, int sessionID, CHAR_INDEX charIndex)
 			std::cout << roomNum << " RoomNum " << gameIndex << " Game Start" << std::endl;
 			return ROOM_HOST::ENTER_ROOM;
 		}
-
 	}
 	std::cout << "Room : MakeRoom : Fail Make Room" << std::endl;
 	return FAIL_ROOM_SERCH;
 }
 
-void RoomMG::SetRoomChar(int roomIndex, CHAR_INDEX charIndex)
+void RoomMG::SetRoomChar(int roomIndex, int charIndex)
 {
 	for (int i = 0; i < MAX_CHAR_IN_ROOM; i++)
 	{

@@ -67,7 +67,7 @@ void Server::CloseSession(const int sessionID)
 }
 
 
-int Server::MakeRoom(GAME_INDEX gameIndex, int sessionID, CHAR_INDEX charIndex)
+int Server::MakeRoom(GAME_INDEX gameIndex, int sessionID, int charIndex)
 {
 	return _roomMG.MakeRoom(gameIndex, sessionID, charIndex);
 }

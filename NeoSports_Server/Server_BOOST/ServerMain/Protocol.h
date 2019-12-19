@@ -166,7 +166,7 @@ struct PACKET_REQ_MULTI_ROOM
 {
 	PACKET_HEADER header;
 	GAME_INDEX gameIndex;
-	CHAR_INDEX charIndex;
+	int charIndex;
 };
 
 struct PACKET_REQ_INIT_ROOM
@@ -179,8 +179,8 @@ struct PACKET_REQ_INIT_ROOM
 struct PACKET_START_GAME
 {
 	PACKET_HEADER header;
-	CHAR_INDEX superCharID; //방장의 캐릭터
-	CHAR_INDEX charID;
+	int superCharID; //방장의 캐릭터
+	int charID;
 	GAME_INDEX gameIndex;
 
 	char superName[12];

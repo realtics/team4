@@ -26,7 +26,7 @@ public:
 	void ProcessInitRoomPacket(const int sessionID, const char* data);
 
 	//Room
-	int MakeRoom(GAME_INDEX gameIndex, int sessionID, CHAR_INDEX charIndex);
+	int MakeRoom(GAME_INDEX gameIndex, int sessionID, int charIndex);
 	int GetRoomNum(int sessionID);
 	void InitRoom(int roomNum);
 	ROOM* GetRoomInfo(int roomNum);
