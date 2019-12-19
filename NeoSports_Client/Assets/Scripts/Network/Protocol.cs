@@ -38,6 +38,7 @@ public enum PACKET_INDEX
     REQ_TIME,
     REQ_ENTER_FARM,
     REQ_SAVE_FARM,
+	REQ_RES_GOLD,
 
     RES_IN,
     RES_START_GAME,
@@ -187,5 +188,4 @@ public class PACKET_ROOM_INFO
 {
     public PACKET_HEADER header;
     public ROOM_INDEX roomInfo; //방을 만든건지 들어간건지의 정보
-    public int charInfo; //상대 플레이어의 캐릭터 정보
 };

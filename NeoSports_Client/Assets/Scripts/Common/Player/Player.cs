@@ -291,6 +291,10 @@ public class Player : MonoBehaviour
 			NetworkManager.Instance.SendRequestRopePull(OwnCharacter.status.strength * -1);
 		else
 			NetworkManager.Instance.SendRequestRopePull(OwnCharacter.status.strength);
+
+		OwnCharacter.PullRopeAutoRelease();
+
+		_outlineshader.PlayLineEffect();
 	}
 
 	#endregion
