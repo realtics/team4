@@ -300,7 +300,7 @@ public class NetworkManager : Singleton<NetworkManager>
 			if (se.ErrorCode == TimeOutCode)
 				a.text = "Server is not running";
 			a.okFlag = true;
-			a.callBack = ExitProgram;
+			a.callBack = null;
 			PopupManager.Instance.ShowPopup(a);
 			return;
 		}

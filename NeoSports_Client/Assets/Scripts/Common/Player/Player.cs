@@ -201,6 +201,7 @@ public class Player : MonoBehaviour
 		ball.Activate(transform.position, BasketBallGame.EBallOwner.LeftPlayer, "Ball");
 		ball.destroyed += OnBallDestroyed;
 
+		if(!NetworkManager.Instance.IsSinglePlay())
 		NetworkManager.Instance.SendRequestFireBall(_powerSize, direction.x, direction.y);
 
 		_powerSize = 0.0f;

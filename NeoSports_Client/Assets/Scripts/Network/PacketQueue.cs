@@ -42,7 +42,7 @@ public class PacketQueue : Singleton<PacketQueue>
 		DontDestroyOnLoad(this);
 	}
 
-	void Update()
+	void FixedUpdate()
 	{
 		if (networkQueue.Count > 0)
 		{
