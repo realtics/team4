@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿#pragma warning disable CS0649
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -27,6 +28,8 @@ public class PanelManager : Singleton<PanelManager>
 	GameObject panelOption;
 	[SerializeField]
 	GameObject panelCredit;
+	[SerializeField]
+	GameObject otherFarmPopupGroup;
 
 
 	void Start()
@@ -93,6 +96,12 @@ public class PanelManager : Singleton<PanelManager>
 
     public void ClickEventButtonBack()
     {
+		if (otherFarmPopupGroup.activeInHierarchy)
+		{
+			otherFarmPopupGroup.SetActive(false);
+			return;
+		}
+
         switch (_currentPanel)
         {
             case EPanel.Main:

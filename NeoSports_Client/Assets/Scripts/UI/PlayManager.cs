@@ -7,6 +7,9 @@ using UnityEngine.UI;
 public class PlayManager : Singleton<PlayManager>
 {
 
+	[SerializeField]
+	Text otherFarmUIDText;
+
 	public void ButtonEvent_StartRopePullSingleGame()
 	{
 		SceneManager.LoadScene(SceneName.RopeGameSceneName);
@@ -41,6 +44,16 @@ public class PlayManager : Singleton<PlayManager>
 	public void ButtonEvent_StartFarmScene()
 	{
 		SceneManager.LoadScene(SceneName.FarmSceneName);
+	}
+
+	public void ButtonEvent_EnterOtherFarmUID()
+	{
+		string uidStr = otherFarmUIDText.text;
+		int uidNum;
+		if(uidStr != string.Empty && int.TryParse(uidStr, out uidNum))
+		{
+			Debug.Log(uidNum.ToString() + "입력");
+		}
 	}
 
 }
