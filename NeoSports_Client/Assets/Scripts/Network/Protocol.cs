@@ -39,8 +39,9 @@ public enum PACKET_INDEX
     REQ_ENTER_FARM,
     REQ_SAVE_FARM,
 	REQ_RES_GOLD,
+	REQ_RES_MOVE,
 
-    RES_IN,
+	RES_IN,
     RES_START_GAME,
     RES_ROOM_INFO,
     RES_NOW_TIME,
@@ -139,6 +140,13 @@ public struct PACKET_REQ_RES_BASKET_BALL_GAME
 	public float power;
 	public float angleX;
 	public float angleY;
+}
+
+public struct PACKET_REQ_RES_MOVE
+{
+	public PACKET_HEADER header;
+	public float positionX;
+	public float positionY;
 }
 #endregion
 
