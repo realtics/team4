@@ -46,6 +46,7 @@ enum PACKET_INDEX
 	REQ_ENTER_FARM,
 	REQ_SAVE_FARM,
 	REQ_RES_GOLD,
+	REQ_RES_MOVE,
 
 	RES_IN, //클라에게 clientID를 할당하는 패킷
 	RES_START_GAME,
@@ -89,6 +90,20 @@ struct PACKET_HEADER
 {
 	int packetIndex;
 	int packetSize;
+};
+
+struct PACKET_REQ_RES_MOVE : public PACKET_HEADER
+{
+	float positionX;
+	float positionY;
+
+	void Init()
+	{
+		packetIndex = PACKET_INDEX::REQ_RES_MOVE;
+		packetSize = sizeof(PACKET_REQ_RES_MOVE);
+		positionX = 0.0f;
+		positionY = 0.0f;
+	}
 };
 
 struct PACKET_REQ_ENTER_FARM : public PACKET_HEADER

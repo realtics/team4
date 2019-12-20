@@ -272,6 +272,15 @@ void Session::_DeSerializationJson(char* jsonStr)
 		break;
 	}
 
+	case PACKET_INDEX::REQ_RES_MOVE:
+	{
+		PACKET_REQ_RES_MOVE packet;
+		packet.Init();
+
+		memcpy(&_packetBuffer[_packetBufferMark], (char*)&packet, sizeof(packet));
+		break;
+	}
+
 	case PACKET_INDEX::REQ_SAVE_FARM:
 	{
 		PACKET_REQ_RES_FARM packet;

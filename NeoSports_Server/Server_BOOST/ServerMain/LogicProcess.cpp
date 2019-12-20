@@ -91,6 +91,39 @@ void LogicProcess::ProcessPacket()
 			break;
 		}
 
+		case PACKET_INDEX::REQ_RES_MOVE:
+		{
+			int roomNum = _serverPtr->GetRoomNum(sessionID);
+			ROOM room;
+			room.Init();
+
+			if (roomNum != FAIL_ROOM_SERCH)
+			{
+				room = (*_serverPtr->GetRoomInfo(roomNum));
+			}
+
+			if (room.gameMG != nullptr)
+			{
+				PACKET_REQ_RES_MOVE* packet = (PACKET_REQ_RES_MOVE*)data;
+
+				std::string aa = _SerializationJson(PACKET_INDEX::REQ_RES_MOVE, (const char*)packet);
+
+				int superSessionIdTemp = room.superSessionID;
+				int sessionIdTemp = room.sessionID;
+
+				//방장이면 방장이 아닌 플레이어에게 보내고 방장이 아니면 방장에게만 보냄
+				if (sessionID == superSessionIdTemp)
+					_serverPtr->PostSendSession(sessionIdTemp, false, aa.length(), (char*)aa.c_str());
+				else if (sessionID == sessionIdTemp)
+					_serverPtr->PostSendSession(superSessionIdTemp, false, aa.length(), (char*)aa.c_str());
+			}
+			else
+				std::cout << "Session : ProcessPacket : gameMG가 null입니다." << std::endl;
+			break;
+
+			break;
+		}
+
 		case PACKET_INDEX::REQ_RES_BASKET_BALL_GAME:
 		{
 			int roomNum = _serverPtr->GetRoomNum(sessionID);
@@ -419,6 +452,35 @@ std::string LogicProcess::_SerializationJson(PACKET_INDEX packetIndex, const cha
 		return sendStr;
 
 		break;
+	}
+
+	case PACKET_INDEX::REQ_RES_MOVE:
+	{
+		PACKET_REQ_RES_MOVE movePacket;
+		movePacket.Init();
+		memcpy(&movePacket, packet, sizeof(PACKET_REQ_RES_MOVE));
+
+		boost::property_tree::ptree ptSendMove;
+		boost::property_tree::ptree ptSendHeader;
+		ptSendHeader.put<int>("packetIndex", movePacket.packetIndex);
+		ptSendHeader.put<int>("packetSize", jsonLength);
+		ptSendMove.add_child("header", ptSendHeader);
+
+		ptSendMove.put<float>("positonX", movePacket.positionX);
+		ptSendMove.put<float>("positonY", movePacket.positionY);
+
+		std::string recvTemp;
+		std::ostringstream os(recvTemp);
+		boost::property_tree::write_json(os, ptSendMove, false);
+		sendStr = os.str();
+
+		if (jsonLength == 0)
+		{
+			int jsonLength = sendStr.length();
+			sendStr = _SerializationJson(packetIndex, packet, jsonLength);
+		}
+
+		return sendStr;
 	}
 
 	case PACKET_INDEX::REQ_RES_BASKET_BALL_GAME:
