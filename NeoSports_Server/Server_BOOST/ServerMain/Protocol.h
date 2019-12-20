@@ -122,6 +122,9 @@ struct PACKET_REQ_RES_BASKET_BALL_GAME : public PACKET_HEADER
 	{
 		packetIndex = PACKET_INDEX::REQ_RES_BASKET_BALL_GAME;
 		packetSize = sizeof(PACKET_REQ_RES_BASKET_BALL_GAME);
+		power = 0.0f;
+		angleX = 0.0f;
+		angleY = 0.0f;
 	}
 };
 

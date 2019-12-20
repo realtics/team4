@@ -106,7 +106,7 @@ void LogicProcess::ProcessPacket()
 			{
 				PACKET_REQ_RES_BASKET_BALL_GAME* packet = (PACKET_REQ_RES_BASKET_BALL_GAME*)data;
 
-				std::string aa = _SerializationJson(PACKET_INDEX::REQ_RES_BASKET_BALL_GAME, (const char*)&packet);
+				std::string aa = _SerializationJson(PACKET_INDEX::REQ_RES_BASKET_BALL_GAME, (const char*)packet);
 
 				int superSessionIdTemp = room.superSessionID;
 				int sessionIdTemp = room.sessionID;
@@ -383,6 +383,7 @@ std::string LogicProcess::_SerializationJson(PACKET_INDEX packetIndex, const cha
 	case PACKET_INDEX::REQ_RES_BASKET_BALL_GAME:
 	{
 		PACKET_REQ_RES_BASKET_BALL_GAME bascetBallPacket;
+		bascetBallPacket.Init();
 		memcpy(&bascetBallPacket, packet, sizeof(PACKET_REQ_RES_BASKET_BALL_GAME));
 
 		boost::property_tree::ptree ptSendBB;

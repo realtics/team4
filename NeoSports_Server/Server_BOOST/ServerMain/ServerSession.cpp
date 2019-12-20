@@ -200,9 +200,9 @@ void Session::_DeSerializationJson(char* jsonStr)
 		PACKET_REQ_RES_BASKET_BALL_GAME packet;
 		packet.packetIndex = headerIndex;
 		packet.packetSize = children.get<int>("packetSize");
-		packet.power = ptRecv.get<int>("power");
-		packet.angleX = ptRecv.get<int>("angleX");
-		packet.angleY = ptRecv.get<int>("angleY");
+		packet.power = ptRecv.get<float>("power");
+		packet.angleX = ptRecv.get<float>("angleX");
+		packet.angleY = ptRecv.get<float>("angleY");
 
 		memcpy(&_packetBuffer[_packetBufferMark], (char*)&packet, sizeof(packet));
 		break;
