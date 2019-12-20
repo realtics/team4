@@ -14,7 +14,12 @@ DB::~DB()
 }
 void DB::ErrorCheck()
 {
-	std::cout << mysql_errno(&_conn) << std::endl;
+	int errorNo = mysql_errno(&_conn);
+	std::cout << errorNo << std::endl;
+	if (errorNo == 1452)
+	{
+		std::cout << "참조받는 테이블의 데이터를 먼저 삽입" << std::endl;
+	}
 	std::cout << mysql_error(&_conn) << std::endl;
 }
 
@@ -101,16 +106,15 @@ void DB::InsertGameInfo(int clientID, GAME_INDEX gameIndex, int winRecord)
 	std::cout << "DB : INSERT GameInfo" << std::endl;
 }
 
-void DB::Inituser()
+void DB::InitUser()
 {
 	std::string query = "UPDATE user Set sessionID = '-1' WHERE sessionID != '-1'";
 	if (mysql_query(&_conn, query.c_str()) != 0)
 	{
 		ErrorCheck();
-		std::cout << "DB : Inituser sessionID error" << std::endl;
+		std::cout << "DB : InitUser sessionID error" << std::endl;
 		return;
 	}
-	std::cout << "DB : Inituser sessionID" << std::endl;
 }
 
 
