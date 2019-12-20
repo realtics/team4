@@ -123,7 +123,6 @@ public class PacketQueue : Singleton<PacketQueue>
 			{
 				var packetdata =JsonConvert.DeserializeObject<PACKET_REQ_RES_BASKET_BALL_GAME>(recvData);
 					BasketBallGame.BasketBallGameManager.Instance.NetworkShootOtherPlayer(packetdata.power, packetdata.angleX, packetdata.angleY);
-
 				break;
 			}
 	

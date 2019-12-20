@@ -208,7 +208,12 @@ public class Player : MonoBehaviour
 
 	public void ShootBall(float power, float angleX, float angleY)
 	{
-		Vector2 direction = _instArrow.transform.rotation * new Vector2(angleX, angleY) * power;
+
+		//Vector2 direction = _instArrow.transform.rotation * new Vector2(1, angleY) * power;
+		Vector2 direction;
+		direction.x = angleX;
+		direction.y = angleY;
+
 		BasketBallGame.BasketBall ball = _ballFactory.Get() as BasketBallGame.BasketBall;
 		ball.ShotToTarget(direction);
 		ball.Activate(transform.position, BasketBallGame.EBallOwner.LeftPlayer, "Ball");
