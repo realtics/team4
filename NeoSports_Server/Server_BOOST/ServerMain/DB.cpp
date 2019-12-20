@@ -218,7 +218,6 @@ void DB::GetFarmInfo(int clientID, std::string json[], int farmIndex[])
 {
 	if (clientID == 0)
 	{
-		ErrorCheck();
 		std::cout << "DB : GetFarmInfo clientID == 0 " << std::endl;
 		return;
 	}
@@ -245,11 +244,33 @@ void DB::GetFarmInfo(int clientID, std::string json[], int farmIndex[])
 	}
 }
 
+bool DB::CheckClientID(int clientID)
+{
+	if (clientID == 0)
+		return false;
+	std::string temp = "SELECT clientID FROM user WHERE clientID = '";
+	temp += boost::lexical_cast<std::string>(clientID);
+	temp += "'";
+
+	if (mysql_query(&_conn, temp.c_str()) != 0)
+	{
+		ErrorCheck();
+		std::cout << "DB : CheckClientID mysql_query error" << std::endl;
+		return false;
+	}
+
+	int rowCount = mysql_num_rows(_pSqlRes);
+
+	if (rowCount <= 0 || rowCount == NULL)
+		return false;
+	else
+		return true;
+}
+
 void DB::SetFarmInfo(int clientID, std::string farmJson, FARM_INDEX farmIndex)
 {
 	if (clientID == 0)
 	{
-		ErrorCheck();
 		std::cout << "DB : SetFarmInfo clientID == 0 " << std::endl;
 		return;
 	}

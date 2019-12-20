@@ -51,6 +51,7 @@ enum PACKET_INDEX
 	RES_START_GAME,
 	RES_ROOM_INFO,
 	RES_NOW_TIME,
+	RES_NULL_CLIENT_ID,
 
 	//줄다리기용 패킷
 	REQ_RES_ROPE_PULL_GAME,
@@ -98,6 +99,17 @@ struct PACKET_REQ_ENTER_FARM : public PACKET_HEADER
 	{
 		packetIndex = PACKET_INDEX::REQ_ENTER_FARM;
 		packetSize = sizeof(PACKET_REQ_ENTER_FARM);
+	}
+};
+
+struct PACKET_RES_CHECK_CLIENT_ID : public PACKET_HEADER
+{
+	bool clientID;
+
+	void Init()
+	{
+		packetIndex = PACKET_INDEX::RES_NULL_CLIENT_ID;
+		packetSize = sizeof(PACKET_RES_CHECK_CLIENT_ID);
 	}
 };
 
@@ -152,7 +164,7 @@ struct PACKET_RES_IN : public PACKET_HEADER
 	}
 };
 
-struct PACKET_REQ_UNKNOWN //데이터 없이 요청만 하는 패킷
+struct PACKET_REQ_NULL_DATA //데이터 없이 요청만 하는 패킷
 {
 	PACKET_HEADER header;
 };

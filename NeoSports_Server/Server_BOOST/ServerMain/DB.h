@@ -41,6 +41,7 @@ public:
 	void InsertFarmInfo(int clientID, std::string farmJson, FARM_INDEX farmIndex);
 
 	int GetClientID(int sessionID);
+	bool CheckClientID(int clientID);
 
 	int GetGold(int clientID);
 	void SetGold(int clientID,int gold);

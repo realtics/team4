@@ -187,7 +187,7 @@ void Session::_DeSerializationJson(char* jsonStr)
 
 	case PACKET_INDEX::REQ_RES_GOLD:
 	{
-		PACKET_REQ_UNKNOWN packet;
+		PACKET_REQ_NULL_DATA packet;
 		packet.header.packetIndex = headerIndex;
 		packet.header.packetSize = 0; //요청확인만 하면 되므로 사이즈 불필요
 
@@ -254,7 +254,7 @@ void Session::_DeSerializationJson(char* jsonStr)
 
 	case PACKET_INDEX::REQ_TIME:
 	{
-		PACKET_REQ_UNKNOWN packet;
+		PACKET_REQ_NULL_DATA packet;
 		packet.header.packetIndex = headerIndex;
 		packet.header.packetSize = 0; //요청확인만 하면 되므로 사이즈 불필요
 
