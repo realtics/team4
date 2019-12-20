@@ -125,6 +125,12 @@ public class PacketQueue : Singleton<PacketQueue>
 					BasketBallGame.BasketBallGameManager.Instance.NetworkShootOtherPlayer(packetdata.power, packetdata.angleX, packetdata.angleY);
 				break;
 			}
+			case (int)PACKET_INDEX.REQ_RES_MOVE:
+			{
+				var packetdata = JsonConvert.DeserializeObject<PACKET_REQ_RES_MOVE>(recvData);
+					BasketBallGame.BasketBallGameManager.Instance.NetworkMoveOtherPlayer(packetdata.positionX, packetdata.positionY);
+				break;
+			}
 	
 			default:
 				break;

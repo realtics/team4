@@ -148,6 +148,18 @@ public class NetworkManager : Singleton<NetworkManager>
 		SendToServerPacket(packet);
 	}
 
+	public void SendRequestMove(float posX, float posY)
+	{
+		PACKET_HEADER headerPacket = MakeHeaderPacket(PACKET_INDEX.REQ_RES_MOVE);
+		PACKET_REQ_RES_MOVE packet = new PACKET_REQ_RES_MOVE
+		{
+			header = headerPacket,
+			positionX = posX,
+			positionY = posY,
+		};
+		SendToServerPacket(packet);
+	}
+
 	void SendToServerPacket(object value)
 	{
 		string jsonBuffer;

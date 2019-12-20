@@ -198,5 +198,10 @@ namespace BasketBallGame
 		{
 			_otherPlayer.ShootBall(power, angleX, angleY);
 		}
+
+		public void NetworkMoveOtherPlayer(float x, float y)
+		{
+			_otherPlayer.DecideTargetPos(new Vector3(x, y, 0.0f));
+		}
 	}
 }

@@ -45,6 +45,7 @@ public enum PACKET_INDEX
     RES_START_GAME,
     RES_ROOM_INFO,
     RES_NOW_TIME,
+	ll,
 
     //줄다리기용 패킷
     REQ_RES_ROPE_PULL_GAME,
