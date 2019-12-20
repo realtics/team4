@@ -9,6 +9,8 @@
 #include <typeinfo>
 #include <iostream>
 
+#define FARM_INFO_MAX_COUNT 5
+
 LogicProcess::LogicProcess(Server* serverPtr, ThreadHandler* threadHandler)
 	:_serverPtr(serverPtr), _threadHandler(threadHandler)
 {
@@ -131,17 +133,25 @@ void LogicProcess::ProcessPacket()
 
 		case PACKET_INDEX::REQ_ENTER_FARM:
 		{
+			PACKET_REQ_ENTER_FARM* enterPacket = (PACKET_REQ_ENTER_FARM*)data;
+			int clientID = enterPacket->clientID;
+
 			PACKET_REQ_RES_FARM sendPacket;
 			sendPacket.Init();
+			sendPacket.packetIndex = PACKET_INDEX::REQ_ENTER_FARM;
 
-			int clientID = DB::GetInstance()->GetClientID(sessionID);
-			std::string farmJson = DB::GetInstance()->GetFarmInfo(clientID);
-			int farmJsonLength = strlen(farmJson.c_str());
+			int farmIndex[FARM_INFO_MAX_COUNT] = { 0, };
+			std::string jsonArr[FARM_INFO_MAX_COUNT] = { NULL, };
+			DB::GetInstance()->GetFarmInfo(clientID, jsonArr, farmIndex);
 
-			memcpy(&sendPacket.farmInfoJSON, farmJson.c_str(), sizeof(farmJsonLength));
+			for (int i = 0; i < FARM_INFO_MAX_COUNT; i++)
+			{
+				sendPacket.farmIndex = (FARM_INDEX)farmIndex[i];
+				memcpy(&sendPacket.farmInfoJSON, jsonArr[i].c_str(), sizeof(jsonArr[i].c_str()));
 
-			std::string aa = _SerializationJson(PACKET_INDEX::REQ_ENTER_FARM, (const char*)&sendPacket);
-			_serverPtr->PostSendSession(sessionID, false, aa.length(), (char*)aa.c_str());
+				std::string aa = _SerializationJson(PACKET_INDEX::REQ_ENTER_FARM, (const char*)&sendPacket);
+				_serverPtr->PostSendSession(sessionID, false, aa.length(), (char*)aa.c_str());
+			}
 			break;
 		}
 
@@ -345,7 +355,7 @@ std::string LogicProcess::_SerializationJson(PACKET_INDEX packetIndex, const cha
 
 	case PACKET_INDEX::REQ_RES_GOLD:
 	{
-		/*PACKET_REQ_RES_GOLD goldPacket;
+		PACKET_REQ_RES_GOLD goldPacket;
 		memcpy(&goldPacket, packet, sizeof(PACKET_REQ_RES_GOLD));
 
 		boost::property_tree::ptree ptSendG;
@@ -367,7 +377,7 @@ std::string LogicProcess::_SerializationJson(PACKET_INDEX packetIndex, const cha
 			sendStr = _SerializationJson(packetIndex, packet, jsonLength);
 		}
 
-		return sendStr;*/
+		return sendStr;
 	}
 
 	case PACKET_INDEX::REQ_RES_BASKET_BALL_GAME:
@@ -461,6 +471,7 @@ std::string LogicProcess::_SerializationJson(PACKET_INDEX packetIndex, const cha
 	{
 		PACKET_REQ_RES_FARM farmInfoPacket;
 		farmInfoPacket.Init();
+		memcpy(&farmInfoPacket, packet, sizeof(PACKET_REQ_RES_FARM));
 
 		boost::property_tree::ptree ptSendFarmInfo;
 		boost::property_tree::ptree ptSendHeader;
@@ -468,6 +479,7 @@ std::string LogicProcess::_SerializationJson(PACKET_INDEX packetIndex, const cha
 		ptSendHeader.put<int>("packetSize", sizeof(PACKET_RES_NOW_TIME));
 		ptSendFarmInfo.add_child("header", ptSendHeader);
 
+		ptSendFarmInfo.put<int>("farmIndex", (FARM_INDEX)farmInfoPacket.farmIndex);
 		ptSendFarmInfo.put<char*>("farmInfoJSON", farmInfoPacket.farmInfoJSON);
 
 		std::string recvTemp;

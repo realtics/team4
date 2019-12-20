@@ -90,6 +90,17 @@ struct PACKET_HEADER
 	int packetSize;
 };
 
+struct PACKET_REQ_ENTER_FARM : public PACKET_HEADER
+{
+	int clientID;
+
+	void Init()
+	{
+		packetIndex = PACKET_INDEX::REQ_ENTER_FARM;
+		packetSize = sizeof(PACKET_REQ_ENTER_FARM);
+	}
+};
+
 struct PACKET_REQ_RES_GOLD : public PACKET_HEADER
 {
 	int gold;
@@ -120,7 +131,7 @@ struct PACKET_REQ_RES_FARM : public PACKET_HEADER
 
 	void Init()
 	{
-		packetIndex = PACKET_INDEX::REQ_ENTER_FARM;
+		packetIndex = PACKET_INDEX::REQ_SAVE_FARM;
 		packetSize = sizeof(PACKET_REQ_RES_FARM);
 	}
 };

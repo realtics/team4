@@ -24,7 +24,7 @@ public:
 	void SelectQuery();
 	int InsertUser(int* clientID, int sessionID);
 	void DeleteUser(int clientID);
-	void Inituser();
+	void InitUser();
 
 	void InsertGameInfo(int clientID, GAME_INDEX gameIndex,int winRecord);
 
@@ -36,7 +36,7 @@ public:
 	void Rank(GAME_INDEX gameIndex, RANK rank[]);
 	std::string orderByRank(std::string tableName, GAME_INDEX gameIndex, std::string Column);
 
-	std::string GetFarmInfo(int clientID);
+	void GetFarmInfo(int clientID,std::string json[],int farmIndex[]);
 	void SetFarmInfo(int clientID, std::string farmJson, FARM_INDEX farmIndex);
 	void InsertFarmInfo(int clientID, std::string farmJson, FARM_INDEX farmIndex);
 

@@ -16,10 +16,6 @@ void DB::ErrorCheck()
 {
 	int errorNo = mysql_errno(&_conn);
 	std::cout << errorNo << std::endl;
-	if (errorNo == 1452)
-	{
-		std::cout << "참조받는 테이블의 데이터를 먼저 삽입" << std::endl;
-	}
 	std::cout << mysql_error(&_conn) << std::endl;
 }
 
@@ -218,33 +214,34 @@ int DB::GetClientID(int sessionID)
 	}
 }
 
-std::string DB::GetFarmInfo(int clientID)
+void DB::GetFarmInfo(int clientID, std::string json[], int farmIndex[])
 {
 	if (clientID == 0)
 	{
 		ErrorCheck();
 		std::cout << "DB : GetFarmInfo clientID == 0 " << std::endl;
-		return "";
+		return;
 	}
 
-	if (mysql_query(&_conn, "SELECT * FROM farmInfo") != 0)
+	std::string temp = "SELECT * FROM farmInfo WHERE clientID = '";
+	temp += boost::lexical_cast<std::string>(clientID);
+	temp += "'";
+
+	if (mysql_query(&_conn, temp.c_str()) != 0)
 	{
 		ErrorCheck();
 		std::cout << "DB : GetFarmInfo mysql_query error" << std::endl;
-		return "";
+		return;
 	}
 	_pSqlRes = mysql_store_result(&_conn);
 
+	int i = 0;
 	while ((_sqlRow = mysql_fetch_row(_pSqlRes)) != nullptr)
 	{
-		//_sqlRow인덱스 0 = DB의 칼럼(clientID), 1 == farmInfo
-		if (_sqlRow[0] == boost::lexical_cast<std::string>(clientID))
-		{
-			if (_sqlRow[1] != NULL)
-				return _sqlRow[1];
-			else
-				return "";
-		}
+		//_sqlRow인덱스 0 = DB의 칼럼(clientID), 1 == json, 2 == farmIndex
+		json[i] = _sqlRow[1];
+		farmIndex[i] = boost::lexical_cast<int>(_sqlRow[2]);
+		i++;
 	}
 }
 
