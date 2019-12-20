@@ -24,6 +24,7 @@ public:
 	void SelectQuery();
 	int InsertUser(int* clientID, int sessionID);
 	void DeleteUser(int clientID);
+	void Inituser();
 
 	void InsertGameInfo(int clientID, GAME_INDEX gameIndex,int winRecord);
 

@@ -101,6 +101,19 @@ void DB::InsertGameInfo(int clientID, GAME_INDEX gameIndex, int winRecord)
 	std::cout << "DB : INSERT GameInfo" << std::endl;
 }
 
+void DB::Inituser()
+{
+	std::string query = "UPDATE user Set sessionID = '-1' WHERE sessionID != '-1'";
+	if (mysql_query(&_conn, query.c_str()) != 0)
+	{
+		ErrorCheck();
+		std::cout << "DB : Inituser sessionID error" << std::endl;
+		return;
+	}
+	std::cout << "DB : Inituser sessionID" << std::endl;
+}
+
+
 void DB::SetNameTable(int clientID, std::string name)
 {
 	// INSERT 먼저 해보고 PROMARY KEY오류가 나면 이미 있는 clientID이므로 그떄 while하는게 좋을듯
