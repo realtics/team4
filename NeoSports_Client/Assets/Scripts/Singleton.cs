@@ -5,6 +5,7 @@ using UnityEngine;
 public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
 {
     protected static T instance;
+	static bool errorNoticed = false;
 
     public static T Instance {
         get {
@@ -12,9 +13,10 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
             {
                 instance = FindObjectOfType(typeof(T)) as T;
 
-                if (instance == null)
+                if (instance == null && !errorNoticed)
                 {
-                    Debug.LogError("There's no active " + typeof(T) + " in this scene");
+					errorNoticed = true;
+					Debug.LogError("There's no active " + typeof(T) + " in this scene");
                 }
             }
 

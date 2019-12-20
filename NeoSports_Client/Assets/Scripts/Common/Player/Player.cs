@@ -74,8 +74,6 @@ public class Player : MonoBehaviour
 		_ballFactory = new PoolFactory(baksetballPrefab);
 		targetPos = transform.position;
 		mainCam = Camera.main;
-
-
 	}
 
 	public void Initialize(bool isControlPlayer = true)
@@ -201,8 +199,10 @@ public class Player : MonoBehaviour
 		ball.Activate(transform.position, BasketBallGame.EBallOwner.LeftPlayer, "Ball");
 		ball.destroyed += OnBallDestroyed;
 
-		if(!NetworkManager.Instance.IsSinglePlay())
-		NetworkManager.Instance.SendRequestFireBall(_powerSize, direction.x, direction.y);
+		if (!NetworkManager.Instance.IsSinglePlay())
+		{
+			NetworkManager.Instance.SendRequestFireBall(_powerSize, direction.x, direction.y);
+		}
 
 		_powerSize = 0.0f;
 	}
@@ -219,7 +219,7 @@ public class Player : MonoBehaviour
 		ball.ShotToTarget(direction);
 		ball.Activate(transform.position, BasketBallGame.EBallOwner.LeftPlayer, "Ball");
 		ball.destroyed += OnBallDestroyed;
-		
+
 	}
 
 	public void ShootBallAuto()
@@ -362,7 +362,10 @@ public class Player : MonoBehaviour
 	public void SetTargetPosition(LandTile landTile)
 	{
 		OwnCharacter.StartRun();
-		LeaveTile();
+		if (FriendFarmManager.Instance == null)
+		{
+			LeaveTile();
+		}
 		_targetPosition = landTile.transform.position;
 		_targetPosition.z = transform.localPosition.z;
 		_currentLandTile = landTile;
@@ -408,6 +411,11 @@ public class Player : MonoBehaviour
 	void EnterTile()
 	{
 		OwnCharacter.EndRun();
+
+		if (FriendFarmManager.Instance != null)
+		{
+			return;
+		}
 
 		Point currentPoint = _currentLandTile.MapPoint;
 		MapData.Instance.CurrentFarmerPoint = currentPoint;

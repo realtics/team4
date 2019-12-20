@@ -62,7 +62,15 @@ namespace FarmGame
 
 		private void Start()
 		{
-			CheckSaveDataIsExist();
+			if (FriendFarmManager.Instance == null)
+			{
+				CheckSaveDataIsExist();
+			}
+			else
+			{
+				LoadFriendSaveDatas();
+				
+			}
 			CreateFarmer();
 		}
 
@@ -172,8 +180,23 @@ namespace FarmGame
 			}
 		}
 
+		void LoadFriendSaveDatas()
+		{
+			Debug.Log(FriendFarmManager.Instance.LandSaveDatas);
+			LandTileManager.Instance.LoadLandTiles(FriendFarmManager.Instance.LandSaveDatas);
+			ObjectTileManager.Instance.LoadRoadTiles(FriendFarmManager.Instance.RoadSaveDatas);
+			ObjectTileManager.Instance.LoadDecorationTiles(FriendFarmManager.Instance.DecorationSaveDatas);
+			ObjectTileManager.Instance.LoadProductTiles(FriendFarmManager.Instance.ProductSaveDatas);
+			ObjectTileManager.Instance.LoadGarbageTile(FriendFarmManager.Instance.GarbageSaveDatas);
+		}
+
 		public void WriteSaveData(ESaveType type)
 		{
+			if (FriendFarmManager.Instance != null)
+			{
+				return;
+			}
+
 			switch (type)
 			{
 				case ESaveType.Land:
@@ -249,6 +272,7 @@ namespace FarmGame
 
 			script.Initialize();
 			script.FarmStart();
+
 			LandTile firstTile = LandTileManager.Instance.GetLandTileAtPoint(CurrentFarmerPoint);
 			script.SetTargetPosition(firstTile);
 		}

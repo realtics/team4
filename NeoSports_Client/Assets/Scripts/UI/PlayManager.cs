@@ -52,7 +52,7 @@ public class PlayManager : Singleton<PlayManager>
 		int uidNum;
 		if(uidStr != string.Empty && int.TryParse(uidStr, out uidNum))
 		{
-			Debug.Log(uidNum.ToString() + "입력");
+			LoadingSceneManager.LoadScene(SceneName.FriendFarmSceneName);
 		}
 	}
 

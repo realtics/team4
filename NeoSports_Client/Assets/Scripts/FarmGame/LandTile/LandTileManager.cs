@@ -50,6 +50,11 @@ namespace FarmGame
 
 		public void LoadLandTiles(LandTile.SaveData[] datas)
 		{
+			if (datas == null)
+			{
+				return;
+			}
+
 			foreach(var item in datas)
 			{
 				GameObject obj = Instantiate(prefLandTile, landTileGroup.transform);

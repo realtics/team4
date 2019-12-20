@@ -113,6 +113,11 @@ namespace FarmGame
 
 		public void LoadRoadTiles(RoadTile.SaveData[] datas)
 		{
+			if (datas == null)
+			{
+				return;
+			}
+
 			foreach (var item in datas)
 			{
 				GameObject obj = Instantiate(prefRoadTile, objectTileGroup.transform);
@@ -175,6 +180,11 @@ namespace FarmGame
 
 		public void LoadProductTiles(ProductTile.SaveData[] datas)
 		{
+			if (datas == null)
+			{
+				return;
+			}
+
 			foreach (var item in datas)
 			{
 				GameObject obj = Instantiate(prefProductTile, objectTileGroup.transform);
@@ -224,6 +234,11 @@ namespace FarmGame
 
 		public void LoadDecorationTiles(DecorationTile.SaveData[] datas)
 		{
+			if (datas == null)
+			{
+				return;
+			}
+
 			foreach (var item in datas)
 			{
 				GameObject obj = Instantiate(prefDecorationTile, objectTileGroup.transform);
@@ -287,7 +302,12 @@ namespace FarmGame
 
 		public void LoadGarbageTile(GarbageTile.SaveData[] datas)
 		{
-			foreach(var item in datas)
+			if (datas == null)
+			{
+				return;
+			}
+
+			foreach (var item in datas)
 			{
 				GameObject obj = Instantiate(prefGarbageTile, objectTileGroup.transform);
 				GarbageTile script = obj.GetComponent<GarbageTile>();

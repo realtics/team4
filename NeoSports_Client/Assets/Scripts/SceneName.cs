@@ -9,4 +9,5 @@
 	public const string WaitGameSceneName = "WaitGameScene";
 	public const string FarmSceneName = "FarmScene";
 	public const string FriendFarmSceneName = "FriendFarmScene";
+	public const string FriendFarmLoadingSceneName = "FriendFarmLoadingScene";
 }

@@ -24,9 +24,15 @@ EditorBuildSettings:
     path: Assets/Scenes/WaitGameScene.unity
     guid: 6a80ba12563c5994fa19238a0a47b690
   - enabled: 1
+    path: Assets/Scenes/NetworkBasketBallGame.unity
+    guid: 7640b57b979f91c4096aab52bf3b818c
+  - enabled: 1
     path: Assets/Scenes/FarmScene.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
   - enabled: 1
-    path: Assets/Scenes/NetworkBasketBallGame.unity
-    guid: 7640b57b979f91c4096aab52bf3b818c
+    path: Assets/Scenes/FriendFarmScene.unity
+    guid: fd6b4b40a8f07bc4e9b17640e2a8a62e
+  - enabled: 1
+    path: Assets/Scenes/FriendFarmLoadingScene.unity
+    guid: ac180c61617876f459f471548912278b
   m_configObjects: {}

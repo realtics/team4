@@ -116,14 +116,21 @@ namespace FarmGame
 		{
 			_storageGroupDic = new Dictionary<int, StorageGroup>();
 			CurrentCategory = ECategory.Default;
-			InitLandPriceLabel();
+			if (FriendFarmManager.Instance == null)
+			{
+				InitLandPriceLabel();
+			}
+
 		}
 
 		private void Start()
 		{
-			CreatePlantScrollViewItem();
-			CreateDecorationScrollViewItem();
-			UpdateGoldResourceLabel();
+			if (FriendFarmManager.Instance == null)
+			{
+				CreatePlantScrollViewItem();
+				CreateDecorationScrollViewItem();
+				UpdateGoldResourceLabel();
+			}
 		}
 
 		void InitLandPriceLabel()
@@ -186,6 +193,10 @@ namespace FarmGame
 
 		void ChangeSceneToMainMenu()
 		{
+			if(FriendFarmManager.Instance != null)
+			{
+				FriendFarmManager.Instance.DestroySelf();
+			}
 			SceneManager.LoadScene(SceneName.MenuSceneName);
 		}
 		#endregion
