@@ -193,5 +193,10 @@ namespace BasketBallGame
 
 			targetPlayer.characterPrefab = info.GetCharacterPrefab();
 		}
+
+		public void NetworkShootOtherPlayer(float power ,float angleX, float angleY)
+		{
+			_otherPlayer.ShootBall(power, angleX, angleY);
+		}
 	}
 }

@@ -123,14 +123,23 @@ public struct PACKET_REQ_UNKNOWN //데이터 없이 요청만 하는 패킷
 
 public struct PACKET_REQ_ENTER_FARM
 {
+	public PACKET_HEADER header;
 	public int clientID;
 }
 
 public struct PACKET_REQ_RES_GOLD
 {
+	public PACKET_HEADER header;
 	public int gold;
 }
 
+public struct PACKET_REQ_RES_BASKET_BALL_GAME
+{
+	public PACKET_HEADER header;
+	public float power;
+	public float angleX;
+	public float angleY;
+}
 #endregion
 
 [StructLayout(LayoutKind.Sequential)]

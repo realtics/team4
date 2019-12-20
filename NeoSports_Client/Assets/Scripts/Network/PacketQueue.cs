@@ -116,7 +116,14 @@ public class PacketQueue : Singleton<PacketQueue>
 			case (int)PACKET_INDEX.RES_IN:
 			{
 				var packetdata = JsonConvert.DeserializeObject<PACKET_RES_IN>(recvData);
-					ResourceManager.Instance.SetClientId(packetdata.clientID);
+				ResourceManager.Instance.SetClientId(packetdata.clientID);
+				break;
+			}
+			case (int)PACKET_INDEX.REQ_RES_BASKET_BALL_GAME:
+			{
+				var packetdata =JsonConvert.DeserializeObject<PACKET_REQ_RES_BASKET_BALL_GAME>(recvData);
+					BasketBallGame.BasketBallGameManager.Instance.NetworkShootOtherPlayer(packetdata.power, packetdata.angleX, packetdata.angleY);
+
 				break;
 			}
 	

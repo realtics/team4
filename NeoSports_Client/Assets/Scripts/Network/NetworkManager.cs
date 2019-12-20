@@ -1,17 +1,12 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.SceneManagement; //single은 PlayManager에서,멀티는 네트워크에서
-
-using System.Runtime.InteropServices;
+﻿using FarmGame;
+using Newtonsoft.Json;
+using System;
 using System.Net;
 using System.Net.Sockets;
-
+using System.Runtime.InteropServices;
 using System.Text;
-using System;
-using Newtonsoft.Json;
-
-using FarmGame;
+using UnityEngine;
+using UnityEngine.SceneManagement; //single은 PlayManager에서,멀티는 네트워크에서
 
 public class AsyncObject
 {
@@ -140,6 +135,19 @@ public class NetworkManager : Singleton<NetworkManager>
         SendToServerPacket(packet);
     }
 
+	public void SendRequestFireBall(float firePower, float fireAngleX, float fireAngleY)
+	{
+		PACKET_HEADER headerPacket = MakeHeaderPacket(PACKET_INDEX.REQ_RES_BASKET_BALL_GAME);
+		PACKET_REQ_RES_BASKET_BALL_GAME packet = new PACKET_REQ_RES_BASKET_BALL_GAME
+		{
+			header = headerPacket,
+			power = firePower,
+			angleX = fireAngleX,
+			angleY = fireAngleY,
+		};
+		SendToServerPacket(packet);
+	}
+
 	void SendToServerPacket(object value)
 	{
 		string jsonBuffer;
@@ -205,6 +213,13 @@ public class NetworkManager : Singleton<NetworkManager>
 			case PACKET_INDEX.REQ_RES_ROPE_PULL_GAME:
 				{
 					int packetSize = Marshal.SizeOf<PACKET_REQ_RES_ROPE_PULL_GAME>();
+					PACKET_HEADER headerPacket;
+					headerPacket = new PACKET_HEADER(packetIndex, packetSize);
+					return headerPacket;
+				}
+			case PACKET_INDEX.REQ_RES_BASKET_BALL_GAME:
+				{
+					int packetSize = Marshal.SizeOf<PACKET_REQ_RES_BASKET_BALL_GAME>();
 					PACKET_HEADER headerPacket;
 					headerPacket = new PACKET_HEADER(packetIndex, packetSize);
 					return headerPacket;

@@ -43,18 +43,18 @@ public class Player : MonoBehaviour
 	public GameObject directionArrowPrefab;
 	public GameObject characterPrefab;
 	public GameObject controllerPrefab;
-    public GameObject equipmentPrefab;
+	public GameObject equipmentPrefab;
 	public BasketBallGame.BasketBall baksetballPrefab;
 
 	GameObject _instChar;
 	GameObject _instController;
 	GameObject _instArrow;
-    GameObject _instEquipment;
+	GameObject _instEquipment;
 
-    PlayerController _playerController;
-    PlayerEquipment _playerEquipment;
+	PlayerController _playerController;
+	PlayerEquipment _playerEquipment;
 
-    float _powerSize;
+	float _powerSize;
 	bool _isHost;
 	bool _isControlPlayer;
 	SpirteOutlineshader _outlineshader;
@@ -75,7 +75,7 @@ public class Player : MonoBehaviour
 		targetPos = transform.position;
 		mainCam = Camera.main;
 
-		
+
 	}
 
 	public void Initialize(bool isControlPlayer = true)
@@ -124,14 +124,14 @@ public class Player : MonoBehaviour
 		_instChar = Instantiate(characterPrefab, this.transform);
 		_instController = Instantiate(controllerPrefab, this.transform);
 		_instArrow = Instantiate(directionArrowPrefab, this.transform);
-        _instEquipment = Instantiate(equipmentPrefab, this.transform);
+		_instEquipment = Instantiate(equipmentPrefab, this.transform);
 
-        OwnCharacter = _instChar.GetComponent<Character>();
+		OwnCharacter = _instChar.GetComponent<Character>();
 		_playerController = _instController.GetComponent<PlayerController>();
 		_playerTrigger = GetComponent<BoxCollider2D>();
 		_outlineshader = _instChar.GetComponent<SpirteOutlineshader>();
 
-        _playerEquipment = _instEquipment.GetComponent<PlayerEquipment>();
+		_playerEquipment = _instEquipment.GetComponent<PlayerEquipment>();
 	}
 
 	#region public Player Function -Controller Use
@@ -139,9 +139,9 @@ public class Player : MonoBehaviour
 	{
 		OwnCharacter = character;
 		_playerController = controller;
-		_playerController.InitController(OwnCharacter, this,_isControlPlayer);
-        _playerEquipment.InitializeEquipItem(this);
-    }
+		_playerController.InitController(OwnCharacter, this, _isControlPlayer);
+		_playerEquipment.InitializeEquipItem(this);
+	}
 
 	public void AimingShoot()
 	{
@@ -193,12 +193,27 @@ public class Player : MonoBehaviour
 		isClickOn = false;
 
 		Vector2 direction = _instArrow.transform.rotation * new Vector2(1, 0.0f) * _powerSize;
-		_powerSize = 0.0f;
+
+
 
 		BasketBallGame.BasketBall ball = _ballFactory.Get() as BasketBallGame.BasketBall;
 		ball.ShotToTarget(direction);
 		ball.Activate(transform.position, BasketBallGame.EBallOwner.LeftPlayer, "Ball");
 		ball.destroyed += OnBallDestroyed;
+
+		NetworkManager.Instance.SendRequestFireBall(_powerSize, direction.x, direction.y);
+
+		_powerSize = 0.0f;
+	}
+
+	public void ShootBall(float power, float angleX, float angleY)
+	{
+		Vector2 direction = _instArrow.transform.rotation * new Vector2(angleX, angleY) * power;
+		BasketBallGame.BasketBall ball = _ballFactory.Get() as BasketBallGame.BasketBall;
+		ball.ShotToTarget(direction);
+		ball.Activate(transform.position, BasketBallGame.EBallOwner.LeftPlayer, "Ball");
+		ball.destroyed += OnBallDestroyed;
+		
 	}
 
 	public void ShootBallAuto()
@@ -351,7 +366,8 @@ public class Player : MonoBehaviour
 		{
 			SetFlipCharacter(false);
 		}
-		else { 
+		else
+		{
 			SetFlipCharacter(true);
 		}
 	}
@@ -413,7 +429,7 @@ public class Player : MonoBehaviour
 
 		if (ObjectTileManager.Instance.HasObjectTileAtPoint(currentPoint))
 		{
-			if(ObjectTileManager.Instance.GetObjectTileTypeAtPoint(currentPoint) == ObjectTile.ETileType.Garbage)
+			if (ObjectTileManager.Instance.GetObjectTileTypeAtPoint(currentPoint) == ObjectTile.ETileType.Garbage)
 			{
 				_currentGarbageTile = ObjectTileManager.Instance.GetGarbageTileAtPoint(currentPoint);
 				FarmUIManager.Instance.GarbageTileFuncButtonInteract(_currentGarbageTile.GetGarbageData());
@@ -494,7 +510,7 @@ public class Player : MonoBehaviour
 
 	void CleaningCurrentGarbage()
 	{
-		if(_currentGarbageTile != null)
+		if (_currentGarbageTile != null)
 		{
 			int removeCost = _currentGarbageTile.GetGarbageData().removeCost;
 			if (removeCost <= ResourceManager.Instance.GetGoldResource())
