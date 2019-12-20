@@ -17,11 +17,16 @@ public class PanelManager : Singleton<PanelManager>
     Dictionary<EPanel, GameObject> _panelDic;
     EPanel _currentPanel;
 
-    public GameObject panelMain;
-    public GameObject panelPlay;
-    public GameObject panelGallary;
-    public GameObject panelOption;
-    public GameObject panelCredit;
+	[SerializeField]
+    GameObject panelMain;
+	[SerializeField]
+	GameObject panelPlay;
+	[SerializeField]
+	GameObject panelGallary;
+	[SerializeField]
+	GameObject panelOption;
+	[SerializeField]
+	GameObject panelCredit;
 
 
 	void Start()
