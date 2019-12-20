@@ -148,6 +148,7 @@ public struct PACKET_REQ_RES_MOVE
 	public PACKET_HEADER header;
 	public float positionX;
 	public float positionY;
+	public float positionZ;
 }
 #endregion
 

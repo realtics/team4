@@ -97,7 +97,7 @@ public class PlayerController : MonoBehaviour
 			{
 				_ownPlayer.DecideTargetPos(Input.mousePosition);
 				if (!NetworkManager.Instance.IsSinglePlay())
-					NetworkManager.Instance.SendRequestMove(Input.mousePosition.x, Input.mousePosition.y);
+					NetworkManager.Instance.SendRequestMove(Input.mousePosition.x, Input.mousePosition.y, Input.mousePosition.z);
 				return;
 			}
 		}
@@ -143,7 +143,7 @@ public class PlayerController : MonoBehaviour
 		if (Input.GetMouseButtonDown(0))
 			_ownPlayer.DecideTargetPos(Input.mousePosition);
 		if (!NetworkManager.Instance.IsSinglePlay())
-			NetworkManager.Instance.SendRequestMove(Input.mousePosition.x, Input.mousePosition.y);
+			NetworkManager.Instance.SendRequestMove(Input.mousePosition.x, Input.mousePosition.y, Input.mousePosition.z);
 		return;
 	}
 

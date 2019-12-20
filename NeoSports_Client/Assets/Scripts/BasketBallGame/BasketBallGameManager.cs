@@ -39,12 +39,12 @@ namespace BasketBallGame
 		bool isSingle;
 
 		public EGameState GameState { get; set; }
-		
+
 		void Awake()
 		{
 			instance = this;
 			GameState = EGameState.PlayerWait;
-			InitializeGame();	
+			InitializeGame();
 		}
 
 		void Start()
@@ -133,7 +133,7 @@ namespace BasketBallGame
 			{
 				CreateSingleCharacter();
 			}
-			else 
+			else
 			{
 				CreateMultiCharacter();
 			}
@@ -148,7 +148,7 @@ namespace BasketBallGame
 			{
 				var playerInst = Instantiate(playerPrefab, null);
 				_player = playerInst.GetComponent<Player>();
-				
+
 				SelectInstantCharacter(superCharIndex, _player);
 				_player.Initialize();
 				_player.SetPlayerDirection(Player.eLookDirection.Left);
@@ -194,14 +194,14 @@ namespace BasketBallGame
 			targetPlayer.characterPrefab = info.GetCharacterPrefab();
 		}
 
-		public void NetworkShootOtherPlayer(float power ,float angleX, float angleY)
+		public void NetworkShootOtherPlayer(float power, float angleX, float angleY)
 		{
 			_otherPlayer.ShootBall(power, angleX, angleY);
 		}
 
-		public void NetworkMoveOtherPlayer(float x, float y)
+		public void NetworkMoveOtherPlayer(float x, float y,float z)
 		{
-			_otherPlayer.DecideTargetPos(new Vector3(x, y, 0.0f));
+			_otherPlayer.DecideTargetPos(new Vector3(x, y,z));
 		}
 	}
 }

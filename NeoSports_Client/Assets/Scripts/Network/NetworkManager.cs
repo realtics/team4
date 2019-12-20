@@ -148,7 +148,7 @@ public class NetworkManager : Singleton<NetworkManager>
 		SendToServerPacket(packet);
 	}
 
-	public void SendRequestMove(float posX, float posY)
+	public void SendRequestMove(float posX, float posY,float posZ)
 	{
 		PACKET_HEADER headerPacket = MakeHeaderPacket(PACKET_INDEX.REQ_RES_MOVE);
 		PACKET_REQ_RES_MOVE packet = new PACKET_REQ_RES_MOVE
@@ -156,6 +156,7 @@ public class NetworkManager : Singleton<NetworkManager>
 			header = headerPacket,
 			positionX = posX,
 			positionY = posY,
+			positionZ = posZ,
 		};
 		SendToServerPacket(packet);
 	}

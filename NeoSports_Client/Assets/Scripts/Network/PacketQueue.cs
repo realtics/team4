@@ -128,7 +128,7 @@ public class PacketQueue : Singleton<PacketQueue>
 			case (int)PACKET_INDEX.REQ_RES_MOVE:
 			{
 				var packetdata = JsonConvert.DeserializeObject<PACKET_REQ_RES_MOVE>(recvData);
-					BasketBallGame.BasketBallGameManager.Instance.NetworkMoveOtherPlayer(packetdata.positionX, packetdata.positionY);
+					BasketBallGame.BasketBallGameManager.Instance.NetworkMoveOtherPlayer(packetdata.positionX, packetdata.positionY, packetdata.positionZ);
 				break;
 			}
 	
