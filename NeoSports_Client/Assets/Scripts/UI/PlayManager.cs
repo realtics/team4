@@ -7,10 +7,6 @@ using UnityEngine.UI;
 public class PlayManager : Singleton<PlayManager>
 {
 
-	public GameObject ropePullMultiButton;
-	public GameObject ropeJumpMultiButton;
-	public GameObject basketBallMultiButton;
-
 	public void ButtonEvent_StartRopePullSingleGame()
 	{
 		SceneManager.LoadScene(SceneName.RopeGameSceneName);
