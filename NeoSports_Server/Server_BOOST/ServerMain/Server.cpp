@@ -134,13 +134,9 @@ void Server::SetGameMG(bool isSuperSession, int  sessionID, GAME_INDEX gameIndex
 
 void Server::ProcessReqInPacket(const int sessionID, const char* data)
 {
-	//TODO : LogicProcess로 빼서 처리하기
 	PACKET_REQ_IN* packet = (PACKET_REQ_IN*)data;
 	_sessionVec[sessionID]->SetName(packet->name);
-
 	std::cout << "Server : Client accept. Name : " << _sessionVec[sessionID]->GetName() << std::endl;
-	int clientID = DB::GetInstance()->GetClientID(sessionID);
-	DB::GetInstance()->SetNameTable(clientID, packet->name);
 }
 
 void Server::ProcessInitRoomPacket(const int sessionID, const char* data)

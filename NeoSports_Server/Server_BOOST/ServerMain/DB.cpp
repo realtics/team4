@@ -141,7 +141,6 @@ void DB::SetNameTable(int clientID, std::string name)
 			{
 				ErrorCheck();
 				std::cout << "DB : SetNameTable Name error" << std::endl;
-				return;
 			}
 			return;
 		}

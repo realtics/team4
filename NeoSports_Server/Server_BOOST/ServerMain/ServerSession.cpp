@@ -285,6 +285,9 @@ void Session::_DeSerializationJson(char* jsonStr)
 	{
 		PACKET_REQ_RES_MOVE packet;
 		packet.Init();
+		packet.positionX = ptRecv.get<float>("positionX");
+		packet.positionY = ptRecv.get<float>("positionY");
+		packet.positionZ = ptRecv.get<float>("positionZ");
 
 		memcpy(&_packetBuffer[_packetBufferMark], (char*)&packet, sizeof(packet));
 		break;

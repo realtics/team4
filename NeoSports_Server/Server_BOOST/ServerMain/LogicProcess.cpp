@@ -56,7 +56,6 @@ void LogicProcess::ProcessPacket()
 		{
 			//accept 처리
 			_serverPtr->ProcessReqInPacket(sessionID, data);
-
 			//clientID조회를 위해 clientID값을 얻어온다
 			PACKET_REQ_IN* recvPakcet = (PACKET_REQ_IN*)data;
 			if (recvPakcet->clientID == 0)
@@ -70,11 +69,15 @@ void LogicProcess::ProcessPacket()
 				std::string aa = _SerializationJson(PACKET_INDEX::RES_IN, (const char*)&sendPacket);
 				_serverPtr->PostSendSession(sessionID, false, aa.length(), (char*)aa.c_str());
 			}
+			int clientID = recvPakcet->clientID;
 
-			else if (recvPakcet->clientID != 0)
+			if (recvPakcet->clientID != 0)
 			{
-				DB::GetInstance()->UpdataUserTable(recvPakcet->clientID, sessionID);
+				DB::GetInstance()->UpdataUserTable(clientID, sessionID);
 			}
+
+			DB::GetInstance()->SetNameTable(clientID, recvPakcet->name);
+
 			break;
 		}
 
@@ -468,6 +471,7 @@ std::string LogicProcess::_SerializationJson(PACKET_INDEX packetIndex, const cha
 
 		ptSendMove.put<float>("positonX", movePacket.positionX);
 		ptSendMove.put<float>("positonY", movePacket.positionY);
+		ptSendMove.put<float>("positonZ", movePacket.positionZ);
 
 		std::string recvTemp;
 		std::ostringstream os(recvTemp);
