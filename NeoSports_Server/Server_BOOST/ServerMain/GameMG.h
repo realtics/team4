@@ -20,5 +20,5 @@ public:
 	void Init();
 
 	void SetRopePos(float ropePos);
-	int GetRopePos();
+	float GetRopePos();
 };

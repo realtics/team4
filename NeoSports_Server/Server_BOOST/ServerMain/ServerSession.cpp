@@ -144,7 +144,6 @@ void  Session::_ReceiveHandle(const boost::system::error_code& error, size_t byt
 	}
 }
 
-
 int Session::GetSessionID()
 {
 	return _sessionId;
@@ -195,6 +194,16 @@ void Session::_DeSerializationJson(char* jsonStr)
 		break;
 	}
 
+	case PACKET_INDEX::REQ_CHECK_CLIENT_ID:
+	{
+		PACKET_REQ_CHECK_CLIENT_ID packet;
+		packet.packetIndex = headerIndex;
+		packet.packetSize = 0;
+
+		memcpy(&_packetBuffer[_packetBufferMark], (char*)&packet, sizeof(packet));
+		break;
+	}
+	
 	case PACKET_INDEX::REQ_RES_BASKET_BALL_GAME:
 	{
 		PACKET_REQ_RES_BASKET_BALL_GAME packet;

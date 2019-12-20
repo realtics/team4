@@ -168,36 +168,23 @@ void LogicProcess::ProcessPacket()
 		{
 			PACKET_REQ_ENTER_FARM* enterPacket = (PACKET_REQ_ENTER_FARM*)data;
 			int clientID = enterPacket->clientID;
-			if (DB::GetInstance()->CheckClientID(clientID))
+			PACKET_REQ_RES_FARM sendPacket;
+			sendPacket.Init();
+			sendPacket.packetIndex = PACKET_INDEX::REQ_ENTER_FARM;
+
+			int farmIndex[FARM_INFO_MAX_COUNT] = { 0, };
+			std::string jsonArr[FARM_INFO_MAX_COUNT] = { NULL, };
+			DB::GetInstance()->GetFarmInfo(clientID, jsonArr, farmIndex);
+
+			for (int i = 0; i < FARM_INFO_MAX_COUNT; i++)
 			{
-				PACKET_REQ_RES_FARM sendPacket;
-				sendPacket.Init();
-				sendPacket.packetIndex = PACKET_INDEX::REQ_ENTER_FARM;
+				sendPacket.farmIndex = (FARM_INDEX)farmIndex[i];
+				memcpy(&sendPacket.farmInfoJSON, jsonArr[i].c_str(), sizeof(jsonArr[i].c_str()));
 
-				int farmIndex[FARM_INFO_MAX_COUNT] = { 0, };
-				std::string jsonArr[FARM_INFO_MAX_COUNT] = { NULL, };
-				DB::GetInstance()->GetFarmInfo(clientID, jsonArr, farmIndex);
-
-				for (int i = 0; i < FARM_INFO_MAX_COUNT; i++)
-				{
-					sendPacket.farmIndex = (FARM_INDEX)farmIndex[i];
-					memcpy(&sendPacket.farmInfoJSON, jsonArr[i].c_str(), sizeof(jsonArr[i].c_str()));
-
-					std::string aa = _SerializationJson(PACKET_INDEX::REQ_ENTER_FARM, (const char*)&sendPacket);
-					_serverPtr->PostSendSession(sessionID, false, aa.length(), (char*)aa.c_str());
-				}
-				break;
-			}
-
-			else
-			{
-				PACKET_RES_CHECK_CLIENT_ID sendPacket;
-				sendPacket.packetIndex = PACKET_INDEX::RES_NULL_CLIENT_ID;
-				sendPacket.packetSize = 0;
-				std::string aa = _SerializationJson(PACKET_INDEX::RES_NULL_CLIENT_ID, (const char*)&sendPacket);
+				std::string aa = _SerializationJson(PACKET_INDEX::REQ_ENTER_FARM, (const char*)&sendPacket);
 				_serverPtr->PostSendSession(sessionID, false, aa.length(), (char*)aa.c_str());
-				break;
 			}
+			break;
 		}
 
 		case PACKET_INDEX::REQ_TIME:
@@ -216,7 +203,20 @@ void LogicProcess::ProcessPacket()
 			break;
 		}
 
+		case PACKET_INDEX::REQ_CHECK_CLIENT_ID:
+		{
+			PACKET_REQ_CHECK_CLIENT_ID* packetQCC = (PACKET_REQ_CHECK_CLIENT_ID*)data;
 
+			PACKET_RES_CHECK_CLIENT_ID packetSCC;
+			packetSCC.Init();
+
+			bool isClientID = DB::GetInstance()->CheckClientID(packetQCC->clientID);
+			packetSCC.isClientID = isClientID;
+
+			std::string aa = _SerializationJson(PACKET_INDEX::RES_NULL_CLIENT_ID, (const char*)&packetSCC);
+			_serverPtr->PostSendSession(sessionID, false, aa.length(), (char*)aa.c_str());
+			break;
+		}
 		case PACKET_INDEX::REQ_MULTI_ROOM:
 		{
 			PACKET_REQ_MULTI_ROOM* packet = (PACKET_REQ_MULTI_ROOM*)data;
@@ -436,7 +436,7 @@ std::string LogicProcess::_SerializationJson(PACKET_INDEX packetIndex, const cha
 		ptSendHeader.put<int>("packetSize", jsonLength);
 		ptSendCC.add_child("header", ptSendHeader);
 
-		ptSendCC.put<bool>("clientID", chckClientIdPacket.clientID);
+		ptSendCC.put<bool>("isClientID", chckClientIdPacket.isClientID);
 
 		std::string recvTemp;
 		std::ostringstream os(recvTemp);
