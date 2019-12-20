@@ -201,7 +201,8 @@ void Session::_DeSerializationJson(char* jsonStr)
 		packet.packetIndex = headerIndex;
 		packet.packetSize = children.get<int>("packetSize");
 		packet.power = ptRecv.get<int>("power");
-		packet.angle = ptRecv.get<int>("angle");
+		packet.angleX = ptRecv.get<int>("angleX");
+		packet.angleY = ptRecv.get<int>("angleY");
 
 		memcpy(&_packetBuffer[_packetBufferMark], (char*)&packet, sizeof(packet));
 		break;

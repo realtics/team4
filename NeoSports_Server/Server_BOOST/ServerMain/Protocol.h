@@ -115,7 +115,8 @@ struct PACKET_REQ_RES_GOLD : public PACKET_HEADER
 struct PACKET_REQ_RES_BASKET_BALL_GAME : public PACKET_HEADER
 {
 	float power;
-	float angle;
+	float angleX;
+	float angleY;
 
 	void Init()
 	{

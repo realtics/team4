@@ -392,7 +392,8 @@ std::string LogicProcess::_SerializationJson(PACKET_INDEX packetIndex, const cha
 		ptSendBB.add_child("header", ptSendHeader);
 
 		ptSendBB.put<float>("power", bascetBallPacket.power);
-		ptSendBB.put<float>("angle", bascetBallPacket.angle);
+		ptSendBB.put<float>("angleX", bascetBallPacket.angleX);
+		ptSendBB.put<float>("angleY", bascetBallPacket.angleY);
 
 		std::string recvTemp;
 		std::ostringstream os(recvTemp);
