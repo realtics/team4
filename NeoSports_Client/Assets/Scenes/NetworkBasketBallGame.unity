@@ -150,10 +150,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   endGameTime: 30
-  ppiYakCharacter: {fileID: 2673625610814883514, guid: fc6c8e0c201024649a39a173fdf77f6c,
-    type: 3}
-  turkeyJellyCharacter: {fileID: 203829877700944717, guid: 690c6258a777cc346acfc313445baf2c,
-    type: 3}
+  ppiYakCharacter: {fileID: 0}
+  turkeyJellyCharacter: {fileID: 0}
   playerPrefab: {fileID: 8020142122621805146, guid: 2f6797c75b7704646aeaecae172f8117,
     type: 3}
   AIPlayerPrefab: {fileID: 7970367100557541916, guid: e2d041e3ed5c31449ad78bbf469314c6,

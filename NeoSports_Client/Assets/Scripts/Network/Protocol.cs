@@ -116,10 +116,21 @@ public struct PACKET_REQ_RES_FARM
 };
 
 [StructLayout(LayoutKind.Sequential)]
-struct PACKET_REQ_UNKNOWN //데이터 없이 요청만 하는 패킷
+public struct PACKET_REQ_UNKNOWN //데이터 없이 요청만 하는 패킷
 {
     PACKET_HEADER header;
 };
+
+public struct PACKET_REQ_ENTER_FARM
+{
+	public int clientID;
+}
+
+public struct PACKET_REQ_RES_GOLD
+{
+	public int gold;
+}
+
 #endregion
 
 [StructLayout(LayoutKind.Sequential)]
@@ -130,7 +141,7 @@ struct PACKET_RES_NOW_TIME
 };
 
 [StructLayout(LayoutKind.Sequential)]
-struct PACKET_RES_IN
+public struct PACKET_RES_IN
 {
     public PACKET_HEADER header;
     public int clientID;
