@@ -144,6 +144,12 @@ public class PacketQueue : Singleton<PacketQueue>
 				FriendFarmManager.Instance.LoadFarmSaveDatas(packetData.saveData, packetData.saveIndex);
 				break;
 			}
+			case PACKET_INDEX.REQ_RES_GOLD:
+			{
+				var packetData = JsonConvert.DeserializeObject<PACKET_REQ_RES_GOLD>(recvData);
+				ResourceManager.Instance.AddGoldResource(packetData.gold);
+				break;
+			}
 			default:
 				break;
 		}

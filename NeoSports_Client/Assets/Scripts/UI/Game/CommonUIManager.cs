@@ -155,6 +155,11 @@ public class CommonUIManager : Singleton<CommonUIManager>
 		script.SetUserNameText(name);
 		script.SetRewardGoldText(rewardGold);
 		PopupManager.Instance.SetAsLastSiblingPopup();
+
+		if (NetworkManager.Instance != null)
+		{
+			NetworkManager.Instance.SendRequestEarnGold(rewardGold);
+		}
 	}
 
 	public void DestroyWinnerNotice()

@@ -161,6 +161,17 @@ public class NetworkManager : Singleton<NetworkManager>
 		SendToServerPacket(packet);
 	}
 
+	public void SendRequestEarnGold(int goldAmount)
+	{
+		PACKET_HEADER headerPacket = MakeHeaderPacket(PACKET_INDEX.REQ_RES_GOLD);
+		PACKET_REQ_RES_GOLD packet = new PACKET_REQ_RES_GOLD
+		{
+			header = headerPacket,
+			gold = goldAmount,
+		};
+		SendToServerPacket(packet);
+	}
+
 	void SendToServerPacket(object value)
 	{
 		string jsonBuffer;
@@ -267,6 +278,13 @@ public class NetworkManager : Singleton<NetworkManager>
 			case PACKET_INDEX.REQ_RES_BASKET_BALL_GAME:
 				{
 					int packetSize = Marshal.SizeOf<PACKET_REQ_RES_BASKET_BALL_GAME>();
+					PACKET_HEADER headerPacket;
+					headerPacket = new PACKET_HEADER(packetIndex, packetSize);
+					return headerPacket;
+				}
+			case PACKET_INDEX.REQ_RES_GOLD:
+				{
+					int packetSize = Marshal.SizeOf<PACKET_REQ_RES_GOLD>();
 					PACKET_HEADER headerPacket;
 					headerPacket = new PACKET_HEADER(packetIndex, packetSize);
 					return headerPacket;
