@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Newtonsoft.Json;
@@ -7,13 +8,13 @@ namespace FarmGame
 {
 	public class FriendFarmManager : Singleton<FriendFarmManager>
 	{
+
 		LandTile.SaveData[] _landSaveDatas;
 		RoadTile.SaveData[] _roadSaveDatas;
 		ProductTile.SaveData[] _productSaveDatas;
 		DecorationTile.SaveData[] _decorationSaveDatas;
 		GarbageTile.SaveData[] _garbageSaveDatas;
 
-		public bool IsDataLoaded { get; private set; } = false;
 
 		public LandTile.SaveData[] LandSaveDatas {
 			get { return _landSaveDatas; }
@@ -30,14 +31,20 @@ namespace FarmGame
 		public GarbageTile.SaveData[] GarbageSaveDatas {
 			get { return _garbageSaveDatas; }
 		}
+		public bool IsDataLoaded { get; private set; } = false;
+		public bool[] IsDataRecv { get; set; }
+		public int FriendFarmClientId { get; set; } = 0;
 
 		private void Awake()
 		{
 			instance = this;
 			DontDestroyOnLoad(this);
 
+			IsDataRecv = new bool[(int)MapData.ESaveType.End];
+			Array.Clear(IsDataRecv, 0, IsDataRecv.Length);
+
 			// DEBUG!
-			DebugAwake();
+			// DebugAwake();
 		}
 
 		public void DestroySelf()
@@ -46,29 +53,52 @@ namespace FarmGame
 			Destroy(gameObject);
 		}
 
-		public void LoadLandSaveDatas(string compressionData, MapData.ESaveType saveType)
+		public void RequestFriendFarmData()
 		{
-			string originalStr = StringCompressionHelper.Decompress(compressionData);
-
-			switch (saveType)
+			if(FriendFarmClientId == 0)
 			{
-				case MapData.ESaveType.Land:
-					_landSaveDatas = DeserializeData<LandTile.SaveData>(originalStr);
-					break;
-				case MapData.ESaveType.Road:
-					_roadSaveDatas = DeserializeData<RoadTile.SaveData>(originalStr);
-					break;
-				case MapData.ESaveType.Product:
-					_productSaveDatas = DeserializeData<ProductTile.SaveData>(originalStr);
-					break;
-				case MapData.ESaveType.Decoration:
-					_decorationSaveDatas = DeserializeData<DecorationTile.SaveData>(originalStr);
-					break;
-				case MapData.ESaveType.Garbage:
-					_garbageSaveDatas = DeserializeData<GarbageTile.SaveData>(originalStr);
-					break;
+				Debug.Log("Friend Farm Client Id is Not Setted");
+				return;
 			}
 
+			NetworkManager.Instance.SendFriendFarmDataRequest(FriendFarmClientId);
+		}
+
+		public void LoadFarmSaveDatas(string compressionData, MapData.ESaveType saveType)
+		{
+			if(compressionData != string.Empty)
+			{
+				string originalStr = StringCompressionHelper.Decompress(compressionData);
+
+				switch (saveType)
+				{
+					case MapData.ESaveType.Land:
+						_landSaveDatas = DeserializeData<LandTile.SaveData>(originalStr);
+						break;
+					case MapData.ESaveType.Road:
+						_roadSaveDatas = DeserializeData<RoadTile.SaveData>(originalStr);
+						break;
+					case MapData.ESaveType.Product:
+						_productSaveDatas = DeserializeData<ProductTile.SaveData>(originalStr);
+						break;
+					case MapData.ESaveType.Decoration:
+						_decorationSaveDatas = DeserializeData<DecorationTile.SaveData>(originalStr);
+						break;
+					case MapData.ESaveType.Garbage:
+						_garbageSaveDatas = DeserializeData<GarbageTile.SaveData>(originalStr);
+						break;
+				}
+			}
+
+			IsDataRecv[(int)saveType] = true;
+
+			bool allRecv = IsDataRecv[0];
+			foreach(var flag in IsDataRecv)
+			{
+				allRecv = allRecv && flag;
+			}
+
+			IsDataLoaded = allRecv;
 		}
 
 		T[] DeserializeData<T>(string dataStr)

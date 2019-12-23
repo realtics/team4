@@ -191,6 +191,40 @@ public class NetworkManager : Singleton<NetworkManager>
 		return true;
 	}
 
+	public void SendCheckClientIsExist(int clientId)
+	{
+		if (!IsConnected)
+		{
+			return;
+		}
+
+		PACKET_HEADER headerPacket = MakeHeaderPacket(PACKET_INDEX.REQ_CHECK_CLIENT_ID);
+		PACKET_REQ_CHECK_CLIENT_ID packet = new PACKET_REQ_CHECK_CLIENT_ID
+		{
+			header = headerPacket,
+			clientID = clientId
+		};
+
+		SendToServerPacket(packet);
+	}
+
+	public void SendFriendFarmDataRequest(int clientId)
+	{
+		if (!IsConnected)
+		{
+			return;
+		}
+
+		PACKET_HEADER headerPacket = MakeHeaderPacket(PACKET_INDEX.REQ_ENTER_FARM);
+		PACKET_REQ_ENTER_FARM packet = new PACKET_REQ_ENTER_FARM
+		{
+			header = headerPacket,
+			clientID = clientId
+		};
+
+		SendToServerPacket(packet);
+	}
+
 	PACKET_HEADER MakeHeaderPacket(PACKET_INDEX packetIndex)
 	{
 		switch (packetIndex)

@@ -17,7 +17,8 @@ namespace FarmGame
 			Road,
 			Product,
 			Decoration,
-			Garbage
+			Garbage,
+			End
 		}
 
 		const string LandDataPath = "Jsons/Farm/LandData";

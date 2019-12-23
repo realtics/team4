@@ -12,15 +12,13 @@ public class LoadingSceneManager : MonoBehaviour
 
 	[SerializeField]
 	Image progressBar;
-	[SerializeField]
-	GameObject prefFriendFarmManager;
 
 	private void Start()
 	{
 		switch (nextScene)
 		{
 			case SceneName.FriendFarmSceneName:
-				Instantiate(prefFriendFarmManager);
+				FriendFarmManager.Instance.RequestFriendFarmData();
 				StartCoroutine(FriendFarmLoadScene());
 				break;
 			default:

@@ -432,6 +432,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 53de72733125f474a860dd53b0e178de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  prefFriendFarmManager: {fileID: 3737091644192102637, guid: f9989a7c69ecac242bcef35cc1c79ea7,
+    type: 3}
+  enterFriendFarmGroup: {fileID: 449540393}
   otherFarmUIDText: {fileID: 1283585091}
 --- !u!4 &82455050
 Transform:
@@ -7613,13 +7616,13 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1764735880}
   m_TextComponent: {fileID: 1283585091}
   m_Placeholder: {fileID: 2007200957}
-  m_ContentType: 0
+  m_ContentType: 3
   m_InputType: 0
   m_AsteriskChar: 42
-  m_KeyboardType: 0
+  m_KeyboardType: 2
   m_LineType: 0
   m_HideMobileInput: 0
-  m_CharacterValidation: 0
+  m_CharacterValidation: 2
   m_CharacterLimit: 0
   m_OnEndEdit:
     m_PersistentCalls:

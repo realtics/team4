@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using UnityEngine;
 using Newtonsoft.Json;
+using FarmGame;
 
 public struct NetworkQueueData
 {
@@ -47,15 +48,15 @@ public class PacketQueue : Singleton<PacketQueue>
 		if (networkQueue.Count > 0)
 		{
 			var networkData = networkQueue.Dequeue();
-			ProcessReceivePacket(networkData.packetIndex, networkData.recvData);
+			ProcessReceivePacket((PACKET_INDEX)networkData.packetIndex, networkData.recvData);
 		}
 	}
 
-	void ProcessReceivePacket(int pakcetIndex, string recvData)
+	void ProcessReceivePacket(PACKET_INDEX pakcetIndex, string recvData)
 	{
 		switch (pakcetIndex)
 		{
-			case (int)PACKET_INDEX.RES_ROOM_INFO:
+			case PACKET_INDEX.RES_ROOM_INFO:
 			{
 				var packetdata = JsonConvert.DeserializeObject<PACKET_ROOM_INFO>(recvData);
 				if (packetdata.roomInfo == ROOM_INDEX.MAKE_ROOM)
@@ -75,12 +76,12 @@ public class PacketQueue : Singleton<PacketQueue>
 
 				break;
 			}
-			case (int)PACKET_INDEX.REQ_IN:
+			case PACKET_INDEX.REQ_IN:
 			{
 				var packetdata = JsonConvert.DeserializeObject<PACKET_REQ_IN>(recvData);
 				break;
 			}
-			case (int)PACKET_INDEX.RES_START_GAME:
+			case PACKET_INDEX.RES_START_GAME:
 			{
 				var packetdata = JsonConvert.DeserializeObject<PACKET_START_GAME>(recvData);
 
@@ -95,13 +96,13 @@ public class PacketQueue : Singleton<PacketQueue>
 				ChangeNetworkScene(packetdata.gameIndex);
 				break;
 			}
-			case (int)PACKET_INDEX.REQ_RES_ROPE_PULL_GAME:
+			case PACKET_INDEX.REQ_RES_ROPE_PULL_GAME:
 			{
 				var packetdata = JsonConvert.DeserializeObject<PACKET_REQ_RES_ROPE_PULL_GAME>(recvData);
 				RopePullGame.RopePullRope.Instance.UpdateNetworkRopePostion(packetdata.ropePos);
 				break;
 			}
-			case (int)PACKET_INDEX.RES_RANK:
+			case PACKET_INDEX.RES_RANK:
 			{
 				var packetdata = JsonConvert.DeserializeObject<PACKET_RES_RANK>(recvData);
 				foreach (var rankdata in packetdata.rank)
@@ -113,25 +114,36 @@ public class PacketQueue : Singleton<PacketQueue>
 				}
 				break;
 			}
-			case (int)PACKET_INDEX.RES_IN:
+			case PACKET_INDEX.RES_IN:
 			{
 				var packetdata = JsonConvert.DeserializeObject<PACKET_RES_IN>(recvData);
 				ResourceManager.Instance.SetClientId(packetdata.clientID);
 				break;
 			}
-			case (int)PACKET_INDEX.REQ_RES_BASKET_BALL_GAME:
+			case PACKET_INDEX.REQ_RES_BASKET_BALL_GAME:
 			{
 				var packetdata =JsonConvert.DeserializeObject<PACKET_REQ_RES_BASKET_BALL_GAME>(recvData);
 					BasketBallGame.BasketBallGameManager.Instance.NetworkShootOtherPlayer(packetdata.power, packetdata.angleX, packetdata.angleY);
 				break;
 			}
-			case (int)PACKET_INDEX.REQ_RES_MOVE:
+			case PACKET_INDEX.REQ_RES_MOVE:
 			{
 				var packetdata = JsonConvert.DeserializeObject<PACKET_REQ_RES_MOVE>(recvData);
 					BasketBallGame.BasketBallGameManager.Instance.NetworkMoveOtherPlayer(packetdata.positionX, packetdata.positionY, packetdata.positionZ);
 				break;
 			}
-	
+			case PACKET_INDEX.RES_NULL_CLIENT_ID:
+			{ 
+				var packetData = JsonConvert.DeserializeObject<PACKET_RES_CHECK_CLIENT_ID>(recvData);
+				
+				break;
+			}
+			case PACKET_INDEX.RES_ENTER_FARM:
+			{
+				var packetData = JsonConvert.DeserializeObject<PACKET_REQ_RES_FARM>(recvData);
+				FriendFarmManager.Instance.LoadFarmSaveDatas(packetData.saveData, packetData.saveIndex);
+				break;
+			}
 			default:
 				break;
 		}

@@ -40,11 +40,14 @@ public enum PACKET_INDEX
     REQ_SAVE_FARM,
 	REQ_RES_GOLD,
 	REQ_RES_MOVE,
+	REQ_CHECK_CLIENT_ID,
 
 	RES_IN,
     RES_START_GAME,
     RES_ROOM_INFO,
     RES_NOW_TIME,
+	RES_NULL_CLIENT_ID,
+	RES_ENTER_FARM,
 	ll,
 
     //줄다리기용 패킷
@@ -59,18 +62,19 @@ public enum PACKET_INDEX
     //클라와 통신하고 있지 않은 인덱스들 (채팅용)
     REQ_CHAT,
     NOTICE_CHAT,
-    //
+	//
 };
+
 #region ClientToServerPacket
 [StructLayout(LayoutKind.Sequential)]
-public class PACKET_REQ_IN
+public struct PACKET_REQ_IN
 {
     public PACKET_HEADER header;
 	public int clientID;
 	public string name;
 };
 [StructLayout(LayoutKind.Sequential)]
-public class PACKET_REQ_INIT_ROOM
+public struct PACKET_REQ_INIT_ROOM
 {
     public PACKET_HEADER header;
     public int gameIndex;
@@ -79,14 +83,14 @@ public class PACKET_REQ_INIT_ROOM
 
 //줄다리기 게임 데이터 패킷
 [StructLayout(LayoutKind.Sequential)]
-public class PACKET_REQ_RES_ROPE_PULL_GAME
+public struct PACKET_REQ_RES_ROPE_PULL_GAME
 {
     public PACKET_HEADER header;
     public float ropePos;
 };
 
 [StructLayout(LayoutKind.Sequential)]
-public class PACKET_REQ_MULTI_ROOM
+public struct PACKET_REQ_MULTI_ROOM
 {
     public PACKET_HEADER header;
     public int gameIndex;
@@ -102,7 +106,7 @@ public class PACKET_REQ_MULTI_ROOM
 };
 
 [StructLayout(LayoutKind.Sequential)]
-public class PACKET_REQ_RANK
+public struct PACKET_REQ_RANK
 {
     public PACKET_HEADER header;
     public int gameIndex;
@@ -167,14 +171,14 @@ public struct PACKET_RES_IN
 };
 
 [StructLayout(LayoutKind.Sequential)]
-public class RANK
+public struct RANK
 {
     public string name;
     public int winRecord;
 };
 
 [StructLayout(LayoutKind.Sequential, Pack = 1)]
-public class PACKET_RES_RANK
+public struct PACKET_RES_RANK
 {
     public PACKET_HEADER header;
 
@@ -183,13 +187,13 @@ public class PACKET_RES_RANK
 };
 
 [StructLayout(LayoutKind.Sequential)]
-public class HeaderPacket
+public struct HeaderPacket
 {
     public PACKET_HEADER header;
 };
 
 [StructLayout(LayoutKind.Sequential)]
-public class PACKET_HEADER
+public struct PACKET_HEADER
 {
     public int packetIndex;
     public int packetSize;
@@ -202,7 +206,7 @@ public class PACKET_HEADER
 };
 
 [StructLayout(LayoutKind.Sequential)]
-public class PACKET_START_GAME
+public struct PACKET_START_GAME
 {
     public PACKET_HEADER header;
     public int superCharID; //방장의 캐릭터
@@ -214,8 +218,22 @@ public class PACKET_START_GAME
 };
 
 [StructLayout(LayoutKind.Sequential)]
-public class PACKET_ROOM_INFO
+public struct PACKET_ROOM_INFO
 {
     public PACKET_HEADER header;
     public ROOM_INDEX roomInfo; //방을 만든건지 들어간건지의 정보
+};
+
+[StructLayout(LayoutKind.Sequential)]
+public struct PACKET_REQ_CHECK_CLIENT_ID
+{
+	public PACKET_HEADER header;
+	public int clientID;
+};
+
+[StructLayout(LayoutKind.Sequential)]
+public struct PACKET_RES_CHECK_CLIENT_ID
+{
+	public PACKET_HEADER header;
+	public bool isClientID;
 };

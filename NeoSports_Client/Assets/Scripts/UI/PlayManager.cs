@@ -4,12 +4,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using FarmGame;
 
 public class PlayManager : Singleton<PlayManager>
 {
 
 	[SerializeField]
+	GameObject prefFriendFarmManager;
+	[SerializeField]
+	GameObject enterFriendFarmGroup;
+	[SerializeField]
 	Text otherFarmUIDText;
+
+	int friendFarmClientId = 0;
 
 	public void ButtonEvent_StartRopePullSingleGame()
 	{
@@ -53,7 +60,27 @@ public class PlayManager : Singleton<PlayManager>
 		int uidNum;
 		if(uidStr != string.Empty && int.TryParse(uidStr, out uidNum))
 		{
+			friendFarmClientId = uidNum;
+			NetworkManager.Instance.SendFriendFarmDataRequest(uidNum);
+		}
+		enterFriendFarmGroup.SetActive(false);
+	}
+
+	public void ProcessClientIdCheckResult(bool isExist)
+	{
+		if (isExist)
+		{
+			Instantiate(prefFriendFarmManager);
+			FriendFarmManager.Instance.FriendFarmClientId = friendFarmClientId;
 			LoadingSceneManager.LoadScene(SceneName.FriendFarmSceneName);
+		}
+		else
+		{
+			PopupManager.PopupData data;
+			data.okFlag = true;
+			data.text = "존재하지 않는 농장입니다.";
+			data.callBack = null;
+			PopupManager.Instance.ShowPopup(data);
 		}
 	}
 
