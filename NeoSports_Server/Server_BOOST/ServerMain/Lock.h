@@ -32,15 +32,15 @@ private:
 class LockGuard
 {
 public:
-	LockGuard(Lock& lock) : m_lock(lock)
+	LockGuard(Lock& lock) : _lock(lock)
 	{
-		m_lock.Enter();
+		_lock.Enter();
 	}
 
 	~LockGuard()
 	{
-		m_lock.Leave();
+		_lock.Leave();
 	}
 private:
-	Lock& m_lock;
+	Lock& _lock;
 };
