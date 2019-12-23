@@ -31,7 +31,6 @@ public class PanelManager : Singleton<PanelManager>
 	[SerializeField]
 	GameObject otherFarmPopupGroup;
 
-
 	void Start()
 	{
 		InitPanelList();

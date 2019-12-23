@@ -18,7 +18,6 @@ public class InventoryManager : Singleton<InventoryManager>
 	public CharacterInfo CurrentCharacter { get; set; }
 	public EquipmentInfo CurrentEquipment { get; set; }
 	public string PlayerNickName { get; set; }
-	public bool IsNickNameDecide { get; set; }
 	public CharacterInfo DefaultCharacterInfo {
 		get { return CharacterInfos[1]; }
 	}
@@ -38,7 +37,6 @@ public class InventoryManager : Singleton<InventoryManager>
 		EquipmentInfos = new Dictionary<int, EquipmentInfo>();
 
 		PlayerNickName = "플레이어";
-		IsNickNameDecide = false;
 	}
 
 	private void Start()

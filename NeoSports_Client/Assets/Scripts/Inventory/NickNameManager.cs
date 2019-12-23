@@ -11,7 +11,7 @@ namespace MainMenu
 		const int MaxNickName = 8;
 
 		[SerializeField]
-		GameObject nickNameInputGroup;
+		GameObject nickNameInputPanel;
 		[SerializeField]
 		InputField nickNameInputField;
 		[SerializeField]
@@ -19,32 +19,32 @@ namespace MainMenu
 
 		string _nickName;
 
-		private void Awake()
+		private void Start()
 		{
 			CheckSaveNickName();
 		}
 
-		private void Start()
+		void CheckSaveNickName()
 		{
-			if (InventoryManager.Instance.IsNickNameDecide)
+			if (PlayerPrefs.HasKey(PrefsKey.ClientIdKey))
 			{
-				nickNameInputGroup.SetActive(false);
+				_nickName = PlayerPrefs.GetString(PrefsKey.NickNameKey, "플레이어");
+				InventoryManager.Instance.PlayerNickName = _nickName;
 			}
 			else
 			{
-				InventoryManager.Instance.PlayerNickName = _nickName;
+				nickNameInputPanel.SetActive(true);
 			}
 		}
 
-		void CheckSaveNickName()
+		public void ButtonEvent_OpenNickNamePanel()
 		{
-			_nickName = PlayerPrefs.GetString(PrefsKey.NickNameKey, "플레이어");
-			Debug.Log(_nickName);
+			nickNameInputPanel.SetActive(true);
 			nickNameInputField.text = _nickName;
 			nickNameInputText.text = _nickName;
 		}
 
-		public void DecideNickName()
+		public void ButtonEvent_DecideNickName()
 		{
 			_nickName = nickNameInputText.text;
 			if (!IsUseableNickName())
@@ -52,13 +52,34 @@ namespace MainMenu
 				return;
 			}
 
+			nickNameInputPanel.SetActive(false);
+
+			if (!PlayerPrefs.HasKey(PrefsKey.NickNameKey))
+			{
+				ShowNickNameCanChangePopup();
+			}
+
 			PlayerPrefs.SetString(PrefsKey.NickNameKey, _nickName);
 			InventoryManager.Instance.PlayerNickName = _nickName;
-			nickNameInputGroup.SetActive(false);
 			NetworkManager.Instance.SendNickName(_nickName);
-			InventoryManager.Instance.IsNickNameDecide = true;
 
 			Debug.Log("결정된 닉네임: " + _nickName);
+		}
+
+		public void Debug_ClearNickName()
+		{
+			PlayerPrefs.DeleteKey(PrefsKey.NickNameKey);
+			PlayerPrefs.DeleteKey(PrefsKey.ClientIdKey);
+		}
+
+		void ShowNickNameCanChangePopup()
+		{
+			PopupManager.PopupData data;
+			data.callBack = null;
+			data.okFlag = true;
+			data.text = "닉네임은 옵션에서 언제든지 변경할 수 있습니다!";
+
+			PopupManager.Instance.ShowPopup(data);
 		}
 
 		bool IsUseableNickName()
