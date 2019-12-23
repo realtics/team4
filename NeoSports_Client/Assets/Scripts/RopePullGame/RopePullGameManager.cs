@@ -166,7 +166,7 @@ namespace RopePullGame
 					if (NetworkManager.Instance.isOwnHost)
 					{
 						NetworkManager.Instance.SendRequestExitRoom(GAME_INDEX.ROPE_PULL, true);
-						CommonUIManager.Instance.CreateWinnerNotice(rootCanvas, InventoryManager.Instance.PlayerNickName);
+						CommonUIManager.Instance.CreateWinnerNotice(rootCanvas, InventoryManager.Instance.PlayerNickName,10);
 					}
 					else
 					{
@@ -178,7 +178,7 @@ namespace RopePullGame
 					if (!NetworkManager.Instance.isOwnHost)
 					{
 						NetworkManager.Instance.SendRequestExitRoom(GAME_INDEX.ROPE_PULL, true);
-						CommonUIManager.Instance.CreateWinnerNotice(rootCanvas, InventoryManager.Instance.PlayerNickName);
+						CommonUIManager.Instance.CreateWinnerNotice(rootCanvas, InventoryManager.Instance.PlayerNickName,10);
 					}
 					else
 					{
@@ -190,7 +190,7 @@ namespace RopePullGame
 			{
 				if (triggerSide.CompareTo("Left") == 0)
 				{
-					CommonUIManager.Instance.CreateWinnerNotice(rootCanvas, InventoryManager.Instance.PlayerNickName);
+					CommonUIManager.Instance.CreateWinnerNotice(rootCanvas, InventoryManager.Instance.PlayerNickName,10);
 				}
 				else
 				{

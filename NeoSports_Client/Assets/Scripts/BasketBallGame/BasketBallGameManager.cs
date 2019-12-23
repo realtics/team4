@@ -88,7 +88,7 @@ namespace BasketBallGame
 		void EndGame()
 		{
 			GameState = EGameState.GameOver;
-			CommonUIManager.Instance.CreateWinnerNotice(rootCanvas, "플레이어 이름");
+			CommonUIManager.Instance.CreateWinnerNotice(rootCanvas, InventoryManager.Instance.PlayerNickName, 10);
 			CommonUIManager.Instance.DestroyElapseGameTimer();
 		}
 
