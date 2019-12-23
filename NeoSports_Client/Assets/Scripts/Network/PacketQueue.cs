@@ -133,9 +133,10 @@ public class PacketQueue : Singleton<PacketQueue>
 				break;
 			}
 			case PACKET_INDEX.RES_NULL_CLIENT_ID:
-			{ 
+			{
 				var packetData = JsonConvert.DeserializeObject<PACKET_RES_CHECK_CLIENT_ID>(recvData);
-				
+				Debug.Log(packetData.isClientID);
+				PlayManager.Instance.ProcessClientIdCheckResult(packetData.isClientID);
 				break;
 			}
 			case PACKET_INDEX.RES_ENTER_FARM:
