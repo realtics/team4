@@ -30,6 +30,7 @@ namespace MainMenu
 			{
 				_nickName = PlayerPrefs.GetString(PrefsKey.NickNameKey, "플레이어");
 				InventoryManager.Instance.PlayerNickName = _nickName;
+				NetworkManager.Instance.SendNickName(_nickName);
 			}
 			else
 			{
