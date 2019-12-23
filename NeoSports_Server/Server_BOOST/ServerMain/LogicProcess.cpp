@@ -173,7 +173,7 @@ void LogicProcess::ProcessPacket()
 			int clientID = enterPacket->clientID;
 			PACKET_REQ_RES_FARM sendPacket;
 			sendPacket.Init();
-			sendPacket.packetIndex = PACKET_INDEX::REQ_ENTER_FARM;
+			sendPacket.packetIndex = PACKET_INDEX::RES_ENTER_FARM;
 
 			int farmIndex[FARM_INFO_MAX_COUNT] = { 0, };
 			std::string jsonArr[FARM_INFO_MAX_COUNT] = { NULL, };
@@ -216,7 +216,7 @@ void LogicProcess::ProcessPacket()
 			bool isClientID = DB::GetInstance()->CheckClientID(packetQCC->clientID);
 			packetSCC.isClientID = isClientID;
 
-			std::string aa = _SerializationJson(PACKET_INDEX::RES_NULL_CLIENT_ID, (const char*)&packetSCC);
+			std::string aa = _SerializationJson(PACKET_INDEX::RES_CHECK_CLIENT_ID, (const char*)&packetSCC);
 			_serverPtr->PostSendSession(sessionID, false, aa.length(), (char*)aa.c_str());
 			break;
 		}
@@ -428,7 +428,7 @@ std::string LogicProcess::_SerializationJson(PACKET_INDEX packetIndex, const cha
 		return sendStr;
 	}
 
-	case PACKET_INDEX::RES_NULL_CLIENT_ID:
+	case PACKET_INDEX::RES_CHECK_CLIENT_ID:
 	{
 		PACKET_RES_CHECK_CLIENT_ID chckClientIdPacket;
 		memcpy(&chckClientIdPacket, packet, sizeof(PACKET_RES_CHECK_CLIENT_ID));

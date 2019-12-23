@@ -34,7 +34,7 @@ public:
 	void UpdataUserTable(int clientID, int sessionID);
 
 	void Rank(GAME_INDEX gameIndex, RANK rank[]);
-	std::string orderByRank(std::string tableName, GAME_INDEX gameIndex, std::string Column);
+	std::string orderByRank(GAME_INDEX gameIndex);
 
 	void GetFarmInfo(int clientID,std::string json[],int farmIndex[]);
 	void SetFarmInfo(int clientID, std::string farmJson, FARM_INDEX farmIndex);
@@ -61,5 +61,7 @@ private:
 	MYSQL_RES* _pSqlRes;
 	MYSQL_ROW	_sqlRow;
 
+	MYSQL_STMT* stmt;
+	MYSQL_BIND bind[3];
 };
 

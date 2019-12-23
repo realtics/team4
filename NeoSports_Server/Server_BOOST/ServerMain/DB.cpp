@@ -40,6 +40,13 @@ void DB::Init()
 		cout << "DB : mysql_select_db Error : " << mysql_errno(&_conn)
 			<< " : " << mysql_error(&_conn) << endl;
 	}
+
+	stmt = mysql_stmt_init(&_conn);
+	if (!stmt)
+	{
+		fprintf(stderr, " mysql_stmt_init(), out of memory\n");
+		exit(0);
+	}
 }
 
 void DB::SelectQuery()
@@ -66,37 +73,78 @@ int DB::InsertUser(int* clientID, int data)
 	*clientID = maxCount++;
 
 	std::string query = "";
-	query = "INSERT INTO user(clientID,sessionID) values('";
-	query += boost::lexical_cast<std::string>(*clientID);;
-	query += "','";
-	query += boost::lexical_cast<std::string>(data);
-	query += "')";
-
-	if (mysql_query(&_conn, query.c_str()) != 0)
+	query = "INSERT INTO user(clientID,sessionID) values(?,?)";
+	if (mysql_stmt_prepare(stmt, query.c_str(), strlen(query.c_str())))
 	{
 		ErrorCheck();
-		std::cout << "DB : INSERT ClientID error" << std::endl;
-		return -1;
+		std::cout << "DB : InsertUser error" << std::endl;
+		return 0;
 	}
-	std::cout << "DB : INSERT ClientID" << std::endl;
+	memset(bind, 0, sizeof(bind));
+	bind[0].buffer_type = MYSQL_TYPE_LONG;
+	bind[0].buffer = (char*)clientID;
+	bind[0].is_null = 0;
+	bind[0].length = 0;
+
+	bind[1].buffer_type = MYSQL_TYPE_LONG;
+	bind[1].buffer = (char*)&data;
+	bind[1].is_null = 0;
+	bind[1].length = 0;
+
+	if (mysql_stmt_bind_param(stmt, bind))
+	{
+		ErrorCheck();
+		std::cout << "DB : InsertUser error" << std::endl;
+		return 0;
+	}
+
+	if (mysql_stmt_execute(stmt))
+	{
+		ErrorCheck();
+		std::cout << "DB : InsertUser error" << std::endl;
+		return 0;
+	}
 	return *clientID;
 }
 
 void DB::InsertGameInfo(int clientID, GAME_INDEX gameIndex, int winRecord)
 {
 	std::string query = "";
-	query = "INSERT INTO gameInfo values('";
-	query += boost::lexical_cast<std::string>(clientID);;
-	query += "','";
-	query += boost::lexical_cast<std::string>(gameIndex);
-	query += "','";
-	query += boost::lexical_cast<std::string>(winRecord);
-	query += "')";
+	query = "INSERT INTO gameInfo values(?,?,?)";
 
-	if (mysql_query(&_conn, query.c_str()) != 0)
+	if (mysql_stmt_prepare(stmt, query.c_str(), strlen(query.c_str())))
 	{
 		ErrorCheck();
-		std::cout << "DB : INSERT GameInfo error" << std::endl;
+		std::cout << "DB : InsertGameInfo error" << std::endl;
+		return;
+	}
+	memset(bind, 0, sizeof(bind));
+	bind[0].buffer_type = MYSQL_TYPE_LONG;
+	bind[0].buffer = (char*)&clientID;
+	bind[0].is_null = 0;
+	bind[0].length = 0;
+
+	bind[1].buffer_type = MYSQL_TYPE_LONG;
+	bind[1].buffer = (char*)&gameIndex;
+	bind[1].is_null = 0;
+	bind[1].length = 0;
+
+	bind[2].buffer_type = MYSQL_TYPE_LONG;
+	bind[2].buffer = (char*)&winRecord;
+	bind[2].is_null = 0;
+	bind[2].length = 0;
+
+	if (mysql_stmt_bind_param(stmt, bind))
+	{
+		ErrorCheck();
+		std::cout << "DB : InsertGameInfo error" << std::endl;
+		return;
+	}
+
+	if (mysql_stmt_execute(stmt))
+	{
+		ErrorCheck();
+		std::cout << "DB : InsertGameInfo error" << std::endl;
 		return;
 	}
 	std::cout << "DB : INSERT GameInfo" << std::endl;
@@ -130,33 +178,76 @@ void DB::SetNameTable(int clientID, std::string name)
 		//_sqlRowÀÎµ¦½º 0 = DBÀÇ Ä®·³(clientID), 1 = name
 		if (_sqlRow[0] == boost::lexical_cast<std::string>(clientID))
 		{
-			std::string aa = "UPDATE name SET name = '";
-			aa += name;
-			std::string tempStr = "' WHERE clientID = '";
-			aa += tempStr;
-			aa += boost::lexical_cast<std::string>(clientID);;
-			aa += "'";
+			std::string query = "UPDATE name SET name = ? WHERE clientID = ?";
 
-			if (mysql_query(&_conn, aa.c_str()) != 0)
+			if (mysql_stmt_prepare(stmt, query.c_str(), strlen(query.c_str())))
 			{
 				ErrorCheck();
-				std::cout << "DB : SetNameTable Name error" << std::endl;
+				std::cout << "DB : SetNameTable error" << std::endl;
+				return;
+			}
+
+			memset(bind, 0, sizeof(bind));
+			bind[0].buffer_type = MYSQL_TYPE_STRING;
+			bind[0].buffer = (char*)name.c_str();
+			bind[0].buffer_length = strlen(name.c_str());
+			bind[0].is_null = 0;
+			bind[0].length =0;
+
+			bind[1].buffer_type = MYSQL_TYPE_LONG;
+			bind[1].buffer = (char*)&clientID;
+			bind[1].is_null = 0;
+			bind[1].length = 0;
+
+			if (mysql_stmt_bind_param(stmt, bind))
+			{
+				ErrorCheck();
+				std::cout << "DB : SetNameTable error" << std::endl;
+				return;
+			}
+
+			if (mysql_stmt_execute(stmt))
+			{
+				ErrorCheck();
+				std::cout << "DB : SetNameTable error" << std::endl;
+				return;
 			}
 			return;
 		}
 	}
 
 	std::string query = "";
-	query = "INSERT INTO name(clientID,name) values('";
-	query += boost::lexical_cast<std::string>(clientID);;
-	query += "','";
-	query += name;
-	query += "')";
+	query = "INSERT INTO name(clientID,name) values(?,?)";
 
-	if (mysql_query(&_conn, query.c_str()) != 0)
+	if (mysql_stmt_prepare(stmt, query.c_str(), strlen(query.c_str())))
 	{
 		ErrorCheck();
-		std::cout << "DB : INSERT Name error" << std::endl;
+		std::cout << "DB : SetNameTable error" << std::endl;
+		return;
+	}
+	memset(bind, 0, sizeof(bind));
+	bind[0].buffer_type = MYSQL_TYPE_LONG;
+	bind[0].buffer = (char*)&clientID;
+	bind[0].is_null = 0;
+	bind[0].length = 0;
+
+	bind[1].buffer_type = MYSQL_TYPE_STRING;
+	bind[1].buffer = (char*)&name;
+	bind[1].buffer_length = strlen(name.c_str());
+	bind[1].is_null = 0;
+	bind[1].length = 0;
+
+	if (mysql_stmt_bind_param(stmt, bind))
+	{
+		ErrorCheck();
+		std::cout << "DB : SetNameTable error" << std::endl;
+		return;
+	}
+
+	if (mysql_stmt_execute(stmt))
+	{
+		ErrorCheck();
+		std::cout << "DB : SetNameTable error" << std::endl;
 		return;
 	}
 	std::cout << "DB : INSERT Name" << std::endl;
@@ -164,11 +255,31 @@ void DB::SetNameTable(int clientID, std::string name)
 
 void DB::DeleteUser(int clientID)
 {
-	std::string query = "DELETE FROM user WHERE clientID =";
-	query += boost::lexical_cast<std::string>(clientID);
-	if (mysql_query(&_conn, query.c_str()) != 0)
+	std::string query = "DELETE FROM user WHERE clientID = ?";
+
+	if (mysql_stmt_prepare(stmt, query.c_str(), strlen(query.c_str())))
 	{
-		std::cout << "DB : DELETE error" << std::endl;
+		ErrorCheck();
+		std::cout << "DB : DeleteUser error" << std::endl;
+		return;
+	}
+	memset(bind, 0, sizeof(bind));
+	bind[0].buffer_type = MYSQL_TYPE_LONG;
+	bind[0].buffer = (char*)&clientID;
+	bind[0].is_null = 0;
+	bind[0].length = 0;
+
+	if (mysql_stmt_bind_param(stmt, bind))
+	{
+		ErrorCheck();
+		std::cout << "DB : DeleteUser error" << std::endl;
+		return;
+	}
+
+	if (mysql_stmt_execute(stmt))
+	{
+		ErrorCheck();
+		std::cout << "DB : DeleteUser error" << std::endl;
 		return;
 	}
 	std::cout << "DB : DELETE ROW" << std::endl;
@@ -176,13 +287,32 @@ void DB::DeleteUser(int clientID)
 
 void DB::UpdataUserTable(int clientID, int sessionID)
 {
-	std::string aa = "UPDATE user SET sessionID = ";
-	aa += boost::lexical_cast<std::string>(sessionID);
-	std::string tempStr = " WHERE clientID = ";
-	aa += tempStr;
-	aa += boost::lexical_cast<std::string>(clientID);
+	std::string query = "UPDATE user SET sessionID = ? WHERE clientID = ?";
+	if (mysql_stmt_prepare(stmt, query.c_str(), strlen(query.c_str())))
+	{
+		ErrorCheck();
+		std::cout << "DB : UpdataUserTable error" << std::endl;
+		return;
+	}
+	memset(bind, 0, sizeof(bind));
+	bind[0].buffer_type = MYSQL_TYPE_LONG;
+	bind[0].buffer = (char*)&sessionID;
+	bind[0].is_null = 0;
+	bind[0].length = 0;
 
-	if (mysql_query(&_conn, aa.c_str()) != 0)
+	bind[1].buffer_type = MYSQL_TYPE_LONG;
+	bind[1].buffer = (char*)&clientID;
+	bind[1].is_null = 0;
+	bind[1].length = 0;
+
+	if (mysql_stmt_bind_param(stmt, bind))
+	{
+		ErrorCheck();
+		std::cout << "DB : UpdataUserTable error" << std::endl;
+		return;
+	}
+
+	if (mysql_stmt_execute(stmt))
 	{
 		ErrorCheck();
 		std::cout << "DB : UpdataUserTable error" << std::endl;
@@ -277,7 +407,7 @@ void DB::SetFarmInfo(int clientID, std::string farmJson, FARM_INDEX farmIndex)
 	if (mysql_query(&_conn, "SELECT * FROM farmInfo") != 0)
 	{
 		ErrorCheck();
-		std::cout << "DB : GetFarmInfo mysql_query error" << std::endl;
+		std::cout << "DB : SetFarmInfo mysql_query error" << std::endl;
 		return;
 	}
 	_pSqlRes = mysql_store_result(&_conn);
@@ -289,19 +419,42 @@ void DB::SetFarmInfo(int clientID, std::string farmJson, FARM_INDEX farmIndex)
 		{
 			if (_sqlRow[2] == boost::lexical_cast<std::string>(farmIndex))
 			{
-				std::string aa = "UPDATE farmInfo SET infoJson = '";
-				aa += farmJson;
-				std::string tempStr = "' WHERE clientID = '";
-				aa += tempStr;
-				aa += boost::lexical_cast<std::string>(clientID);
-				aa += "' AND farmIndex = '";
-				aa += boost::lexical_cast<std::string>(farmIndex);
-				aa += "'";
+				std::string query = "UPDATE farmInfo SET infoJson = ? WHERE clientID = ? AND farmIndex = ?";
 
-				if (mysql_query(&_conn, aa.c_str()) != 0)
+				if (mysql_stmt_prepare(stmt, query.c_str(), strlen(query.c_str())))
 				{
 					ErrorCheck();
-					std::cout << "DB : SetFarmInfo mysql_query error" << std::endl;
+					std::cout << "DB : SetFarmInfo error" << std::endl;
+					return;
+				}
+				memset(bind, 0, sizeof(bind));
+				bind[0].buffer_type = MYSQL_TYPE_STRING;
+				bind[0].buffer = (char*)&farmJson;
+				bind[0].buffer_length = strlen(farmJson.c_str());
+				bind[0].is_null = 0;
+				bind[0].length = 0;
+
+				bind[1].buffer_type = MYSQL_TYPE_LONG;
+				bind[1].buffer = (char*)&clientID;
+				bind[1].is_null = 0;
+				bind[1].length = 0;
+
+				bind[2].buffer_type = MYSQL_TYPE_LONG;
+				bind[2].buffer = (char*)&farmIndex;
+				bind[2].is_null = 0;
+				bind[2].length = 0;
+
+				if (mysql_stmt_bind_param(stmt, bind))
+				{
+					ErrorCheck();
+					std::cout << "DB : SetFarmInfo error" << std::endl;
+					return;
+				}
+
+				if (mysql_stmt_execute(stmt))
+				{
+					ErrorCheck();
+					std::cout << "DB : SetFarmInfo error" << std::endl;
 					return;
 				}
 				return;
@@ -313,20 +466,43 @@ void DB::SetFarmInfo(int clientID, std::string farmJson, FARM_INDEX farmIndex)
 
 void DB::InsertFarmInfo(int clientID, std::string farmJson, FARM_INDEX farmIndex)
 {
-	std::string query = "";
-	query = "INSERT INTO farmInfo VALUES('";
-	query += boost::lexical_cast<std::string>(clientID);
-	query += "','";
-	query += farmJson;
-	query += "','";
-	query += boost::lexical_cast<std::string>(farmIndex);
-	query += "')";
+	std::string query = "INSERT INTO farmInfo VALUES(?,?,?)";
 
-	if (mysql_query(&_conn, query.c_str()) != 0)
+	if (mysql_stmt_prepare(stmt, query.c_str(), strlen(query.c_str())))
 	{
 		ErrorCheck();
-		std::cout << "DB : INSERT FarmInfo error" << std::endl;
-		return;
+		std::cout << "DB : InsertFarmInfo error" << std::endl;
+		return ;
+	}
+	memset(bind, 0, sizeof(bind));
+	bind[0].buffer_type = MYSQL_TYPE_LONG;
+	bind[0].buffer = (char*)&clientID;
+	bind[0].is_null = 0;
+	bind[0].length = 0;
+
+	bind[1].buffer_type = MYSQL_TYPE_STRING;
+	bind[1].buffer = (char*)&farmJson;
+	bind[1].buffer_length = strlen(farmJson.c_str());
+	bind[1].is_null = 0;
+	bind[1].length = 0;
+
+	bind[2].buffer_type = MYSQL_TYPE_LONG;
+	bind[2].buffer = (char*)&farmIndex;
+	bind[2].is_null = 0;
+	bind[2].length = 0;
+
+	if (mysql_stmt_bind_param(stmt, bind))
+	{
+		ErrorCheck();
+		std::cout << "DB : InsertFarmInfo error" << std::endl;
+		return ;
+	}
+
+	if (mysql_stmt_execute(stmt))
+	{
+		ErrorCheck();
+		std::cout << "DB : InsertFarmInfo error" << std::endl;
+		return ;
 	}
 	std::cout << "DB : INSERT InsertFarmInfo" << std::endl;
 }
@@ -354,17 +530,36 @@ int DB::GetGold(int clientID)
 
 void DB::SetGold(int clientID, int gold)
 {
-	std::string aa = "UPDATE user SET gold = '";
-	aa += boost::lexical_cast<std::string>(gold);
-	std::string tempStr = "' WHERE clientID = '";
-	aa += tempStr;
-	aa += boost::lexical_cast<std::string>(clientID);
-	aa += "'";
+	std::string query = "UPDATE user SET gold = ? WHERE clientID = ?";
 
-	if (mysql_query(&_conn, aa.c_str()) != 0)
+	if (mysql_stmt_prepare(stmt, query.c_str(), strlen(query.c_str())))
 	{
 		ErrorCheck();
-		std::cout << "DB : Update SetGold mysql_query error" << std::endl;
+		std::cout << "DB : SetGold error" << std::endl;
+		return;
+	}
+	memset(bind, 0, sizeof(bind));
+	bind[0].buffer_type = MYSQL_TYPE_LONG;
+	bind[0].buffer = (char*)&clientID;
+	bind[0].is_null = 0;
+	bind[0].length = 0;
+
+	bind[1].buffer_type = MYSQL_TYPE_LONG;
+	bind[1].buffer = (char*)&gold;
+	bind[1].is_null = 0;
+	bind[1].length = 0;
+
+	if (mysql_stmt_bind_param(stmt, bind))
+	{
+		ErrorCheck();
+		std::cout << "DB : SetGold error" << std::endl;
+		return;
+	}
+
+	if (mysql_stmt_execute(stmt))
+	{
+		ErrorCheck();
+		std::cout << "DB : SetGold error" << std::endl;
 		return;
 	}
 }
@@ -390,21 +585,42 @@ void DB::UpdateWinRecord(int clientID, GAME_INDEX gameIndex, int addScore)
 			{
 				int temp = boost::lexical_cast<int>(_sqlRow[2]);
 				temp += addScore;
-				std::string aa = "UPDATE gameInfo SET winRecord = '";
-				aa += boost::lexical_cast<std::string>(temp);
-				std::string tempStr = "' WHERE clientID = '";
-				aa += tempStr;
-				aa += boost::lexical_cast<std::string>(clientID);
-				aa += "' AND ";
-				aa += _sqlRow[1];
-				aa += " = '";
-				aa += boost::lexical_cast<std::string>(gameIndex);
-				aa += "'";
+				std::string query = "UPDATE gameInfo SET winRecord = ? WHERE clientID = ?";
+				query += " AND gameIndex = ?";
 
-				if (mysql_query(&_conn, aa.c_str()) != 0)
+				if (mysql_stmt_prepare(stmt, query.c_str(), strlen(query.c_str())))
 				{
 					ErrorCheck();
-					std::cout << "DB : Update mysql_query error" << std::endl;
+					std::cout << "DB : UpdateWinRecord error" << std::endl;
+					return;
+				}
+				memset(bind, 0, sizeof(bind));
+				bind[0].buffer_type = MYSQL_TYPE_LONG;
+				bind[0].buffer = (char*)&temp;
+				bind[0].is_null = 0;
+				bind[0].length = 0;
+
+				bind[1].buffer_type = MYSQL_TYPE_LONG;
+				bind[1].buffer = (char*)&clientID;
+				bind[1].is_null = 0;
+				bind[1].length = 0;
+
+				bind[2].buffer_type = MYSQL_TYPE_LONG;
+				bind[2].buffer = (char*)&gameIndex;
+				bind[2].is_null = 0;
+				bind[2].length = 0;
+
+				if (mysql_stmt_bind_param(stmt, bind))
+				{
+					ErrorCheck();
+					std::cout << "DB : UpdateWinRecord error" << std::endl;
+					return;
+				}
+
+				if (mysql_stmt_execute(stmt))
+				{
+					ErrorCheck();
+					std::cout << "DB : UpdateWinRecord error" << std::endl;
 					return;
 				}
 				return;
@@ -419,7 +635,7 @@ void DB::UpdateWinRecord(int clientID, GAME_INDEX gameIndex, int addScore)
 void DB::Rank(GAME_INDEX gameIndex, RANK rank[])
 {
 	std::string rankStr = "";
-	rankStr = orderByRank("gameInfo", gameIndex, "winRecord");
+	rankStr = orderByRank(gameIndex);
 
 	if (mysql_query(&_conn, rankStr.c_str()) != 0)
 	{
@@ -443,16 +659,41 @@ void DB::Rank(GAME_INDEX gameIndex, RANK rank[])
 	}
 }
 
-std::string DB::orderByRank(std::string tableName, GAME_INDEX gameIndex, std::string column)
+std::string DB::orderByRank(GAME_INDEX gameIndex)
 {
-	std::string orderByStr = "SELECT clientID, winRecord FROM ";
-	orderByStr += tableName;
-	orderByStr += " WHERE gameIndex = ";
-	orderByStr += boost::lexical_cast<std::string>(gameIndex);
-	orderByStr += " ORDER BY ";
-	orderByStr += (column + " DESC");
-	orderByStr += " LIMIT ";
-	orderByStr += boost::lexical_cast<std::string>(MAX_RANK_COUNT);
+	std::string query = "SELECT clientID, winRecord FROM gameInfo WHERE gameIndex = ?";
+	query += " ORDER BY winRecord DESC LIMIT ?";
 
-	return orderByStr;
+	if (mysql_stmt_prepare(stmt, query.c_str(), strlen(query.c_str())))
+	{
+		ErrorCheck();
+		std::cout << "DB : orderByRank error" << std::endl;
+		return NULL;
+	}
+	memset(bind, 0, sizeof(bind));
+	bind[0].buffer_type = MYSQL_TYPE_LONG;
+	bind[0].buffer = (char*)&gameIndex;
+	bind[0].is_null = 0;
+	bind[0].length = 0;
+
+	bind[1].buffer_type = MYSQL_TYPE_LONG;
+	bind[1].buffer = (char*)&MAX_RANK_COUNT;
+	bind[1].is_null = 0;
+	bind[1].length = 0;
+
+	if (mysql_stmt_bind_param(stmt, bind))
+	{
+		ErrorCheck();
+		std::cout << "DB : orderByRank error" << std::endl;
+		return NULL;
+	}
+
+	if (mysql_stmt_execute(stmt))
+	{
+		ErrorCheck();
+		std::cout << "DB : orderByRank error" << std::endl;
+		return NULL;
+	}
+
+	return query;
 }
