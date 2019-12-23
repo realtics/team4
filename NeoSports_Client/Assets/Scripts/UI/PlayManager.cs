@@ -61,7 +61,7 @@ public class PlayManager : Singleton<PlayManager>
 		if(uidStr != string.Empty && int.TryParse(uidStr, out uidNum))
 		{
 			friendFarmClientId = uidNum;
-			NetworkManager.Instance.SendFriendFarmDataRequest(uidNum);
+			NetworkManager.Instance.SendCheckClientIsExist(uidNum);
 		}
 		enterFriendFarmGroup.SetActive(false);
 	}
