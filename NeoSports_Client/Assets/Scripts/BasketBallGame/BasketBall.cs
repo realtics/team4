@@ -80,6 +80,7 @@ namespace BasketBallGame
 		public void ShotToTarget(Vector2 direction)
 		{
 			_rb2d.velocity = direction;
+			AudioManager.Instance.PlaySound(eSoundId.Shoot);
 		}
 
 		public void Activate(Vector3 startPosition, EBallOwner ballMark, string ballTag)
@@ -89,6 +90,11 @@ namespace BasketBallGame
 			_ownerMarking = ballMark;
 			tag = ballTag;
 			_trailEffect.Clear();
+		}
+
+		public void SetActiveTraill(bool isActive)
+		{
+			_trailEffect.enabled = isActive;
 		}
 	}
 }

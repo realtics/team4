@@ -78,8 +78,8 @@ TrailRenderer:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
-        time: 0.047367096
-        value: 0.6666641
+        time: 0
+        value: 0
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -87,8 +87,8 @@ TrailRenderer:
         inWeight: 0.33333334
         outWeight: 0.33333334
       - serializedVersion: 3
-        time: 0.5000051
-        value: 0.29333505
+        time: 0.5434011
+        value: 0
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -97,7 +97,7 @@ TrailRenderer:
         outWeight: 0
       - serializedVersion: 3
         time: 1
-        value: 0.080000006
+        value: 0
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -136,7 +136,7 @@ TrailRenderer:
       m_Mode: 0
       m_NumColorKeys: 8
       m_NumAlphaKeys: 8
-    numCornerVertices: 7
+    numCornerVertices: 1
     numCapVertices: 1
     alignment: 0
     textureMode: 0

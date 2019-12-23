@@ -36,7 +36,10 @@ namespace BasketBallGame
                 ++_rightBallCount;
                 rightText.text = _rightBallCount.ToString();
             }
-        }
+
+			BasketBall basket = collision.GetComponent<BasketBall>();
+			basket.SetActiveTraill(false);
+		}
 
         void OnTriggerExit2D(Collider2D collision)
         {
@@ -51,7 +54,9 @@ namespace BasketBallGame
                 --_rightBallCount;
                 rightText.text = _rightBallCount.ToString();
             }
-        }
+			BasketBall basket = collision.GetComponent<BasketBall>();
+			basket.SetActiveTraill(true);
+		}
 
     }
 }
