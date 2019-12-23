@@ -172,9 +172,6 @@ void LogicProcess::ProcessPacket()
 		{
 			PACKET_REQ_ENTER_FARM* enterPacket = (PACKET_REQ_ENTER_FARM*)data;
 			int clientID = enterPacket->clientID;
-			PACKET_REQ_RES_FARM sendPacket;
-			sendPacket.Init();
-			sendPacket.packetIndex = PACKET_INDEX::RES_ENTER_FARM;
 
 			int farmIndex[FARM_INFO_MAX_COUNT] = { 0, };
 			std::string jsonArr[FARM_INFO_MAX_COUNT] = { "", };
@@ -182,14 +179,15 @@ void LogicProcess::ProcessPacket()
 
 			for (int i = 0; i < FARM_INFO_MAX_COUNT; i++)
 			{
-				if (jsonArr[i] != "")
-				{
-					sendPacket.farmIndex = (FARM_INDEX)farmIndex[i];
-					memcpy(&sendPacket.farmInfoJSON, jsonArr[i].c_str(), strlen(jsonArr[i].c_str()));
+				PACKET_REQ_RES_FARM sendPacket;
+				sendPacket.Init();
+				sendPacket.packetIndex = PACKET_INDEX::RES_ENTER_FARM;
 
-					std::string aa = _SerializationJson(PACKET_INDEX::RES_ENTER_FARM, (const char*)&sendPacket);
-					_serverPtr->PostSendSession(sessionID, false, aa.length(), (char*)aa.c_str());
-				}
+				sendPacket.farmIndex = (FARM_INDEX)farmIndex[i];
+				memcpy(&sendPacket.farmInfoJSON, jsonArr[i].c_str(), strlen(jsonArr[i].c_str()));
+
+				std::string aa = _SerializationJson(PACKET_INDEX::RES_ENTER_FARM, (const char*)&sendPacket);
+				_serverPtr->PostSendSession(sessionID, false, aa.length(), (char*)aa.c_str());
 			}
 			break;
 		}

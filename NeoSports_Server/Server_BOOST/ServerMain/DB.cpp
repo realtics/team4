@@ -250,6 +250,7 @@ void DB::SetNameTable(int clientID, std::string name)
 		return;
 	}
 	std::cout << "DB : INSERT Name" << std::endl;
+	mysql_free_result(_pSqlRes);
 }
 
 void DB::DeleteUser(int clientID)
@@ -353,6 +354,9 @@ void DB::GetFarmInfo(int clientID, std::string json[], int farmIndex[])
 	std::string temp = "SELECT * FROM farmInfo WHERE clientID = '";
 	temp += boost::lexical_cast<std::string>(clientID);
 	temp += "'";
+
+	mysql_close(&_conn);
+	Init();
 
 	if (mysql_query(&_conn, temp.c_str()) != 0)
 	{
