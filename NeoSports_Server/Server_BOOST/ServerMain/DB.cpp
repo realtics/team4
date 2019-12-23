@@ -161,7 +161,6 @@ void DB::InitUser()
 	}
 }
 
-
 void DB::SetNameTable(int clientID, std::string name)
 {
 	// INSERT 먼저 해보고 PROMARY KEY오류가 나면 이미 있는 clientID이므로 그떄 while하는게 좋을듯
@@ -192,7 +191,7 @@ void DB::SetNameTable(int clientID, std::string name)
 			bind[0].buffer = (char*)name.c_str();
 			bind[0].buffer_length = strlen(name.c_str());
 			bind[0].is_null = 0;
-			bind[0].length =0;
+			bind[0].length = 0;
 
 			bind[1].buffer_type = MYSQL_TYPE_LONG;
 			bind[1].buffer = (char*)&clientID;
@@ -472,7 +471,7 @@ void DB::InsertFarmInfo(int clientID, std::string farmJson, FARM_INDEX farmIndex
 	{
 		ErrorCheck();
 		std::cout << "DB : InsertFarmInfo error" << std::endl;
-		return ;
+		return;
 	}
 	memset(bind, 0, sizeof(bind));
 	bind[0].buffer_type = MYSQL_TYPE_LONG;
@@ -495,14 +494,14 @@ void DB::InsertFarmInfo(int clientID, std::string farmJson, FARM_INDEX farmIndex
 	{
 		ErrorCheck();
 		std::cout << "DB : InsertFarmInfo error" << std::endl;
-		return ;
+		return;
 	}
 
 	if (mysql_stmt_execute(stmt))
 	{
 		ErrorCheck();
 		std::cout << "DB : InsertFarmInfo error" << std::endl;
-		return ;
+		return;
 	}
 	std::cout << "DB : INSERT InsertFarmInfo" << std::endl;
 }
@@ -538,6 +537,7 @@ void DB::SetGold(int clientID, int gold)
 		std::cout << "DB : SetGold error" << std::endl;
 		return;
 	}
+
 	memset(bind, 0, sizeof(bind));
 	bind[0].buffer_type = MYSQL_TYPE_LONG;
 	bind[0].buffer = (char*)&clientID;

@@ -48,7 +48,6 @@ public enum PACKET_INDEX
     RES_NOW_TIME,
 	RES_NULL_CLIENT_ID,
 	RES_ENTER_FARM,
-	ll,
 
     //줄다리기용 패킷
     REQ_RES_ROPE_PULL_GAME,

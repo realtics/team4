@@ -87,6 +87,7 @@ void LogicProcess::ProcessPacket()
 			sendPacket.Init();
 			int clientID = DB::GetInstance()->GetClientID(sessionID);
 			int gold = DB::GetInstance()->GetGold(clientID);
+			DB::GetInstance()->SetGold(clientID, gold);
 			sendPacket.gold = gold;
 
 			std::string aa = _SerializationJson(PACKET_INDEX::REQ_RES_GOLD, (const char*)&sendPacket);
@@ -176,16 +177,19 @@ void LogicProcess::ProcessPacket()
 			sendPacket.packetIndex = PACKET_INDEX::RES_ENTER_FARM;
 
 			int farmIndex[FARM_INFO_MAX_COUNT] = { 0, };
-			std::string jsonArr[FARM_INFO_MAX_COUNT] = { NULL, };
+			std::string jsonArr[FARM_INFO_MAX_COUNT] = { "", };
 			DB::GetInstance()->GetFarmInfo(clientID, jsonArr, farmIndex);
 
 			for (int i = 0; i < FARM_INFO_MAX_COUNT; i++)
 			{
-				sendPacket.farmIndex = (FARM_INDEX)farmIndex[i];
-				memcpy(&sendPacket.farmInfoJSON, jsonArr[i].c_str(), sizeof(jsonArr[i].c_str()));
+				if (jsonArr[i] != "")
+				{
+					sendPacket.farmIndex = (FARM_INDEX)farmIndex[i];
+					memcpy(&sendPacket.farmInfoJSON, jsonArr[i].c_str(), strlen(jsonArr[i].c_str()));
 
-				std::string aa = _SerializationJson(PACKET_INDEX::REQ_ENTER_FARM, (const char*)&sendPacket);
-				_serverPtr->PostSendSession(sessionID, false, aa.length(), (char*)aa.c_str());
+					std::string aa = _SerializationJson(PACKET_INDEX::RES_ENTER_FARM, (const char*)&sendPacket);
+					_serverPtr->PostSendSession(sessionID, false, aa.length(), (char*)aa.c_str());
+				}
 			}
 			break;
 		}
@@ -576,7 +580,7 @@ std::string LogicProcess::_SerializationJson(PACKET_INDEX packetIndex, const cha
 		return sendStr;
 	}
 
-	case PACKET_INDEX::REQ_ENTER_FARM:
+	case PACKET_INDEX::RES_ENTER_FARM:
 	{
 		PACKET_REQ_RES_FARM farmInfoPacket;
 		farmInfoPacket.Init();
