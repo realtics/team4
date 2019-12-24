@@ -90,7 +90,7 @@ public class Character : MonoBehaviour
     {
         _animator.SetBool(AnimationParameter.IsRun, true);
         _currentState = EState.Run;
-    }
+	}
 
 	public void PullRopeAutoRelease()
 	{
@@ -103,6 +103,6 @@ public class Character : MonoBehaviour
     {
         _animator.SetBool(AnimationParameter.IsRun, false);
         _currentState = EState.Idle;
-    }
+	}
 	#endregion
 }

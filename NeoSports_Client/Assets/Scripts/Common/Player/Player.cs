@@ -246,6 +246,7 @@ public class Player : MonoBehaviour
 		if ((Vector2)transform.position != targetPos)
 		{
 			transform.position = Vector2.MoveTowards(transform.position, targetPos, OwnCharacter.status.agility * Time.deltaTime);
+			
 		}
 	}
 
