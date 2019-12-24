@@ -10,6 +10,8 @@ public class Player : MonoBehaviour
 	const float AIShootRangeMaxX = 15.0f;
 	const float AIShootRangeMinY = -15.0f;
 	const float AIShootRangeMaxY = 0.0f;
+	const int PowerLimit = 3;
+	const int PowerOffset = 5;
 
 	public enum eLookDirection
 	{
@@ -153,10 +155,14 @@ public class Player : MonoBehaviour
 		float angle = Mathf.Atan2(transform.position.y - target.y, transform.position.x - target.x);
 
 		float power = Vector2.Distance(target, transform.position);
-		_powerSize = power * OwnCharacter.status.strength;
+
+		if (power >= PowerLimit)
+			power = PowerLimit;
+		_powerSize = power * OwnCharacter.status.strength * PowerOffset;
 
 		_instArrow.transform.rotation = Quaternion.AngleAxis(angle * Mathf.Rad2Deg, transform.forward);
 		_instArrow.transform.localScale = new Vector3(_powerSize, _powerSize);
+
 	}
 
 	public void CalculateShootAuto()
@@ -246,7 +252,7 @@ public class Player : MonoBehaviour
 		if ((Vector2)transform.position != targetPos)
 		{
 			transform.position = Vector2.MoveTowards(transform.position, targetPos, OwnCharacter.status.agility * Time.deltaTime);
-			
+
 		}
 	}
 
