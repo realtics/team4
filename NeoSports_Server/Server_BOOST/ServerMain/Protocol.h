@@ -175,7 +175,7 @@ struct PACKET_REQ_RES_BASKET_BALL_GAME : public PACKET_HEADER
 struct PACKET_REQ_RES_FARM : public PACKET_HEADER
 {
 	FARM_INDEX farmIndex;
-	char farmInfoJSON[1024] = {0,};
+	char farmInfoJSON[1024] = {"",};
 
 	void Init()
 	{

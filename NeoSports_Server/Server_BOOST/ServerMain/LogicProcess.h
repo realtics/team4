@@ -20,5 +20,7 @@ private:
 	ThreadHandler* _threadHandler;
 	Server* _serverPtr;
 
-	string _SerializationJson(PACKET_INDEX packetIndex, const char* pakcet, int jsonLength = 0);
+	string _SerializationJson(PACKET_INDEX packetIndex, const char* pakcet, std::string jsonLength = "0000");
+	//str1을 str2에다가 복사
+	void memcpyStr(std::string* str1, std::string* str2);
 };

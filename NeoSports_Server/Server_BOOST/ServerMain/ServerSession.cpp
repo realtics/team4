@@ -136,8 +136,10 @@ void  Session::_ReceiveHandle(const boost::system::error_code& error, size_t byt
 
 		_DeSerializationJson(_receiveBuffer.data());
 
-		LockGuard pushPakcetQueueLock(_threadHandler->pushPakcetQueueLock);
-		_PushPacketQueue(_sessionId, &_packetBuffer[0]);
+		{
+			LockGuard pushPakcetQueueLock(_threadHandler->pushPakcetQueueLock);
+			_PushPacketQueue(_sessionId, &_packetBuffer[0]);
+		}
 
 		PostReceive();
 	}
@@ -202,7 +204,7 @@ void Session::_DeSerializationJson(char* jsonStr)
 		memcpy(&_packetBuffer[_packetBufferMark], (char*)&packet, sizeof(packet));
 		break;
 	}
-	
+
 	case PACKET_INDEX::REQ_RES_BASKET_BALL_GAME:
 	{
 		PACKET_REQ_RES_BASKET_BALL_GAME packet;
