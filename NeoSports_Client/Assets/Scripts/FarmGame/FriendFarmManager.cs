@@ -15,6 +15,8 @@ namespace FarmGame
 		DecorationTile.SaveData[] _decorationSaveDatas;
 		GarbageTile.SaveData[] _garbageSaveDatas;
 
+		int _dataRecvCount = 0;
+
 
 		public LandTile.SaveData[] LandSaveDatas {
 			get { return _landSaveDatas; }
@@ -64,14 +66,16 @@ namespace FarmGame
 			NetworkManager.Instance.SendFriendFarmDataRequest(FriendFarmClientId);
 		}
 
-		public void LoadFarmSaveDatas(string compressionData, MapData.ESaveType saveType)
+		public void LoadFarmSaveDatas(string compressionData, int saveIndex)
 		{
-            Debug.Log("saveType: " + saveType.ToString());
+            Debug.Log("saveType: " + saveIndex.ToString());
             Debug.Log("Data: " + compressionData);
+			_dataRecvCount++;
 
-            if (compressionData != string.Empty)
+            if (saveIndex != -1 && compressionData != string.Empty)
 			{
 				string originalStr = StringCompressionHelper.Decompress(compressionData);
+				MapData.ESaveType saveType = (MapData.ESaveType)saveIndex;
 
 				switch (saveType)
 				{
@@ -93,15 +97,20 @@ namespace FarmGame
 				}
 			}
 
-			IsDataRecv[(int)saveType] = true;
+			//IsDataRecv[(int)saveType] = true;
 
-			bool allRecv = IsDataRecv[0];
-			foreach(var flag in IsDataRecv)
+			//bool allRecv = IsDataRecv[0];
+			//foreach(var flag in IsDataRecv)
+			//{
+			//	allRecv = allRecv && flag;
+			//}
+
+			//IsDataLoaded = allRecv;
+
+			if(_dataRecvCount == 5)
 			{
-				allRecv = allRecv && flag;
+				IsDataLoaded = true;
 			}
-
-			IsDataLoaded = allRecv;
 		}
 
 		T[] DeserializeData<T>(string dataStr)

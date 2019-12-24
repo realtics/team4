@@ -194,7 +194,7 @@ public class NetworkManager : Singleton<NetworkManager>
 		PACKET_REQ_RES_FARM packet = new PACKET_REQ_RES_FARM
 		{
 			header = headerPacket,
-			saveIndex = index,
+			saveIndex = (int)index,
 			saveData = data
 		};
 

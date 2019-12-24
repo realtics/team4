@@ -116,7 +116,7 @@ public struct PACKET_REQ_RANK
 public struct PACKET_REQ_RES_FARM
 {
     public PACKET_HEADER header;
-	public MapData.ESaveType saveIndex;
+	public int saveIndex;
     public string saveData;
 };
 
