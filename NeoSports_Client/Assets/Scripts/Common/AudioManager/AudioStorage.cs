@@ -46,5 +46,5 @@ public struct SoundSrc
 
 public enum eSoundId
 {
-    Shoot, Walk, Start, GameEnd, Hit, Flap, Fall, Score, Pull
+    Shoot, Walk, Start, GameEnd, Hit, Flap, Fall, Score, Pull, BGM,
 }

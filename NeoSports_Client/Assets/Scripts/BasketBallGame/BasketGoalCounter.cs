@@ -30,12 +30,14 @@ namespace BasketBallGame
             {
                 ++_leftBallCount;
                 leftText.text = _leftBallCount.ToString();
+				AudioManager.Instance.PlaySound(eSoundId.Score);
             }
-            if (collision.transform.CompareTag("AIBall"))
+            else if (collision.transform.CompareTag("AIBall"))
             {
                 ++_rightBallCount;
                 rightText.text = _rightBallCount.ToString();
-            }
+				AudioManager.Instance.PlaySound(eSoundId.Score);
+			}
 
 			BasketBall basket = collision.GetComponent<BasketBall>();
 			basket.SetActiveTraill(false);

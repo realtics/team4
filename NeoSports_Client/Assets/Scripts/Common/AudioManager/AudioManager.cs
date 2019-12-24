@@ -8,6 +8,7 @@ public class AudioManager : Singleton<AudioManager>
     AudioStorage soundStorage;
 
 	AudioSource _soundSource;
+	AudioSource _bgmSource;
 	void Awake()
     {
         if (instance != null)
@@ -19,15 +20,21 @@ public class AudioManager : Singleton<AudioManager>
         DontDestroyOnLoad(this);
 
 		_soundSource = GetComponent<AudioSource>();
+		PlayBackGround();
 	}
 
-    public void PlaySound(eSoundId id)
+	void Start()
+	{
+		
+	}
+
+	public void PlaySound(eSoundId id)
     {
-		if (_soundSource.isPlaying)
-			return;
-		_soundSource.clip = soundStorage.Get(id);
-		_soundSource.Play();
-		//AudioSource.PlayClipAtPoint(soundStorage.Get(id), Vector3.zero);
+		//if (_soundSource.isPlaying)
+		//	return;
+		//_soundSource.clip = soundStorage.Get(id);
+		//_soundSource.Play();
+		AudioSource.PlayClipAtPoint(soundStorage.Get(id), Vector3.zero);
 	}
 
 	public void PlayOnLoop(eSoundId id)
@@ -50,5 +57,15 @@ public class AudioManager : Singleton<AudioManager>
 		_soundSource.clip = soundStorage.Get(id);
 		_soundSource.loop =true;
 		_soundSource.Play();
+	}
+
+	public void PlayBackGround()
+	{
+		_bgmSource = _soundSource;
+		_bgmSource.clip = soundStorage.Get(eSoundId.BGM);
+		_bgmSource.volume = 0.1f;
+		_bgmSource.loop = true;
+		_bgmSource.playOnAwake = true;
+		_bgmSource.Play();
 	}
 }
