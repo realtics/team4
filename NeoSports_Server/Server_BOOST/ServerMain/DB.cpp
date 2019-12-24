@@ -422,9 +422,21 @@ void DB::SetFarmInfo(int clientID, std::string farmJson, FARM_INDEX farmIndex)
 		{
 			if (_sqlRow[2] == boost::lexical_cast<std::string>(farmIndex))
 			{
-				std::string query = "UPDATE farmInfo SET infoJson = ? WHERE clientID = ? AND farmIndex = ?";
+				std::string query = "UPDATE farmInfo SET infoJson = '";
+				query += farmJson;
+				query += "' WHERE clientID = '";
+				query += boost::lexical_cast<std::string>(clientID);
+				query += "' AND farmIndex = '";
+				query += boost::lexical_cast<std::string>(farmIndex);
+				query += "'";
 
-				if (mysql_stmt_prepare(stmt, query.c_str(), strlen(query.c_str())))
+				if (mysql_query(&_conn, query.c_str()) != 0)
+				{
+					ErrorCheck();
+					std::cout << "DB : InsertFarmInfo mysql_query error" << std::endl;
+					return;
+				}
+				/*if (mysql_stmt_prepare(stmt, query.c_str(), strlen(query.c_str())))
 				{
 					ErrorCheck();
 					std::cout << "DB : SetFarmInfo error" << std::endl;
@@ -459,7 +471,7 @@ void DB::SetFarmInfo(int clientID, std::string farmJson, FARM_INDEX farmIndex)
 					ErrorCheck();
 					std::cout << "DB : SetFarmInfo error" << std::endl;
 					return;
-				}
+				}*/
 				return;
 			}
 		}
@@ -469,7 +481,21 @@ void DB::SetFarmInfo(int clientID, std::string farmJson, FARM_INDEX farmIndex)
 
 void DB::InsertFarmInfo(int clientID, std::string farmJson, FARM_INDEX farmIndex)
 {
-	std::string query = "INSERT INTO farmInfo VALUES(?,?,?)";
+	std::string query = "INSERT INTO farmInfo VALUES('";
+	query += boost::lexical_cast<std::string>(clientID);
+	query += "','";
+	query += farmJson;
+	query += "','";
+	query += boost::lexical_cast<std::string>(farmIndex);
+	query += "')";
+
+	if (mysql_query(&_conn, query.c_str()) != 0)
+	{
+		ErrorCheck();
+		std::cout << "DB : InsertFarmInfo mysql_query error" << std::endl;
+		return ;
+	}
+	/*std::string query = "INSERT INTO farmInfo VALUES(?,?,?)";
 
 	if (mysql_stmt_prepare(stmt, query.c_str(), strlen(query.c_str())))
 	{
@@ -506,7 +532,7 @@ void DB::InsertFarmInfo(int clientID, std::string farmJson, FARM_INDEX farmIndex
 		ErrorCheck();
 		std::cout << "DB : InsertFarmInfo error" << std::endl;
 		return;
-	}
+	}*/
 	std::cout << "DB : INSERT InsertFarmInfo" << std::endl;
 }
 
