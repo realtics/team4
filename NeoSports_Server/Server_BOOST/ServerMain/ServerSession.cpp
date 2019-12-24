@@ -76,7 +76,6 @@ void Session::_PushPacketQueue(const int sessionId, const char* data)
 {
 	PacketData packetData(sessionId, data);
 	_threadHandler->PushPacketQueue(packetData);
-	_threadHandler->SetEventsObject();
 }
 
 void Session::PostReceive()
@@ -137,9 +136,9 @@ void  Session::_ReceiveHandle(const boost::system::error_code& error, size_t byt
 
 		_DeSerializationJson(_receiveBuffer.data());
 
-		_pushPakcetQueueLock.Enter(); //Lock
+		LockGuard pushPakcetQueueLock(_threadHandler->pushPakcetQueueLock);
 		_PushPacketQueue(_sessionId, &_packetBuffer[0]);
-		_pushPakcetQueueLock.Leave();
+
 		PostReceive();
 	}
 }
@@ -199,7 +198,7 @@ void Session::_DeSerializationJson(char* jsonStr)
 		PACKET_REQ_CHECK_CLIENT_ID packet;
 		packet.packetIndex = headerIndex;
 		packet.packetSize = 0;
-
+		packet.clientID = ptRecv.get<int>("clientID");
 		memcpy(&_packetBuffer[_packetBufferMark], (char*)&packet, sizeof(packet));
 		break;
 	}

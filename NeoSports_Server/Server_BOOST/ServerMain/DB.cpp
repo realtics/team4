@@ -239,14 +239,14 @@ void DB::SetNameTable(int clientID, std::string name)
 	if (mysql_stmt_bind_param(stmt, bind))
 	{
 		ErrorCheck();
-		std::cout << "DB : SetNameTable error" << std::endl;
+		std::cout << "DB : SetNameTable INSERT error" << std::endl;
 		return;
 	}
 
 	if (mysql_stmt_execute(stmt))
 	{
 		ErrorCheck();
-		std::cout << "DB : SetNameTable error" << std::endl;
+		std::cout << "DB : SetNameTable INSERT error" << std::endl;
 		return;
 	}
 	std::cout << "DB : INSERT Name" << std::endl;
@@ -390,7 +390,7 @@ bool DB::CheckClientID(int clientID)
 		std::cout << "DB : CheckClientID mysql_query error" << std::endl;
 		return false;
 	}
-
+	_pSqlRes = mysql_store_result(&_conn);
 	int rowCount = mysql_num_rows(_pSqlRes);
 
 	if (rowCount <= 0 || rowCount == NULL)
@@ -436,6 +436,8 @@ void DB::SetFarmInfo(int clientID, std::string farmJson, FARM_INDEX farmIndex)
 					std::cout << "DB : InsertFarmInfo mysql_query error" << std::endl;
 					return;
 				}
+				std::cout << "DB : InsertFarmInfo" << std::endl;
+
 				/*if (mysql_stmt_prepare(stmt, query.c_str(), strlen(query.c_str())))
 				{
 					ErrorCheck();

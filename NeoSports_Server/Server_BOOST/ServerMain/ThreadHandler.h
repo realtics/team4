@@ -4,6 +4,7 @@
 #include <Windows.h>
 #include <iostream>
 #include <queue>
+#include "Lock.h"
 
 using namespace std;
 
@@ -22,25 +23,22 @@ struct PacketData
 class ThreadHandler
 {
 public:
-	ThreadHandler() { _packetQueueEvents = 0; };
+	ThreadHandler() {};
 	void CreateEvents(bool resetMode)
 	{
-		_packetQueueEvents = CreateEvent(NULL, resetMode, FALSE, NULL);
-		if (_packetQueueEvents == NULL)
-		{
-			cout << "LogicProcess : packetQueueEvents : error " << endl;
-		}
+		
 	}
 	PacketData GetPakcetDataQueueFront();
-	HANDLE GetPacketQueueEvents();
 	bool IsEmptyPacketQueue();
 
-	//_packetQueueEvents만 바꿔주는중
-	void SetEventsObject();
 	void PopPacketQueue();
 	void PushPacketQueue(PacketData packetData);
+
+	int GetPakcetQueueSize();
+
+	Lock pushPakcetQueueLock;
+
 private:
 	
-	HANDLE _packetQueueEvents;
 	queue<PacketData> _packetQue;
 };

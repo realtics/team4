@@ -35,7 +35,6 @@ private:
 	ThreadHandler* _threadHandler;
 
 	Lock _closeLock;
-	Lock _pushPakcetQueueLock;
 	
 	int _sessionId;
 	int _packetBufferMark;
