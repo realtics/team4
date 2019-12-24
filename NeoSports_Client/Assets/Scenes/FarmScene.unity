@@ -715,6 +715,7 @@ GameObject:
   - component: {fileID: 268229895}
   - component: {fileID: 268229897}
   - component: {fileID: 268229896}
+  - component: {fileID: 268229898}
   m_Layer: 5
   m_Name: Label_DynamicText_Name
   m_TagString: Untagged
@@ -781,6 +782,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 268229894}
   m_CullTransparentMesh: 0
+--- !u!114 &268229898
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 268229894}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfabb0440166ab443bba8876756fdfa9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.78431374}
+  m_EffectDistance: {x: 1, y: -1}
+  m_UseGraphicAlpha: 1
 --- !u!1 &282832802
 GameObject:
   m_ObjectHideFlags: 0
@@ -2700,7 +2716,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.392}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.78431374}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -5694,6 +5710,7 @@ GameObject:
   - component: {fileID: 1703469740}
   - component: {fileID: 1703469742}
   - component: {fileID: 1703469741}
+  - component: {fileID: 1703469743}
   m_Layer: 5
   m_Name: Label_DynamicText_Effect
   m_TagString: Untagged
@@ -5760,6 +5777,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1703469739}
   m_CullTransparentMesh: 0
+--- !u!114 &1703469743
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1703469739}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfabb0440166ab443bba8876756fdfa9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.78431374}
+  m_EffectDistance: {x: 1, y: -1}
+  m_UseGraphicAlpha: 1
 --- !u!1 &1708033672
 GameObject:
   m_ObjectHideFlags: 0
