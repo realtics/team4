@@ -44,7 +44,7 @@ namespace FarmGame
 			Array.Clear(IsDataRecv, 0, IsDataRecv.Length);
 
 			// DEBUG!
-			// DebugAwake();
+			//DebugAwake();
 		}
 
 		public void DestroySelf()

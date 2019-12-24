@@ -120,6 +120,10 @@ namespace FarmGame
 
 			foreach (var item in datas)
 			{
+				if (objectTileDic.ContainsKey(item.point))
+				{
+					continue;
+				}
 				GameObject obj = Instantiate(prefRoadTile, objectTileGroup.transform);
 				RoadTile script = obj.GetComponent<RoadTile>();
 				script.SetSaveData(item);
@@ -187,6 +191,11 @@ namespace FarmGame
 
 			foreach (var item in datas)
 			{
+				if (objectTileDic.ContainsKey(item.point))
+				{
+					continue;
+				}
+
 				GameObject obj = Instantiate(prefProductTile, objectTileGroup.transform);
 				ProductTile script = obj.GetComponent<ProductTile>();
 				string landType = LandTileManager.Instance.GetLandTileAtPoint(item.point).Type;
@@ -309,6 +318,11 @@ namespace FarmGame
 
 			foreach (var item in datas)
 			{
+				if (objectTileDic.ContainsKey(item.point))
+				{
+					continue;
+				}
+
 				GameObject obj = Instantiate(prefGarbageTile, objectTileGroup.transform);
 				GarbageTile script = obj.GetComponent<GarbageTile>();
 				script.SetSaveData(item);

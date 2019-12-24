@@ -25,7 +25,7 @@ public class NetworkManager : Singleton<NetworkManager>
 	const string LoopbackAdress = "127.0.0.1";
 	const int PortNumber = 31400;
 	const int TimeOutCode = 100060;
-	const int bufferSize = 1024;
+	const int bufferSize = 10240;
 
 	public bool isLoopBackServer;
 	public bool isAzureServer;
@@ -385,6 +385,7 @@ public class NetworkManager : Singleton<NetworkManager>
 				Array.Copy(ao.buffer, recvBuf, recvBytes);
 
 				string recvData = Encoding.UTF8.GetString(recvBuf, 0, recvBytes);
+				Debug.Log(recvData);
 
 
 				var headerData = JsonConvert.DeserializeObject<HeaderPacket>(recvData);
