@@ -182,7 +182,6 @@ void LogicProcess::ProcessPacket()
 				PACKET_REQ_RES_FARM sendPacket;
 				sendPacket.Init();
 				sendPacket.packetIndex = PACKET_INDEX::RES_ENTER_FARM;
-
 				sendPacket.farmIndex = (FARM_INDEX)farmIndex[i];
 				memcpy(&sendPacket.farmInfoJSON, jsonArr[i].c_str(), strlen(jsonArr[i].c_str()));
 
@@ -587,11 +586,11 @@ std::string LogicProcess::_SerializationJson(PACKET_INDEX packetIndex, const cha
 		boost::property_tree::ptree ptSendFarmInfo;
 		boost::property_tree::ptree ptSendHeader;
 		ptSendHeader.put<int>("packetIndex", farmInfoPacket.packetIndex);
-		ptSendHeader.put<int>("packetSize", sizeof(PACKET_RES_NOW_TIME));
+		ptSendHeader.put<int>("packetSize", jsonLength);
 		ptSendFarmInfo.add_child("header", ptSendHeader);
 
-		ptSendFarmInfo.put<int>("farmIndex", (FARM_INDEX)farmInfoPacket.farmIndex);
-		ptSendFarmInfo.put<char*>("farmInfoJSON", farmInfoPacket.farmInfoJSON);
+		ptSendFarmInfo.put<int>("saveIndex", (FARM_INDEX)farmInfoPacket.farmIndex);
+		ptSendFarmInfo.put<char*>("saveData", farmInfoPacket.farmInfoJSON);
 
 		std::string recvTemp;
 		std::ostringstream os(recvTemp);

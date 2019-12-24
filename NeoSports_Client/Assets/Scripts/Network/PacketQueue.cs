@@ -47,6 +47,7 @@ public class PacketQueue : Singleton<PacketQueue>
 	{
 		if (networkQueue.Count > 0)
 		{
+            Debug.Log("Packet Received!");
 			var networkData = networkQueue.Dequeue();
 			ProcessReceivePacket((PACKET_INDEX)networkData.packetIndex, networkData.recvData);
 		}
@@ -141,7 +142,14 @@ public class PacketQueue : Singleton<PacketQueue>
 			}
 			case PACKET_INDEX.RES_ENTER_FARM:
 			{
+                    Debug.Log(recvData);
 				var packetData = JsonConvert.DeserializeObject<PACKET_REQ_RES_FARM>(recvData);
+                    Debug.Log(packetData.saveData);
+
+                if(packetData.saveData == null)
+                    {
+                        packetData.saveData = string.Empty;
+                    }
 				FriendFarmManager.Instance.LoadFarmSaveDatas(packetData.saveData, packetData.saveIndex);
 				break;
 			}

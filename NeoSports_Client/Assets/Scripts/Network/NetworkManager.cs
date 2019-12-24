@@ -25,7 +25,7 @@ public class NetworkManager : Singleton<NetworkManager>
 	const string LoopbackAdress = "127.0.0.1";
 	const int PortNumber = 31400;
 	const int TimeOutCode = 100060;
-	const int bufferSize = 512;
+	const int bufferSize = 1024;
 
 	public bool isLoopBackServer;
 	public bool isAzureServer;
@@ -185,10 +185,10 @@ public class NetworkManager : Singleton<NetworkManager>
 
 	public bool SendFarmSaveData(MapData.ESaveType index, string data)
 	{
-		if (!IsConnected)
-		{
-			return false;
-		}
+		//if (!IsConnected)
+		//{
+		//	return false;
+		//}
 
 		PACKET_HEADER headerPacket = MakeHeaderPacket(PACKET_INDEX.REQ_SAVE_FARM);
 		PACKET_REQ_RES_FARM packet = new PACKET_REQ_RES_FARM
@@ -204,10 +204,10 @@ public class NetworkManager : Singleton<NetworkManager>
 
 	public void SendCheckClientIsExist(int clientId)
 	{
-		if (!IsConnected)
-		{
-			return;
-		}
+		//if (!IsConnected)
+		//{
+		//	return;
+		//}
 
 		PACKET_HEADER headerPacket = MakeHeaderPacket(PACKET_INDEX.REQ_CHECK_CLIENT_ID);
 		PACKET_REQ_CHECK_CLIENT_ID packet = new PACKET_REQ_CHECK_CLIENT_ID
@@ -221,10 +221,10 @@ public class NetworkManager : Singleton<NetworkManager>
 
 	public void SendFriendFarmDataRequest(int clientId)
 	{
-		if (!IsConnected)
-		{
-			return;
-		}
+		//if (!IsConnected)
+		//{
+		//	return;
+		//}
 
 		PACKET_HEADER headerPacket = MakeHeaderPacket(PACKET_INDEX.REQ_ENTER_FARM);
 		PACKET_REQ_ENTER_FARM packet = new PACKET_REQ_ENTER_FARM
@@ -318,8 +318,8 @@ public class NetworkManager : Singleton<NetworkManager>
 			{
 				//_sock.Connect(new IPEndPoint(IPAddress.Parse(LoopbackAdress), PortNumber));
 				var result = _sock.BeginConnect(new IPEndPoint(IPAddress.Parse(LoopbackAdress), PortNumber), null, null);
-				bool success = result.AsyncWaitHandle.WaitOne(1000, true);
-				if (success)
+				bool IsConnected = result.AsyncWaitHandle.WaitOne(1000, true);
+				if (IsConnected)
 				{
 					//_sock.EndConnect(result);
 				}
@@ -378,7 +378,7 @@ public class NetworkManager : Singleton<NetworkManager>
 			AsyncObject ao = (AsyncObject)ar.AsyncState;
 			Int32 recvBytes = ao.workingSocket.EndReceive(ar);
 
-			if (recvBytes > Marshal.SizeOf<PACKET_HEADER>()) //bytestream 처리 
+            if (recvBytes > Marshal.SizeOf<PACKET_HEADER>()) //bytestream 처리 
 			{
 				//receive처리 
 				byte[] recvBuf = new byte[recvBytes];

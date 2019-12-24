@@ -66,7 +66,10 @@ namespace FarmGame
 
 		public void LoadFarmSaveDatas(string compressionData, MapData.ESaveType saveType)
 		{
-			if(compressionData != string.Empty)
+            Debug.Log("saveType: " + saveType.ToString());
+            Debug.Log("Data: " + compressionData);
+
+            if (compressionData != string.Empty)
 			{
 				string originalStr = StringCompressionHelper.Decompress(compressionData);
 
