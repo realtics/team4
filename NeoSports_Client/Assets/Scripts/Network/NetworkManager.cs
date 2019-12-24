@@ -63,7 +63,10 @@ public class NetworkManager : Singleton<NetworkManager>
 
 	void Start()
 	{
-		Connect();
+		if (_sock == null)
+		{
+			Connect();
+		}
 	}
 
 	public void SendNickName(string playerNickName)
