@@ -305,6 +305,7 @@ public class Player : MonoBehaviour
 		OwnCharacter.PullRopeAutoRelease();
 
 		_outlineshader.PlayLineEffect();
+		AudioManager.Instance.PlaySound(eSoundId.Pull);
 	}
 
 	public void NetworkPullRope()
@@ -315,8 +316,8 @@ public class Player : MonoBehaviour
 			NetworkManager.Instance.SendRequestRopePull(OwnCharacter.status.strength);
 
 		OwnCharacter.PullRopeAutoRelease();
-
 		_outlineshader.PlayLineEffect();
+		AudioManager.Instance.PlaySound(eSoundId.Pull);
 	}
 
 	#endregion
