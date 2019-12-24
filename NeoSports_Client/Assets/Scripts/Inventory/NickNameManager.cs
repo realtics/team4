@@ -16,6 +16,8 @@ namespace MainMenu
 		InputField nickNameInputField;
 		[SerializeField]
 		Text nickNameInputText;
+		[SerializeField]
+		Text userIdInfoText;
 
 		string _nickName;
 
@@ -31,6 +33,7 @@ namespace MainMenu
 				_nickName = PlayerPrefs.GetString(PrefsKey.NickNameKey, "플레이어");
 				InventoryManager.Instance.PlayerNickName = _nickName;
 				NetworkManager.Instance.SendNickName(_nickName);
+				SetUserIdInfoText(PlayerPrefs.GetInt(PrefsKey.ClientIdKey));
 			}
 			else
 			{
@@ -106,6 +109,11 @@ namespace MainMenu
 			}
 
 			return true;
+		}
+
+		public void SetUserIdInfoText(int userId)
+		{
+			userIdInfoText.text = userId.ToString();
 		}
 	}
 }
