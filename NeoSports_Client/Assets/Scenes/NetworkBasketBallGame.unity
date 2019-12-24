@@ -149,7 +149,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4662142bf775764ca735c17b7220490, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  endGameTime: 10000
+  endGameTime: 30
   ppiYakCharacter: {fileID: 0}
   turkeyJellyCharacter: {fileID: 0}
   playerPrefab: {fileID: 8020142122621805146, guid: 2f6797c75b7704646aeaecae172f8117,
