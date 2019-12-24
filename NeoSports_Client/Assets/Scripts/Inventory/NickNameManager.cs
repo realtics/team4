@@ -26,13 +26,13 @@ namespace MainMenu
 			CheckSaveNickName();
 		}
 
-		void CheckSaveNickName()
+		public void CheckSaveNickName()
 		{
 			if (PlayerPrefs.HasKey(PrefsKey.ClientIdKey))
 			{
 				_nickName = PlayerPrefs.GetString(PrefsKey.NickNameKey, "플레이어");
 				InventoryManager.Instance.PlayerNickName = _nickName;
-				NetworkManager.Instance.SendNickName(_nickName);
+				//NetworkManager.Instance.SendNickName(_nickName);
 				SetUserIdInfoText(PlayerPrefs.GetInt(PrefsKey.ClientIdKey));
 			}
 			else
