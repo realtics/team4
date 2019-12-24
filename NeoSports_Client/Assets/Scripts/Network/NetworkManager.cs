@@ -185,10 +185,10 @@ public class NetworkManager : Singleton<NetworkManager>
 
 	public bool SendFarmSaveData(MapData.ESaveType index, string data)
 	{
-		//if (!IsConnected)
-		//{
-		//	return false;
-		//}
+		if(_sock == null)
+		{
+			return false;
+		}
 
 		PACKET_HEADER headerPacket = MakeHeaderPacket(PACKET_INDEX.REQ_SAVE_FARM);
 		PACKET_REQ_RES_FARM packet = new PACKET_REQ_RES_FARM
@@ -204,10 +204,10 @@ public class NetworkManager : Singleton<NetworkManager>
 
 	public void SendCheckClientIsExist(int clientId)
 	{
-		//if (!IsConnected)
-		//{
-		//	return;
-		//}
+		if(_sock == null)
+		{
+			return;
+		}
 
 		PACKET_HEADER headerPacket = MakeHeaderPacket(PACKET_INDEX.REQ_CHECK_CLIENT_ID);
 		PACKET_REQ_CHECK_CLIENT_ID packet = new PACKET_REQ_CHECK_CLIENT_ID
@@ -221,10 +221,10 @@ public class NetworkManager : Singleton<NetworkManager>
 
 	public void SendFriendFarmDataRequest(int clientId)
 	{
-		//if (!IsConnected)
-		//{
-		//	return;
-		//}
+		if (_sock == null)
+		{
+			return;
+		}
 
 		PACKET_HEADER headerPacket = MakeHeaderPacket(PACKET_INDEX.REQ_ENTER_FARM);
 		PACKET_REQ_ENTER_FARM packet = new PACKET_REQ_ENTER_FARM
