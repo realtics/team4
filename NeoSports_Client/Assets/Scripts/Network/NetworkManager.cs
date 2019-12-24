@@ -68,10 +68,10 @@ public class NetworkManager : Singleton<NetworkManager>
 
 	public void SendNickName(string playerNickName)
 	{
-		//if (_sock == null)
-		//{
-		//	Connect();
-		//}
+		if (_sock == null)
+		{
+			Connect();
+		}
 		PACKET_HEADER headerPacket = MakeHeaderPacket(PACKET_INDEX.REQ_IN);
 		PACKET_REQ_IN packet = new PACKET_REQ_IN { header = headerPacket, name = playerNickName, clientID  = ResourceManager.Instance.ClientId };
 
@@ -89,10 +89,10 @@ public class NetworkManager : Singleton<NetworkManager>
 
 	public void SendRequestRoom(GAME_INDEX roomIndex)
 	{
-		//if (_sock == null)
-		//{
-		//	Connect();
-		//}
+		if (_sock == null)
+		{
+			Connect();
+		}
 
 		PACKET_HEADER headerPacket = MakeHeaderPacket(PACKET_INDEX.REQ_MULTI_ROOM);
 		PACKET_REQ_MULTI_ROOM packet = new PACKET_REQ_MULTI_ROOM
