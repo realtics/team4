@@ -19,6 +19,7 @@ public struct NetworkQueueData
 
 public class PacketQueue : Singleton<PacketQueue>
 {
+	public object queueLock = new object();
 	public Queue<NetworkQueueData> networkQueue = new Queue<NetworkQueueData>();
 
 	[HideInInspector]
@@ -48,7 +49,13 @@ public class PacketQueue : Singleton<PacketQueue>
 		if (networkQueue.Count > 0)
 		{
             Debug.Log("Packet Received!");
-			var networkData = networkQueue.Dequeue();
+
+			NetworkQueueData networkData;
+			//lock (queueLock)
+			{
+				networkData = networkQueue.Dequeue();
+			}
+			
 			ProcessReceivePacket((PACKET_INDEX)networkData.packetIndex, networkData.recvData);
 		}
 	}

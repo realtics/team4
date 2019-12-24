@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading;
 using UnityEngine;
 using UnityEngine.SceneManagement; //single은 PlayManager에서,멀티는 네트워크에서
 
@@ -392,13 +393,24 @@ public class NetworkManager : Singleton<NetworkManager>
 				Array.Copy(ao.buffer, recvBuf, recvBytes);
 
 				string recvData = Encoding.UTF8.GetString(recvBuf, 0, recvBytes);
-				Debug.Log(recvData);
+				Debug.Log("Original RecvData: " + recvData);
 
+				while (recvData != string.Empty)
+				{
+					var headerData = JsonConvert.DeserializeObject<HeaderPacket>(recvData);
+					string strData = recvData.Substring(0, headerData.header.packetSize);
+					Debug.Log("StrData: " + strData);
 
-				var headerData = JsonConvert.DeserializeObject<HeaderPacket>(recvData);
+					//lock (PacketQueue.Instance.queueLock)
+					{
+						PacketQueue.Instance.networkQueue.Enqueue(new NetworkQueueData(headerData.header.packetIndex, strData));
+					}
+					recvData = recvData.Substring(headerData.header.packetSize);
+					Debug.Log("Subed RecvData: " + recvData);
+				}
 
 				//recevie 처리를 큐잉으로 대체. 
-				PacketQueue.Instance.networkQueue.Enqueue(new NetworkQueueData(headerData.header.packetIndex, recvData));
+				//PacketQueue.Instance.networkQueue.Enqueue(new NetworkQueueData(headerData.header.packetIndex, recvData));
 			}
 			ao.workingSocket.BeginReceive(ao.buffer, 0, ao.buffer.Length
 				, SocketFlags.None, _receiveHandler, ao);
