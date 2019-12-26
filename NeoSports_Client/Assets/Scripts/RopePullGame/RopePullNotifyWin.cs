@@ -10,7 +10,7 @@ namespace RopePullGame
 
         void OnTriggerEnter2D(Collider2D other)
         {
-			if (transform.position.x < 0)
+			if (other.transform.position.x <= 0)
 			{
 				sceneManager.NotifyWinner(other.transform, "Left");
 			}
