@@ -62,7 +62,7 @@ namespace RopePullGame
 		public void UpdateNetworkRopePostion(float pullPower)
 		{
 			//transform.SetPositionAndRotation(new Vector3(pullPower * Time.deltaTime, 0f, 0f),Quaternion.identity);
-			transform.localPosition = new Vector3(pullPower/3, 0f, 0f);
+			transform.localPosition = new Vector3(pullPower, 0f, 0f);
 		}
 
         void GetPlayersPower()
