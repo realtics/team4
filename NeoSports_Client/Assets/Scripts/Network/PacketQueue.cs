@@ -108,7 +108,9 @@ public class PacketQueue : Singleton<PacketQueue>
 			case PACKET_INDEX.REQ_RES_ROPE_PULL_GAME:
 			{
 				var packetdata = JsonConvert.DeserializeObject<PACKET_REQ_RES_ROPE_PULL_GAME>(recvData);
-				RopePullGame.RopePullRope.Instance.UpdateNetworkRopePostion(packetdata.ropePos);
+				float ropePos = packetdata.sign ? packetdata.ropePos : -packetdata.ropePos;
+				RopePullGame.RopePullRope.Instance.UpdateNetworkRopePostion(ropePos);
+
 				break;
 			}
 			case PACKET_INDEX.RES_RANK:
