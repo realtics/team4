@@ -88,7 +88,6 @@ public struct PACKET_REQ_RES_ROPE_PULL_GAME
 {
     public PACKET_HEADER header;
     public float ropePos;
-	public bool sign;
 };
 
 [StructLayout(LayoutKind.Sequential)]

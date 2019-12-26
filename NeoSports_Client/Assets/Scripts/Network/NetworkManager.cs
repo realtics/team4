@@ -119,7 +119,6 @@ public class NetworkManager : Singleton<NetworkManager>
 		{
 			header = headerPacket,
 			ropePos = pullPower,
-			sign = false,
 		};
 		SendToServerPacket(packet);
 	}
