@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
 using UnityEngine.SceneManagement; //single은 PlayManager에서,멀티는 네트워크에서
@@ -390,52 +391,59 @@ public class NetworkManager : Singleton<NetworkManager>
 
 	void HandleDataRecive(IAsyncResult ar)
 	{
-		try
-		{
-			AsyncObject ao = (AsyncObject)ar.AsyncState;
-			Int32 recvBytes = ao.workingSocket.EndReceive(ar);
 
-            if (recvBytes > Marshal.SizeOf<PACKET_HEADER>()) //bytestream 처리 
+		AsyncObject ao = (AsyncObject)ar.AsyncState;
+		Int32 recvBytes = ao.workingSocket.EndReceive(ar);
+
+		if (recvBytes > Marshal.SizeOf<PACKET_HEADER>()) //bytestream 처리 
+		{
+			//receive처리 
+			byte[] recvBuf = new byte[recvBytes];
+			Array.Copy(ao.buffer, recvBuf, recvBytes);
+
+			string recvData = Encoding.UTF8.GetString(recvBuf, 0, recvBytes);
+			List<string> packetList = ProcessByteStream(recvData);
+
+			foreach(var item in packetList)
 			{
-				//receive처리 
-				byte[] recvBuf = new byte[recvBytes];
-				Array.Copy(ao.buffer, recvBuf, recvBytes);
-
-				string recvData = Encoding.UTF8.GetString(recvBuf, 0, recvBytes);
-				Debug.Log("Original RecvData: " + recvData);
-
-				while (recvData != string.Empty)
-				{
-					var headerData = JsonConvert.DeserializeObject<HeaderPacket>(recvData);
-					string strData = recvData.Substring(0, headerData.header.packetSize);
-					Debug.Log("StrData: " + strData);
-
-					//lock (PacketQueue.Instance.queueLock)
-					{
-						PacketQueue.Instance.networkQueue.Enqueue(new NetworkQueueData(headerData.header.packetIndex, strData));
-					}
-					recvData = recvData.Substring(headerData.header.packetSize);
-					Debug.Log("Subed RecvData: " + recvData);
-				}
-
-				//recevie 처리를 큐잉으로 대체. 
-				//PacketQueue.Instance.networkQueue.Enqueue(new NetworkQueueData(headerData.header.packetIndex, recvData));
+				var headerData = JsonConvert.DeserializeObject<HeaderPacket>(item);
+				PacketQueue.Instance.networkQueue.Enqueue(new NetworkQueueData(headerData.header.packetIndex, item));
 			}
-			ao.workingSocket.BeginReceive(ao.buffer, 0, ao.buffer.Length
-				, SocketFlags.None, _receiveHandler, ao);
 
+			//recevie 처리를 큐잉으로 대체. 
+			//PacketQueue.Instance.networkQueue.Enqueue(new NetworkQueueData(headerData.header.packetIndex, recvData));
 		}
-		catch (Exception e)
-		{
-			Debug.Log(e.Message);
-			return;
-		}
+		ao.workingSocket.BeginReceive(ao.buffer, 0, ao.buffer.Length, SocketFlags.None, _receiveHandler, ao);
+
 	}
 
 	void ExitProgram()
 	{
 		Debug.Log("Call Exit");
 		Application.Quit();
+	}
+
+	List<string> ProcessByteStream(string recvStr)
+	{
+		Debug.Log("Original Str: " + recvStr);
+		List<string> packetList = new List<string>();
+
+		while(recvStr != string.Empty)
+		{
+			int packetLengthIndex = recvStr.IndexOf("packetSize") + 13;
+
+			Debug.Log("PacketLengthIndex: " + packetLengthIndex.ToString());
+			int.TryParse(recvStr.Substring(packetLengthIndex, 4), out int packetLength);
+			Debug.Log("PacketLength: " + packetLength.ToString());
+			string packetData = recvStr.Substring(0, packetLength);
+			Debug.Log("PacketData: " + packetData);
+
+			packetList.Add(packetData);
+			recvStr = recvStr.Substring(packetLength);
+			Debug.Log("Subbed Str: " + recvStr);
+		}
+
+		return packetList;
 	}
 
 }
