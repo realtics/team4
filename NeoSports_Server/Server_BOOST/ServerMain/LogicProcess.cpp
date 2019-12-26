@@ -374,11 +374,16 @@ void LogicProcess::ProcessPacket()
 	}
 }
 
-void LogicProcess::memcpyStr(std::string* str1, std::string* str2)
+void LogicProcess::memcpyStr(std::string* str1, const int str2)
 {
-	for (int i = str1->size() - 1; i >= 0; i--)
+	std::string temp = boost::lexical_cast<std::string>(str2);
+	int temps = str1->size();
+	int temps2 = temp.size();
+	for (temps2; temps2 >= 0; temps2--, temps--)
 	{
-		str1[i + 1] = str2[i];
+		str1[0][temps - 1] = temp[temps2 - 1];
+		if (temps2 - 1 <= 0)
+			break;
 	}
 }
 
@@ -411,15 +416,7 @@ std::string LogicProcess::_SerializationJson(PACKET_INDEX packetIndex, const cha
 		if (jsonLength == "0000")
 		{
 			int jsonLengthTemp = sendStr.length();
-			std::string temp = boost::lexical_cast<std::string>(jsonLengthTemp);
-			int temps = jsonLength.size();
-			int temps2 = temp.size();
-			for (temps2; temps2 >= 0; temps2--, temps--)
-			{
-				jsonLength[temps - 1] = temp[temps2 - 1];
-				if (temps2 - 1 <= 0)
-					break;
-			}
+			memcpyStr(&jsonLength, jsonLengthTemp);
 			sendStr = _SerializationJson(packetIndex, packet, jsonLength);
 		}
 
@@ -448,15 +445,7 @@ std::string LogicProcess::_SerializationJson(PACKET_INDEX packetIndex, const cha
 		if (jsonLength == "0000")
 		{
 			int jsonLengthTemp = sendStr.length();
-			std::string temp = boost::lexical_cast<std::string>(jsonLengthTemp);
-			int temps = jsonLength.size();
-			int temps2 = temp.size();
-			for (temps2; temps2 >= 0; temps2--, temps--)
-			{
-				jsonLength[temps - 1] = temp[temps2 - 1];
-				if (temps2 - 1 <= 0)
-					break;
-			}
+			memcpyStr(&jsonLength, jsonLengthTemp);
 			sendStr = _SerializationJson(packetIndex, packet, jsonLength);
 		}
 
@@ -485,15 +474,7 @@ std::string LogicProcess::_SerializationJson(PACKET_INDEX packetIndex, const cha
 		if (jsonLength == "0000")
 		{
 			int jsonLengthTemp = sendStr.length();
-			std::string temp = boost::lexical_cast<std::string>(jsonLengthTemp);
-			int temps = jsonLength.size();
-			int temps2 = temp.size();
-			for (temps2; temps2 >= 0; temps2--,temps--)
-			{
-				jsonLength[temps-1] = temp[temps2-1];
-				if (temps2-1 <= 0)
-					break;
-			}
+			memcpyStr(&jsonLength, jsonLengthTemp);
 			sendStr = _SerializationJson(packetIndex, packet, jsonLength);
 		}
 		return sendStr;
@@ -526,15 +507,7 @@ std::string LogicProcess::_SerializationJson(PACKET_INDEX packetIndex, const cha
 		if (jsonLength == "0000")
 		{
 			int jsonLengthTemp = sendStr.length();
-			std::string temp = boost::lexical_cast<std::string>(jsonLengthTemp);
-			int temps = jsonLength.size();
-			int temps2 = temp.size();
-			for (temps2; temps2 >= 0; temps2--, temps--)
-			{
-				jsonLength[temps - 1] = temp[temps2 - 1];
-				if (temps2 - 1 <= 0)
-					break;
-			}
+			memcpyStr(&jsonLength, jsonLengthTemp);
 			sendStr = _SerializationJson(packetIndex, packet, jsonLength);
 		}
 
@@ -566,15 +539,7 @@ std::string LogicProcess::_SerializationJson(PACKET_INDEX packetIndex, const cha
 		if (jsonLength == "0000")
 		{
 			int jsonLengthTemp = sendStr.length();
-			std::string temp = boost::lexical_cast<std::string>(jsonLengthTemp);
-			int temps = jsonLength.size();
-			int temps2 = temp.size();
-			for (temps2; temps2 >= 0; temps2--, temps--)
-			{
-				jsonLength[temps - 1] = temp[temps2 - 1];
-				if (temps2 - 1 <= 0)
-					break;
-			}
+			memcpyStr(&jsonLength, jsonLengthTemp);
 			sendStr = _SerializationJson(packetIndex, packet, jsonLength);
 		}
 
@@ -604,15 +569,7 @@ std::string LogicProcess::_SerializationJson(PACKET_INDEX packetIndex, const cha
 		if (jsonLength == "0000")
 		{
 			int jsonLengthTemp = sendStr.length();
-			std::string temp = boost::lexical_cast<std::string>(jsonLengthTemp);
-			int temps = jsonLength.size();
-			int temps2 = temp.size();
-			for (temps2; temps2 >= 0; temps2--, temps--)
-			{
-				jsonLength[temps - 1] = temp[temps2 - 1];
-				if (temps2 - 1 <= 0)
-					break;
-			}
+			memcpyStr(&jsonLength, jsonLengthTemp);
 			sendStr = _SerializationJson(packetIndex, packet, jsonLength);
 		}
 
@@ -645,15 +602,7 @@ std::string LogicProcess::_SerializationJson(PACKET_INDEX packetIndex, const cha
 		if (jsonLength == "0000")
 		{
 			int jsonLengthTemp = sendStr.length();
-			std::string temp = boost::lexical_cast<std::string>(jsonLengthTemp);
-			int temps = jsonLength.size();
-			int temps2 = temp.size();
-			for (temps2; temps2 >= 0; temps2--, temps--)
-			{
-				jsonLength[temps - 1] = temp[temps2 - 1];
-				if (temps2 - 1 <= 0)
-					break;
-			}
+			memcpyStr(&jsonLength, jsonLengthTemp);
 			sendStr = _SerializationJson(packetIndex, packet, jsonLength);
 		}
 		return sendStr;
@@ -683,15 +632,7 @@ std::string LogicProcess::_SerializationJson(PACKET_INDEX packetIndex, const cha
 		if (jsonLength == "0000")
 		{
 			int jsonLengthTemp = sendStr.length();
-			std::string temp = boost::lexical_cast<std::string>(jsonLengthTemp);
-			int temps = jsonLength.size();
-			int temps2 = temp.size();
-			for (temps2; temps2 >= 0; temps2--, temps--)
-			{
-				jsonLength[temps - 1] = temp[temps2 - 1];
-				if (temps2 - 1 <= 0)
-					break;
-			}
+			memcpyStr(&jsonLength, jsonLengthTemp);
 			sendStr = _SerializationJson(packetIndex, packet, jsonLength);
 		}
 		return sendStr;
@@ -726,15 +667,7 @@ std::string LogicProcess::_SerializationJson(PACKET_INDEX packetIndex, const cha
 		if (jsonLength == "0000")
 		{
 			int jsonLengthTemp = sendStr.length();
-			std::string temp = boost::lexical_cast<std::string>(jsonLengthTemp);
-			int temps = jsonLength.size();
-			int temps2 = temp.size();
-			for (temps2; temps2 >= 0; temps2--, temps--)
-			{
-				jsonLength[temps - 1] = temp[temps2 - 1];
-				if (temps2 - 1 <= 0)
-					break;
-			}
+			memcpyStr(&jsonLength, jsonLengthTemp);
 			sendStr = _SerializationJson(packetIndex, packet, jsonLength);
 		}
 		return sendStr;
@@ -763,15 +696,7 @@ std::string LogicProcess::_SerializationJson(PACKET_INDEX packetIndex, const cha
 		if (jsonLength == "0000")
 		{
 			int jsonLengthTemp = sendStr.length();
-			std::string temp = boost::lexical_cast<std::string>(jsonLengthTemp);
-			int temps = jsonLength.size();
-			int temps2 = temp.size();
-			for (temps2; temps2 >= 0; temps2--, temps--)
-			{
-				jsonLength[temps - 1] = temp[temps2 - 1];
-				if (temps2 - 1 <= 0)
-					break;
-			}
+			memcpyStr(&jsonLength, jsonLengthTemp);
 			sendStr = _SerializationJson(packetIndex, packet, jsonLength);
 		}
 		return sendStr;
@@ -808,15 +733,7 @@ std::string LogicProcess::_SerializationJson(PACKET_INDEX packetIndex, const cha
 		if (jsonLength == "0000")
 		{
 			int jsonLengthTemp = sendStr.length();
-			std::string temp = boost::lexical_cast<std::string>(jsonLengthTemp);
-			int temps = jsonLength.size();
-			int temps2 = temp.size();
-			for (temps2; temps2 >= 0; temps2--, temps--)
-			{
-				jsonLength[temps - 1] = temp[temps2 - 1];
-				if (temps2 - 1 <= 0)
-					break;
-			}
+			memcpyStr(&jsonLength, jsonLengthTemp);
 			sendStr = _SerializationJson(packetIndex, packet, jsonLength);
 		}
 		return sendStr;
