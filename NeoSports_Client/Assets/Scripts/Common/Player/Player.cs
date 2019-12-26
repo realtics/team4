@@ -259,7 +259,24 @@ public class Player : MonoBehaviour
 	public void DecideTargetPos(Vector3 clickPos)
 	{
 		targetPos = (Vector2)mainCam.ScreenToWorldPoint(clickPos);
+		if (!NetworkManager.Instance.IsSinglePlay())
+		{
+			NetworkManager.Instance.SendRequestMove(targetPos.x, targetPos.y, 0);
+		}
 
+		OwnCharacter.StartRun();
+		_state = ePlayerState.Move;
+
+		#region DecideDirection
+		if (OwnCharacter.transform.position.x < targetPos.x)
+			SetFlipCharacter(false);
+		else
+			SetFlipCharacter(true);
+		#endregion
+	}
+
+	public void NetworkDecideTargetPos(Vector2 targetPos)
+	{
 		OwnCharacter.StartRun();
 		_state = ePlayerState.Move;
 

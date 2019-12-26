@@ -202,7 +202,7 @@ namespace BasketBallGame
 		{
 			if (x == 0 && y == 0 & z == 0)
 				return;
-			_otherPlayer.DecideTargetPos(new Vector3(x, y,z));
+			_otherPlayer.NetworkDecideTargetPos(new Vector2(x, y));
 		}
 	}
 }

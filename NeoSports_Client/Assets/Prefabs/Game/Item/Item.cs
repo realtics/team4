@@ -13,14 +13,20 @@ public class Item : RecycleObject
 	}
 	void OnEnable()
 	{
-		GameObject gObject = gameObject;
-
-		object oObject = (object)gObject;
-		Item iObject = oObject as Item;
+		
 	}
 
 	void OnDisable()
 	{
 		
 	}
+
+	void OnTriggerEnter2D(Collider2D collision)
+	{
+		Debug.Log("아이템");
+		// 아이템 효과 적용.
+
+		// 사라지는거 오브젝트 풀.
+	}
+	
 }

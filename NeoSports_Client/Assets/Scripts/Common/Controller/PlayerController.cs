@@ -96,11 +96,7 @@ public class PlayerController : MonoBehaviour
 			else
 			{
 				_ownPlayer.DecideTargetPos(Input.mousePosition);
-				if (!NetworkManager.Instance.IsSinglePlay())
-				{
-					NetworkManager.Instance.SendRequestMove(Input.mousePosition.x, Input.mousePosition.y, Input.mousePosition.z);
-					Debug.Log("Player call" +"x"+ Input.mousePosition.x + "y" + Input.mousePosition.y + "z"+ Input.mousePosition.z);
-				}
+
 				return;
 			}
 		}
