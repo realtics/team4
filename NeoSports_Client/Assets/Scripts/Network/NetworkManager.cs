@@ -52,13 +52,15 @@ public class NetworkManager : Singleton<NetworkManager>
 		}
 		
 		instance = this;
+		DontDestroyOnLoad(this);
+
 		isOwnHost = false;
 		IsConnected = false;
 		if (isAzureServer)
 		{
 			IpAdress = AzureIPAdress;
 		}
-		DontDestroyOnLoad(this);
+		
 		
 	}
 
