@@ -200,8 +200,6 @@ namespace BasketBallGame
 
 		public void NetworkMoveOtherPlayer(float x, float y,float z)
 		{
-			if (x == 0 && y == 0 & z == 0)
-				return;
 			_otherPlayer.NetworkDecideTargetPos(new Vector2(x, y));
 		}
 	}
