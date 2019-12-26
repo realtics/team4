@@ -198,7 +198,7 @@ void LogicProcess::ProcessPacket()
 
 					std::string aa = _SerializationJson(PACKET_INDEX::RES_ENTER_FARM, (const char*)&sendPacket);
 					_serverPtr->PostSendSession(sessionID, false, aa.length(), (char*)aa.c_str());
-					Sleep(100); //패킷 전송이 뭉쳐서 가서 임시로 딜레이를 줌
+					//Sleep(100); //패킷 전송이 뭉쳐서 가서 임시로 딜레이를 줌
 				}
 				break;
 			}

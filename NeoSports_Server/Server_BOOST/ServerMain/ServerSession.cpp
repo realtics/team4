@@ -298,7 +298,6 @@ void Session::_DeSerializationJson(char* jsonStr)
 		packet.positionX = ptRecv.get<float>("positionX");
 		packet.positionY = ptRecv.get<float>("positionY");
 		packet.positionZ = ptRecv.get<float>("positionZ");
-		std::cout << "Recv : " << packet.positionX << "," << packet.positionY << std::endl;
 
 		memcpy(&_packetBuffer[_packetBufferMark], (char*)&packet, sizeof(packet));
 		break;
