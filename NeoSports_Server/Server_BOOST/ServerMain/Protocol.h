@@ -153,7 +153,7 @@ struct PACKET_REQ_RES_GOLD : public PACKET_HEADER
 
 	void Init()
 	{
-		packetIndex = PACKET_INDEX::REQ_GET_GOLD;
+		packetIndex = PACKET_INDEX::REQ_SET_GOLD;
 		packetSize = sizeof(PACKET_REQ_RES_GOLD);
 		gold = 0;
 	}

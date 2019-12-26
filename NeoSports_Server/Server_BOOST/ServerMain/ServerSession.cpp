@@ -189,13 +189,14 @@ void Session::_DeSerializationJson(char* jsonStr)
 	{
 		PACKET_REQ_RES_GOLD packet;
 		packet.Init();
+		packet.gold = ptRecv.get<int>("gold");
 
 		memcpy(&_packetBuffer[_packetBufferMark], (char*)&packet, sizeof(packet));
 		break;
 	}
 
 	case PACKET_INDEX::REQ_GET_GOLD:
-	{
+	{		
 		PACKET_REQ_RES_GOLD packet;
 		packet.Init();
 		packet.packetIndex = PACKET_INDEX::REQ_GET_GOLD;

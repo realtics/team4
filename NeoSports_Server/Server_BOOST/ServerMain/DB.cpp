@@ -570,15 +570,15 @@ void DB::SetGold(int clientID, int gold)
 		return;
 	}
 
+	int sumGold = gold + GetGold(clientID);
 	memset(bind, 0, sizeof(bind));
 	bind[0].buffer_type = MYSQL_TYPE_LONG;
-	bind[0].buffer = (char*)&clientID;
+	bind[0].buffer = (char*)&sumGold;
 	bind[0].is_null = 0;
 	bind[0].length = 0;
 
-	int sumGold = gold + GetGold(clientID);
 	bind[1].buffer_type = MYSQL_TYPE_LONG;
-	bind[1].buffer = (char*)&sumGold;
+	bind[1].buffer = (char*)&clientID;
 	bind[1].is_null = 0;
 	bind[1].length = 0;
 

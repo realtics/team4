@@ -85,13 +85,12 @@ void LogicProcess::ProcessPacket()
 
 			case PACKET_INDEX::REQ_GET_GOLD:
 			{
-				PACKET_REQ_RES_GOLD sendPacket;
-				sendPacket.Init();
+				PACKET_REQ_RES_GOLD* sendPacket = (PACKET_REQ_RES_GOLD*)data;
 				int clientID = DB::GetInstance()->GetClientID(sessionID);
 				int gold = DB::GetInstance()->GetGold(clientID);
-				sendPacket.gold = gold;
+				sendPacket->gold = gold;
 
-				std::string aa = _SerializationJson(PACKET_INDEX::RES_GET_GOLD, (const char*)&sendPacket);
+				std::string aa = _SerializationJson(PACKET_INDEX::RES_GET_GOLD, (const char*)sendPacket);
 				_serverPtr->PostSendSession(sessionID, false, aa.length(), (char*)aa.c_str());
 				break;
 			}
