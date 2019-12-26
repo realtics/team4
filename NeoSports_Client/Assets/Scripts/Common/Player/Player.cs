@@ -275,8 +275,9 @@ public class Player : MonoBehaviour
 		#endregion
 	}
 
-	public void NetworkDecideTargetPos(Vector2 targetPos)
+	public void NetworkDecideTargetPos(Vector2 NetworktargetPos)
 	{
+		targetPos = NetworktargetPos;
 		OwnCharacter.StartRun();
 		_state = ePlayerState.Move;
 
