@@ -440,7 +440,10 @@ public class NetworkManager : Singleton<NetworkManager>
 
 			packetList.Add(packetData);
 			recvStr = recvStr.Substring(packetLength);
-			Debug.Log("Subbed Str: " + recvStr);
+			if(recvStr.Length > 1)
+			{
+				Debug.LogWarning("Subbed Str: " + recvStr);
+			}
 		}
 
 		return packetList;
