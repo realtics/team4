@@ -47,7 +47,7 @@ void Server::Start()
 	std::cout << "Server Start..." << std::endl;
 
 	DB::GetInstance()->Init();
-	DB::GetInstance()->InitUser();
+	DB::GetInstance()->InitUserTable();
 	_threadHanlder->CreateEvents(false);
 
 	_PostAccept();

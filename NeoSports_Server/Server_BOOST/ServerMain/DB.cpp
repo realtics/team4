@@ -150,7 +150,7 @@ void DB::InsertGameInfo(int clientID, GAME_INDEX gameIndex, int winRecord)
 	std::cout << "DB : INSERT GameInfo" << std::endl;
 }
 
-void DB::InitUser()
+void DB::InitUserTable()
 {
 	std::string query = "UPDATE user Set sessionID = '-1' WHERE sessionID != '-1'";
 	if (mysql_query(&_conn, query.c_str()) != 0)
@@ -672,7 +672,7 @@ void DB::Rank(GAME_INDEX gameIndex, RANK rank[])
 	if (mysql_query(&_conn, rankStr.c_str()) != 0)
 	{
 		ErrorCheck();
-		std::cout << "DB : OrderByRank mysql_query error" << std::endl;
+		std::cout << "DB : Rank mysql_query error" << std::endl;
 		return;
 	}
 
@@ -693,39 +693,11 @@ void DB::Rank(GAME_INDEX gameIndex, RANK rank[])
 
 std::string DB::orderByRank(GAME_INDEX gameIndex)
 {
-	std::string query = "SELECT clientID, winRecord FROM gameInfo WHERE gameIndex = ?";
-	query += " ORDER BY winRecord DESC LIMIT ?";
-
-	if (mysql_stmt_prepare(stmt, query.c_str(), strlen(query.c_str())))
-	{
-		ErrorCheck();
-		std::cout << "DB : orderByRank error" << std::endl;
-		return NULL;
-	}
-	memset(bind, 0, sizeof(bind));
-	bind[0].buffer_type = MYSQL_TYPE_LONG;
-	bind[0].buffer = (char*)&gameIndex;
-	bind[0].is_null = 0;
-	bind[0].length = 0;
-
-	bind[1].buffer_type = MYSQL_TYPE_LONG;
-	bind[1].buffer = (char*)&MAX_RANK_COUNT;
-	bind[1].is_null = 0;
-	bind[1].length = 0;
-
-	if (mysql_stmt_bind_param(stmt, bind))
-	{
-		ErrorCheck();
-		std::cout << "DB : orderByRank error" << std::endl;
-		return NULL;
-	}
-
-	if (mysql_stmt_execute(stmt))
-	{
-		ErrorCheck();
-		std::cout << "DB : orderByRank error" << std::endl;
-		return NULL;
-	}
+	std::string query = "SELECT clientID, winRecord FROM gameInfo WHERE gameIndex = '";
+	query += boost::lexical_cast<std::string>(gameIndex);
+	query += "'";
+	query += " ORDER BY winRecord DESC LIMIT ";
+	query += boost::lexical_cast<std::string>(MAX_RANK_COUNT);
 
 	return query;
 }
