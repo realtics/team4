@@ -71,9 +71,10 @@ public class PacketQueue : Singleton<PacketQueue>
 				{
 					superCharIndex = InventoryManager.instance.CurrentCharacter.Type;
 					NetworkManager.Instance.isOwnHost = true;
-					//To DO: 현재는 임시시스템. 
-		
-					NetworkManager.Instance.SendRequsetRank(GAME_INDEX.ROPE_PULL);
+						//To DO: 현재는 임시시스템. 
+
+					NetworkManager.Instance.SendRequsetRank(packetdata.gameIndex);
+					//NetworkManager.Instance.SendRequsetRank(GAME_INDEX.ROPE_PULL);
 					SceneManager.LoadScene(SceneName.WaitGameSceneName);
 				}
 				else
@@ -138,7 +139,11 @@ public class PacketQueue : Singleton<PacketQueue>
 			case PACKET_INDEX.REQ_RES_MOVE:
 			{
 				var packetdata = JsonConvert.DeserializeObject<PACKET_REQ_RES_MOVE>(recvData);
-					BasketBallGame.BasketBallGameManager.Instance.NetworkMoveOtherPlayer(packetdata.positionX, packetdata.positionY, packetdata.positionZ);
+					float x = packetdata.positionX;
+					float y = packetdata.positionY;
+					float z = packetdata.positionZ;
+					Debug.Log("PACKET REQ xyz" +"x"+x + "y"+y+"z"+z );
+					BasketBallGame.BasketBallGameManager.Instance.NetworkMoveOtherPlayer(x,y,z);
 				break;
 			}
 			case PACKET_INDEX.RES_NULL_CLIENT_ID:
@@ -194,4 +199,5 @@ public class PacketQueue : Singleton<PacketQueue>
 				break;
 		}
 	}
+
 }

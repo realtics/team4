@@ -258,6 +258,7 @@ public class Player : MonoBehaviour
 
 	public void DecideTargetPos(Vector3 clickPos)
 	{
+		Debug.Log("DecideTarget"+"x" +clickPos.x+"y"+ clickPos.y+ "z"+clickPos.z);
 		targetPos = (Vector2)mainCam.ScreenToWorldPoint(clickPos);
 
 		OwnCharacter.StartRun();

@@ -6,7 +6,7 @@ using FarmGame;
 
 public enum ROOM_INDEX
 {
-    EMPTY_ROOM = 11,
+    EMPTY_ROOM = 150,
 
     MAKE_ROOM, //방장으로서 방에 입장
     ENTER_ROOM,
@@ -221,6 +221,7 @@ public struct PACKET_ROOM_INFO
 {
     public PACKET_HEADER header;
     public ROOM_INDEX roomInfo; //방을 만든건지 들어간건지의 정보
+	public GAME_INDEX gameIndex;
 };
 
 [StructLayout(LayoutKind.Sequential)]

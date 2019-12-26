@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+#pragma warning disable 649 //serializeField Warning
+
 [CreateAssetMenu]
 public class AudioStorage : ScriptableObject
 {
