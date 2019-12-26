@@ -433,50 +433,53 @@ void DB::SetFarmInfo(int clientID, std::string farmJson, FARM_INDEX farmIndex)
 				if (mysql_query(&_conn, query.c_str()) != 0)
 				{
 					ErrorCheck();
-					std::cout << "DB : InsertFarmInfo mysql_query error" << std::endl;
-					return;
-				}
-				std::cout << "DB : InsertFarmInfo" << std::endl;
-
-				/*if (mysql_stmt_prepare(stmt, query.c_str(), strlen(query.c_str())))
-				{
-					ErrorCheck();
-					std::cout << "DB : SetFarmInfo error" << std::endl;
-					return;
-				}
-				memset(bind, 0, sizeof(bind));
-				bind[0].buffer_type = MYSQL_TYPE_STRING;
-				bind[0].buffer = (char*)&farmJson;
-				bind[0].buffer_length = strlen(farmJson.c_str());
-				bind[0].is_null = 0;
-				bind[0].length = 0;
-
-				bind[1].buffer_type = MYSQL_TYPE_LONG;
-				bind[1].buffer = (char*)&clientID;
-				bind[1].is_null = 0;
-				bind[1].length = 0;
-
-				bind[2].buffer_type = MYSQL_TYPE_LONG;
-				bind[2].buffer = (char*)&farmIndex;
-				bind[2].is_null = 0;
-				bind[2].length = 0;
-
-				if (mysql_stmt_bind_param(stmt, bind))
-				{
-					ErrorCheck();
-					std::cout << "DB : SetFarmInfo error" << std::endl;
+					std::cout << "DB : SetFarmInfo mysql_query error" << std::endl;
 					return;
 				}
 
-				if (mysql_stmt_execute(stmt))
-				{
-					ErrorCheck();
-					std::cout << "DB : SetFarmInfo error" << std::endl;
-					return;
-				}*/
+				std::cout << "DB : SetFarmInfo" << std::endl;
 				return;
 			}
 		}
+		/*std::string query = "UPDATE farmInfo SET infoJson = ? WHERE clientID = ? AND farmIndex = ?";
+
+		if (mysql_stmt_prepare(stmt, query.c_str(), strlen(query.c_str())))
+		{
+			ErrorCheck();
+			std::cout << "DB : SetFarmInfo error" << std::endl;
+			return;
+		}
+		memset(bind, 0, sizeof(bind));
+		bind[0].buffer_type = MYSQL_TYPE_STRING;
+		bind[0].buffer = (char*)&farmJson;
+		bind[0].buffer_length = strlen(farmJson.c_str());
+		bind[0].is_null = 0;
+		bind[0].length = 0;
+
+		bind[1].buffer_type = MYSQL_TYPE_LONG;
+		bind[1].buffer = (char*)&clientID;
+		bind[1].is_null = 0;
+		bind[1].length = 0;
+
+		bind[2].buffer_type = MYSQL_TYPE_LONG;
+		bind[2].buffer = (char*)&farmIndex;
+		bind[2].is_null = 0;
+		bind[2].length = 0;
+
+		if (mysql_stmt_bind_param(stmt, bind))
+		{
+			ErrorCheck();
+			std::cout << "DB : SetFarmInfo error" << std::endl;
+			return;
+		}
+
+		if (mysql_stmt_execute(stmt))
+		{
+			ErrorCheck();
+			std::cout << "DB : SetFarmInfo error" << std::endl;
+			return;
+		}
+		return;*/
 	}
 	InsertFarmInfo(clientID, farmJson, farmIndex);
 }
@@ -495,7 +498,7 @@ void DB::InsertFarmInfo(int clientID, std::string farmJson, FARM_INDEX farmIndex
 	{
 		ErrorCheck();
 		std::cout << "DB : InsertFarmInfo mysql_query error" << std::endl;
-		return ;
+		return;
 	}
 	/*std::string query = "INSERT INTO farmInfo VALUES(?,?,?)";
 
@@ -540,23 +543,20 @@ void DB::InsertFarmInfo(int clientID, std::string farmJson, FARM_INDEX farmIndex
 
 int DB::GetGold(int clientID)
 {
-	if (mysql_query(&_conn, "SELECT * FROM user") != 0)
+	std::string getGoldTemp = "SELECT gold FROM user WHERE clientID= '";
+	getGoldTemp += boost::lexical_cast<std::string>(clientID);
+	getGoldTemp += "'";
+
+	if (mysql_query(&_conn, getGoldTemp.c_str()) != 0)
 	{
 		ErrorCheck();
-		std::cout << "DB : Update mysql_query error" << std::endl;
+		std::cout << "DB : GetGold mysql_query error" << std::endl;
 		return -1;
 	}
 	_pSqlRes = mysql_store_result(&_conn);
+	_sqlRow = mysql_fetch_row(_pSqlRes);
 
-	while ((_sqlRow = mysql_fetch_row(_pSqlRes)) != nullptr)
-	{
-		//_sqlRowÀÎµ¦½º 0 = DBÀÇ Ä®·³(clientID), 2 = DBÀÇ Ä®·³(gold)
-		if (_sqlRow[0] == boost::lexical_cast<std::string>(clientID))
-		{
-			return boost::lexical_cast<int>(_sqlRow[2]);
-		}
-	}
-	return 0;
+	return boost::lexical_cast<int>(_sqlRow[0]);
 }
 
 void DB::SetGold(int clientID, int gold)
@@ -576,8 +576,9 @@ void DB::SetGold(int clientID, int gold)
 	bind[0].is_null = 0;
 	bind[0].length = 0;
 
+	int sumGold = gold + GetGold(clientID);
 	bind[1].buffer_type = MYSQL_TYPE_LONG;
-	bind[1].buffer = (char*)&gold;
+	bind[1].buffer = (char*)&sumGold;
 	bind[1].is_null = 0;
 	bind[1].length = 0;
 

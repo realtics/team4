@@ -185,11 +185,20 @@ void Session::_DeSerializationJson(char* jsonStr)
 		break;
 	}
 
-	case PACKET_INDEX::REQ_RES_GOLD:
+	case PACKET_INDEX::REQ_SET_GOLD:
 	{
-		PACKET_REQ_NULL_DATA packet;
-		packet.header.packetIndex = headerIndex;
-		packet.header.packetSize = 0; //요청확인만 하면 되므로 사이즈 불필요
+		PACKET_REQ_RES_GOLD packet;
+		packet.Init();
+
+		memcpy(&_packetBuffer[_packetBufferMark], (char*)&packet, sizeof(packet));
+		break;
+	}
+
+	case PACKET_INDEX::REQ_GET_GOLD:
+	{
+		PACKET_REQ_RES_GOLD packet;
+		packet.Init();
+		packet.packetIndex = PACKET_INDEX::REQ_GET_GOLD;
 
 		memcpy(&_packetBuffer[_packetBufferMark], (char*)&packet, sizeof(packet));
 		break;
@@ -289,6 +298,7 @@ void Session::_DeSerializationJson(char* jsonStr)
 		packet.positionX = ptRecv.get<float>("positionX");
 		packet.positionY = ptRecv.get<float>("positionY");
 		packet.positionZ = ptRecv.get<float>("positionZ");
+		std::cout << "Recv : " << packet.positionX << "," << packet.positionY << std::endl;
 
 		memcpy(&_packetBuffer[_packetBufferMark], (char*)&packet, sizeof(packet));
 		break;

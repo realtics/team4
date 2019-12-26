@@ -83,17 +83,26 @@ void LogicProcess::ProcessPacket()
 				break;
 			}
 
-			case PACKET_INDEX::REQ_RES_GOLD:
+			case PACKET_INDEX::REQ_GET_GOLD:
 			{
 				PACKET_REQ_RES_GOLD sendPacket;
 				sendPacket.Init();
 				int clientID = DB::GetInstance()->GetClientID(sessionID);
 				int gold = DB::GetInstance()->GetGold(clientID);
-				DB::GetInstance()->SetGold(clientID, gold);
 				sendPacket.gold = gold;
 
-				std::string aa = _SerializationJson(PACKET_INDEX::REQ_RES_GOLD, (const char*)&sendPacket);
+				std::string aa = _SerializationJson(PACKET_INDEX::RES_GET_GOLD, (const char*)&sendPacket);
 				_serverPtr->PostSendSession(sessionID, false, aa.length(), (char*)aa.c_str());
+				break;
+			}
+
+			case PACKET_INDEX::REQ_SET_GOLD:
+			{
+				PACKET_REQ_RES_GOLD* sendPacket = (PACKET_REQ_RES_GOLD*)data;
+				int clientID = DB::GetInstance()->GetClientID(sessionID);
+
+				DB::GetInstance()->SetGold(clientID, sendPacket->gold);
+
 				break;
 			}
 
@@ -111,11 +120,8 @@ void LogicProcess::ProcessPacket()
 				if (room.gameMG != nullptr)
 				{
 					PACKET_REQ_RES_MOVE* packet = (PACKET_REQ_RES_MOVE*)data;
-					std::cout << packet->positionX << "," << packet->positionY << std::endl;
-					std::cout << "sss" << std::endl;
 
 					std::string aa = _SerializationJson(PACKET_INDEX::REQ_RES_MOVE, (const char*)packet);
-					std::cout << aa << std::endl;
 
 					int superSessionIdTemp = room.superSessionID;
 					int sessionIdTemp = room.sessionID;
@@ -266,10 +272,11 @@ void LogicProcess::ProcessPacket()
 				{
 					_serverPtr->SetGameMG(true, sessionID, packet->gameIndex);
 
-					PACKET_ROOM_INFO sendPacket;
+					PACKET_RES_ROOM_INFO sendPacket;
 					sendPacket.header.packetIndex = PACKET_INDEX::RES_ROOM_INFO;
-					sendPacket.header.packetSize = sizeof(PACKET_ROOM_INFO);
+					sendPacket.header.packetSize = sizeof(PACKET_RES_ROOM_INFO);
 					sendPacket.roomInfo = (ROOM_HOST)mrTemp; //받는 클라입장에서 자신이 방장인지 구별
+					sendPacket.gameIndex = packet->gameIndex;
 
 					std::string aa = _SerializationJson(PACKET_INDEX::RES_ROOM_INFO, (const char*)&sendPacket);
 					_serverPtr->PostSendSession(sessionID, false, aa.length(), (char*)aa.c_str());
@@ -424,7 +431,7 @@ std::string LogicProcess::_SerializationJson(PACKET_INDEX packetIndex, const cha
 		return sendStr;
 	}
 
-	case PACKET_INDEX::REQ_RES_GOLD:
+	case PACKET_INDEX::RES_GET_GOLD:
 	{
 		PACKET_REQ_RES_GOLD goldPacket;
 		memcpy(&goldPacket, packet, sizeof(PACKET_REQ_RES_GOLD));
@@ -496,9 +503,9 @@ std::string LogicProcess::_SerializationJson(PACKET_INDEX packetIndex, const cha
 
 		ptSendMove.add_child("header", ptSendHeader);
 
-		ptSendMove.put<float>("positonX", movePacket.positionX);
-		ptSendMove.put<float>("positonY", movePacket.positionY);
-		ptSendMove.put<float>("positonZ", movePacket.positionZ);
+		ptSendMove.put<float>("positionX", movePacket.positionX);
+		ptSendMove.put<float>("positionY", movePacket.positionY);
+		ptSendMove.put<float>("positionZ", movePacket.positionZ);
 
 		std::string recvTemp;
 		std::ostringstream os(recvTemp);
@@ -549,9 +556,9 @@ std::string LogicProcess::_SerializationJson(PACKET_INDEX packetIndex, const cha
 
 	case PACKET_INDEX::RES_ROOM_INFO:
 	{
-		PACKET_ROOM_INFO roomInfoPacket;
-		memset(&roomInfoPacket, 0, sizeof(PACKET_ROOM_INFO));
-		memcpy(&roomInfoPacket, packet, sizeof(PACKET_ROOM_INFO));
+		PACKET_RES_ROOM_INFO roomInfoPacket;
+		memset(&roomInfoPacket, 0, sizeof(PACKET_RES_ROOM_INFO));
+		memcpy(&roomInfoPacket, packet, sizeof(PACKET_RES_ROOM_INFO));
 
 		boost::property_tree::ptree ptSendRI;
 		boost::property_tree::ptree ptSendHeader;
@@ -561,6 +568,7 @@ std::string LogicProcess::_SerializationJson(PACKET_INDEX packetIndex, const cha
 		ptSendRI.add_child("header", ptSendHeader);
 
 		ptSendRI.put<int>("roomInfo", (ROOM_HOST)roomInfoPacket.roomInfo);
+		ptSendRI.put<int>("gameIndex", (GAME_INDEX)roomInfoPacket.gameIndex);
 
 		std::string recvTemp;
 		std::ostringstream os(recvTemp);

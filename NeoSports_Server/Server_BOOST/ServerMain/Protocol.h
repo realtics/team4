@@ -15,7 +15,7 @@ const int MAX_RANK_COUNT = 5;
 
 enum ROOM_HOST
 {
-	EMPTY_ROOM = 11,
+	EMPTY_ROOM = 150,
 
 	MAKE_ROOM, //방장으로서 방에 입장
 	ENTER_ROOM,
@@ -45,7 +45,8 @@ enum PACKET_INDEX
 	REQ_TIME,
 	REQ_ENTER_FARM,
 	REQ_SAVE_FARM,
-	REQ_RES_GOLD,
+	REQ_GET_GOLD,
+	REQ_SET_GOLD,
 	REQ_RES_MOVE,
 	REQ_CHECK_CLIENT_ID,
 
@@ -55,6 +56,7 @@ enum PACKET_INDEX
 	RES_NOW_TIME,
 	RES_CHECK_CLIENT_ID,
 	RES_ENTER_FARM,
+	RES_GET_GOLD,
 
 	//줄다리기용 패킷
 	REQ_RES_ROPE_PULL_GAME,
@@ -151,8 +153,9 @@ struct PACKET_REQ_RES_GOLD : public PACKET_HEADER
 
 	void Init()
 	{
-		packetIndex = PACKET_INDEX::REQ_RES_GOLD;
+		packetIndex = PACKET_INDEX::REQ_GET_GOLD;
 		packetSize = sizeof(PACKET_REQ_RES_GOLD);
+		gold = 0;
 	}
 };
 
@@ -254,10 +257,11 @@ struct PACKET_REQ_RES_ROPE_PULL_GAME
 };
 
 //멀티게임을 요청한 클라에게 보내는 패킷
-struct PACKET_ROOM_INFO
+struct PACKET_RES_ROOM_INFO
 {
 	PACKET_HEADER header;
 	ROOM_HOST roomInfo; //방을 만든건지 들어간건지의 정보
+	GAME_INDEX gameIndex;
 };
 
 //처음 클라가 들어왔을때 그 클라의 이름을 받음
