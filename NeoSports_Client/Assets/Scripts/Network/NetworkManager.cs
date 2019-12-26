@@ -425,9 +425,9 @@ public class NetworkManager : Singleton<NetworkManager>
 				, SocketFlags.None, _receiveHandler, ao);
 
 		}
-		catch (SocketException se)
+		catch (Exception e)
 		{
-			Debug.Log(se.Message);
+			Debug.Log(e.Message);
 			return;
 		}
 	}
