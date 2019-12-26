@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace RopePullGame
 {
@@ -18,6 +19,7 @@ namespace RopePullGame
 
 		// Const Variable
 		const float StartWaitGameTime = 4.0f;
+		const float EndDelayTime = 5.0f;
 		const string LeftPlayerObjectName = "LeftPlayer";
 		const string RightPlayerObjectName = "RightPlayer";
 
@@ -165,12 +167,14 @@ namespace RopePullGame
 				{
 					if (NetworkManager.Instance.isOwnHost)
 					{
-						NetworkManager.Instance.SendRequestExitRoom(GAME_INDEX.ROPE_PULL, true);
+						
 						CommonUIManager.Instance.CreateWinnerNotice(rootCanvas, InventoryManager.Instance.PlayerNickName,10);
+						Invoke(nameof(EndNetworkGamePopup), EndDelayTime);
 					}
 					else
 					{
 						CommonUIManager.Instance.CreateLooserNotice(rootCanvas, InventoryManager.Instance.PlayerNickName);
+						Invoke(nameof(EndNetworkGamePopup), EndDelayTime);
 					}
 				}
 				else
@@ -179,10 +183,12 @@ namespace RopePullGame
 					{
 						NetworkManager.Instance.SendRequestExitRoom(GAME_INDEX.ROPE_PULL, true);
 						CommonUIManager.Instance.CreateWinnerNotice(rootCanvas, InventoryManager.Instance.PlayerNickName,10);
+						Invoke(nameof(EndNetworkGamePopup), EndDelayTime);
 					}
 					else
 					{
 						CommonUIManager.Instance.CreateLooserNotice(rootCanvas, InventoryManager.Instance.PlayerNickName);
+						Invoke(nameof(EndNetworkGamePopup), EndDelayTime);
 					}
 				}
 			}
@@ -314,13 +320,25 @@ namespace RopePullGame
 			return false;
 		}
 
-		void PopUpNextLevel()
+		void EndNetworkGamePopup()
 		{
 			PopupManager.PopupData data;
-			data.text = "다음 단계로!!";
+			data.text = "게임 종료 메인메뉴로 돌아갑니다.";
 			data.okFlag = true;
-			data.callBack = MoveNextLevel;
+			data.callBack = EndCompletedNetworkGame;
 			Singleton<PopupManager>.Instance.ShowPopup(data);
+
+			NetworkManager.Instance.SendRequestExitRoom(GAME_INDEX.ROPE_PULL, true);
+		}
+
+		void EndSingleGamePopUp()
+		{
+			
+		}
+
+		void EndCompletedNetworkGame()
+		{
+			SceneManager.LoadScene(SceneName.MenuSceneName);
 		}
 
 		void MoveNextLevel()
