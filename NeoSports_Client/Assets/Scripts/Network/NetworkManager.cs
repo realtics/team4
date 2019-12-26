@@ -292,6 +292,13 @@ public class NetworkManager : Singleton<NetworkManager>
 					headerPacket = new PACKET_HEADER(packetIndex, packetSize);
 					return headerPacket;
 				}
+			case PACKET_INDEX.REQ_RES_MOVE:
+				{ 
+					int packetSize = Marshal.SizeOf<PACKET_REQ_RES_MOVE>();
+					PACKET_HEADER headerPacket;
+					headerPacket = new PACKET_HEADER(packetIndex, packetSize);
+					return headerPacket;
+				}
 			case PACKET_INDEX.REQ_RES_GOLD:
 				{
 					int packetSize = Marshal.SizeOf<PACKET_REQ_RES_GOLD>();

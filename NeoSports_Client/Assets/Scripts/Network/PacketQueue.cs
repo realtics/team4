@@ -139,11 +139,7 @@ public class PacketQueue : Singleton<PacketQueue>
 			case PACKET_INDEX.REQ_RES_MOVE:
 			{
 				var packetdata = JsonConvert.DeserializeObject<PACKET_REQ_RES_MOVE>(recvData);
-					float x = packetdata.positionX;
-					float y = packetdata.positionY;
-					float z = packetdata.positionZ;
-					Debug.Log("PACKET REQ xyz" +"x"+x + "y"+y+"z"+z );
-					BasketBallGame.BasketBallGameManager.Instance.NetworkMoveOtherPlayer(x,y,z);
+					BasketBallGame.BasketBallGameManager.Instance.NetworkMoveOtherPlayer(packetdata.positionX, packetdata.positionY, packetdata.positionZ);
 				break;
 			}
 			case PACKET_INDEX.RES_NULL_CLIENT_ID:

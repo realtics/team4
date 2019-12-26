@@ -200,11 +200,9 @@ namespace BasketBallGame
 
 		public void NetworkMoveOtherPlayer(float x, float y,float z)
 		{
-			Debug.Log("other Player call1" + x + "\n" + y + "\n" + z);
 			if (x == 0 && y == 0 & z == 0)
 				return;
 			_otherPlayer.DecideTargetPos(new Vector3(x, y,z));
-			Debug.Log("other Player call2" + x +"\n" + y +"\n"+ z);
 		}
 	}
 }
