@@ -122,12 +122,12 @@ void Server::SetGameMG(bool isSuperSession, int  sessionID, GAME_INDEX gameIndex
 			_roomMG.SetGameMG(sessionID, gameMG);
 			break;
 		}
-		else if (!isSuperSession && (*iter)->GetCurGame() == gameIndex)
+		/*else if (!isSuperSession && (*iter)->GetCurGame() == gameIndex)
 		{
 			GameMG* gameMG = (*iter);
 			_roomMG.SetGameMG(sessionID, gameMG);
 			break;
-		}
+		}*/
 	}
 }
 
@@ -158,11 +158,11 @@ void Server::ProcessInitRoomPacket(const int sessionID, const char* data)
 	int superSessionID = _roomMG.GetSuperSessonID(roomNum);
 	_roomMG.SetGameMG(superSessionID, nullptr);
 
-	if (packet->gameIndex != GAME_INDEX::EMPTY_GAME)
+	/*if (packet->gameIndex != GAME_INDEX::EMPTY_GAME)
 	{
 		int challengerSessionID = _roomMG.GetSessonID(roomNum);
 		_roomMG.SetGameMG(challengerSessionID, nullptr);
-	}
+	}*/
 	InitRoom(roomNum);
 }
 

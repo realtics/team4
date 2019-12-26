@@ -35,16 +35,17 @@ void LogicProcess::ProcessPacket()
 {
 	while (true) //TODO : bool변수 만들기
 	{
-		//_threadHandler->pushPakcetQueueLock.Enter();
+		_threadHandler->pushPakcetQueueLock.Enter();
 		if (_threadHandler->IsEmptyPacketQueue())
 		{
-			Sleep(1);
-			//_threadHandler->pushPakcetQueueLock.Leave();
+			Sleep(0.1);
+			_threadHandler->pushPakcetQueueLock.Leave();
 		}
 		else if (!_threadHandler->IsEmptyPacketQueue())
 		{
 			PacketData packetData = _threadHandler->GetPakcetDataQueueFront();
-			//_threadHandler->pushPakcetQueueLock.Leave();
+			_threadHandler->pushPakcetQueueLock.Leave();
+			_threadHandler->PopPacketQueue();
 
 			const int sessionID = packetData.sessionID;
 			const char* data = packetData.data;
@@ -240,6 +241,7 @@ void LogicProcess::ProcessPacket()
 					ROOM room;
 					room.Init();
 					room = *(_serverPtr->GetRoomInfo(roomNum));
+					//std::cout << "방장,노방장 : " << room.superSessionID<<"," << room.sessionID << std::endl;
 
 					int superSessionIdTemp = room.superSessionID;
 					int sessionIdTemp = room.sessionID;
@@ -369,7 +371,6 @@ void LogicProcess::ProcessPacket()
 			}
 			break;*/
 			}
-			_threadHandler->PopPacketQueue();
 		}
 	}
 }
