@@ -173,7 +173,7 @@ public class NetworkManager : Singleton<NetworkManager>
 
 	public void SendRequestEarnGold(int goldAmount)
 	{
-		PACKET_HEADER headerPacket = MakeHeaderPacket(PACKET_INDEX.REQ_RES_GOLD);
+		PACKET_HEADER headerPacket = MakeHeaderPacket(PACKET_INDEX.REQ_SET_GOLD);
 		PACKET_REQ_RES_GOLD packet = new PACKET_REQ_RES_GOLD
 		{
 			header = headerPacket,
@@ -299,7 +299,7 @@ public class NetworkManager : Singleton<NetworkManager>
 					headerPacket = new PACKET_HEADER(packetIndex, packetSize);
 					return headerPacket;
 				}
-			case PACKET_INDEX.REQ_RES_GOLD:
+			case PACKET_INDEX.REQ_SET_GOLD:
 				{
 					int packetSize = Marshal.SizeOf<PACKET_REQ_RES_GOLD>();
 					PACKET_HEADER headerPacket;
