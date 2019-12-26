@@ -439,8 +439,8 @@ public class NetworkManager : Singleton<NetworkManager>
 			Debug.Log("PacketData: " + packetData);
 
 			packetList.Add(packetData);
-			recvStr = recvStr.Substring(packetLength + 1);
-			if (recvStr.Length > 0)
+			recvStr = recvStr.Substring(packetLength);
+			if (recvStr != string.Empty)
 			{
 				Debug.LogWarning("Subbed Str: " + recvStr);
 			}
