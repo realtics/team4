@@ -52,7 +52,7 @@ int RoomMG::SearchRoom(GAME_INDEX gameIndex)
 	return FAIL_ROOM_SERCH;
 }
 
-int RoomMG::MakeRoom(GAME_INDEX gameIndex, int sessionID, int charIndex)
+int RoomMG::MakeRoom(GAME_INDEX gameIndex, int sessionID, NEO_CHAR_INFO charInfo)
 {
 	int roomNum = SearchRoom(gameIndex);
 	if ((roomNum != FAIL_ROOM_SERCH))
@@ -60,7 +60,7 @@ int RoomMG::MakeRoom(GAME_INDEX gameIndex, int sessionID, int charIndex)
 		if (_roomVec[roomNum]->superSessionID == ROOM_HOST::EMPTY_ROOM)
 		{
 			_roomVec[roomNum]->curGame = gameIndex;
-			SetRoomChar(roomNum, charIndex);
+			SetRoomChar(roomNum, charInfo);
 			_roomVec[roomNum]->superSessionID = sessionID;
 			std::cout << "Room : " << sessionID << " Client "
 				<< roomNum << " RoomNum " << gameIndex << " Make Game. " << std::endl;
@@ -69,7 +69,7 @@ int RoomMG::MakeRoom(GAME_INDEX gameIndex, int sessionID, int charIndex)
 
 		else if (_roomVec[roomNum]->superSessionID != ROOM_HOST::EMPTY_ROOM)
 		{
-			SetRoomChar(roomNum, charIndex);
+			SetRoomChar(roomNum, charInfo);
 			_roomVec[roomNum]->sessionID = sessionID;
 			std::cout << sessionID << " Client "
 				<< roomNum << " Room " << gameIndex << " Enter Game. " << std::endl;
@@ -82,13 +82,13 @@ int RoomMG::MakeRoom(GAME_INDEX gameIndex, int sessionID, int charIndex)
 	return FAIL_ROOM_SERCH;
 }
 
-void RoomMG::SetRoomChar(int roomIndex, int charIndex)
+void RoomMG::SetRoomChar(int roomIndex, NEO_CHAR_INFO charInfo)
 {
 	for (int i = 0; i < MAX_CHAR_IN_ROOM; i++)
 	{
 		if (_roomVec[roomIndex]->charInfo[i].charIndex == CHAR_INDEX::EMPTY_CHAR)
 		{
-			_roomVec[roomIndex]->charInfo[i].charIndex = charIndex;
+			_roomVec[roomIndex]->charInfo[i] = charInfo;
 			return;
 		}
 	}

@@ -234,7 +234,7 @@ void LogicProcess::ProcessPacket()
 			{
 				PACKET_REQ_MULTI_ROOM* packet = (PACKET_REQ_MULTI_ROOM*)data;
 
-				int mrTemp = _serverPtr->MakeRoom(packet->gameIndex, sessionID, packet->charInfo.charIndex);
+				int mrTemp = _serverPtr->MakeRoom(packet->gameIndex, sessionID, packet->charInfo);
 
 				if (mrTemp == ROOM_HOST::ENTER_ROOM) //도전자 입장이면 스타트패킷생성후 방장과 도전자에게 전송
 				{
@@ -244,7 +244,6 @@ void LogicProcess::ProcessPacket()
 					ROOM room;
 					room.Init();
 					room = *(_serverPtr->GetRoomInfo(roomNum));
-					//std::cout << "방장,노방장 : " << room.superSessionID<<"," << room.sessionID << std::endl;
 
 					int superSessionIdTemp = room.superSessionID;
 					int sessionIdTemp = room.sessionID;
@@ -659,13 +658,13 @@ std::string LogicProcess::_SerializationJson(PACKET_INDEX packetIndex, const cha
 
 		boost::property_tree::ptree ptSendSuperCharInfo;
 		ptSendSuperCharInfo.put<int>("charindex", startGamePacket.superCharInfo.charIndex);
-		ptSendSuperCharInfo.put<int>("item", startGamePacket.superCharInfo.Item);
+		ptSendSuperCharInfo.put<int>("item", startGamePacket.superCharInfo.item);
 		ptSendSGP.add_child("superCharInfo", ptSendSuperCharInfo);
 
 		boost::property_tree::ptree ptSendCharInfo;
 		ptSendCharInfo.put<int>("charindex", startGamePacket.charInfo.charIndex);
-		ptSendCharInfo.put<int>("item", startGamePacket.charInfo.Item);
-		ptSendSGP.add_child("superCharInfo", ptSendCharInfo);
+		ptSendCharInfo.put<int>("item", startGamePacket.charInfo.item);
+		ptSendSGP.add_child("charInfo", ptSendCharInfo);
 
 		ptSendSGP.put<char*>("superName", startGamePacket.superName);
 		ptSendSGP.put<char*>("name", startGamePacket.name);

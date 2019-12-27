@@ -85,7 +85,7 @@ enum FARM_INDEX
 struct NEO_CHAR_INFO
 {
 	int charIndex = CHAR_INDEX::EMPTY_CHAR;
-	int Item = -1;
+	int item = -1;
 };
 
 struct RANK
