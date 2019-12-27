@@ -99,6 +99,8 @@ public class PacketQueue : Singleton<PacketQueue>
 				superName = packetdata.superName.ToString();
 				guestName = packetdata.name.ToString();
 				ChangeNetworkScene(packetdata.gameIndex);
+
+				Debug.Log("도착 패킷" +packetdata);
 				break;
 			}
 			case PACKET_INDEX.REQ_RES_ROPE_PULL_GAME:
