@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 namespace BasketBallGame
 {
@@ -28,6 +29,9 @@ namespace BasketBallGame
 		public BasketGoalCounter singleGoalCounter;
 		public BasketStaticBasket NetworkLeftBasket;
 		public BasketStaticBasket NetworkRightBasket;
+
+		public Text leftPlayerText;
+		public Text rightPlayerText;
 
 		[SerializeField]
 		public Vector3 leftPlayerInitPos;
@@ -111,11 +115,13 @@ namespace BasketBallGame
 			}
 			_player.Initialize();
 			_player.SetPlayerDirection(Player.eLookDirection.Left);
+			leftPlayerText.text = InventoryManager.Instance.PlayerNickName;
 
 			var AIPlayerInst = Instantiate(AIPlayerPrefab, null);
 			_AIPlayer = AIPlayerInst.GetComponent<Player>();
 			_AIPlayer.Initialize();
 			_AIPlayer.SetPlayerDirection(Player.eLookDirection.Right);
+			rightPlayerText.text = "AI";
 
 		}
 		void SelectInstantCharacter(CharacterInfo info)
@@ -159,12 +165,16 @@ namespace BasketBallGame
 				_player.SetPlayerDirection(Player.eLookDirection.Left);
 				_player.transform.localPosition = leftPlayerInitPos;
 
+				leftPlayerText.text = PacketQueue.Instance.superName;
+
 				var otherPlayerInst = Instantiate(playerPrefab, null);
 				_otherPlayer = otherPlayerInst.GetComponent<Player>();
 				SelectInstantCharacter(CharIndex, _otherPlayer);
 				_otherPlayer.Initialize(false);
 				_otherPlayer.SetPlayerDirection(Player.eLookDirection.Right);
 				_otherPlayer.transform.localPosition = rightPlayerInitPos;
+
+				rightPlayerText.text = PacketQueue.Instance.guestName;
 			}
 			else
 			{
@@ -174,6 +184,7 @@ namespace BasketBallGame
 				_player.Initialize();
 				_player.SetPlayerDirection(Player.eLookDirection.Right);
 				_player.transform.localPosition = rightPlayerInitPos;
+				rightPlayerText.text = PacketQueue.Instance.guestName;
 
 				var otherPlayerInst = Instantiate(playerPrefab, null);
 				_otherPlayer = otherPlayerInst.GetComponent<Player>();
@@ -181,6 +192,7 @@ namespace BasketBallGame
 				_otherPlayer.Initialize(false);
 				_otherPlayer.SetPlayerDirection(Player.eLookDirection.Left);
 				_otherPlayer.transform.localPosition = leftPlayerInitPos;
+				leftPlayerText.text = PacketQueue.Instance.superName;
 			}
 		}
 
