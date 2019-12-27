@@ -92,7 +92,7 @@ namespace BasketBallGame
 		{
 			GameState = EGameState.GameOver;
 			DecideWinner();
-			Invoke(nameof(EndNetworkGamePopup), EndDelayTime);
+			
 			//CommonUIManager.Instance.CreateWinnerNotice(rootCanvas, InventoryManager.Instance.PlayerNickName, 10);
 			CommonUIManager.Instance.DestroyElapseGameTimer();
 		}
@@ -239,6 +239,8 @@ namespace BasketBallGame
 						CommonUIManager.Instance.CreateWinnerNotice(rootCanvas, InventoryManager.Instance.PlayerNickName, DefaultEarnGold);
 					else
 						CommonUIManager.Instance.CreateLooserNotice(rootCanvas, InventoryManager.Instance.PlayerNickName);
+
+					Invoke(nameof(EndNetworkGamePopup), EndDelayTime);
 				}
 				else if (rightCount > leftCount)
 				{
@@ -246,10 +248,14 @@ namespace BasketBallGame
 						CommonUIManager.Instance.CreateLooserNotice(rootCanvas, InventoryManager.Instance.PlayerNickName);
 					else
 						CommonUIManager.Instance.CreateWinnerNotice(rootCanvas, InventoryManager.Instance.PlayerNickName, DefaultEarnGold);
+
+					Invoke(nameof(EndNetworkGamePopup), EndDelayTime);
 				}
 				else if (rightCount == leftCount)
 				{
 					CommonUIManager.Instance.CreateWinnerNotice(rootCanvas, InventoryManager.Instance.PlayerNickName, DefaultEarnGold);
+
+					Invoke(nameof(EndNetworkGamePopup), EndDelayTime);
 				}
 			}				
 		}

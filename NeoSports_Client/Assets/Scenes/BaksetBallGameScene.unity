@@ -150,15 +150,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   endGameTime: 60
-  ppiYakCharacter: {fileID: 2673625610814883514, guid: fc6c8e0c201024649a39a173fdf77f6c,
-    type: 3}
-  turkeyJellyCharacter: {fileID: 203829877700944717, guid: 690c6258a777cc346acfc313445baf2c,
-    type: 3}
   playerPrefab: {fileID: 8020142122621805146, guid: 2f6797c75b7704646aeaecae172f8117,
     type: 3}
   AIPlayerPrefab: {fileID: 7970367100557541916, guid: e2d041e3ed5c31449ad78bbf469314c6,
     type: 3}
   rootCanvas: {fileID: 60284383}
+  singleGoalCounter: {fileID: 629633788}
+  NetworkLeftBasket: {fileID: 0}
+  NetworkRightBasket: {fileID: 0}
   leftPlayerInitPos: {x: 0, y: 0, z: 0}
   rightPlayerInitPos: {x: 0, y: 0, z: 0}
 --- !u!4 &41083355
@@ -7109,7 +7108,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1962912459}
-  - component: {fileID: 1962912460}
   m_Layer: 0
   m_Name: Group_GameObject
   m_TagString: Untagged
@@ -7131,20 +7129,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1962912460
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1962912458}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 33df687279fcb3c4fafc478250221ca1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  LeftPlayer: {fileID: 0}
-  RightPlayer: {fileID: 0}
 --- !u!1 &1974100750
 GameObject:
   m_ObjectHideFlags: 0
