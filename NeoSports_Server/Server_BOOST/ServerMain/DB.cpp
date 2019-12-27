@@ -5,6 +5,10 @@
 
 using namespace std;
 
+const static char* defaultFarmInfo_0 = "vCwAAB+LCAAAAAAAAAutmstOG0EQRf+l17Og+t2zz4I/IIpYTLCJLDnGsgcEQvx7sowAybfI2Xh5VTM+fafGxz9ew/Fhd1jD/Bquz99+H9eXMK+nx+0UbsJ8NYXvfz/fprC+HLdhDj+XzX45bMIUnpbTbll3D4frw2b7HGZ7mz6Lul/253+zDMyKStaVlpXArAxeYwGzKpjVwKwO3vuBZJnOvZglcS9mSdxfvPemcy9mMdwbyL2B3BvIvYHcG8h9BPs+gtxHsO8j2PcR5D7q3ItzSdyLWQz3EeQ+6txfnCuBfZ/APSeB3Cew75POvTgX0/cJ5D6B3CedezGL6fsM9n0G+z6D3Gew7zPY9xns+wxyn3XuxSyG+wxyX8C+LyD3BeS+gNwXsO8LyH0B9/sCcl/APaeAe04Fua8g9xV8r63gnlNB7ut77n+dlvP561MxbV/BLaeCbV/Btm8g9Q3c7htIfQPbvr2n/u5xv+6elnX79TSm7xtIfgPJb2DfN5D8Du73Hez7DpLfwb7vYN938L22g3tOB7nvYON3kPsBNv4AuR8g9wPkfoDcD5D7AXI/wP1+gNwPcL83Utiaw9hethQOZatOxmw75pC2ahiz7ZhD26phDP/mELfqtwmdAFTdou4Wlbeovf2gb/9r4TfU4KIK1+Fw1cuEJC5pcc2hcdUw6AyQItccJvcyGqTKNdLlmkPmqpNB/2Jw6Fw1DHoKkELXHEZXDYNOAOl0zSF11TDoGeDQumoYdAIcYlf9NqFngEPtqmHMr55Gyl1z2F11MuhNwOF31cmgNwHS8BqpeM3leG//AIvH+w28LAAA";
+const static char* defaultFarmInfo_1 = "8QwAAB+LCAAAAAAAAAut1s0KgkAUhuF7OetZNP7rvkV3UEQLqREENZkmQsR7T5hNi6gR3o3g5uU5m0/Ps4z3dnBSzXJ47PvRTVI5+zRKjlLtlJzW56Kkr52xbd1JJa/WGlHiptGsb9e7HYyVRX0LNXX3+CyVQEn/N91MUz87F5j6iQpNRZwq4lQxp4o5VcKpEk6VcqqUU2WcKuNUOafKOVXBqQpOVXKqklPpgGnf2GJc5LyD+67Bgdfgwmtw4jW48Tpg5EM/+AEjv+kvRIMHkq2IaPkTY5CFtDwr4VIpeCHS8qwMZCEtz8pBFtLyrAJkhbUub81yI5/xDAAA";
+const static char* defaultFarmInfo_4 = "WgEAAB+LCAAAAAAAAAuLrlYqyM/MK1GyqlbyLHbNLSipVLJKS8wpTtVRilCyMtNRigSStTpKJZUFqUpWhrU6xGgwgmswJaTB0BiswxSuw4yQDhOwBgu4BnNCGizBGozhGkwIugmswZx4G6CeMEeyIhYAOiazV1oBAAA=";
+
 DB* DB::_instance = nullptr;
 
 DB::~DB()
@@ -103,6 +107,7 @@ int DB::InsertUser(int* clientID, int data)
 		std::cout << "DB : InsertUser error" << std::endl;
 		return 0;
 	}
+	InsertDefaultFarmInfo(*clientID);
 	return *clientID;
 }
 
@@ -482,6 +487,14 @@ void DB::SetFarmInfo(int clientID, std::string farmJson, FARM_INDEX farmIndex)
 	}
 	InsertFarmInfo(clientID, farmJson, farmIndex);
 }
+
+void DB::InsertDefaultFarmInfo(int clientID)
+{
+	InsertFarmInfo(clientID, defaultFarmInfo_0, FARM_INDEX::DECORATION);
+	InsertFarmInfo(clientID, defaultFarmInfo_1, FARM_INDEX::GARBAGE);
+	InsertFarmInfo(clientID, defaultFarmInfo_4, FARM_INDEX::ROAD);
+}
+
 
 void DB::InsertFarmInfo(int clientID, std::string farmJson, FARM_INDEX farmIndex)
 {

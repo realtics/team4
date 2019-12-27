@@ -39,6 +39,7 @@ public:
 	void GetFarmInfo(int clientID,std::string json[],int farmIndex[]);
 	void SetFarmInfo(int clientID, std::string farmJson, FARM_INDEX farmIndex);
 	void InsertFarmInfo(int clientID, std::string farmJson, FARM_INDEX farmIndex);
+	void InsertDefaultFarmInfo(int clientID);
 
 	int GetClientID(int sessionID);
 	bool CheckClientID(int clientID);
