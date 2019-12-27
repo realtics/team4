@@ -6,10 +6,18 @@ using FarmGame;
 public class Item : RecycleObject
 {
 	Collider2D _ownCollider2d;
+	SpriteRenderer _spriteRenderer;
+	enum eItemCartegory
+	{
+		Buff,
+		DeBuff,
+		Gold,
+	}
 
 	void Start()
 	{
-		_ownCollider2d = GetComponent<Collider2D>();	
+		_ownCollider2d = GetComponent<Collider2D>();
+		_spriteRenderer = GetComponent<SpriteRenderer>();
 	}
 	void OnEnable()
 	{
@@ -22,11 +30,13 @@ public class Item : RecycleObject
 	}
 
 	void OnTriggerEnter2D(Collider2D collision)
-	{
-		Debug.Log("아이템");
-		// 아이템 효과 적용.
-
-		// 사라지는거 오브젝트 풀.
+	{ 
+		var player = collision.GetComponent<Player>();
+		if (player != null)
+		{
+			player.getItem();
+			gameObject.SetActive(false); //대신 오브젝트 풀 쓸수 있으면 오브젝트 풀 사용 할 것.
+		}	
 	}
 	
 }

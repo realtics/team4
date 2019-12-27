@@ -90,15 +90,6 @@ public class Player : MonoBehaviour
 			_isHost = NetworkManager.Instance.isOwnHost;
 	}
 
-	//void Start()
-	//{
-	//	CachingValues();
-	//	InitPlayerDirection();
-	//	InitPlayer(OwnCharacter, _playerController);
-	//	if (NetworkManager.Instance != null)
-	//		_isHost = NetworkManager.Instance.isOwnHost;
-	//}
-
 	void Update()
 	{
 		// ePlayerState의 Stop을 사용하면 안됨, Farm Scene에서 의도하지 않은 일이 벌어질 수 있음
@@ -195,6 +186,10 @@ public class Player : MonoBehaviour
 		return target;
 	}
 
+	public void getItem()
+	{
+		Debug.Log("acheive item");
+	}
 
 	public void ShootBall()
 	{
