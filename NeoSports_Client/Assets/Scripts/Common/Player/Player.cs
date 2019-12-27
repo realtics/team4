@@ -19,7 +19,7 @@ public class Player : MonoBehaviour
 		Right = 1,
 	};
 
-	enum ePlayerState
+	public enum ePlayerState
 	{
 		Move,
 		Stop,
@@ -48,6 +48,8 @@ public class Player : MonoBehaviour
 	public GameObject equipmentPrefab;
 	public BasketBallGame.BasketBall baksetballPrefab;
 
+	public ePlayerState MoveState { get; private set; }
+
 	GameObject _instChar;
 	GameObject _instController;
 	GameObject _instArrow;
@@ -61,7 +63,6 @@ public class Player : MonoBehaviour
 	bool _isControlPlayer;
 	SpirteOutlineshader _outlineshader;
 
-	ePlayerState _state = ePlayerState.Stop;
 	eFarmState _farmState;
 	eLookDirection _playerLookDirection;
 	//To Do: 게임매니저로 옮겨서 플레이어로 이어주도록 해야함. 
@@ -81,6 +82,7 @@ public class Player : MonoBehaviour
 	public void Initialize(bool isControlPlayer = true)
 	{
 		_isControlPlayer = isControlPlayer;
+		MoveState = ePlayerState.Stop;
 		CachingValues();
 		InitPlayerDirection();
 		InitPlayer(OwnCharacter, _playerController);
@@ -101,14 +103,14 @@ public class Player : MonoBehaviour
 	{
 		// ePlayerState의 Stop을 사용하면 안됨, Farm Scene에서 의도하지 않은 일이 벌어질 수 있음
 
-		if (_state == ePlayerState.Move)
+		if (MoveState == ePlayerState.Move)
 		{
 			if (OwnCharacter != null)
 			{
 				if ((Vector2)transform.position == targetPos)
 				{
 					OwnCharacter.EndRun();
-					_state = ePlayerState.Stop;
+					MoveState = ePlayerState.Stop;
 					_outlineshader.StopWalkEffect();
 					return;
 				}
@@ -151,6 +153,9 @@ public class Player : MonoBehaviour
 
 	public void CalculateShoot()
 	{
+		if (MoveState == ePlayerState.Move)
+			return;
+
 		Vector2 target = mainCam.ScreenToWorldPoint(Input.mousePosition);
 		float angle = Mathf.Atan2(transform.position.y - target.y, transform.position.x - target.x);
 
@@ -193,6 +198,9 @@ public class Player : MonoBehaviour
 
 	public void ShootBall()
 	{
+		if (MoveState == ePlayerState.Move)
+			return;
+
 		_instArrow.transform.localScale = new Vector3(0, 0, 0);
 		isClickOn = false;
 
@@ -215,7 +223,8 @@ public class Player : MonoBehaviour
 
 	public void ShootBall(float power, float angleX, float angleY)
 	{
-
+		if (MoveState == ePlayerState.Move)
+			return;
 		//Vector2 direction = _instArrow.transform.rotation * new Vector2(1, angleY) * power;
 		Vector2 direction;
 		direction.x = angleX;
@@ -265,7 +274,7 @@ public class Player : MonoBehaviour
 		}
 
 		OwnCharacter.StartRun();
-		_state = ePlayerState.Move;
+		MoveState = ePlayerState.Move;
 
 		#region DecideDirection
 		if (OwnCharacter.transform.position.x < targetPos.x)
@@ -279,7 +288,7 @@ public class Player : MonoBehaviour
 	{
 		targetPos = NetworktargetPos;
 		OwnCharacter.StartRun();
-		_state = ePlayerState.Move;
+		MoveState = ePlayerState.Move;
 
 		#region DecideDirection
 		if (OwnCharacter.transform.position.x < targetPos.x)
