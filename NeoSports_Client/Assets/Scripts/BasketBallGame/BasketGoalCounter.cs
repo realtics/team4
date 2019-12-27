@@ -3,37 +3,44 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+
 namespace BasketBallGame
 {
+	public enum eDirection
+	{
+		Left,
+		Right,
+		Both,
+	}
 	public class BasketGoalCounter : MonoBehaviour
 	{
 		public GameObject goalInBallManager;
 		public Text leftText;
 		public Text rightText;
-
-		int _leftBallCount;
-		int _rightBallCount;
+	
+		public int LeftBallCount { get; private set; }
+		public int RightBallCount { get; private set; }
 
 		void Start()
 		{
-			_leftBallCount = 0;
-			_rightBallCount = 0;
-			leftText.text = _leftBallCount.ToString();
-			rightText.text = _rightBallCount.ToString();
+			LeftBallCount = 0;
+			RightBallCount = 0;
+			leftText.text = LeftBallCount.ToString();
+			rightText.text = RightBallCount.ToString();
 		}
 
 		void OnTriggerEnter2D(Collider2D collision)
 		{
 			if (collision.transform.CompareTag("Ball"))
 			{
-				++_leftBallCount;
-				leftText.text = _leftBallCount.ToString();
+				++LeftBallCount;
+				leftText.text = LeftBallCount.ToString();
 				AudioManager.Instance.PlaySound(eSoundId.Score);
 			}
 			else if (collision.transform.CompareTag("AIBall"))
 			{
-				++_rightBallCount;
-				rightText.text = _rightBallCount.ToString();
+				++RightBallCount;
+				rightText.text = RightBallCount.ToString();
 				AudioManager.Instance.PlaySound(eSoundId.Score);
 			}
 
@@ -46,17 +53,26 @@ namespace BasketBallGame
 			collision.transform.SetParent(null);
 			if (collision.transform.CompareTag("Ball"))
 			{
-				--_leftBallCount;
-				leftText.text = _leftBallCount.ToString();
+				--LeftBallCount;
+				leftText.text = LeftBallCount.ToString();
 			}
 			if (collision.transform.CompareTag("AIBall"))
 			{
-				--_rightBallCount;
-				rightText.text = _rightBallCount.ToString();
+				--RightBallCount;
+				rightText.text = RightBallCount.ToString();
 			}
 			BasketBall basket = collision.GetComponent<BasketBall>();
 			basket.SetActiveTraill(true);
 		}
 
+		public eDirection DecideWinner()
+		{
+			if (LeftBallCount > RightBallCount)
+				return eDirection.Left;
+			else if (RightBallCount > LeftBallCount)
+				return eDirection.Right;
+			else
+				return eDirection.Both;
+		}
 	}
 }

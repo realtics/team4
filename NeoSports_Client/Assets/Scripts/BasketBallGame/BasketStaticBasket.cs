@@ -8,7 +8,7 @@ public class BasketStaticBasket : MonoBehaviour
 	public Text _goalSignText;
 
 	[HideInInspector]
-	public int GoalInCount { get; set; }
+	public int GoalInCount { get; private set; }
 
     void Start()
     {

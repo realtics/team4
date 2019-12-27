@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace BasketBallGame
 {
@@ -17,13 +18,16 @@ namespace BasketBallGame
 		public float endGameTime;
 
 		const float GamePrepareTime = 4.0f;
-		// Prefab Character
-		public GameObject ppiYakCharacter;
-		public GameObject turkeyJellyCharacter;
+		const float EndDelayTime = 5.0f;
+		const int DefaultEarnGold = 10;
+		// Prefab Player
 		public GameObject playerPrefab;
 		public GameObject AIPlayerPrefab;
 
 		public GameObject rootCanvas;
+		public BasketGoalCounter singleGoalCounter;
+		public BasketStaticBasket NetworkLeftBasket;
+		public BasketStaticBasket NetworkRightBasket;
 
 		[SerializeField]
 		public Vector3 leftPlayerInitPos;
@@ -87,7 +91,9 @@ namespace BasketBallGame
 		void EndGame()
 		{
 			GameState = EGameState.GameOver;
-			CommonUIManager.Instance.CreateWinnerNotice(rootCanvas, InventoryManager.Instance.PlayerNickName, 10);
+			DecideWinner();
+			Invoke(nameof(EndNetworkGamePopup), EndDelayTime);
+			//CommonUIManager.Instance.CreateWinnerNotice(rootCanvas, InventoryManager.Instance.PlayerNickName, 10);
 			CommonUIManager.Instance.DestroyElapseGameTimer();
 		}
 
@@ -201,6 +207,67 @@ namespace BasketBallGame
 		public void NetworkMoveOtherPlayer(float x, float y,float z)
 		{
 			_otherPlayer.NetworkDecideTargetPos(new Vector2(x, y));
+		}
+
+		void DecideWinner()
+		{
+			if (isSingle)
+			{
+				var winner = singleGoalCounter.DecideWinner();
+				if (winner == eDirection.Left)
+				{
+					CommonUIManager.Instance.CreateWinnerNotice(rootCanvas, InventoryManager.Instance.PlayerNickName, DefaultEarnGold);
+				}
+				else if (winner == eDirection.Right)
+				{
+					CommonUIManager.Instance.CreateWinnerNotice(rootCanvas, "AI", 0);
+				}
+				else if (winner == eDirection.Both)
+				{
+					CommonUIManager.Instance.CreateWinnerNotice(rootCanvas, InventoryManager.Instance.PlayerNickName, DefaultEarnGold);
+					CommonUIManager.Instance.CreateWinnerNotice(rootCanvas, "AI", 0);
+				}
+			}
+			else 
+			{
+				int leftCount = NetworkLeftBasket.GoalInCount;
+				int rightCount = NetworkRightBasket.GoalInCount;
+
+				if (leftCount > rightCount)
+				{
+					if (NetworkManager.Instance.isOwnHost)
+						CommonUIManager.Instance.CreateWinnerNotice(rootCanvas, InventoryManager.Instance.PlayerNickName, DefaultEarnGold);
+					else
+						CommonUIManager.Instance.CreateLooserNotice(rootCanvas, InventoryManager.Instance.PlayerNickName);
+				}
+				else if (rightCount > leftCount)
+				{
+					if (NetworkManager.Instance.isOwnHost)
+						CommonUIManager.Instance.CreateLooserNotice(rootCanvas, InventoryManager.Instance.PlayerNickName);
+					else
+						CommonUIManager.Instance.CreateWinnerNotice(rootCanvas, InventoryManager.Instance.PlayerNickName, DefaultEarnGold);
+				}
+				else if (rightCount == leftCount)
+				{
+					CommonUIManager.Instance.CreateWinnerNotice(rootCanvas, InventoryManager.Instance.PlayerNickName, DefaultEarnGold);
+				}
+			}				
+		}
+
+		void EndNetworkGamePopup()
+		{
+			PopupManager.PopupData data;
+			data.text = "게임 종료 메인메뉴로 돌아갑니다.";
+			data.okFlag = true;
+			data.callBack = EndCompletedNetworkGame;
+			Singleton<PopupManager>.Instance.ShowPopup(data);
+
+			NetworkManager.Instance.SendRequestExitRoom(GAME_INDEX.ROPE_PULL, true);
+		}
+
+		void EndCompletedNetworkGame()
+		{
+			SceneManager.LoadScene(SceneName.MenuSceneName);
 		}
 	}
 }
