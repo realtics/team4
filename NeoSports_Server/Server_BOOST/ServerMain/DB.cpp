@@ -1,5 +1,4 @@
 #include "DB.h"
-#include "Protocol.h"
 
 #include <iostream>
 #include <boost/lexical_cast.hpp>

@@ -249,7 +249,9 @@ void Session::_DeSerializationJson(char* jsonStr)
 		packet.header.packetIndex = headerIndex;
 		packet.header.packetSize = children.get<int>("packetSize");
 		packet.gameIndex = (GAME_INDEX)ptRecv.get<int>("gameIndex");
-		packet.charIndex = (CHAR_INDEX)ptRecv.get<int>("charIndex");
+		boost::property_tree::ptree& charInfo = ptRecv.get_child("charInfo");
+		packet.charInfo.charIndex = charInfo.get<int>("charIndex");
+		packet.charInfo.Item = charInfo.get<int>("item");
 
 		memcpy(&_packetBuffer[_packetBufferMark], (char*)&packet, sizeof(packet));
 		break;

@@ -86,9 +86,9 @@ void RoomMG::SetRoomChar(int roomIndex, int charIndex)
 {
 	for (int i = 0; i < MAX_CHAR_IN_ROOM; i++)
 	{
-		if (_roomVec[roomIndex]->charIndex[i] == CHAR_INDEX::EMPTY_CHAR)
+		if (_roomVec[roomIndex]->charInfo[i].charIndex == CHAR_INDEX::EMPTY_CHAR)
 		{
-			_roomVec[roomIndex]->charIndex[i] = charIndex;
+			_roomVec[roomIndex]->charInfo[i].charIndex = charIndex;
 			return;
 		}
 	}
@@ -96,7 +96,7 @@ void RoomMG::SetRoomChar(int roomIndex, int charIndex)
 
 int RoomMG::GetRoomChar(int roomIndex, int playerIndex)
 {
-	return _roomVec[roomIndex]->charIndex[playerIndex];
+	return _roomVec[roomIndex]->charInfo[playerIndex].charIndex;
 }
 
 int RoomMG::GetRoomNum(int sessionID)

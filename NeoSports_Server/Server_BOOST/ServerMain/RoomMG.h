@@ -15,7 +15,7 @@ public:
 		curGame = GAME_INDEX::EMPTY_GAME;
 		for (int i = 0; i < MAX_CHAR_IN_ROOM; i++)
 		{
-			charIndex[i] = CHAR_INDEX::EMPTY_CHAR;
+			charInfo[i].charIndex = CHAR_INDEX::EMPTY_CHAR;
 		}
 
 		isGammingRoom = false;
@@ -23,7 +23,7 @@ public:
 	bool isGammingRoom;
 	GAME_INDEX curGame;
 	GameMG* gameMG;
-	int charIndex[MAX_CHAR_IN_ROOM]; //방에 있는 플레이어 두명의 캐릭터 인덱스
+	NEO_CHAR_INFO charInfo[MAX_CHAR_IN_ROOM]; //방에 있는 플레이어 두명의 캐릭터 인덱스
 	int superSessionID; //방장 클라이언트
 	int sessionID; //접속한 클라이언트(상대방)
 private:

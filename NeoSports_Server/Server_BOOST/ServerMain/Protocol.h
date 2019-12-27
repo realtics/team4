@@ -82,7 +82,11 @@ enum FARM_INDEX
 	DECORATION,
 	GARBAGE
 };
-
+struct NEO_CHAR_INFO
+{
+	int charIndex = CHAR_INDEX::EMPTY_CHAR;
+	int Item = -1;
+};
 
 struct RANK
 {
@@ -228,7 +232,7 @@ struct PACKET_REQ_MULTI_ROOM
 {
 	PACKET_HEADER header;
 	GAME_INDEX gameIndex;
-	int charIndex;
+	NEO_CHAR_INFO charInfo;
 };
 
 struct PACKET_REQ_INIT_ROOM
@@ -241,8 +245,8 @@ struct PACKET_REQ_INIT_ROOM
 struct PACKET_START_GAME
 {
 	PACKET_HEADER header;
-	int superCharID; //방장의 캐릭터
-	int charID;
+	NEO_CHAR_INFO superCharInfo; //방장의 캐릭터
+	NEO_CHAR_INFO charInfo;
 	GAME_INDEX gameIndex;
 
 	char superName[12];

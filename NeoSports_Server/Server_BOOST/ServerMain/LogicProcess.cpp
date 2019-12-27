@@ -1,9 +1,7 @@
 #include "LogicProcess.h"
-#include "Protocol.h"
 #include "Server.h"
 #include "Json.h"
 #include "DB.h"
-#include "ThreadHandler.h"
 #include "Time.h"
 
 #include <boost/lexical_cast.hpp>
@@ -236,7 +234,7 @@ void LogicProcess::ProcessPacket()
 			{
 				PACKET_REQ_MULTI_ROOM* packet = (PACKET_REQ_MULTI_ROOM*)data;
 
-				int mrTemp = _serverPtr->MakeRoom(packet->gameIndex, sessionID, packet->charIndex);
+				int mrTemp = _serverPtr->MakeRoom(packet->gameIndex, sessionID, packet->charInfo.charIndex);
 
 				if (mrTemp == ROOM_HOST::ENTER_ROOM) //도전자 입장이면 스타트패킷생성후 방장과 도전자에게 전송
 				{
@@ -254,8 +252,8 @@ void LogicProcess::ProcessPacket()
 					PACKET_START_GAME* startPacket = new PACKET_START_GAME;
 					startPacket->header.packetIndex = PACKET_INDEX::RES_START_GAME;
 					startPacket->header.packetSize = sizeof(PACKET_START_GAME);
-					startPacket->superCharID = (CHAR_INDEX)room.charIndex[0]; //방장의 캐릭터
-					startPacket->charID = (CHAR_INDEX)room.charIndex[1]; //도전자의 캐릭터
+					startPacket->superCharInfo = room.charInfo[0]; //방장의 캐릭터
+					startPacket->charInfo = room.charInfo[1]; //도전자의 캐릭터
 					strcpy(startPacket->superName, _serverPtr->GetSuperSessionName(superSessionIdTemp).c_str());
 					strcpy(startPacket->name, _serverPtr->GetSessionName(sessionIdTemp).c_str());
 
@@ -653,14 +651,21 @@ std::string LogicProcess::_SerializationJson(PACKET_INDEX packetIndex, const cha
 		memcpy(&startGamePacket, packet, sizeof(PACKET_START_GAME));
 
 		boost::property_tree::ptree ptSendSGP;
+
 		boost::property_tree::ptree ptSendHeader;
 		ptSendHeader.put<int>("packetIndex", startGamePacket.header.packetIndex);
 		ptSendHeader.put<std::string>("packetSize", jsonLength);
-
 		ptSendSGP.add_child("header", ptSendHeader);
 
-		ptSendSGP.put<int>("superCharID", (CHAR_INDEX)startGamePacket.superCharID);
-		ptSendSGP.put<int>("charID", (CHAR_INDEX)startGamePacket.charID);
+		boost::property_tree::ptree ptSendSuperCharInfo;
+		ptSendSuperCharInfo.put<int>("charindex", startGamePacket.superCharInfo.charIndex);
+		ptSendSuperCharInfo.put<int>("item", startGamePacket.superCharInfo.Item);
+		ptSendSGP.add_child("superCharInfo", ptSendSuperCharInfo);
+
+		boost::property_tree::ptree ptSendCharInfo;
+		ptSendCharInfo.put<int>("charindex", startGamePacket.charInfo.charIndex);
+		ptSendCharInfo.put<int>("item", startGamePacket.charInfo.Item);
+		ptSendSGP.add_child("superCharInfo", ptSendCharInfo);
 
 		ptSendSGP.put<char*>("superName", startGamePacket.superName);
 		ptSendSGP.put<char*>("name", startGamePacket.name);
