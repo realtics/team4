@@ -94,8 +94,8 @@ public class PacketQueue : Singleton<PacketQueue>
 				var packetdata = JsonConvert.DeserializeObject<PACKET_START_GAME>(recvData);
 				superCharIndex = packetdata.superCharInfo.charIndex;
 				charIndex = packetdata.charInfo.charIndex;
-				superCharEquip = packetdata.superCharInfo.Item;
-				gusetCharEquip = packetdata.charInfo.Item;
+				superCharEquip = packetdata.superCharInfo.item;
+				gusetCharEquip = packetdata.charInfo.item;
 				superName = packetdata.superName.ToString();
 				guestName = packetdata.name.ToString();
 				ChangeNetworkScene(packetdata.gameIndex);

@@ -69,7 +69,7 @@ public enum PACKET_INDEX
 public struct NEO_CHAR_INFO
 {
 	public int charIndex;
-	public int Item;
+	public int item;
 }
 
 #region ClientToServerPacket
@@ -108,7 +108,7 @@ public struct PACKET_REQ_MULTI_ROOM
         header = packetHeader;
         gameIndex = (int)_gameIndex;
 		charInfo.charIndex = _charIndex;
-		charInfo.Item = _itemIndex;
+		charInfo.item = _itemIndex;
 	}
 
 };
