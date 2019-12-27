@@ -66,6 +66,12 @@ public enum PACKET_INDEX
 	//
 };
 
+public struct NEO_CHAR_INFO
+{
+	public int charIndex;
+	public int Item;
+}
+
 #region ClientToServerPacket
 [StructLayout(LayoutKind.Sequential)]
 public struct PACKET_REQ_IN
@@ -95,14 +101,15 @@ public struct PACKET_REQ_MULTI_ROOM
 {
     public PACKET_HEADER header;
     public int gameIndex;
-    public int charIndex;
+    public NEO_CHAR_INFO charInfo;
 
-    public PACKET_REQ_MULTI_ROOM(PACKET_HEADER packetHeader, GAME_INDEX _gameIndex, int _charIndex)
+    public PACKET_REQ_MULTI_ROOM(PACKET_HEADER packetHeader, GAME_INDEX _gameIndex, int _charIndex,int _itemIndex)
     {
         header = packetHeader;
         gameIndex = (int)_gameIndex;
-        charIndex = _charIndex;
-    }
+		charInfo.charIndex = _charIndex;
+		charInfo.Item = _itemIndex;
+	}
 
 };
 
@@ -210,8 +217,8 @@ public struct PACKET_HEADER
 public struct PACKET_START_GAME
 {
     public PACKET_HEADER header;
-    public int superCharID; //방장의 캐릭터
-    public int charID;
+    public NEO_CHAR_INFO superCharInfo; //방장의 캐릭터
+    public NEO_CHAR_INFO charInfo;
     public GAME_INDEX gameIndex;
 
     public string superName;

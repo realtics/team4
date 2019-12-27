@@ -106,7 +106,8 @@ public class NetworkManager : Singleton<NetworkManager>
 		(
 			headerPacket,
 			roomIndex,
-			InventoryManager.Instance.CurrentCharacter.Type//(int)CHAR_INDEX.CHICK 
+			InventoryManager.Instance.CurrentCharacter.Type,
+			InventoryManager.Instance.CurrentEquipment.Type
 		);
 
 		SendToServerPacket(packet);

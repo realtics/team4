@@ -27,6 +27,10 @@ public class PacketQueue : Singleton<PacketQueue>
 	[HideInInspector]
 	public int charIndex;
 	[HideInInspector]
+	public int superCharEquip;
+	[HideInInspector]
+	public int gusetCharEquip;
+	[HideInInspector]
 	public string superName;
 	[HideInInspector]
 	public string guestName;
@@ -71,18 +75,13 @@ public class PacketQueue : Singleton<PacketQueue>
 				{
 					superCharIndex = InventoryManager.instance.CurrentCharacter.Type;
 					NetworkManager.Instance.isOwnHost = true;
-						//To DO: 현재는 임시시스템. 
-
 					NetworkManager.Instance.SendRequsetRank(packetdata.gameIndex);
-					//NetworkManager.Instance.SendRequsetRank(GAME_INDEX.ROPE_PULL);
 					SceneManager.LoadScene(SceneName.WaitGameSceneName);
 				}
 				else
 				{
 					NetworkManager.Instance.isOwnHost = false;
 				}
-
-
 				break;
 			}
 			case PACKET_INDEX.REQ_IN:
@@ -93,15 +92,12 @@ public class PacketQueue : Singleton<PacketQueue>
 			case PACKET_INDEX.RES_START_GAME:
 			{
 				var packetdata = JsonConvert.DeserializeObject<PACKET_START_GAME>(recvData);
-
-
-				
-				superCharIndex = packetdata.superCharID;
-				charIndex = packetdata.charID;
-
+				superCharIndex = packetdata.superCharInfo.charIndex;
+				charIndex = packetdata.charInfo.charIndex;
+				superCharEquip = packetdata.superCharInfo.Item;
+				gusetCharEquip = packetdata.charInfo.Item;
 				superName = packetdata.superName.ToString();
 				guestName = packetdata.name.ToString();
-				//SceneManager.LoadScene(SceneName.NetworkRopeGameSceneName);
 				ChangeNetworkScene(packetdata.gameIndex);
 				break;
 			}
