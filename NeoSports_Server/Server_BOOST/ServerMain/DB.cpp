@@ -491,8 +491,8 @@ void DB::SetFarmInfo(int clientID, std::string farmJson, FARM_INDEX farmIndex)
 void DB::InsertDefaultFarmInfo(int clientID)
 {
 	InsertFarmInfo(clientID, defaultFarmInfo_0, FARM_INDEX::LAND);
-	InsertFarmInfo(clientID, defaultFarmInfo_4, FARM_INDEX::ROAD);
-	InsertFarmInfo(clientID, defaultFarmInfo_1, FARM_INDEX::GARBAGE);
+	InsertFarmInfo(clientID, defaultFarmInfo_1, FARM_INDEX::ROAD);
+	InsertFarmInfo(clientID, defaultFarmInfo_4, FARM_INDEX::GARBAGE);
 }
 
 
