@@ -1,0 +1,7 @@
+ManifestFileVersion: 0
+CRC: 645345880
+AssetBundleManifest:
+  AssetBundleInfos:
+    Info_0:
+      Name: farmasset
+      Dependencies: {}

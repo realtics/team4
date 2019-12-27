@@ -26,6 +26,11 @@ namespace FarmGame
 		const string DecorationDataPath = "Jsons/Farm/DecorationData";
 		const string GarbageDataPath = "Jsons/Farm/GarbageData";
 
+		const string LandDataBundleName = "Assets/Resources/Jsons/Farm/LandData.json";
+		const string ProductDataBundleName = "Assets/Resources/Jsons/Farm/ProductData.json";
+		const string DecorationDataBundleName = "Assets/Resources/Jsons/Farm/DecorationData.json";
+		const string GarbageDataBundleName = "Assets/Resources/Jsons/Farm/GarbageData.json";
+
 		public const int MapWidth = 15;
 		public const int MapHeight = 10;
 
@@ -75,7 +80,7 @@ namespace FarmGame
 			CreateFarmer();
 		}
 
-		string ReadJsonDataString(string dataPath)
+		string ReadJsonDataFromResources(string dataPath)
 		{
 			string data;
 
@@ -85,10 +90,20 @@ namespace FarmGame
 			return data;
 		}
 
+		string ReadJsonDataFromBundle(string dataName)
+		{
+			string data;
+
+			TextAsset ta = BundleManager.Instance.GetFarmBundleObject(dataName) as TextAsset;
+			data = ta.text;
+
+			return data;
+		}
+
 		#region Read Tile Data
 		void ReadLandData()
 		{
-			string dataStr = ReadJsonDataString(LandDataPath);
+			string dataStr = ReadJsonDataFromBundle(LandDataBundleName);
 			LandData[] dataArr = JsonConvert.DeserializeObject<LandData[]>(dataStr);
 
 			foreach (LandData child in dataArr)
@@ -99,7 +114,7 @@ namespace FarmGame
 
 		void ReadDecorationData()
 		{
-			string dataStr = ReadJsonDataString(DecorationDataPath);
+			string dataStr = ReadJsonDataFromBundle(DecorationDataBundleName);
 			DecorationData[] dataArr = JsonConvert.DeserializeObject<DecorationData[]>(dataStr);
 
 			foreach (DecorationData child in dataArr)
@@ -110,7 +125,7 @@ namespace FarmGame
 
 		void ReadProductData()
 		{
-			string dataStr = ReadJsonDataString(ProductDataPath);
+			string dataStr = ReadJsonDataFromBundle(ProductDataBundleName);
 			ProductData[] dataArr = JsonConvert.DeserializeObject<ProductData[]>(dataStr);
 
 			foreach (ProductData child in dataArr)
@@ -121,7 +136,7 @@ namespace FarmGame
 
 		void ReadGarbageData()
 		{
-			string dataStr = ReadJsonDataString(GarbageDataPath);
+			string dataStr = ReadJsonDataFromBundle(GarbageDataBundleName);
 			GarbageData[] dataArr = JsonConvert.DeserializeObject<GarbageData[]>(dataStr);
 
 			foreach(GarbageData child in dataArr)

@@ -14,10 +14,11 @@ public class ResourceManager : Singleton<ResourceManager>
 	}
 
 	public const string JsonDataPath = "JSons/";
+	const string FarmAtlasBundleName = "Assets/Sprites/Atlas/FarmAtlas.spriteatlas";
 
 	public SpriteAtlas uiAtlas;
 	public SpriteAtlas gameAtals;
-	public SpriteAtlas farmAtlas;
+	SpriteAtlas farmAtlas;
 
 	int goldResource;
 
@@ -34,8 +35,14 @@ public class ResourceManager : Singleton<ResourceManager>
 		instance = this;
 		DontDestroyOnLoad(this);
 
+		LoadAtlasFromBundle();
 		LoadClientId();
 		LoadResourceSaveData();
+	}
+
+	void LoadAtlasFromBundle()
+	{
+		farmAtlas = BundleManager.Instance.GetFarmBundleObject(FarmAtlasBundleName) as SpriteAtlas;
 	}
 
 	public string ReadJsonDataString(string dataPath)

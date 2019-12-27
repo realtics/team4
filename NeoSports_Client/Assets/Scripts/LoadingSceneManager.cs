@@ -8,7 +8,7 @@ using FarmGame;
 
 public class LoadingSceneManager : MonoBehaviour
 {
-	static string nextScene;
+	static string nextScene = SceneName.MenuSceneName;
 
 	[SerializeField]
 	Image progressBar;
@@ -17,6 +17,10 @@ public class LoadingSceneManager : MonoBehaviour
 	{
 		switch (nextScene)
 		{
+			case SceneName.MenuSceneName:
+				BundleManager.Instance.Init();
+				StartCoroutine(MenuLoadScene());
+				break;
 			case SceneName.FriendFarmSceneName:
 				FriendFarmManager.Instance.RequestFriendFarmData();
 				StartCoroutine(FriendFarmLoadScene());
@@ -61,6 +65,43 @@ public class LoadingSceneManager : MonoBehaviour
 				progressBar.fillAmount = Mathf.Lerp(progressBar.fillAmount, 0.9f, timer);
 
 				if (progressBar.fillAmount == 0.9f && FriendFarmManager.Instance.IsDataLoaded)
+				{
+					progressBar.fillAmount = 1.0f;
+					op.allowSceneActivation = true;
+					yield break;
+				}
+			}
+		}
+	}
+
+	IEnumerator MenuLoadScene()
+	{
+		yield return null;
+
+		AsyncOperation op = SceneManager.LoadSceneAsync(nextScene);
+		op.allowSceneActivation = false;
+
+		float timer = 0.0f;
+
+		while (!op.isDone)
+		{
+			yield return null;
+
+			timer += Time.deltaTime;
+
+			if (op.progress < 0.9f)
+			{
+				progressBar.fillAmount = Mathf.Lerp(progressBar.fillAmount, op.progress, timer);
+				if (progressBar.fillAmount >= op.progress)
+				{
+					timer = 0f;
+				}
+			}
+			else
+			{
+				progressBar.fillAmount = Mathf.Lerp(progressBar.fillAmount, 0.9f, timer);
+
+				if (progressBar.fillAmount == 0.9f && BundleManager.Instance.IsLoadComplete)
 				{
 					progressBar.fillAmount = 1.0f;
 					op.allowSceneActivation = true;

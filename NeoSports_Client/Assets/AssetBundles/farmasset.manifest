@@ -1,0 +1,26 @@
+ManifestFileVersion: 0
+CRC: 3026344001
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 3d1b2c4707c59790980e4835b8323ccb
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: a5c0154b344962adc1609399068b09c2
+HashAppended: 0
+ClassTypes:
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 49
+  Script: {instanceID: 0}
+- Class: 213
+  Script: {instanceID: 0}
+- Class: 687078895
+  Script: {instanceID: 0}
+Assets:
+- Assets/Resources/Jsons/Farm/LandData.json
+- Assets/Sprites/Atlas/FarmAtlas.spriteatlas
+- Assets/Resources/Jsons/Farm/DecorationData.json
+- Assets/Resources/Jsons/Farm/GarbageData.json
+- Assets/Resources/Jsons/Farm/ProductData.json
+Dependencies: []
