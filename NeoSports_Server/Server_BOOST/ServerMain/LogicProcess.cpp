@@ -44,8 +44,8 @@ void LogicProcess::ProcessPacket()
 		else if (!_threadHandler->IsEmptyPacketQueue())
 		{
 			PacketData packetData = _threadHandler->GetPakcetDataQueueFront();
-			_threadHandler->pushPakcetQueueLock.Leave();
 			_threadHandler->PopPacketQueue();
+			_threadHandler->pushPakcetQueueLock.Leave();
 
 			const int sessionID = packetData.sessionID;
 			const char* data = packetData.data;

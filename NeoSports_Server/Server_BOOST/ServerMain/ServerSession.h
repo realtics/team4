@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include <deque>
+#include <atomic>
 
 #include <boost/bind.hpp>
 #include <boost/asio.hpp>
@@ -27,14 +28,15 @@ public:
 	boost::asio::ip::tcp::socket& Socket() { return Session::_socket; }
 
 private:
-	static std::string _staticRecvBufHeader; //Thread공유 버퍼
+	static std::string  _staticRecvBufHeader; //Thread공유 버퍼
 	static std::string _staticRecvBuf; //Thread공유 버퍼
 	int _readData = 0;
-	int _readMark = 0;
+	static std::atomic<int> _readMarkAtomic;
 
 	ThreadHandler* _threadHandler;
 
 	Lock _closeLock;
+	Lock _recvLock;
 	
 	int _sessionId;
 	int _packetBufferMark;

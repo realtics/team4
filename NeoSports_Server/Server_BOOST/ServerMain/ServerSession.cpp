@@ -7,6 +7,8 @@
 
 std::string Session::_staticRecvBufHeader = ""; //Thread공유 버퍼
 std::string Session::_staticRecvBuf = ""; //Thread공유 버퍼
+std::atomic<int> Session::_readMarkAtomic = 0;
+
 
 Session::Session(int sessionID, boost::asio::io_context& io_service, Server* serverPtr)
 	:_socket(io_service),
@@ -103,39 +105,52 @@ void  Session::_ReceiveHandle(const boost::system::error_code& error, size_t byt
 	}
 	else
 	{
-		//  정리필요
-		////받은 JSON의 총길이를 알 수 있는 값이 저장되있는 위치 = [44]인덱스
-		/*int jsonStrLen = 45;
-		while (strlen(_receiveBuffer.data()) < jsonStrLen)
+		//recv ByteStream정리 필요///////////////////////////////////////////////////////////
+		////받은 JSON의 총길이를 알 수 있는 값이 저장되있는 위치
+		/*int jsonStrLen = 47;
+		_readData = strlen(_receiveBuffer.data());
+		if (_readData < jsonStrLen)
 		{
-			_readData = strlen(_receiveBuffer.data());
-			_staticRecvBufHeader += _receiveBuffer.data();
-			_readMark += _readData;
+			{
+				LockGuard recvLock(_recvLock);
+				_staticRecvBufHeader += _receiveBuffer.data();
+			}
+			_readMarkAtomic.fetch_add(_readData);
 			PostReceive();
 			return;
 		}
-
-		_staticRecvBuf = _staticRecvBufHeader;
+		{
+			LockGuard recvLock(_recvLock);
+			_staticRecvBuf = _receiveBuffer.data();
+		}
 		boost::property_tree::ptree ptRecv;
-		std::istringstream is(_staticRecvBufHeader);
+		std::istringstream is(_staticRecvBuf);
+		{
+			LockGuard recvLock(_recvLock);
+			_staticRecvBufHeader = "";
+		}
 		boost::property_tree::read_json(is, ptRecv);
 		boost::property_tree::ptree& children = ptRecv.get_child("header");
 		int packetSize = children.get<int>("packetSize");
-		_staticRecvBufHeader = "";
 
 		_readData = 0;
-		_readMark = 0;
-		while (strlen(_receiveBuffer.data()) <= packetSize)
+		while (strlen(_receiveBuffer.data()) < packetSize)
 		{
 			_readData = strlen(_receiveBuffer.data());
-			memcpy(&_staticRecvBuf[_readMark], _receiveBuffer.data(), _readData);
-			_readMark += _readData;
+			{
+				LockGuard recvLock(_recvLock);
+				_staticRecvBuf += _receiveBuffer.data();
+			}
+			_readMarkAtomic.fetch_add(_readData);
 			PostReceive();
 			return;
+		}
+		{
+			LockGuard recvLock(_recvLock);
+			_readMarkAtomic.exchange(0);
 		}*/
-
+		/////////////////////////////////////////////////////////////////////////////
 		_DeSerializationJson(_receiveBuffer.data());
-
 		{
 			LockGuard pushPakcetQueueLock(_threadHandler->pushPakcetQueueLock);
 			_PushPacketQueue(_sessionId, &_packetBuffer[0]);
@@ -196,7 +211,7 @@ void Session::_DeSerializationJson(char* jsonStr)
 	}
 
 	case PACKET_INDEX::REQ_GET_GOLD:
-	{		
+	{
 		PACKET_REQ_RES_GOLD packet;
 		packet.Init();
 		packet.packetIndex = PACKET_INDEX::REQ_GET_GOLD;
