@@ -8,31 +8,38 @@ public class PlayerEquipment : MonoBehaviour
 	const string HeadSocketName = "HeadSocket";
 
 	Player _ownPlayer;
-	SpriteRenderer _equipSprite;
 	Character _ownCharacter;
-
 	Transform equipTransform;
-
+	public SpriteRenderer EquipSprite { get; set; }
+	public EquipmentInfo EquipmentInfo { get; set; }
 	public void InitializeEquipItem(Player player)
 	{
 		if (InventoryManager.Instance == null)
 			return;
-		EquipmentInfo equipInfo = InventoryManager.Instance.CurrentEquipment;
+		EquipmentInfo equipInfo;
+		if (EquipmentInfo != null)
+		{
+			equipInfo = EquipmentInfo;
+		}
+		else
+		{
+			equipInfo = InventoryManager.Instance.CurrentEquipment;
+		}
 		_ownPlayer = player;
 
 		_ownCharacter = _ownPlayer.OwnCharacter;
 
 		equipTransform = _ownCharacter.transform.Find(HeadSocketName);
 
-        _equipSprite = equipTransform.gameObject.AddComponent<SpriteRenderer>();
-		_equipSprite.sprite = equipInfo.IconSprite;
-        _equipSprite.sortingOrder = 16;
+        EquipSprite = equipTransform.gameObject.AddComponent<SpriteRenderer>();
+		EquipSprite.sprite = equipInfo.IconSprite;
+        EquipSprite.sortingOrder = 16;
 	}
 
 	public void SetEquipFilp(bool isFlip)
 	{
-		if(_equipSprite != null)
-		_equipSprite.flipX = isFlip;
+		if(EquipSprite != null)
+		EquipSprite.flipX = isFlip;
 	}
 
 

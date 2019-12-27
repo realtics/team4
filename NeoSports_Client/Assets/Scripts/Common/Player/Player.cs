@@ -48,7 +48,7 @@ public class Player : MonoBehaviour
 	public GameObject equipmentPrefab;
 	public BasketBallGame.BasketBall baksetballPrefab;
 
-	public ePlayerState MoveState { get; private set; }
+
 
 	GameObject _instChar;
 	GameObject _instController;
@@ -56,7 +56,6 @@ public class Player : MonoBehaviour
 	GameObject _instEquipment;
 
 	PlayerController _playerController;
-	PlayerEquipment _playerEquipment;
 
 	float _powerSize;
 	bool _isHost;
@@ -70,6 +69,8 @@ public class Player : MonoBehaviour
 
 	#region Property
 	public Character OwnCharacter { get; set; }
+	public ePlayerState MoveState { get; private set; }
+	public PlayerEquipment PlayerEquipment { get; private set; }
 	#endregion
 
 	private void Awake()
@@ -124,7 +125,7 @@ public class Player : MonoBehaviour
 		_playerTrigger = GetComponent<BoxCollider2D>();
 		_outlineshader = _instChar.GetComponent<SpirteOutlineshader>();
 
-		_playerEquipment = _instEquipment.GetComponent<PlayerEquipment>();
+		PlayerEquipment = _instEquipment.GetComponent<PlayerEquipment>();
 	}
 
 	#region public Player Function -Controller Use
@@ -133,7 +134,7 @@ public class Player : MonoBehaviour
 		OwnCharacter = character;
 		_playerController = controller;
 		_playerController.InitController(OwnCharacter, this, _isControlPlayer);
-		_playerEquipment.InitializeEquipItem(this);
+		//PlayerEquipment.InitializeEquipItem(this);
 	}
 
 	public void AimingShoot()
@@ -296,7 +297,7 @@ public class Player : MonoBehaviour
 	public void SetFlipCharacter(bool isFlip)
 	{
 		OwnCharacter.spriteRenderer.flipX = isFlip;
-		_playerEquipment.SetEquipFilp(!isFlip);
+		PlayerEquipment.SetEquipFilp(!isFlip);
 	}
 
 	void InitPlayerDirection()
@@ -317,13 +318,13 @@ public class Player : MonoBehaviour
 		{
 			_playerLookDirection = eLookDirection.Left;
 			OwnCharacter.spriteRenderer.flipX = true;
-			_playerEquipment.SetEquipFilp(true);
+			PlayerEquipment.SetEquipFilp(true);
 		}
 		else if (direction == eLookDirection.Right)
 		{
 			_playerLookDirection = eLookDirection.Right;
 			OwnCharacter.spriteRenderer.flipX = false;
-			_playerEquipment.SetEquipFilp(false);
+			PlayerEquipment.SetEquipFilp(false);
 		}
 	}
 

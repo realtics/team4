@@ -154,6 +154,8 @@ namespace BasketBallGame
 		{
 			int superCharIndex = PacketQueue.Instance.superCharIndex;
 			int CharIndex = PacketQueue.Instance.charIndex;
+			int superEquip = PacketQueue.Instance.superCharEquip;
+			int CharEquip = PacketQueue.Instance.gusetCharEquip;
 
 			if (NetworkManager.Instance.isOwnHost)
 			{
@@ -161,15 +163,18 @@ namespace BasketBallGame
 				_player = playerInst.GetComponent<Player>();
 
 				SelectInstantCharacter(superCharIndex, _player);
+				var superEquipinfo = InventoryManager.Instance.EquipmentInfos[superEquip];
+				_player.PlayerEquipment.EquipmentInfo = superEquipinfo;
 				_player.Initialize();
 				_player.SetPlayerDirection(Player.eLookDirection.Left);
 				_player.transform.localPosition = leftPlayerInitPos;
-
 				leftPlayerText.text = PacketQueue.Instance.superName;
 
 				var otherPlayerInst = Instantiate(playerPrefab, null);
 				_otherPlayer = otherPlayerInst.GetComponent<Player>();
 				SelectInstantCharacter(CharIndex, _otherPlayer);
+				var equipinfo = InventoryManager.Instance.EquipmentInfos[CharEquip];
+				_otherPlayer.PlayerEquipment.EquipmentInfo = equipinfo;
 				_otherPlayer.Initialize(false);
 				_otherPlayer.SetPlayerDirection(Player.eLookDirection.Right);
 				_otherPlayer.transform.localPosition = rightPlayerInitPos;
@@ -181,6 +186,8 @@ namespace BasketBallGame
 				var playerInst = Instantiate(playerPrefab, null);
 				_player = playerInst.GetComponent<Player>();
 				SelectInstantCharacter(CharIndex, _player);
+				var equipinfo = InventoryManager.Instance.EquipmentInfos[CharEquip];
+				_player.PlayerEquipment.EquipmentInfo = equipinfo;
 				_player.Initialize();
 				_player.SetPlayerDirection(Player.eLookDirection.Right);
 				_player.transform.localPosition = rightPlayerInitPos;
@@ -189,6 +196,8 @@ namespace BasketBallGame
 				var otherPlayerInst = Instantiate(playerPrefab, null);
 				_otherPlayer = otherPlayerInst.GetComponent<Player>();
 				SelectInstantCharacter(superCharIndex, _otherPlayer);
+				var superEquipinfo = InventoryManager.Instance.EquipmentInfos[superEquip];
+				_otherPlayer.PlayerEquipment.EquipmentInfo = superEquipinfo;
 				_otherPlayer.Initialize(false);
 				_otherPlayer.SetPlayerDirection(Player.eLookDirection.Left);
 				_otherPlayer.transform.localPosition = leftPlayerInitPos;
