@@ -50,6 +50,7 @@ public class CharacterInfo
 	}
 
 	const string PrefBundlePathPrefix = "Assets/Prefabs/Character/";
+	const string PrefBundlePathProfix = ".prefab";
 
 	readonly int _charType;
 	readonly string _charName;
@@ -82,7 +83,7 @@ public class CharacterInfo
 		_charStat = data.charStat;
 		_iconSprite = Singleton<ResourceManager>.Instance.GetUISprite(data.iconName);
 
-		string prefName = PrefBundlePathPrefix + data.prefName;
+		string prefName = PrefBundlePathPrefix + data.prefName + PrefBundlePathProfix;
 		_prefObject = BundleManager.Instance.GetCharEquipBundleObject(prefName) as GameObject;
 	}
 
