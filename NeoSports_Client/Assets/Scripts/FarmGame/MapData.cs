@@ -26,10 +26,10 @@ namespace FarmGame
 		const string DecorationDataPath = "Jsons/Farm/DecorationData";
 		const string GarbageDataPath = "Jsons/Farm/GarbageData";
 
-		const string LandDataBundleName = "Assets/Resources/Jsons/Farm/LandData.json";
-		const string ProductDataBundleName = "Assets/Resources/Jsons/Farm/ProductData.json";
-		const string DecorationDataBundleName = "Assets/Resources/Jsons/Farm/DecorationData.json";
-		const string GarbageDataBundleName = "Assets/Resources/Jsons/Farm/GarbageData.json";
+		const string LandDataBundleName = "Assets/Jsons/Farm/LandData.json";
+		const string ProductDataBundleName = "Assets/Jsons/Farm/ProductData.json";
+		const string DecorationDataBundleName = "Assets/Jsons/Farm/DecorationData.json";
+		const string GarbageDataBundleName = "Assets/Jsons/Farm/GarbageData.json";
 
 		public const int MapWidth = 15;
 		public const int MapHeight = 10;

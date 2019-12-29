@@ -8,7 +8,7 @@ public class BundleManager : Singleton<BundleManager>
 {
 
 	// 번들 다운 받을 서버의 주소(필자는 임시방편으로 로컬 파일 경로 쓸 것임)
-	public const string FarmBundleURL = "https://uc9ff9f9718629ee3bd1246278a6.dl.dropboxusercontent.com/cd/0/get/AvJ6xBHvyc7U6oSsGUVCnd_BbEhzLtSGPp2rJOes56scczhk2REeokIEN0Ov6aGFQDdoOHg1HUQKOLrlnuetnxEwqbN8KzupVfQHvqCi2b5LiQNcUQxnwM5fDJwXQWDmDGA/file#";
+	public const string FarmBundleURL = "https://ucbac4676e7c404ac2908e1137be.dl.dropboxusercontent.com/cd/0/get/AvIf5vBp5tf6ccHbpLIXByv7fZUVWSd56UrFBtGAR8AI8aZad-oI7OmQwIuKaGpKRjJl4B70VRjDyakFtuV6ylI4DlVSAqE61n752TovvroKGb8fsWFLkJIodS0dOXFh02Q/file#";
 
 	AssetBundle _farmAssetBundle;
 
