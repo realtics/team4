@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class BasketStaticBasket : MonoBehaviour
 {
 	public Text _goalSignText;
+    public ConffetiEffect goalInEffectPrefab;
 
 	[HideInInspector]
 	public int GoalInCount { get; private set; }

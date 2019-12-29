@@ -23,8 +23,9 @@ public class AsyncObject
 public class NetworkManager : Singleton<NetworkManager>
 {
 	const string AzureIPAdress = "52.141.2.84";
-	string IpAdress = "192.168.1.119";
-	const string LoopbackAdress = "127.0.0.1";
+    string IpAdress = "192.168.200.159"; // 숙소 서버
+    //string IpAdress = "192.168.1.119"; // JDC 서버
+    const string LoopbackAdress = "127.0.0.1";
 	const int PortNumber = 31400;
 	const int TimeOutCode = 100060;
 	const int bufferSize = 10240;
