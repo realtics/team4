@@ -8,8 +8,8 @@ public class BundleManager : Singleton<BundleManager>
 {
 
 	// 번들 다운 받을 서버의 주소(필자는 임시방편으로 로컬 파일 경로 쓸 것임)
-	public const string FarmBundleURI = "https://ucbac4676e7c404ac2908e1137be.dl.dropboxusercontent.com/cd/0/get/AvIf5vBp5tf6ccHbpLIXByv7fZUVWSd56UrFBtGAR8AI8aZad-oI7OmQwIuKaGpKRjJl4B70VRjDyakFtuV6ylI4DlVSAqE61n752TovvroKGb8fsWFLkJIodS0dOXFh02Q/file#";
-	public const string CharEquipBundleURI = "https://uc98052e7e743de2b49716d8895c.dl.dropboxusercontent.com/cd/0/get/AvKyc5-8uc6kr9smntCISaItdYHuBafcNbiE-OBsnxJkHlDX2QfrhRtmb-cCP2-yMLwiBkvLvvcainLcBcAOprtMPhGf2SFkS4VWiKp_xqxV30NNVx_ESOprBc_w5bgLEws/file#";
+	public const string FarmBundleURI = "https://firebasestorage.googleapis.com/v0/b/neolife-c0ce4.appspot.com/o/AssetBundle%2Ffarmasset?alt=media&token=7351d2f8-e6c0-4966-bb90-d191d0de1e26";
+	public const string CharEquipBundleURI = "https://firebasestorage.googleapis.com/v0/b/neolife-c0ce4.appspot.com/o/AssetBundle%2Fcharacterandequipment?alt=media&token=42dfbfe0-8cec-4770-a040-15e6b7985c58";
 
 
 	AssetBundle _farmAssetBundle;
