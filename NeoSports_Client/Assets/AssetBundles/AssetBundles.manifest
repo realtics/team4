@@ -1,7 +1,10 @@
 ManifestFileVersion: 0
-CRC: 1965721024
+CRC: 992935082
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
       Name: farmasset
+      Dependencies: {}
+    Info_1:
+      Name: characterandequipment
       Dependencies: {}

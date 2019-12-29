@@ -13,10 +13,10 @@ public class ResourceManager : Singleton<ResourceManager>
 		public int amount;
 	}
 
-	public const string JsonDataPath = "JSons/";
+	const string CharEquipAtlasBundleName = "Assets/Sprites/Atlas/UIAtlas.spriteatlas";
 	const string FarmAtlasBundleName = "Assets/Sprites/Atlas/FarmAtlas.spriteatlas";
 
-	public SpriteAtlas uiAtlas;
+	SpriteAtlas uiAtlas;
 	public SpriteAtlas gameAtals;
 	SpriteAtlas farmAtlas;
 
@@ -42,6 +42,7 @@ public class ResourceManager : Singleton<ResourceManager>
 
 	void LoadAtlasFromBundle()
 	{
+		uiAtlas = BundleManager.Instance.GetCharEquipBundleObject(CharEquipAtlasBundleName) as SpriteAtlas;
 		farmAtlas = BundleManager.Instance.GetFarmBundleObject(FarmAtlasBundleName) as SpriteAtlas;
 	}
 
@@ -54,6 +55,7 @@ public class ResourceManager : Singleton<ResourceManager>
 
 		return data;
 	}
+
 	#region Login Info
 	void LoadClientId()
 	{
@@ -161,7 +163,7 @@ public class ResourceManager : Singleton<ResourceManager>
 		ProductResourceData[] datas = new ProductResourceData[ProductResourceDic.Count];
 
 		int index = 0;
-		foreach(var item in ProductResourceDic)
+		foreach (var item in ProductResourceDic)
 		{
 			datas[index].type = item.Key;
 			datas[index].amount = item.Value;
@@ -183,7 +185,7 @@ public class ResourceManager : Singleton<ResourceManager>
 			string dataStr = PlayerPrefs.GetString(PrefsKey.ProductResourceSaveDataKey);
 			ProductResourceData[] datas = JsonConvert.DeserializeObject<ProductResourceData[]>(dataStr);
 
-			foreach(var item in datas)
+			foreach (var item in datas)
 			{
 				ProductResourceDic.Add(item.type, item.amount);
 			}

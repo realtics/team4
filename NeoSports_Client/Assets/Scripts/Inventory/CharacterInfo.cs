@@ -49,7 +49,7 @@ public class CharacterInfo
 		public string prefName;
 	}
 
-	const string CharacterPrefabPath = "Prefab/Character/";
+	const string PrefBundlePathPrefix = "Assets/Prefabs/Character/";
 
 	readonly int _charType;
 	readonly string _charName;
@@ -82,8 +82,8 @@ public class CharacterInfo
 		_charStat = data.charStat;
 		_iconSprite = Singleton<ResourceManager>.Instance.GetUISprite(data.iconName);
 
-		string prefabPath = CharacterPrefabPath + data.prefName;
-		_prefObject = Resources.Load(prefabPath) as GameObject;
+		string prefName = PrefBundlePathPrefix + data.prefName;
+		_prefObject = BundleManager.Instance.GetCharEquipBundleObject(prefName) as GameObject;
 	}
 
 	public GameObject GetCharacterPrefab()

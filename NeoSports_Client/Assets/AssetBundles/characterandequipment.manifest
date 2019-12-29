@@ -1,0 +1,48 @@
+ManifestFileVersion: 0
+CRC: 3166095273
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 7701b2750953b284c5cd4a7fc41ead11
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: ed9eda83763decbf892a93bf8eb1632a
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 49
+  Script: {instanceID: 0}
+- Class: 74
+  Script: {instanceID: 0}
+- Class: 91
+  Script: {instanceID: 0}
+- Class: 95
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 11500000, guid: c440c3a73e6a23e4b8a0354424913891, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: baac01790dd7c79448ea9bb586379a6a, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+- Class: 212
+  Script: {instanceID: 0}
+- Class: 213
+  Script: {instanceID: 0}
+- Class: 687078895
+  Script: {instanceID: 0}
+Assets:
+- Assets/Jsons/CharacterData.txt
+- Assets/Prefabs/Character/Character_Turkey_Jelly.prefab
+- Assets/Jsons/EquipmentData.txt
+- Assets/Sprites/Atlas/UIAtlas.spriteatlas
+- Assets/Prefabs/Character/Character_Ppi_Ya_Gi.prefab
+Dependencies: []

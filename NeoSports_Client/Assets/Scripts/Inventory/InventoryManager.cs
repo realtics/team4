@@ -9,8 +9,8 @@ public class InventoryManager : Singleton<InventoryManager>
 	public const int EmptyCharType = 100;
 	public const int EmptyEquipType = 0;
 
-	const string CharacterDataName = "CharacterData";
-	const string EquipmentDataName = "EquipmentData";
+	const string CharacterDataBundleName = "Assets/Jsons/CharacterData.txt";
+	const string EquipmentDataBundleName = "Assets/Jsons/EquipmentData.txt";
 
 	#region Property
 	public Dictionary<int, CharacterInfo> CharacterInfos { get; set; }
@@ -67,9 +67,8 @@ public class InventoryManager : Singleton<InventoryManager>
 	{
 		CharacterInfo.JsonData[] datas;
 
-		string dataPath = ResourceManager.JsonDataPath + CharacterDataName;
-		string dataStr = ResourceManager.Instance.ReadJsonDataString(dataPath);
-		datas = JsonConvert.DeserializeObject<CharacterInfo.JsonData[]>(dataStr);
+		TextAsset dataAsset = BundleManager.Instance.GetCharEquipBundleObject(CharacterDataBundleName) as TextAsset;
+		datas = JsonConvert.DeserializeObject<CharacterInfo.JsonData[]>(dataAsset.text);
 
 		foreach (var child in datas)
 		{
@@ -82,10 +81,8 @@ public class InventoryManager : Singleton<InventoryManager>
 	{
 		EquipmentInfo.JsonData[] datas;
 
-		string dataPath = ResourceManager.JsonDataPath + EquipmentDataName;
-		string data = ResourceManager.Instance.ReadJsonDataString(dataPath);
-
-		datas = JsonConvert.DeserializeObject<EquipmentInfo.JsonData[]>(data);
+		TextAsset dataAsset = BundleManager.Instance.GetCharEquipBundleObject(EquipmentDataBundleName) as TextAsset;
+		datas = JsonConvert.DeserializeObject<EquipmentInfo.JsonData[]>(dataAsset.text);
 
 		foreach (var child in datas)
 		{
