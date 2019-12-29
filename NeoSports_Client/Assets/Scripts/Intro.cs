@@ -5,10 +5,12 @@ using UnityEngine;
 
 public class Intro : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Awake()
-    {
-		LoadingSceneManager.LoadScene(SceneName.MenuSceneName);
-    }
+	void Update()
+	{
+		if(Input.GetMouseButtonDown(0))
+		{
+			LoadingSceneManager.LoadScene(SceneName.MenuSceneName);
+		}
+	}
 
 }
