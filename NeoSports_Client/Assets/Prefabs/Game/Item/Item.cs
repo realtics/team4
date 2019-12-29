@@ -5,8 +5,13 @@ using FarmGame;
 
 public class Item : RecycleObject
 {
-	Collider2D _ownCollider2d;
+    const float RotateSpeed = 50.0f;
+    Collider2D _ownCollider2d;
 	SpriteRenderer _spriteRenderer;
+
+    public ConffetiEffect _effect;
+    public int goldAmount;
+
 	enum eItemCartegory
 	{
 		Buff,
@@ -18,8 +23,16 @@ public class Item : RecycleObject
 	{
 		_ownCollider2d = GetComponent<Collider2D>();
 		_spriteRenderer = GetComponent<SpriteRenderer>();
-	}
-	void OnEnable()
+        
+
+    }
+
+    void Update()
+    {
+        transform.Rotate(new Vector3(0, 1, 0), Time.deltaTime * RotateSpeed);
+    }
+
+    void OnEnable()
 	{
 		
 	}
@@ -35,8 +48,14 @@ public class Item : RecycleObject
 		if (player != null)
 		{
 			player.getItem();
-			gameObject.SetActive(false); //대신 오브젝트 풀 쓸수 있으면 오브젝트 풀 사용 할 것.
-		}	
+            _effect.PlayEffect(transform);
+            AudioManager.Instance.PlaySound(eSoundId.Score);
+            gameObject.SetActive(false); //대신 오브젝트 풀 쓸수 있으면 오브젝트 풀 사용 할 것.
+            if (NetworkManager.Instance != null)
+                NetworkManager.Instance.SendRequestEarnGold(goldAmount);
+
+            
+        }	
 	}
 	
 }

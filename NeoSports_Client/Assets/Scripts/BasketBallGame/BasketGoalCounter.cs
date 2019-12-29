@@ -38,13 +38,16 @@ namespace BasketBallGame
 				++LeftBallCount;
 				leftText.text = LeftBallCount.ToString();
 				AudioManager.Instance.PlaySound(eSoundId.Score);
-			}
+                goalInEffectPrefab.PlayEffect(collision.transform);
+
+            }
 			else if (collision.transform.CompareTag("AIBall"))
 			{
 				++RightBallCount;
 				rightText.text = RightBallCount.ToString();
 				AudioManager.Instance.PlaySound(eSoundId.Score);
-			}
+                goalInEffectPrefab.PlayEffect(collision.transform);
+            }
 
 			BasketBall basket = collision.GetComponent<BasketBall>();
 			basket.SetActiveTraill(false);
@@ -76,5 +79,6 @@ namespace BasketBallGame
 			else
 				return eDirection.Both;
 		}
+
 	}
 }

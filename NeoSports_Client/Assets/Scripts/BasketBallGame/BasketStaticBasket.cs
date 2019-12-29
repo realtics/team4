@@ -22,7 +22,8 @@ public class BasketStaticBasket : MonoBehaviour
 	void OnTriggerEnter2D(Collider2D collision)
 	{
 		GoalInCount++;
-		_goalSignText.text = GoalInCount.ToString(); // text에 변수 바인딩 할수 있는지 물어볼 것
+        goalInEffectPrefab.PlayEffect(collision.transform);
+        _goalSignText.text = GoalInCount.ToString(); // text에 변수 바인딩 할수 있는지 물어볼 것
 	}
 
 	void OnTriggerExit2D(Collider2D collision)

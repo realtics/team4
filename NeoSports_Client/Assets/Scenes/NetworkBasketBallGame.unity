@@ -3346,6 +3346,12 @@ PrefabInstance:
       propertyPath: _goalSignText
       value: 
       objectReference: {fileID: 1861669815}
+    - target: {fileID: 7630877128029572188, guid: 76e35514a7046dc40a66ce8c1e6e228f,
+        type: 3}
+      propertyPath: goalInEffectPrefab
+      value: 
+      objectReference: {fileID: 3191644885510132246, guid: 67da4113f58e131419974d8fa4b74956,
+        type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 76e35514a7046dc40a66ce8c1e6e228f, type: 3}
 --- !u!114 &990164614 stripped
@@ -8011,6 +8017,12 @@ PrefabInstance:
       propertyPath: _goalSignText
       value: 
       objectReference: {fileID: 738094668}
+    - target: {fileID: 7630877128029572188, guid: 76e35514a7046dc40a66ce8c1e6e228f,
+        type: 3}
+      propertyPath: goalInEffectPrefab
+      value: 
+      objectReference: {fileID: 3191644885510132246, guid: 67da4113f58e131419974d8fa4b74956,
+        type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 76e35514a7046dc40a66ce8c1e6e228f, type: 3}
 --- !u!114 &7630877127296015487 stripped
