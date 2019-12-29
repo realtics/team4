@@ -78,13 +78,21 @@ public class Player : MonoBehaviour
 		_ballFactory = new PoolFactory(baksetballPrefab);
 		targetPos = transform.position;
 		mainCam = Camera.main;
-	}
+        
+    }
+
+    public void setPlayerEquipment(EquipmentInfo equipInfo)
+    {
+        _instEquipment = Instantiate(equipmentPrefab, this.transform);
+        PlayerEquipment = _instEquipment.GetComponent<PlayerEquipment>();
+        PlayerEquipment.EquipmentInfo = equipInfo;
+    }
 
 	public void Initialize(bool isControlPlayer = true)
 	{
 		_isControlPlayer = isControlPlayer;
 		MoveState = ePlayerState.Stop;
-		CachingValues();
+        CachingValues();
 		InitPlayerDirection();
 		InitPlayer(OwnCharacter, _playerController);
 		if (NetworkManager.Instance != null)
@@ -118,15 +126,12 @@ public class Player : MonoBehaviour
 		_instChar = Instantiate(characterPrefab, this.transform);
 		_instController = Instantiate(controllerPrefab, this.transform);
 		_instArrow = Instantiate(directionArrowPrefab, this.transform);
-		_instEquipment = Instantiate(equipmentPrefab, this.transform);
-
-		OwnCharacter = _instChar.GetComponent<Character>();
+        
+        OwnCharacter = _instChar.GetComponent<Character>();
 		_playerController = _instController.GetComponent<PlayerController>();
 		_playerTrigger = GetComponent<BoxCollider2D>();
 		_outlineshader = _instChar.GetComponent<SpirteOutlineshader>();
-
-		PlayerEquipment = _instEquipment.GetComponent<PlayerEquipment>();
-	}
+    }
 
 	#region public Player Function -Controller Use
 	public void InitPlayer(Character character, PlayerController controller)
@@ -134,7 +139,7 @@ public class Player : MonoBehaviour
 		OwnCharacter = character;
 		_playerController = controller;
 		_playerController.InitController(OwnCharacter, this, _isControlPlayer);
-		//PlayerEquipment.InitializeEquipItem(this);
+		PlayerEquipment.InitializeEquipItem(this);
 	}
 
 	public void AimingShoot()

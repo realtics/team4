@@ -113,12 +113,14 @@ namespace BasketBallGame
 			{
 				SelectInstantCharacter(InventoryManager.Instance.DefaultCharacterInfo);
 			}
+            _player.setPlayerEquipment(InventoryManager.Instance.CurrentEquipment);
 			_player.Initialize();
 			_player.SetPlayerDirection(Player.eLookDirection.Left);
 			leftPlayerText.text = InventoryManager.Instance.PlayerNickName;
 
 			var AIPlayerInst = Instantiate(AIPlayerPrefab, null);
 			_AIPlayer = AIPlayerInst.GetComponent<Player>();
+            _AIPlayer.setPlayerEquipment(InventoryManager.Instance.CurrentEquipment);
 			_AIPlayer.Initialize();
 			_AIPlayer.SetPlayerDirection(Player.eLookDirection.Right);
 			rightPlayerText.text = "AI";
@@ -164,9 +166,9 @@ namespace BasketBallGame
 
 				SelectInstantCharacter(superCharIndex, _player);
 				var superEquipinfo = InventoryManager.Instance.EquipmentInfos[superEquip];
-				_player.PlayerEquipment.EquipmentInfo = superEquipinfo;
-				_player.Initialize();
-				_player.SetPlayerDirection(Player.eLookDirection.Left);
+                _player.setPlayerEquipment(superEquipinfo);
+                _player.Initialize();
+                _player.SetPlayerDirection(Player.eLookDirection.Left);
 				_player.transform.localPosition = leftPlayerInitPos;
 				leftPlayerText.text = PacketQueue.Instance.superName;
 
@@ -174,9 +176,9 @@ namespace BasketBallGame
 				_otherPlayer = otherPlayerInst.GetComponent<Player>();
 				SelectInstantCharacter(CharIndex, _otherPlayer);
 				var equipinfo = InventoryManager.Instance.EquipmentInfos[CharEquip];
-				_otherPlayer.PlayerEquipment.EquipmentInfo = equipinfo;
-				_otherPlayer.Initialize(false);
-				_otherPlayer.SetPlayerDirection(Player.eLookDirection.Right);
+                _otherPlayer.setPlayerEquipment(equipinfo);
+                _otherPlayer.Initialize(false);
+                _otherPlayer.SetPlayerDirection(Player.eLookDirection.Right);
 				_otherPlayer.transform.localPosition = rightPlayerInitPos;
 
 				rightPlayerText.text = PacketQueue.Instance.guestName;
@@ -187,9 +189,9 @@ namespace BasketBallGame
 				_player = playerInst.GetComponent<Player>();
 				SelectInstantCharacter(CharIndex, _player);
 				var equipinfo = InventoryManager.Instance.EquipmentInfos[CharEquip];
-				_player.PlayerEquipment.EquipmentInfo = equipinfo;
-				_player.Initialize();
-				_player.SetPlayerDirection(Player.eLookDirection.Right);
+                _player.setPlayerEquipment(equipinfo);
+                _player.Initialize();
+                _player.SetPlayerDirection(Player.eLookDirection.Right);
 				_player.transform.localPosition = rightPlayerInitPos;
 				rightPlayerText.text = PacketQueue.Instance.guestName;
 
@@ -197,9 +199,9 @@ namespace BasketBallGame
 				_otherPlayer = otherPlayerInst.GetComponent<Player>();
 				SelectInstantCharacter(superCharIndex, _otherPlayer);
 				var superEquipinfo = InventoryManager.Instance.EquipmentInfos[superEquip];
-				_otherPlayer.PlayerEquipment.EquipmentInfo = superEquipinfo;
-				_otherPlayer.Initialize(false);
-				_otherPlayer.SetPlayerDirection(Player.eLookDirection.Left);
+                _otherPlayer.setPlayerEquipment(superEquipinfo);
+                _otherPlayer.Initialize(false);
+                _otherPlayer.SetPlayerDirection(Player.eLookDirection.Left);
 				_otherPlayer.transform.localPosition = leftPlayerInitPos;
 				leftPlayerText.text = PacketQueue.Instance.superName;
 			}

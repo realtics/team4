@@ -21,9 +21,13 @@ public class WaitSceneManager : Singleton<WaitSceneManager>
 		_player = playerInst.GetComponent<Player>();
 
 		SelectInstantCharacter(InventoryManager.Instance.CurrentCharacter.Type);
+
+        //_player.PlayerEquipment.EquipmentInfo = InventoryManager.Instance.CurrentEquipment;
 		nameText.text = InventoryManager.Instance.PlayerNickName;
-		_player.Initialize();
-	}
+        _player.setPlayerEquipment(InventoryManager.Instance.CurrentEquipment);
+        _player.Initialize();
+
+    }
 
 	void SelectInstantCharacter(int charType)
 	{

@@ -158,8 +158,8 @@ MonoBehaviour:
   singleGoalCounter: {fileID: 0}
   NetworkLeftBasket: {fileID: 990164614}
   NetworkRightBasket: {fileID: 7630877127296015487}
-  leftPlayerText: {fileID: 0}
-  rightPlayerText: {fileID: 0}
+  leftPlayerText: {fileID: 347299069}
+  rightPlayerText: {fileID: 136198205}
   leftPlayerInitPos: {x: -6, y: -1, z: 0}
   rightPlayerInitPos: {x: 6, y: -1, z: 0}
 --- !u!4 &41083355
@@ -2150,11 +2150,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 4856514685353556048, guid: f955ffb2ac3fc35439763445f619e3c7,
-        type: 3}
-      propertyPath: m_Name
-      value: Manager_Popup
-      objectReference: {fileID: 0}
     - target: {fileID: 4856514685353556047, guid: f955ffb2ac3fc35439763445f619e3c7,
         type: 3}
       propertyPath: popupPanel
@@ -2175,6 +2170,11 @@ PrefabInstance:
       propertyPath: popupGroupOk
       value: 
       objectReference: {fileID: 316955176}
+    - target: {fileID: 4856514685353556048, guid: f955ffb2ac3fc35439763445f619e3c7,
+        type: 3}
+      propertyPath: m_Name
+      value: Manager_Popup
+      objectReference: {fileID: 0}
     - target: {fileID: 4856514685353556046, guid: f955ffb2ac3fc35439763445f619e3c7,
         type: 3}
       propertyPath: m_LocalPosition.x

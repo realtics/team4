@@ -285,8 +285,8 @@ namespace FarmGame
 			{
 				script.characterPrefab = prefPpiYaGi;
 			}
-
-			script.Initialize();
+            script.setPlayerEquipment(InventoryManager.Instance.CurrentEquipment);
+            script.Initialize();
 			script.FarmStart();
 
 			LandTile firstTile = LandTileManager.Instance.GetLandTileAtPoint(CurrentFarmerPoint);

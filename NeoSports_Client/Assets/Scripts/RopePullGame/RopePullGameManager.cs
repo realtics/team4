@@ -267,7 +267,8 @@ namespace RopePullGame
 				SelectInstantCharacter(superCharIndex, _player);
 				var superEquipinfo = InventoryManager.Instance.EquipmentInfos[superEquip];
 				_player.PlayerEquipment.EquipmentInfo = superEquipinfo;
-				_player.Initialize();
+                _player.setPlayerEquipment(superEquipinfo);
+                _player.Initialize();
 				_player.SetPlayerDirection(Player.eLookDirection.Left);
 				_player.transform.localPosition = new Vector3(0.0f, 0.0f,0.0f);
 
@@ -276,7 +277,8 @@ namespace RopePullGame
 				SelectInstantCharacter(CharIndex, _otherPlayer);
 				var equipinfo = InventoryManager.Instance.EquipmentInfos[charEquip];
 				_otherPlayer.PlayerEquipment.EquipmentInfo = equipinfo;
-				_otherPlayer.Initialize();
+                _otherPlayer.setPlayerEquipment(equipinfo);
+                _otherPlayer.Initialize();
 				_otherPlayer.SetPlayerDirection(Player.eLookDirection.Right);
 				_otherPlayer.transform.localPosition = new Vector3(0.0f, 0.0f, 0.0f);
 
@@ -290,8 +292,9 @@ namespace RopePullGame
 				_player = playerInst.GetComponent<Player>();
 				SelectInstantCharacter(CharIndex, _player);
 				var equipinfo = InventoryManager.Instance.EquipmentInfos[charEquip];
-				_player.PlayerEquipment.EquipmentInfo = equipinfo;
-				_player.Initialize();
+                _player.setPlayerEquipment(equipinfo);
+                _player.setPlayerEquipment(equipinfo);
+                _player.Initialize();
 				_player.SetPlayerDirection(Player.eLookDirection.Right);
 				_player.transform.localPosition = new Vector3(0.0f, 0.0f, 0.0f);
 
@@ -299,8 +302,8 @@ namespace RopePullGame
 				_otherPlayer = otherPlayerInst.GetComponent<Player>();
 				SelectInstantCharacter(superCharIndex, _otherPlayer);
 				var superEquipinfo = InventoryManager.Instance.EquipmentInfos[superEquip];
-				_otherPlayer.PlayerEquipment.EquipmentInfo = superEquipinfo;
-				_otherPlayer.Initialize();
+                _otherPlayer.setPlayerEquipment(superEquipinfo);
+                _otherPlayer.Initialize();
 				_otherPlayer.SetPlayerDirection(Player.eLookDirection.Left);
 				_otherPlayer.transform.localPosition = new Vector3(0.0f, 0.0f, 0.0f);
 
@@ -317,7 +320,8 @@ namespace RopePullGame
 			var playerInst = Instantiate(playerPrefab, playerableObjects.transform);
 			_player = playerInst.GetComponent<Player>();
 			SelectInstantCharacter(InventoryManager.Instance.CurrentCharacter.Type,_player);
-			_player.Initialize();
+            _player.setPlayerEquipment(InventoryManager.Instance.CurrentEquipment);
+            _player.Initialize();
 			_player.SetPlayerDirection(Player.eLookDirection.Left);
 
 			var AIPlayerInst = Instantiate(AIPlayerPrefab, playerableObjects.transform);
