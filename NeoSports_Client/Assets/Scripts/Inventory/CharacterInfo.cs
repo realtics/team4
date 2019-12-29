@@ -6,6 +6,7 @@ using UnityEngine.U2D;
 
 public class Status
 {
+
 	public int strength;
 	public int endurance;
 	public int agility;
@@ -51,6 +52,7 @@ public class CharacterInfo
 
 	const string PrefBundlePathPrefix = "Assets/Prefabs/Character/";
 	const string PrefBundlePathProfix = ".prefab";
+	const string OutlineShaderPath = "Shaders/Matrerial/OutlineMaterial";
 
 	readonly int _charType;
 	readonly string _charName;
@@ -85,6 +87,7 @@ public class CharacterInfo
 
 		string prefName = PrefBundlePathPrefix + data.prefName + PrefBundlePathProfix;
 		_prefObject = BundleManager.Instance.GetCharEquipBundleObject(prefName) as GameObject;
+		_prefObject.GetComponent<SpriteRenderer>().material = Resources.Load(OutlineShaderPath) as Material;
 	}
 
 	public GameObject GetCharacterPrefab()
