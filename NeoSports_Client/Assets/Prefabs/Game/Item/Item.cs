@@ -9,7 +9,7 @@ public class Item : RecycleObject
     Collider2D _ownCollider2d;
 	SpriteRenderer _spriteRenderer;
 
-    public ConffetiEffect _effect;
+    public TempEffect _effect;
     public int goldAmount;
 
 	enum eItemCartegory
@@ -51,6 +51,8 @@ public class Item : RecycleObject
             _effect.PlayEffect(transform);
             AudioManager.Instance.PlaySound(eSoundId.Score);
             gameObject.SetActive(false); //대신 오브젝트 풀 쓸수 있으면 오브젝트 풀 사용 할 것.
+			if (player.ISControlPlayer)
+				return;
             if (NetworkManager.Instance != null)
                 NetworkManager.Instance.SendRequestEarnGold(goldAmount);
 

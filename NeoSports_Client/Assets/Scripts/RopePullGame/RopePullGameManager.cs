@@ -36,6 +36,9 @@ namespace RopePullGame
 		public Text rightText;
 		public Button restartButton;
 
+		public TempEffect winnerEffect;
+		public TempEffect looserEffect;
+
 		// Private Variable
 		Player _player;
 		Player _otherPlayer;
@@ -107,7 +110,7 @@ namespace RopePullGame
 					UpdateFever();
 					break;
 				case ESceneState.SetWinner:
-					restartButton.gameObject.SetActive(true);
+					//restartButton.gameObject.SetActive(true);
 					//Debug. Single
 					//Invoke(nameof(PopUpNextLevel),1.5f);
 					_sceneState = ESceneState.WaitRestart;
@@ -169,12 +172,16 @@ namespace RopePullGame
 					{					
 						CommonUIManager.Instance.CreateWinnerNotice(rootCanvas, InventoryManager.Instance.PlayerNickName,10);
 						Invoke(nameof(EndNetworkGamePopup), EndDelayTime);
+						winnerEffect.PlayEffect(_player.transform);
+						looserEffect.PlayEffect(_otherPlayer.transform);
 						return;
 					}
 					else
 					{
 						CommonUIManager.Instance.CreateLooserNotice(rootCanvas, InventoryManager.Instance.PlayerNickName);
 						Invoke(nameof(EndNetworkGamePopup), EndDelayTime);
+						winnerEffect.PlayEffect(_otherPlayer.transform);
+						looserEffect.PlayEffect(_player.transform);
 						return;
 					}
 				}
@@ -185,12 +192,16 @@ namespace RopePullGame
 						NetworkManager.Instance.SendRequestExitRoom(GAME_INDEX.ROPE_PULL, true);
 						CommonUIManager.Instance.CreateWinnerNotice(rootCanvas, InventoryManager.Instance.PlayerNickName,10);
 						Invoke(nameof(EndNetworkGamePopup), EndDelayTime);
+						winnerEffect.PlayEffect(_player.transform);
+						looserEffect.PlayEffect(_otherPlayer.transform);
 						return;
 					}
 					else
 					{
 						CommonUIManager.Instance.CreateLooserNotice(rootCanvas, InventoryManager.Instance.PlayerNickName);
 						Invoke(nameof(EndNetworkGamePopup), EndDelayTime);
+						winnerEffect.PlayEffect(_otherPlayer.transform);
+						looserEffect.PlayEffect(_player.transform);
 						return;
 					}
 				}
@@ -200,11 +211,17 @@ namespace RopePullGame
 				if (triggerSide.CompareTo("Left") == 0)
 				{
 					CommonUIManager.Instance.CreateWinnerNotice(rootCanvas, InventoryManager.Instance.PlayerNickName,10);
+					winnerEffect.PlayEffect(_player.transform);
+					looserEffect.PlayEffect(_AIPlayer.transform);
+					Invoke(nameof(EndSingleGamePopup), EndDelayTime);				
 					return;
 				}
 				else
 				{
 					CommonUIManager.Instance.CreateLooserNotice(rootCanvas, InventoryManager.Instance.PlayerNickName);
+					Invoke(nameof(EndSingleGamePopup), EndDelayTime);
+					winnerEffect.PlayEffect(_AIPlayer.transform);
+					looserEffect.PlayEffect(_player.transform);
 					return;
 				}
 			}
@@ -326,6 +343,7 @@ namespace RopePullGame
 
 			var AIPlayerInst = Instantiate(AIPlayerPrefab, playerableObjects.transform);
 			_AIPlayer = AIPlayerInst.GetComponent<Player>();
+			_AIPlayer.setPlayerEquipment(InventoryManager.Instance.CurrentEquipment);
 			_AIPlayer.Initialize();
 			_AIPlayer.SetPlayerDirection(Player.eLookDirection.Right);
 
@@ -344,18 +362,23 @@ namespace RopePullGame
 			PopupManager.PopupData data;
 			data.text = "게임 종료 메인메뉴로 돌아갑니다.";
 			data.okFlag = true;
-			data.callBack = EndCompletedNetworkGame;
+			data.callBack = EndCompleteGame;
 			Singleton<PopupManager>.Instance.ShowPopup(data);
 
 			NetworkManager.Instance.SendRequestExitRoom(GAME_INDEX.ROPE_PULL, true);
 		}
 
-		void EndSingleGamePopUp()
+		void EndSingleGamePopup()
 		{
-			
+			PopupManager.PopupData data;
+			data.text = "게임 종료 메인메뉴로 돌아갑니다.";
+			data.okFlag = true;
+			data.callBack = EndCompleteGame;
+			Singleton<PopupManager>.Instance.ShowPopup(data);
+
 		}
 
-		void EndCompletedNetworkGame()
+		void EndCompleteGame()
 		{
 			SceneManager.LoadScene(SceneName.MenuSceneName);
 		}

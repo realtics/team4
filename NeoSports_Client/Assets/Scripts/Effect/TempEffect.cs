@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ConffetiEffect : MonoBehaviour
+public class TempEffect : MonoBehaviour
 {
     public GameObject conffetiPrefab;
 

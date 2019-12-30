@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class BasketStaticBasket : MonoBehaviour
 {
 	public Text _goalSignText;
-    public ConffetiEffect goalInEffectPrefab;
+    public TempEffect goalInEffectPrefab;
 
 	[HideInInspector]
 	public int GoalInCount { get; private set; }
@@ -24,6 +24,7 @@ public class BasketStaticBasket : MonoBehaviour
 		GoalInCount++;
         goalInEffectPrefab.PlayEffect(collision.transform);
         _goalSignText.text = GoalInCount.ToString(); // text에 변수 바인딩 할수 있는지 물어볼 것
+		AudioManager.Instance.PlaySound(eSoundId.Score);
 	}
 
 	void OnTriggerExit2D(Collider2D collision)

@@ -30,6 +30,9 @@ namespace BasketBallGame
 		public BasketStaticBasket NetworkLeftBasket;
 		public BasketStaticBasket NetworkRightBasket;
 
+		public TempEffect looserEffect;
+		public TempEffect winnerEffect;
+
 		public Text leftPlayerText;
 		public Text rightPlayerText;
 
@@ -240,16 +243,24 @@ namespace BasketBallGame
 				if (winner == eDirection.Left)
 				{
 					CommonUIManager.Instance.CreateWinnerNotice(rootCanvas, InventoryManager.Instance.PlayerNickName, DefaultEarnGold);
+					winnerEffect.PlayEffect(_player.transform);
+					looserEffect.PlayEffect(_AIPlayer.transform);
 				}
 				else if (winner == eDirection.Right)
 				{
 					CommonUIManager.Instance.CreateWinnerNotice(rootCanvas, "AI", 0);
+					winnerEffect.PlayEffect(_AIPlayer.transform);
+					looserEffect.PlayEffect(_player.transform);
 				}
 				else if (winner == eDirection.Both)
 				{
 					CommonUIManager.Instance.CreateWinnerNotice(rootCanvas, InventoryManager.Instance.PlayerNickName, DefaultEarnGold);
 					CommonUIManager.Instance.CreateWinnerNotice(rootCanvas, "AI", 0);
+					winnerEffect.PlayEffect(_player.transform);
+					winnerEffect.PlayEffect(_AIPlayer.transform);
 				}
+
+				Invoke(nameof(EndSingleGamePopup), EndDelayTime);
 			}
 			else 
 			{
@@ -259,24 +270,43 @@ namespace BasketBallGame
 				if (leftCount > rightCount)
 				{
 					if (NetworkManager.Instance.isOwnHost)
+					{
 						CommonUIManager.Instance.CreateWinnerNotice(rootCanvas, InventoryManager.Instance.PlayerNickName, DefaultEarnGold);
+						winnerEffect.PlayEffect(_player.transform);
+						looserEffect.PlayEffect(_otherPlayer.transform);
+					}
 					else
+					{
 						CommonUIManager.Instance.CreateLooserNotice(rootCanvas, InventoryManager.Instance.PlayerNickName);
+						winnerEffect.PlayEffect(_otherPlayer.transform);
+						looserEffect.PlayEffect(_player.transform);
+					}
 
 					Invoke(nameof(EndNetworkGamePopup), EndDelayTime);
 				}
 				else if (rightCount > leftCount)
 				{
 					if (NetworkManager.Instance.isOwnHost)
+					{
 						CommonUIManager.Instance.CreateLooserNotice(rootCanvas, InventoryManager.Instance.PlayerNickName);
+						looserEffect.PlayEffect(_player.transform);
+						winnerEffect.PlayEffect(_otherPlayer.transform);
+					}
 					else
+					{
 						CommonUIManager.Instance.CreateWinnerNotice(rootCanvas, InventoryManager.Instance.PlayerNickName, DefaultEarnGold);
+						winnerEffect.PlayEffect(_player.transform);
+						looserEffect.PlayEffect(_otherPlayer.transform);
+					}
 
 					Invoke(nameof(EndNetworkGamePopup), EndDelayTime);
 				}
 				else if (rightCount == leftCount)
 				{
 					CommonUIManager.Instance.CreateWinnerNotice(rootCanvas, InventoryManager.Instance.PlayerNickName, DefaultEarnGold);
+
+					winnerEffect.PlayEffect(_player.transform);
+					winnerEffect.PlayEffect(_otherPlayer.transform);
 
 					Invoke(nameof(EndNetworkGamePopup), EndDelayTime);
 				}
@@ -295,6 +325,21 @@ namespace BasketBallGame
 		}
 
 		void EndCompletedNetworkGame()
+		{
+			SceneManager.LoadScene(SceneName.MenuSceneName);
+		}
+
+		void EndSingleGamePopup()
+		{
+			PopupManager.PopupData data;
+			data.text = "게임 종료 메인메뉴로 돌아갑니다.";
+			data.okFlag = true;
+			data.callBack = EndCompleteGame;
+			Singleton<PopupManager>.Instance.ShowPopup(data);
+
+		}
+
+		void EndCompleteGame()
 		{
 			SceneManager.LoadScene(SceneName.MenuSceneName);
 		}

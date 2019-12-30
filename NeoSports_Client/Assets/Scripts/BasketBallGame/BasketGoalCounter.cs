@@ -21,7 +21,7 @@ namespace BasketBallGame
 		public int LeftBallCount { get; private set; }
 		public int RightBallCount { get; private set; }
 
-        public ConffetiEffect goalInEffectPrefab;
+        public TempEffect goalInEffectPrefab;
 
         void Start()
 		{

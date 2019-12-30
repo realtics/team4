@@ -59,7 +59,7 @@ public class Player : MonoBehaviour
 
 	float _powerSize;
 	bool _isHost;
-	bool _isControlPlayer;
+
 	SpirteOutlineshader _outlineshader;
 
 	eFarmState _farmState;
@@ -71,6 +71,7 @@ public class Player : MonoBehaviour
 	public Character OwnCharacter { get; set; }
 	public ePlayerState MoveState { get; private set; }
 	public PlayerEquipment PlayerEquipment { get; private set; }
+	public bool ISControlPlayer { get; private set; }
 	#endregion
 
 	private void Awake()
@@ -90,7 +91,7 @@ public class Player : MonoBehaviour
 
 	public void Initialize(bool isControlPlayer = true)
 	{
-		_isControlPlayer = isControlPlayer;
+		ISControlPlayer = isControlPlayer;
 		MoveState = ePlayerState.Stop;
         CachingValues();
 		InitPlayerDirection();
@@ -138,7 +139,7 @@ public class Player : MonoBehaviour
 	{
 		OwnCharacter = character;
 		_playerController = controller;
-		_playerController.InitController(OwnCharacter, this, _isControlPlayer);
+		_playerController.InitController(OwnCharacter, this, ISControlPlayer);
 		PlayerEquipment.InitializeEquipItem(this);
 	}
 
@@ -190,6 +191,11 @@ public class Player : MonoBehaviour
 		};
 
 		return target;
+	}
+
+	private void OnCollisionEnter2D(Collision2D collision)
+	{
+		targetPos = transform.position;
 	}
 
 	public void getItem()
