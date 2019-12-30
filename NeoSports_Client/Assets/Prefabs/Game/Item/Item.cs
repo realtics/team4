@@ -51,7 +51,7 @@ public class Item : RecycleObject
             _effect.PlayEffect(transform);
             AudioManager.Instance.PlaySound(eSoundId.Score);
             gameObject.SetActive(false); //대신 오브젝트 풀 쓸수 있으면 오브젝트 풀 사용 할 것.
-			if (player.ISControlPlayer)
+			if (!player.ISControlPlayer)
 				return;
             if (NetworkManager.Instance != null)
 				ResourceManager.Instance.AddGoldResource(goldAmount);
