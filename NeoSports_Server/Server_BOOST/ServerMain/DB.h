@@ -26,12 +26,12 @@ public:
 	void DeleteUser(int clientID);
 	void InitUserTable();
 
-	void InsertGameInfo(int clientID, GAME_INDEX gameIndex,int winRecord);
+	void UpdataUserTable(int clientID, int sessionID);
 
 	void SetNameTable(int clientID, std::string name);
 
+	void InsertGameInfo(int clientID, GAME_INDEX gameIndex,int winRecord);
 	void UpdateWinRecord(int clientID, GAME_INDEX gameIndex, int addScore);
-	void UpdataUserTable(int clientID, int sessionID);
 
 	void Rank(GAME_INDEX gameIndex, RANK rank[]);
 	std::string orderByRank(GAME_INDEX gameIndex);

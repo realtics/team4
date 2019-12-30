@@ -108,6 +108,8 @@ int DB::InsertUser(int* clientID, int data)
 		return 0;
 	}
 	InsertDefaultFarmInfo(*clientID);
+	SetNameTable(*clientID, "aa");
+
 	return *clientID;
 }
 
@@ -220,7 +222,7 @@ void DB::SetNameTable(int clientID, std::string name)
 	}
 
 	std::string query = "";
-	query = "INSERT INTO name(clientID,name) values(?,?)";
+	query = "INSERT INTO name(clientID,name) values(?,'?')";
 
 	if (mysql_stmt_prepare(stmt, query.c_str(), strlen(query.c_str())))
 	{
@@ -490,9 +492,9 @@ void DB::SetFarmInfo(int clientID, std::string farmJson, FARM_INDEX farmIndex)
 
 void DB::InsertDefaultFarmInfo(int clientID)
 {
-	InsertFarmInfo(clientID, defaultFarmInfo_0, FARM_INDEX::LAND);
-	InsertFarmInfo(clientID, defaultFarmInfo_1, FARM_INDEX::ROAD);
-	InsertFarmInfo(clientID, defaultFarmInfo_4, FARM_INDEX::GARBAGE);
+	InsertFarmInfo(clientID, defaultFarmInfo_0, (FARM_INDEX)0);
+	InsertFarmInfo(clientID, defaultFarmInfo_1, (FARM_INDEX)1);
+	InsertFarmInfo(clientID, defaultFarmInfo_4, (FARM_INDEX)4);
 }
 
 
@@ -607,6 +609,7 @@ void DB::SetGold(int clientID, int gold)
 		std::cout << "DB : SetGold error" << std::endl;
 		return;
 	}
+	std::cout << "DB : SetGold  " << "Client : " << clientID << " GOld : " << gold << std::endl;
 }
 
 void DB::UpdateWinRecord(int clientID, GAME_INDEX gameIndex, int addScore)
