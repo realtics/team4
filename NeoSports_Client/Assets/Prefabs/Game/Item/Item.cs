@@ -54,7 +54,7 @@ public class Item : RecycleObject
 			if (player.ISControlPlayer)
 				return;
             if (NetworkManager.Instance != null)
-                NetworkManager.Instance.SendRequestEarnGold(goldAmount);
+				ResourceManager.Instance.AddGoldResource(goldAmount);
 
             
         }	

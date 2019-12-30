@@ -158,7 +158,7 @@ public class CommonUIManager : Singleton<CommonUIManager>
 
 		if (NetworkManager.Instance != null)
 		{
-			NetworkManager.Instance.SendRequestEarnGold(rewardGold);
+			ResourceManager.Instance.AddGoldResource(rewardGold);
 		}
 	}
 

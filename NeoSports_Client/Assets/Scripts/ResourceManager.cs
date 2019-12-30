@@ -106,7 +106,10 @@ public class ResourceManager : Singleton<ResourceManager>
 	{
 		goldResource += value;
 		PlayerPrefs.SetInt(PrefsKey.GoldResourceSaveDataKey, goldResource);
-
+		if (NetworkManager.Instance != null)
+		{
+			NetworkManager.Instance.SendRequestEarnGold(value);
+		}
 		return goldResource;
 	}
 
