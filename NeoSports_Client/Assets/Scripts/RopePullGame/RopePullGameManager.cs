@@ -283,7 +283,6 @@ namespace RopePullGame
 				_player = playerInst.GetComponent<Player>();
 				SelectInstantCharacter(superCharIndex, _player);
 				var superEquipinfo = InventoryManager.Instance.EquipmentInfos[superEquip];
-				_player.PlayerEquipment.EquipmentInfo = superEquipinfo;
                 _player.setPlayerEquipment(superEquipinfo);
                 _player.Initialize();
 				_player.SetPlayerDirection(Player.eLookDirection.Left);
@@ -293,7 +292,6 @@ namespace RopePullGame
 				_otherPlayer = otherPlayerInst.GetComponent<Player>();
 				SelectInstantCharacter(CharIndex, _otherPlayer);
 				var equipinfo = InventoryManager.Instance.EquipmentInfos[charEquip];
-				_otherPlayer.PlayerEquipment.EquipmentInfo = equipinfo;
                 _otherPlayer.setPlayerEquipment(equipinfo);
                 _otherPlayer.Initialize();
 				_otherPlayer.SetPlayerDirection(Player.eLookDirection.Right);
