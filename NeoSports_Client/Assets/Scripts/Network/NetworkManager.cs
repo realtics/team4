@@ -427,18 +427,14 @@ public class NetworkManager : Singleton<NetworkManager>
 
 	List<string> ProcessByteStream(string recvStr)
 	{
-		Debug.Log("Original Str: " + recvStr);
 		List<string> packetList = new List<string>();
 
 		while(recvStr != string.Empty)
 		{
 			int packetLengthIndex = recvStr.IndexOf("packetSize") + 13;
 
-			Debug.Log("PacketLengthIndex: " + packetLengthIndex.ToString());
 			int.TryParse(recvStr.Substring(packetLengthIndex, 4), out int packetLength);
-			Debug.Log("PacketLength: " + packetLength.ToString());
 			string packetData = recvStr.Substring(0, packetLength);
-			Debug.Log("PacketData: " + packetData);
 
 			packetList.Add(packetData);
 			recvStr = recvStr.Substring(packetLength);

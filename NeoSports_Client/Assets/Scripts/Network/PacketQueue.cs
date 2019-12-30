@@ -52,8 +52,6 @@ public class PacketQueue : Singleton<PacketQueue>
 	{
 		if (networkQueue.Count > 0)
 		{
-            Debug.Log("Packet Received!");
-
 			NetworkQueueData networkData;
 			//lock (queueLock)
 			{
@@ -100,7 +98,6 @@ public class PacketQueue : Singleton<PacketQueue>
 				guestName = packetdata.name.ToString();
 				ChangeNetworkScene(packetdata.gameIndex);
 
-				Debug.Log("도착 패킷" +packetdata);
 				break;
 			}
 			case PACKET_INDEX.REQ_RES_ROPE_PULL_GAME:
@@ -143,15 +140,12 @@ public class PacketQueue : Singleton<PacketQueue>
 			case PACKET_INDEX.RES_NULL_CLIENT_ID:
 			{
 				var packetData = JsonConvert.DeserializeObject<PACKET_RES_CHECK_CLIENT_ID>(recvData);
-				Debug.Log(packetData.isClientID);
 				PlayManager.Instance.ProcessClientIdCheckResult(packetData.isClientID);
 				break;
 			}
 			case PACKET_INDEX.RES_ENTER_FARM:
 			{
-                    Debug.Log(recvData);
 				var packetData = JsonConvert.DeserializeObject<PACKET_REQ_RES_FARM>(recvData);
-                    Debug.Log(packetData.saveData);
 
                 if(packetData.saveData == null)
                     {
