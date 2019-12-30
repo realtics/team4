@@ -321,7 +321,7 @@ namespace BasketBallGame
 			data.callBack = EndCompletedNetworkGame;
 			Singleton<PopupManager>.Instance.ShowPopup(data);
 
-			NetworkManager.Instance.SendRequestExitRoom(GAME_INDEX.ROPE_PULL, true);
+			NetworkManager.Instance.SendRequestExitRoom(GAME_INDEX.BASKET_BALL, true);
 		}
 
 		void EndCompletedNetworkGame()
