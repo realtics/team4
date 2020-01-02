@@ -11,7 +11,7 @@ public class Player : MonoBehaviour
 	const float AIShootRangeMinY = -15.0f;
 	const float AIShootRangeMaxY = 0.0f;
 	const int PowerLimit = 3;
-	const int PowerOffset = 5;
+	const int PowerOffset = 10;
 
 	public enum eLookDirection
 	{
