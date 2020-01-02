@@ -341,7 +341,7 @@ public class Player : MonoBehaviour
 
 	public void PullRope()
 	{
-		RopePullGame.RopePullRope.Instance.PullRope((int)_playerLookDirection * OwnCharacter.status.strength);
+		RopePullGame.RopePullRope.Instance.PullRope((int)_playerLookDirection * OwnCharacter.status.strength * PowerOffset);
 		OwnCharacter.PullRopeAutoRelease();
 
 		_outlineshader.PlayLineEffect();
