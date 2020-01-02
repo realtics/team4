@@ -8,8 +8,11 @@ public class BundleManager : Singleton<BundleManager>
 {
 
 	// 번들 다운 받을 서버의 주소(필자는 임시방편으로 로컬 파일 경로 쓸 것임)
-	public const string FarmBundleURI = "https://firebasestorage.googleapis.com/v0/b/neolife-c0ce4.appspot.com/o/AssetBundle%2Ffarmasset?alt=media&token=7351d2f8-e6c0-4966-bb90-d191d0de1e26";
-	public const string CharEquipBundleURI = "https://firebasestorage.googleapis.com/v0/b/neolife-c0ce4.appspot.com/o/AssetBundle%2Fcharacterandequipment?alt=media&token=42dfbfe0-8cec-4770-a040-15e6b7985c58";
+	const string FarmBundleURI = "https://firebasestorage.googleapis.com/v0/b/neolife-c0ce4.appspot.com/o/AssetBundle%2Ffarmasset?alt=media&token=7351d2f8-e6c0-4966-bb90-d191d0de1e26";
+	const string CharEquipBundleURI = "https://firebasestorage.googleapis.com/v0/b/neolife-c0ce4.appspot.com/o/AssetBundle%2Fcharacterandequipment?alt=media&token=42dfbfe0-8cec-4770-a040-15e6b7985c58";
+
+	const string FarmBundleWinBundleURI = "https://firebasestorage.googleapis.com/v0/b/neolife-c0ce4.appspot.com/o/AssetBundle%2Ffarmasset_win?alt=media&token=5d5c7614-6cb1-4c12-9246-a0cb3b3b6661";
+	const string CharEquipWinBundleURI = "https://firebasestorage.googleapis.com/v0/b/neolife-c0ce4.appspot.com/o/AssetBundle%2Fcharacterandequipment_win?alt=media&token=00259a23-21a1-4525-bd1b-f9c8d3ca3eed";
 
 
 	AssetBundle _farmAssetBundle;
@@ -46,7 +49,7 @@ public class BundleManager : Singleton<BundleManager>
 		}
 
 		// 에셋번들을 캐시에 있으면 로드하고, 없으면 다운로드하여 캐시폴더에 저장합니다.
-		using (UnityWebRequest uwr = UnityWebRequestAssetBundle.GetAssetBundle(FarmBundleURI))
+		using (UnityWebRequest uwr = UnityWebRequestAssetBundle.GetAssetBundle(FarmBundleWinBundleURI))
 		{
 			yield return uwr.SendWebRequest();
 
@@ -63,7 +66,7 @@ public class BundleManager : Singleton<BundleManager>
 		}
 		// using문은 File 및 Font 처럼 컴퓨터 에서 관리되는 리소스들을 쓰고 나서 쉽게 자원을 되돌려줄수 있도록 기능을 제공
 
-		using (UnityWebRequest uwr = UnityWebRequestAssetBundle.GetAssetBundle(CharEquipBundleURI))
+		using (UnityWebRequest uwr = UnityWebRequestAssetBundle.GetAssetBundle(CharEquipWinBundleURI))
 		{
 			yield return uwr.SendWebRequest();
 

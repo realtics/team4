@@ -3906,7 +3906,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8288645782cb884186e75c609517874, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLoopBackServer: 0
+  isLoopBackServer: 1
   isAzureServer: 0
   isOwnHost: 0
   superCharIndex: 0
@@ -7100,6 +7100,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   superCharIndex: 0
   charIndex: 0
+  superCharEquip: 0
+  gusetCharEquip: 0
   superName: 
   guestName: 
 --- !u!1 &1597151653
@@ -9242,10 +9244,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 336db605b0c918d4c982086dc4bd3213, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uiAtlas: {fileID: 4343727234628468602, guid: 4d3c59a9793175344b0b32afdd197916, type: 2}
   gameAtals: {fileID: 4343727234628468602, guid: 10d89119ba891624a93857afbcdcf35f,
-    type: 2}
-  farmAtlas: {fileID: 4343727234628468602, guid: 6086b02561324754081f1eb22b583f7a,
     type: 2}
 --- !u!4 &2110161750
 Transform:
