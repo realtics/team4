@@ -21,6 +21,21 @@ int main()
 
 	server.Start();
 
+	//Local IP 출력
+	{
+		std::cout << "Server IP : " << std::endl;
+		boost::asio::ip::tcp::resolver resolver(io_service);
+		boost::asio::ip::tcp::resolver::query query(boost::asio::ip::host_name(), "");
+		boost::asio::ip::tcp::resolver::iterator iter = resolver.resolve(query);
+		boost::asio::ip::tcp::resolver::iterator end; // End marker.
+		while (iter != end)
+		{
+			boost::asio::ip::tcp::endpoint ep = *iter++;
+			std::cout << ep << std::endl;
+		}
+	}
+
+	//Recv 하는 멀티스레드
 	boost::thread_group tg;
 	for (int i = 0; i < systemInfo.dwNumberOfProcessors; i++)
 	{
@@ -28,7 +43,8 @@ int main()
 			&io_service));
 	}
 
-	LogicProcess logicProcess(&server,&threadHandler);
+	//Logic 처리 싱글스레드
+	LogicProcess logicProcess(&server, &threadHandler);
 	tg.create_thread(boost::bind(&LogicProcess::ProcessPacket, &logicProcess));
 
 	tg.join_all();
